@@ -157,7 +157,7 @@ class ITR_Extractor:
 				if(itr in self.tcgs[label]):
 					sum_values[label] += self.tcgs[label][itr]
 
-			print("obtained: ",label,  sum_val)
+			print("obtained: ",label,  sum_values[label])
 
 
 	def __init__(self, num_classes):
