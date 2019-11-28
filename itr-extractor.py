@@ -138,8 +138,8 @@ class ITR_Extractor:
 
 				j+=1
 
-		print("itr_set")
-		print(itr_set)
+		print("itr_dict")
+		print(itr_dict)
 
 
 		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
