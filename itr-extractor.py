@@ -100,7 +100,7 @@ class ITR_Extractor:
 			event_bound = event_tokens[2]
 
 			event_id = event_name+'_'+str(event_occur)
-			if (event_id not in events)
+			if (event_id not in events):
 				events[event_id] = AtomicEvent(event_name, event_occur)
 
 			if(event_bound == 's'):
