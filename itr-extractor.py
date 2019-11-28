@@ -122,13 +122,17 @@ class ITR_Extractor:
 		itr_set = Set()
 
 		for i in range(len(events)):
-			for j in range(i+1, len(events)):
+
+			j = i+1
+			while(j < len(events) and events[j].name != events[i].name):
 				itr = events[i].get_itr( events[j] )
 
 				if('i' not in itr):
 					e1 = events[i].name#+"_"+str(events[i].occurence) 
 					e2 = events[j].name#+"_"+str(events[j].occurence)
 					itr_set.add((e1, itr, e2))
+
+				j+=1
 
 		print("itr_set")
 		print(itr_set)
