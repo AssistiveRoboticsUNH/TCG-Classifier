@@ -128,7 +128,7 @@ class ITR_Extractor:
 				if('i' not in itr):
 					e1 = events[i].name#+"_"+str(events[i].occurence) 
 					e2 = events[j].name#+"_"+str(events[j].occurence)
-					itr_set.add([e1, itr, e2])
+					itr_set.add((e1, itr, e2))
 
 		print("itr_set")
 		print(itr_set)
