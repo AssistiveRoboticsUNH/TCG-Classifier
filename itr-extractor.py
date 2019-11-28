@@ -110,9 +110,7 @@ class ITR_Extractor:
 		return events.values()
 
 	
-			
-
-	def learn_model_from_files(self, txt_file, label):
+	def extract_itr_set(self, txt_file):
 
 		# get events from file
 		events = sorted(self.read_file(txt_file)) 
@@ -135,6 +133,12 @@ class ITR_Extractor:
 
 				j+=1
 
+		return itr_set
+
+	def add(self, txt_file, label):
+
+		itr_set = self.extract_itr_set(txt_file)
+		
 		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
 		for itr in itr_set:
 			if(itr not in self.tcgs[label]):
@@ -142,6 +146,18 @@ class ITR_Extractor:
 			self.tcgs[label][itr] += 1
 						
 		# #maintain a record of what followed that ITR as n-grams
+
+	def evaluate(self, txt_file):
+		itr_set = self.extract_itr_set(txt_file)
+
+		sum_val = 0
+
+		for itr in itr_set:
+			if(itr in self.tcgs[label]):
+				sum_val += self.tcgs[label][itr]
+
+		print("obtained: ", sum_val)
+
 
 	def __init__(self, num_classes):
 		self.num_classes = num_classes
@@ -154,10 +170,10 @@ class ITR_Extractor:
 if __name__ == '__main__':
 	tcg = ITR_Extractor(2)
 
-	tcg.learn_model_from_files("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/351_0.txt", 0)
-	tcg.learn_model_from_files("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/352_0.txt", 0)
-	tcg.learn_model_from_files("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/354_0.txt", 0)
-	tcg.learn_model_from_files("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/355_0.txt", 0)
+	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/351_0.txt", 0)
+	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/352_0.txt", 0)
+	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/354_0.txt", 0)
+	tcg.compare("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/355_0.txt")
 
 
 		
