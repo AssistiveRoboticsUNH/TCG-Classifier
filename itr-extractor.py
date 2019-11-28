@@ -122,7 +122,7 @@ class ITR_Extractor:
 		itr_set = []
 
 		for i in range(len(events)):
-			for j in range(i, len(events)):
+			for j in range(i+1, len(events)):
 				itr = events[i].get_itr( events[j] )
 
 				if('i' not in itr):
