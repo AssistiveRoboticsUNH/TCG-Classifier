@@ -139,7 +139,7 @@ class ITR_Extractor:
 		for itr in itr_set:
 			if(itr not in self.tcgs[label]):
 				self.tcgs[label][itr] = 0
-			self.tcgs[label] += 1
+			self.tcgs[label][itr] += 1
 						
 		# #maintain a record of what followed that ITR as n-grams
 
