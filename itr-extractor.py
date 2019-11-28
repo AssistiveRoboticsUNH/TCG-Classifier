@@ -25,6 +25,64 @@ class AtomicEvent():
 			return True
 		return self.start == other.start and self.end < other.end
 
+	def get_itr(self, other):
+		return self.get_itr_from_time(self.start, self.end, other.start, other.end)
+
+	def get_itr_from_time(self, a1, a2, b1, b2):
+
+		#before
+		if (a2 < b1):
+			return 'b'
+
+		#meets
+		if (a2 == b1):
+			return 'm'
+
+		#overlaps
+		if (a1 < b1 and a2 < b2 and b1 < a2):
+			return 'o'
+
+		#during
+		if (a1 < b1 and b2 < a2):
+			return 'd'
+
+		#finishes
+		if (b1 < a1 and a2 == b2):
+			return 'f'
+
+		#starts
+		if (a1 == b1 and a2 < b2):
+			return 's'
+
+		#equals
+		if (a1 == b1 and a2 == b2):
+			return 'eq'
+
+		#startedBy
+		if (a1 == b1 and b2 < a2):
+			return 'si'
+
+		#contains
+		if (b1 < a1 and a2 < b2):
+			return 'di'
+
+		#finishedBy
+		if (a1 < b1 and a2 == b2):
+			return 'fi'
+
+		#overlappedBy
+		if (b1 < a1 and b2 < a2 and a1 < b2):
+			return 'oi'
+
+		#metBy
+		if (b2 == a1):
+			return 'mi'
+
+		#after
+		if (b2 < a1):
+			return 'bi'
+
+
 
 class ITR_Extractor:
 
@@ -51,16 +109,28 @@ class ITR_Extractor:
 				events[event_id].end = time
 
 		return events.values()
+
+	
 			
 
 	def learn_model_from_files(txt_file, label):
 
 		# get events from file
-		events = read_file(txt_file)
+		events = sorted(read_file(txt_file)) 
 
 		# get a list of all of the ITRs in the txt_file
-		for e in sorted(events):
-			itr = self.determine_itr(e, events)
+		itr_set = []
+
+		for i in range(len(events)):
+			for j in range(i, len(events)):
+				itr = events[i].get_itr( events[j] )
+
+				if('i' not in itr):
+					itr_set.append(itr)
+
+		print("itr_set")
+		print(itr_set)
+
 
 		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
 
