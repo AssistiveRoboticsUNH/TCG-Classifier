@@ -147,7 +147,7 @@ class ITR_Extractor:
 		self.num_classes = num_classes
 
 		self.tcgs = []
-		for i in num_classes:
+		for i in range(num_classes):
 			self.tcgs.append({})
 
 
