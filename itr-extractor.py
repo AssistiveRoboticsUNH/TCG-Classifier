@@ -1,4 +1,5 @@
 from sets import Set
+import os, sys
 
 # I need to sort all of the indiividual actions by feature. Then
 # I can get the ITR with the next feature for each each row. I 
@@ -7,7 +8,8 @@ from sets import Set
 
 # need to figure this out ASAP!
 
-
+sys.path.append("../../IAD-Generator/iad-generation/")
+from csv_utils import read_csv
 
 
 class ITR_Extractor:
@@ -167,19 +169,48 @@ class ITR_Extractor:
 		for i in range(num_classes):
 			self.tcgs.append({})
 
+def main(dataset_dir, csv_filename, dataset_type, dataset_id):
+
+	tcg = ITR_Extractor(2)
+	
+	try:
+		csv_contents = read_csv(csv_filename)
+	except:
+		print("ERROR: Cannot open CSV file: "+ csv_filename)
+
+	for ex in csv_contents:
+		ex['txt_path'] = os.path.join(dataset_dir, "txt_"+dataset_type+"_"+str(dataset_id), ex['label_name'], str(0), ex['example_id'])
+
+	train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
+	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
+	
+	for ex in train_data:
+		tcg.add(ex['txt_path'], ex['label'])
+
+	for ex in test_data:
+		tcg.evaluate(ex['txt_path'])
 
 if __name__ == '__main__':
-	tcg = ITR_Extractor(2)
+	import argparse
+	parser = argparse.ArgumentParser(description='Generate IADs from input files')
+	#required command line args
+	parser.add_argument('dataset_dir', help='the directory where the dataset is located')
+	parser.add_argument('csv_filename', help='a csv file denoting the files in the dataset')
+	#parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow'])
+	#parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
 
-	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/351_0.txt", 0)
-	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/352_0.txt", 0)
-	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/354_0.txt", 0)
+	FLAGS = parser.parse_args()
 
-	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/equals/12_0.txt", 1)
-	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/equals/13_0.txt", 1)
-	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/equals/15_0.txt", 1)
+	main(FLAGS.dataset_dir, 
+		FLAGS.csv_filename,
+		"frames", #FLAGS.dataset_type,
+		1 #FLAGS.dataset_id
+		)
 
-	tcg.evaluate("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/355_0.txt")
+
+
+
+	
 
 
 		
