@@ -126,7 +126,7 @@ class ITR_Extractor:
 			while(j < len(events) and events[j].name != events[i].name):
 				itr_name = events[i].get_itr( events[j] )
 
-				if('i' not in itr):
+				if('i' not in itr_name):
 					e1 = events[i].name#+"_"+str(events[i].occurence) 
 					e2 = events[j].name#+"_"+str(events[j].occurence)
 
