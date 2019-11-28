@@ -8,7 +8,7 @@ import os, sys
 
 # need to figure this out ASAP!
 
-sys.path.append("../../IAD-Generator/iad-generation/")
+sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
 
