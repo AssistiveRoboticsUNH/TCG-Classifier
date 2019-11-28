@@ -139,7 +139,10 @@ class ITR_Extractor:
 		# #maintain a record of what followed that ITR as n-grams
 
 
+if __name__ == '__main__':
+	tcg = ITR_Extractor()
 
+	tcg.learn_model_from_files("~/datasets/BlockMovingSep/txt_frames_1/0/after/352_0.txt", 0)
 
 
 		
