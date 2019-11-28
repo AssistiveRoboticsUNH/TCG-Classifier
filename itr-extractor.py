@@ -173,7 +173,7 @@ if __name__ == '__main__':
 	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/351_0.txt", 0)
 	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/352_0.txt", 0)
 	tcg.add("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/354_0.txt", 0)
-	tcg.compare("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/355_0.txt")
+	tcg.evaluate("/home/mbc2004/datasets/BlockMovingSep/txt_frames_1/0/after/355_0.txt")
 
 
 		
