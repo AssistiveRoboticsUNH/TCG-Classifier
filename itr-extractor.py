@@ -150,13 +150,14 @@ class ITR_Extractor:
 	def evaluate(self, txt_file):
 		itr_set = self.extract_itr_set(txt_file)
 
-		sum_val = 0
+		sum_values = [0]*self.num_classes
 
-		for itr in itr_set:
-			if(itr in self.tcgs[label]):
-				sum_val += self.tcgs[label][itr]
+		for i in range(self.num_classes):
+			for itr in itr_set:
+				if(itr in self.tcgs[label]):
+					sum_values[i] += self.tcgs[label][itr]
 
-		print("obtained: ", sum_val)
+			print("obtained: ",i,  sum_val)
 
 
 	def __init__(self, num_classes):
