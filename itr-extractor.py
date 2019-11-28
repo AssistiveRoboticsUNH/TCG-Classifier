@@ -12,7 +12,6 @@ from sets import Set
 
 class ITR_Extractor:
 
-
 	class AtomicEvent():
 		def __init__(self, name, occurence, start=-1, end=-1):
 			self.name = name
@@ -119,18 +118,23 @@ class ITR_Extractor:
 		events = sorted(self.read_file(txt_file)) 
 
 		# get a list of all of the ITRs in the txt_file
-		itr_set = Set()
+		itr_dict = {}
 
 		for i in range(len(events)):
 
 			j = i+1
 			while(j < len(events) and events[j].name != events[i].name):
-				itr = events[i].get_itr( events[j] )
+				itr_name = events[i].get_itr( events[j] )
 
 				if('i' not in itr):
 					e1 = events[i].name#+"_"+str(events[i].occurence) 
 					e2 = events[j].name#+"_"+str(events[j].occurence)
-					itr_set.add((e1, itr, e2))
+
+					itr = (e1, itr_name, e2)
+
+					if(itr not in itr_dict):
+						itr_dict[itr] = 0
+					itr_dict[itr] += 1
 
 				j+=1
 
