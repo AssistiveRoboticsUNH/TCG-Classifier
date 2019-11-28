@@ -126,7 +126,9 @@ class ITR_Extractor:
 				itr = events[i].get_itr( events[j] )
 
 				if('i' not in itr):
-					itr_set.append([events[i].name, itr, events[j].name])
+					e1 = events[i].name+"_"+events[i].occurence
+					e2 = events[j].name+"_"+events[j].occurence
+					itr_set.append([e1, itr, e2])
 
 		print("itr_set")
 		print(itr_set)
