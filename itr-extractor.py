@@ -171,7 +171,7 @@ class ITR_Extractor:
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 
-	tcg = ITR_Extractor(2)
+	tcg = ITR_Extractor(13)
 	
 	try:
 		csv_contents = read_csv(csv_filename)
