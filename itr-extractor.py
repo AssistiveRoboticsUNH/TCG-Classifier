@@ -10,83 +10,83 @@
 
 
 
-
-
-
-class AtomicEvent():
-	def __init__(self, name, occurence, start=-1, end=-1):
-		self.name = name
-		self.occurence = occurence
-		self.start = start
-		self.end = end
-
-	def __lt__(self, other):
-		if( self.start < other.start ):
-			return True
-		return self.start == other.start and self.end < other.end
-
-	def get_itr(self, other):
-		return self.get_itr_from_time(self.start, self.end, other.start, other.end)
-
-	def get_itr_from_time(self, a1, a2, b1, b2):
-
-		#before
-		if (a2 < b1):
-			return 'b'
-
-		#meets
-		if (a2 == b1):
-			return 'm'
-
-		#overlaps
-		if (a1 < b1 and a2 < b2 and b1 < a2):
-			return 'o'
-
-		#during
-		if (a1 < b1 and b2 < a2):
-			return 'd'
-
-		#finishes
-		if (b1 < a1 and a2 == b2):
-			return 'f'
-
-		#starts
-		if (a1 == b1 and a2 < b2):
-			return 's'
-
-		#equals
-		if (a1 == b1 and a2 == b2):
-			return 'eq'
-
-		#startedBy
-		if (a1 == b1 and b2 < a2):
-			return 'si'
-
-		#contains
-		if (b1 < a1 and a2 < b2):
-			return 'di'
-
-		#finishedBy
-		if (a1 < b1 and a2 == b2):
-			return 'fi'
-
-		#overlappedBy
-		if (b1 < a1 and b2 < a2 and a1 < b2):
-			return 'oi'
-
-		#metBy
-		if (b2 == a1):
-			return 'mi'
-
-		#after
-		if (b2 < a1):
-			return 'bi'
-
-
-
 class ITR_Extractor:
 
-	def read_file(txt_file):
+
+	class AtomicEvent():
+		def __init__(self, name, occurence, start=-1, end=-1):
+			self.name = name
+			self.occurence = occurence
+			self.start = start
+			self.end = end
+
+		def __lt__(self, other):
+			if( self.start < other.start ):
+				return True
+			return self.start == other.start and self.end < other.end
+
+		def get_itr(self, other):
+			return self.get_itr_from_time(self.start, self.end, other.start, other.end)
+
+		def get_itr_from_time(self, a1, a2, b1, b2):
+
+			#before
+			if (a2 < b1):
+				return 'b'
+
+			#meets
+			if (a2 == b1):
+				return 'm'
+
+			#overlaps
+			if (a1 < b1 and a2 < b2 and b1 < a2):
+				return 'o'
+
+			#during
+			if (a1 < b1 and b2 < a2):
+				return 'd'
+
+			#finishes
+			if (b1 < a1 and a2 == b2):
+				return 'f'
+
+			#starts
+			if (a1 == b1 and a2 < b2):
+				return 's'
+
+			#equals
+			if (a1 == b1 and a2 == b2):
+				return 'eq'
+
+			#startedBy
+			if (a1 == b1 and b2 < a2):
+				return 'si'
+
+			#contains
+			if (b1 < a1 and a2 < b2):
+				return 'di'
+
+			#finishedBy
+			if (a1 < b1 and a2 == b2):
+				return 'fi'
+
+			#overlappedBy
+			if (b1 < a1 and b2 < a2 and a1 < b2):
+				return 'oi'
+
+			#metBy
+			if (b2 == a1):
+				return 'mi'
+
+			#after
+			if (b2 < a1):
+				return 'bi'
+
+
+
+
+
+	def read_file(self, txt_file):
 		
 		events = {}
 		for line in list(open(txt_file, 'r')):
@@ -101,7 +101,7 @@ class ITR_Extractor:
 
 			event_id = event_name+'_'+str(event_occur)
 			if (event_id not in events):
-				events[event_id] = AtomicEvent(event_name, event_occur)
+				events[event_id] = self.AtomicEvent(event_name, event_occur)
 
 			if(event_bound == 's'):
 				events[event_id].start = time
