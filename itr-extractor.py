@@ -113,7 +113,7 @@ class ITR_Extractor:
 	
 			
 
-	def learn_model_from_files(txt_file, label):
+	def learn_model_from_files(self, txt_file, label):
 
 		# get events from file
 		events = sorted(read_file(txt_file)) 
