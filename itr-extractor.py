@@ -1,4 +1,4 @@
-
+from sets import Set
 
 # I need to sort all of the indiividual actions by feature. Then
 # I can get the ITR with the next feature for each each row. I 
@@ -119,15 +119,15 @@ class ITR_Extractor:
 		events = sorted(self.read_file(txt_file)) 
 
 		# get a list of all of the ITRs in the txt_file
-		itr_set = []
+		itr_set = Set()
 
 		for i in range(len(events)):
 			for j in range(i+1, len(events)):
 				itr = events[i].get_itr( events[j] )
 
 				if('i' not in itr):
-					e1 = events[i].name+"_"+str(events[i].occurence) 
-					e2 = events[j].name+"_"+str(events[j].occurence)
+					e1 = events[i].name#+"_"+str(events[i].occurence) 
+					e2 = events[j].name#+"_"+str(events[j].occurence)
 					itr_set.append([e1, itr, e2])
 
 		print("itr_set")
