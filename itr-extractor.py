@@ -116,7 +116,7 @@ class ITR_Extractor:
 	def learn_model_from_files(self, txt_file, label):
 
 		# get events from file
-		events = sorted(read_file(txt_file)) 
+		events = sorted(self.read_file(txt_file)) 
 
 		# get a list of all of the ITRs in the txt_file
 		itr_set = []
