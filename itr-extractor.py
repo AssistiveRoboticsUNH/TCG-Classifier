@@ -171,7 +171,8 @@ class ITR_Extractor:
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 
-	tcg = ITR_Extractor(13)
+	num_classes = 13
+	tcg = ITR_Extractor(num_classes)
 	
 	try:
 		csv_contents = read_csv(csv_filename)
@@ -188,14 +189,14 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 		tcg.add(ex['txt_path'], ex['label'])
 
 
-	class_acc = np.zeros(self.num_classes, self.num_classes)
+	class_acc = np.zeros(num_classes, num_classes)
 	for ex in test_data:
 		pred = tcg.evaluate(ex['txt_path'])
 		class_acc[pred, ex['label']] += 1
 
 	print(class_acc)
 	sum_corr = 0
-	for i in self.num_classes:
+	for i in num_classes:
 		sum_corr += class_acc[i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
 
