@@ -196,7 +196,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 
 	print(class_acc)
 	sum_corr = 0
-	for i in num_classes:
+	for i in range(num_classes):
 		sum_corr += class_acc[i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
 
