@@ -1,6 +1,6 @@
 from sets import Set
 import os, sys
-
+import numpy as np
 # I need to sort all of the indiividual actions by feature. Then
 # I can get the ITR with the next feature for each each row. I 
 # do not need to figure out the relationship between A0 and C7. Just the most adjacent values of A and C.
