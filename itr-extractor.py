@@ -189,7 +189,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 		tcg.add(ex['txt_path'], ex['label'])
 
 	for ex in test_data:
-		tcg.evaluate(ex['txt_path'])
+		tcg.evaluate(ex['txt_path'], ex['label'])
 
 if __name__ == '__main__':
 	import argparse
