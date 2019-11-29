@@ -189,7 +189,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 		tcg.add(ex['txt_path'], ex['label'])
 
 
-	class_acc = np.zeros(num_classes, num_classes)
+	class_acc = np.zeros((num_classes, num_classes))
 	for ex in test_data:
 		pred = tcg.evaluate(ex['txt_path'])
 		class_acc[pred, ex['label']] += 1
