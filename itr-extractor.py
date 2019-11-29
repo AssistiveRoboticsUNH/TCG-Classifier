@@ -149,7 +149,7 @@ class ITR_Extractor:
 						
 		# #maintain a record of what followed that ITR as n-grams
 
-	def evaluate(self, txt_file, actual_label):
+	def evaluate(self, txt_file):
 		itr_set = self.extract_itr_set(txt_file)
 
 		sum_values = np.zeros(self.num_classes)
@@ -159,8 +159,7 @@ class ITR_Extractor:
 				if(itr in self.tcgs[label]):
 					sum_values[label] += self.tcgs[label][itr]
 
-			print(np.argmax(sum_values), actual_label)
-			#print("obtained: ",label,  sum_values[label])
+		return np.argmax(sum_values)
 
 
 	def __init__(self, num_classes):
@@ -188,8 +187,18 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	for ex in train_data:
 		tcg.add(ex['txt_path'], ex['label'])
 
+
+	class_acc = np.zeros(self.num_classes, self.num_classes)
 	for ex in test_data:
-		tcg.evaluate(ex['txt_path'], ex['label'])
+		pred = tcg.evaluate(ex['txt_path'])
+		class_acc[pred, ex['label']] += 1
+
+	print(class_acc)
+	sum_corr = 0
+	for i in self.num_classes:
+		sum_corr += class_acc[i]
+	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
+
 
 if __name__ == '__main__':
 	import argparse
