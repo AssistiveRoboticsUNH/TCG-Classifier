@@ -149,17 +149,18 @@ class ITR_Extractor:
 						
 		# #maintain a record of what followed that ITR as n-grams
 
-	def evaluate(self, txt_file):
+	def evaluate(self, txt_file, actual_label):
 		itr_set = self.extract_itr_set(txt_file)
 
-		sum_values = [0]*self.num_classes
+		sum_values = np.zeros(self.num_classes)
 
 		for label in range(self.num_classes):
 			for itr in itr_set:
 				if(itr in self.tcgs[label]):
 					sum_values[label] += self.tcgs[label][itr]
 
-			print("obtained: ",label,  sum_values[label])
+			print(np.argmax(sum_values), actual_label)
+			#print("obtained: ",label,  sum_values[label])
 
 
 	def __init__(self, num_classes):
