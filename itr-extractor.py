@@ -154,7 +154,7 @@ class ITR_Extractor:
 			print("Label: ", label)
 			for itr_name in self.tcgs[label].keys():
 				itr_count = self.tcgs[label][itr_name]
-				if(itr_count > 1):
+				if(itr_count > 10):
 					print(itr_name, itr_count)
 
 			
@@ -166,7 +166,7 @@ class ITR_Extractor:
 
 		for label in range(self.num_classes):
 			for itr in itr_set:
-				if(itr in self.tcgs[label] and self.tcgs[label] > 1):
+				if(itr in self.tcgs[label] and self.tcgs[label] > 10):
 					sum_values[label] += self.tcgs[label][itr]
 
 		return np.argmax(sum_values)
