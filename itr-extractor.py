@@ -149,6 +149,15 @@ class ITR_Extractor:
 						
 		# #maintain a record of what followed that ITR as n-grams
 
+	def view_important_itrs(self):
+		for label in range(self.num_classes):
+			print("Label: ", label)
+			for itr_name, itr_count in self.tcgs[label]:
+				if(itr_count > 1):
+					print(itr_name, itr_count)
+
+			
+
 	def evaluate(self, txt_file):
 		itr_set = self.extract_itr_set(txt_file)
 
@@ -198,6 +207,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	for i in range(num_classes):
 		sum_corr += class_acc[i,i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
+
+	tcg.view_important_itrs()
 
 
 if __name__ == '__main__':
