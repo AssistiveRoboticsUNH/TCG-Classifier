@@ -152,9 +152,9 @@ class ITR_Extractor:
 	def view_important_itrs(self):
 		for label in range(self.num_classes):
 			print("Label: ", label)
-			for itr_name, itr_count in self.tcgs[label]:
+			for itr_name in self.tcgs[label].keys():
 				if(itr_count > 1):
-					print(itr_name, itr_count)
+					print(itr_name, self.tcgs[label][itr_name])
 
 			
 
