@@ -156,7 +156,7 @@ class ITR_Extractor:
 
 		for label in range(self.num_classes):
 			for itr in itr_set:
-				if(itr in self.tcgs[label]):
+				if(itr in self.tcgs[label] and self.tcgs[label] > 1):
 					sum_values[label] += self.tcgs[label][itr]
 
 		return np.argmax(sum_values)
@@ -187,7 +187,6 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	
 	for ex in train_data:
 		tcg.add(ex['txt_path'], ex['label'])
-
 
 	class_acc = np.zeros((num_classes, num_classes))
 	for ex in test_data:
