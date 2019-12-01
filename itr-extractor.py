@@ -153,8 +153,9 @@ class ITR_Extractor:
 		for label in range(self.num_classes):
 			print("Label: ", label)
 			for itr_name in self.tcgs[label].keys():
+				itr_count = self.tcgs[label][itr_name]
 				if(itr_count > 1):
-					print(itr_name, self.tcgs[label][itr_name])
+					print(itr_name, itr_count)
 
 			
 
