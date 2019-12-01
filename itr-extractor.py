@@ -209,7 +209,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 		sum_corr += class_acc[i,i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
 
-	tcg.view_important_itrs()
+	#tcg.view_important_itrs()
 
 
 if __name__ == '__main__':
