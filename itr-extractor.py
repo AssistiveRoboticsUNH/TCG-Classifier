@@ -182,8 +182,8 @@ class ITR_Extractor:
 			itr_next = itr_seq[i+1]
 
 			if(itr_cur not in self.tcgs[label]):
-				self.tcgs[label][itr] = {}
-				self.counts[label][itr] = 0
+				self.tcgs[label][itr_cur] = {}
+				self.counts[label][itr_cur] = 0
 			if(itr_next not in self.tcgs[label][itr_cur]):
 				self.tcgs[label][itr_cur][itr_next] = 0
 			self.tcgs[label][itr_cur][itr_next] += 1
