@@ -258,7 +258,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	
 	for ex in train_data:
-		tcg.add_seq(ex['txt_path'], ex['label'])
+		tcg.add_itr_seq(ex['txt_path'], ex['label'])
 
 	tcg.get_dictionary()
 
