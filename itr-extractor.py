@@ -187,7 +187,7 @@ class ITR_Extractor:
 			if(itr_next not in self.tcgs[label][itr_cur]):
 				self.tcgs[label][itr_cur][itr_next] = 0
 			self.tcgs[label][itr_cur][itr_next] += 1
-			self.tcgs[label][itr_cur] += 1
+			self.counts[label][itr_cur] += 1
 						
 		# #maintain a record of what followed that ITR as n-grams
 
