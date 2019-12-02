@@ -137,7 +137,32 @@ class ITR_Extractor:
 
 		return itr_set
 
-	def add(self, txt_file, label):
+	def extract_itr_seq(self, txt_file):
+
+		# get events from file
+		events = sorted(self.read_file(txt_file)) 
+
+		# get a list of all of the ITRs in the txt_file
+		itr_seq = []
+
+		for i in range(len(events)):
+
+			j = i+1
+			while(j < len(events) and events[j].name != events[i].name):
+				itr_name = events[i].get_itr( events[j] )
+
+				if('i' not in itr_name):
+					e1 = events[i].name#+"_"+str(events[i].occurence) 
+					e2 = events[j].name#+"_"+str(events[j].occurence)
+
+					itr = (e1, itr_name, e2)
+					itr_set.append(itr)
+
+				j+=1
+
+		return itr_set
+
+	def add_itr_set(self, txt_file, label):
 
 		itr_set = self.extract_itr_set(txt_file)
 		
@@ -146,6 +171,23 @@ class ITR_Extractor:
 			if(itr not in self.tcgs[label]):
 				self.tcgs[label][itr] = 0
 			self.tcgs[label][itr] += 1
+						
+	def add_itr_seq(self, txt_file, label):
+
+		itr_seq = self.extract_itr_seq(txt_file)
+
+		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
+		for i in range(len(itr_seq)-1):
+			itr_cur = itr_seq[i]
+			itr_next = itr_seq[i+1]
+
+			if(itr_cur not in self.tcgs[label]):
+				self.tcgs[label][itr] = {}
+				self.counts[label][itr] = 0
+			if(itr_next not in self.tcgs[label][itr_cur]):
+				self.tcgs[label][itr_cur][itr_next] = 0
+			self.tcgs[label][itr_cur][itr_next] += 1
+			self.tcgs[label][itr_cur] += 1
 						
 		# #maintain a record of what followed that ITR as n-grams
 
@@ -159,7 +201,25 @@ class ITR_Extractor:
 
 			
 
-	def evaluate(self, txt_file):
+	def evaluate_set(self, txt_file):
+		itr_seq = self.extract_itr_seq(txt_file)
+
+		sum_values = np.zeros(self.num_classes)
+
+		for label in range(self.num_classes):
+			for itr in itr_set:
+				if(itr in self.tcgs[label] and self.tcgs[label] > 10):
+					sum_values[label] += self.tcgs[label][itr]
+
+		return np.argmax(sum_values)
+
+	def get_dictionary(self):
+		all_itrs = []
+		for label in range(self.num_classes):
+			all_itrs += self.tcgs[label].keys()
+		print("Total words:", len(all_itrs))
+
+	def evaluate_seq(self, txt_file):
 		itr_set = self.extract_itr_set(txt_file)
 
 		sum_values = np.zeros(self.num_classes)
@@ -176,8 +236,10 @@ class ITR_Extractor:
 		self.num_classes = num_classes
 
 		self.tcgs = []
+		self.counts = []
 		for i in range(num_classes):
 			self.tcgs.append({})
+			self.counts.append({})
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 
@@ -198,9 +260,13 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	for ex in train_data:
 		tcg.add(ex['txt_path'], ex['label'])
 
+	tcg.get_dictionary()
+
+	'''
 	class_acc = np.zeros((num_classes, num_classes))
 	for ex in test_data:
 		pred = tcg.evaluate(ex['txt_path'])
+		print(pred, ex['label'])
 		class_acc[pred, ex['label']] += 1
 
 	print(class_acc)
@@ -210,7 +276,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
 
 	#tcg.view_important_itrs()
-
+	'''
 
 if __name__ == '__main__':
 	import argparse
