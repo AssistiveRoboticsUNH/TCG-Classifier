@@ -156,11 +156,11 @@ class ITR_Extractor:
 					e2 = events[j].name#+"_"+str(events[j].occurence)
 
 					itr = (e1, itr_name, e2)
-					itr_set.append(itr)
+					itr_seq.append(itr)
 
 				j+=1
 
-		return itr_set
+		return itr_seq
 
 	def add_itr_set(self, txt_file, label):
 
