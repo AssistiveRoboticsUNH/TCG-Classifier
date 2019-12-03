@@ -246,7 +246,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	print("corpus generated")
 
 	for ex in train_data:
-		#print("adding:", ex['txt_path'])
+		print("adding:", ex['txt_path'])
 		tcg.add_vector_counts(ex['txt_path'], ex['label'])
 
 	print("finalizing vector counts")
