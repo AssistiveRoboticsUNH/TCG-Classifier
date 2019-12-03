@@ -158,11 +158,14 @@ class ITR_Extractor:
 	def finalize_corpus(self):
 		print("corpus size:", len(self.corpus))
 
+		vocab = Set()
+
 		for k in self.corpus:
-			if(k not in self.vocabulary):
-				count = self.corpus[k]
-				if( count > 1 and count < self.num_files ):
-					self.vocabulary.append(k)
+			count = self.corpus[k]
+			if( count > 1 and count < self.num_files ):
+				vocab.add(k)
+
+		self.vocabulary = [token for token in vocab]
 
 		self.label_vector = np.zeros( (self.num_classes, len(self.vocabulary)) )
 
