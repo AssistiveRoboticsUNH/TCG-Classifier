@@ -157,9 +157,10 @@ class ITR_Extractor:
 
 	def finalize_corpus(self):
 		for k in self.corpus:
-			count = self.corpus[k]
-			if( count > 1 and count < self.num_files ):
-				self.vocabulary.add(k)
+			if(k not in self.vocabulary):
+				count = self.corpus[k]
+				if( count > 1 and count < self.num_files ):
+					self.vocabulary.append(k)
 
 		self.label_vector = np.zeros( (self.num_classes, len(self.vocabulary)) )
 
@@ -216,7 +217,7 @@ class ITR_Extractor:
 
 		self.corpus = {}
 		self.num_files = 0
-		self.vocabulary = Set()
+		self.vocabulary = []
 
 		self.label_count = [0]*self.num_classes
 		self.label_vector = [None]*self.num_classes
