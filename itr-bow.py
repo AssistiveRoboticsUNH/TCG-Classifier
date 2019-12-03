@@ -214,8 +214,8 @@ class ITR_Extractor:
 					tf = np.sum(self.vocabulary[token][label]) / float( self.doc_sizes[label] )
 
 					#inverse document frequency - how much information the word provides
-					num_file_containing_word = np.sum(self.vocabulary[token][label] > 0)
-					idf = math.log( self.num_files / num_file_containing_word )
+					num_file_containing_word = np.sum(self.vocabulary[token][label] > 0) + 1
+					idf = math.log( self.num_files / num_file_containing_word ) + 1
 
 					tfidf = tf * idf
 
