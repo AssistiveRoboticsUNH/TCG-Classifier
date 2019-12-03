@@ -168,8 +168,8 @@ class ITR_Extractor:
 		v = np.zeros(len(self.vocabulary))
 
 		for token in self.extract_itr_seq(txt_file):
-			idx = self.vocabulary.find(token)
-			if(idx >= 0):
+			if(idx in self.vocabulary):
+				idx = self.vocabulary.index(token)
 				v[idx] += 1
 
 		return v
@@ -190,20 +190,20 @@ class ITR_Extractor:
 		label_rank = np.zeros(self.num_classes)
 
 		for token in self.extract_itr_seq(txt_file): 
-			idx = self.vocabulary.find(token)
-			if(idx > 0):
+			if(token in self.vocabulary):
+			idx = self.vocabulary.index(token)
 
-				for label in range(self.num_classes):
-					#term_frequency - number of times word occurs in the given document
-					tf = float(self.documents[label][idx]) / np.sum(self.documents[label])
+			for label in range(self.num_classes):
+				#term_frequency - number of times word occurs in the given document
+				tf = float(self.documents[label][idx]) / np.sum(self.documents[label])
 
-					#inverse document frequency - how much information the word provides
-					num_file_containing_word = np.sum(self.documents[label][idx] > 0)
-					idf = math.log( self.num_files / num_file_containing_word )
+				#inverse document frequency - how much information the word provides
+				num_file_containing_word = np.sum(self.documents[label][idx] > 0)
+				idf = math.log( self.num_files / num_file_containing_word )
 
-					tfidf = tf * idf
+				tfidf = tf * idf
 
-					label_rank[label] += tfidf
+				label_rank[label] += tfidf
 
 		return np.argmax(label_rank)
 
