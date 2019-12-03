@@ -111,32 +111,6 @@ class ITR_Extractor:
 
 		return events.values()
 
-	
-	def extract_itr_set(self, txt_file):
-
-		# get events from file
-		events = sorted(self.read_file(txt_file)) 
-
-		# get a list of all of the ITRs in the txt_file
-		itr_set = Set()
-
-		for i in range(len(events)):
-
-			j = i+1
-			while(j < len(events) and events[j].name != events[i].name):
-				itr_name = events[i].get_itr( events[j] )
-
-				if('i' not in itr_name):
-					e1 = events[i].name#+"_"+str(events[i].occurence) 
-					e2 = events[j].name#+"_"+str(events[j].occurence)
-
-					itr = (e1, itr_name, e2)
-					itr_set.add(itr)
-
-				j+=1
-
-		return itr_set
-
 	def extract_itr_seq(self, txt_file):
 
 		# get events from file
@@ -160,89 +134,92 @@ class ITR_Extractor:
 
 				j+=1
 
+		# generate n-grams here
+		if(self.ngram > 1):
+			ngram_seq = []
+			for i in range( len(itr_seq) - (self.ngram - 1) ):
+				ngram_seq.append(itr_seq[i:i+self.ngram])
+
+			itr_seq = ngram_seq
+
 		return itr_seq
+						
+	def add_file_to_corpus(self, txt_file):
 
-	def add_itr_set(self, txt_file, label):
+		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
+		for token in self.extract_itr_seq(txt_file):
 
-		itr_set = self.extract_itr_set(txt_file)
+			if(token not in self.corpus):
+				self.corpus.add[token] = 0
+			self.corpus.add[token] += 1
+
+		self.num_files += 1
+
+	def finalize_corpus(self):
+		for k in self.corpus:
+			count = self.corpus[k]
+			if( count > 1 and count < self.num_files ):
+				self.vocabulary.add(k)
+
+		self.label_vector = np.zeros(label, len(self.vocabulary))
+
+	def vectorize(self, txt_file):
+		v = np.zeros(len(self.vocabulary))
+
+		for token in self.extract_itr_seq(txt_file):
+			idx = self.vocabulary.find(token)
+			if(idx >= 0):
+				v[idx] += 1
+
+		return v
+
+	def add_vector_counts(self, txt_file, label):
+		self.label_count[label] += 1
+		self.documents[label].append(self.vectorize(txt_file))
+
+	def finalize_vector_counts(self):
+		for label in range(self.num_classes):
+			self.documents[label] = np.stack(self.documents[i])
+
+
+	def tf_idf(self, txt_file):
+
 		
-		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
-		for itr in itr_set:
-			if(itr not in self.tcgs[label]):
-				self.tcgs[label][itr] = 0
-			self.tcgs[label][itr] += 1
-						
-	def add_itr_seq(self, txt_file, label):
 
-		itr_seq = self.extract_itr_seq(txt_file)
+		label_rank = np.zeros(self.num_classes)
 
-		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
-		for i in range(len(itr_seq)-1):
-			itr_cur = itr_seq[i]
-			itr_next = itr_seq[i+1]
+		for token in self.extract_itr_seq(txt_file): 
+			idx = self.vocabulary.find(token)
+			if(idx > 0):
 
-			if(itr_cur not in self.tcgs[label]):
-				self.tcgs[label][itr_cur] = {}
-				self.counts[label][itr_cur] = 0
-			if(itr_next not in self.tcgs[label][itr_cur]):
-				self.tcgs[label][itr_cur][itr_next] = 0
-			self.tcgs[label][itr_cur][itr_next] += 1
-			self.counts[label][itr_cur] += 1
-						
-		# #maintain a record of what followed that ITR as n-grams
+				for label in range(self.num_classes):
+					#term_frequency - number of times word occurs in the given document
+					tf = float(self.documents[label][idx]) / np.sum(self.documents[label])
 
-	def view_important_itrs(self):
-		for label in range(self.num_classes):
-			print("Label: ", label)
-			for itr_name in self.tcgs[label].keys():
-				itr_count = self.tcgs[label][itr_name]
-				if(itr_count > 10):
-					print(itr_name, itr_count)
+					#inverse document frequency - how much information the word provides
+					num_file_containing_word = np.sum(self.documents[label][idx] > 0)
+					idf = math.log( self.num_files / num_file_containing_word )
 
-			
+					tfidf = tf * idf
 
-	def evaluate_set(self, txt_file):
-		itr_seq = self.extract_itr_seq(txt_file)
+					label_rank[label] += tfidf
 
-		sum_values = np.zeros(self.num_classes)
-
-		for label in range(self.num_classes):
-			for itr in itr_set:
-				if(itr in self.tcgs[label] and self.tcgs[label] > 10):
-					sum_values[label] += self.tcgs[label][itr]
-
-		return np.argmax(sum_values)
-
-	def get_vocabulary(self):
-		all_itrs = []
-		for label in range(self.num_classes):
-			all_itrs += self.tcgs[label].keys()
-		print("Total words:", len(all_itrs))
-
-	def evaluate_seq(self, txt_file):
-		itr_seq = self.extract_itr_seq(txt_file)
-
-		sum_values = np.zeros(self.num_classes)
-
-		for label in range(self.num_classes):
-			for itr in itr_set:
-				if(itr in self.tcgs[label] and self.tcgs[label] > 10):
-					sum_values[label] += self.tcgs[label][itr]
-
-		return np.argmax(sum_values)
-
-		# Look into TF-IDF but need to decrease the weights on singletons 
-		# and on very common words. POtentially vectorize first and then
-		# performVLAD or other learning/clustering scheme.
+		return np.argmax(label_rank)
 
 	def __init__(self, num_classes):
 		self.num_classes = num_classes
+		self.ngram = 1
 
-		self.tcgs = []
-		self.counts = []
-		for i in range(num_classes):
-			self.tcgs.append({})
-			self.counts.append({})
+		self.documents = []
+		for i in range(self.num_classes):
+			self.documents[i] = []
+
+		self.corpus = {}
+		self.num_files = 0
+		self.vocabulary = Set()
+
+		self.label_count = [0]*self.num_classes
+		self.label_vector = [None]*self.num_classes
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 
@@ -261,14 +238,18 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	
 	for ex in train_data:
-		tcg.add_itr_seq(ex['txt_path'], ex['label'])
+		tcg.add_file_to_corpus(ex['txt_path'])#, ex['label'])
 
-	tcg.get_vocabulary()
+	tcg.finalize_corpus()
 
-	'''
+	for ex in train_data:
+		tcg.add_vector_counts(ex['txt_path'], ex['label'])
+
+	tcg.finalize_vector_counts()
+
 	class_acc = np.zeros((num_classes, num_classes))
 	for ex in test_data:
-		pred = tcg.evaluate(ex['txt_path'])
+		pred = tcg.tf_idf(ex['txt_path'])
 		print(pred, ex['label'])
 		class_acc[pred, ex['label']] += 1
 
@@ -278,8 +259,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 		sum_corr += class_acc[i,i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
 
-	#tcg.view_important_itrs()
-	'''
+	
 
 if __name__ == '__main__':
 	import argparse
