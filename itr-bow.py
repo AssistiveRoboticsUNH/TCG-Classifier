@@ -256,7 +256,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	class_acc = np.zeros((num_classes, num_classes))
 	for ex in test_data:
 		pred = tcg.tf_idf(ex['txt_path'])
-		print(pred, ex['label'])
+		print(ex['label_name'], pred, ex['label'])
 		class_acc[pred, ex['label']] += 1
 
 	print(class_acc)
