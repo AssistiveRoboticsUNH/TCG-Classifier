@@ -212,7 +212,7 @@ class ITR_Extractor:
 
 		self.documents = []
 		for i in range(self.num_classes):
-			self.documents[i] = []
+			self.documents.append([])
 
 		self.corpus = {}
 		self.num_files = 0
