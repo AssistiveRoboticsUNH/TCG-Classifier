@@ -172,7 +172,7 @@ class ITR_Extractor:
 
 		for k in self.vocabulary:
 			cnt = tokens.count(k)
-			self.vocabulary[token][label].append(cnt)
+			self.vocabulary[k][label].append(cnt)
 			self.doc_sizes[label]+= cnt
 
 	def finalize_vector_counts(self):
