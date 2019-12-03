@@ -95,7 +95,7 @@ class ITR_Extractor:
 			line = line.split()
 
 			event_tokens = line[0].split('_')
-			time = line[1]
+			time = float(line[1])
 			
 			event_name = event_tokens[0]
 			event_occur = int(event_tokens[1])
@@ -136,7 +136,7 @@ class ITR_Extractor:
 			j = i+1
 			while(j < len(events) and events[j].name != events[i].name):
 
-				for itr_name in self.all_itrs(events[i], events[j], 4):
+				for itr_name in self.all_itrs(events[i], events[j], 2):
 
 					if('i' not in itr_name):
 						e1 = events[i].name#+"_"+str(events[i].occurence) 
