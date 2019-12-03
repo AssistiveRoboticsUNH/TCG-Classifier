@@ -211,7 +211,7 @@ class ITR_Extractor:
 
 	def __init__(self, num_classes):
 		self.num_classes = num_classes
-		self.ngram = 2
+		self.ngram = 1
 
 		self.documents = []
 		for i in range(self.num_classes):
@@ -256,14 +256,17 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	print("vector counts generated")
 
 	class_acc = np.zeros((num_classes, num_classes))
+	label_names = [""]* 13
 	for ex in test_data:
 		pred = tcg.tf_idf(ex['txt_path'])
+		label_name[ex['label']] = ex['label_name']
 		print(ex['label_name'], pred, ex['label'])
 		class_acc[pred, ex['label']] += 1
 
-	print(class_acc)
+	
 	sum_corr = 0
 	for i in range(num_classes):
+		print(label_name[i]+'\t',class_acc[i])
 		sum_corr += class_acc[i,i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
 
