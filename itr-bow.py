@@ -150,8 +150,8 @@ class ITR_Extractor:
 		for token in self.extract_itr_seq(txt_file):
 
 			if(token not in self.corpus):
-				self.corpus.add[token] = 0
-			self.corpus.add[token] += 1
+				self.corpus[token] = 0
+			self.corpus[token] += 1
 
 		self.num_files += 1
 
