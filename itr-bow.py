@@ -139,7 +139,9 @@ class ITR_Extractor:
 		if(self.ngram > 1):
 			ngram_seq = []
 			for i in range( len(itr_seq) - (self.ngram - 1) ):
-				ngram_seq.append(itr_seq[i:i+self.ngram])
+				data = str(itr_seq[i:i+self.ngram])
+
+				ngram_seq.append(data)
 
 			itr_seq = ngram_seq
 
