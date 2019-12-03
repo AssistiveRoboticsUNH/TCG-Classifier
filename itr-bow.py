@@ -209,7 +209,7 @@ class ITR_Extractor:
 
 	def __init__(self, num_classes):
 		self.num_classes = num_classes
-		self.ngram = 1
+		self.ngram = 2
 
 		self.documents = []
 		for i in range(self.num_classes):
