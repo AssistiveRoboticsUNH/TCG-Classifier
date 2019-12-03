@@ -195,7 +195,7 @@ class ITR_Extractor:
 
 					#term_frequency - number of times word occurs in the given document
 					
-					tf = self.vocabulary[token][label] / float( self.doc_sizes[label] )
+					tf = np.sum(self.vocabulary[token][label]) / float( self.doc_sizes[label] )
 
 					#inverse document frequency - how much information the word provides
 					num_file_containing_word = np.sum(self.vocabulary[token][label] > 0)
