@@ -119,6 +119,8 @@ class ITR_Extractor:
 
 			itr_name = e1.get_itr_from_time(e1.start, e1.end+i, e2.start, e2.end)
 			itrs.add(itr_name)
+		itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
+		itrs.add(itr_name)
 
 		return itrs
 
@@ -224,7 +226,7 @@ class ITR_Extractor:
 	def __init__(self, num_classes):
 		self.num_classes = num_classes
 		self.ngram = 1
-		self.bound = 2
+		self.bound = 0#2
 
 		self.documents = []
 		for i in range(self.num_classes):
