@@ -279,7 +279,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	
 	sum_corr = 0
 	for i in range(num_classes):
-		print(label_names[i]+'\t',class_acc[i])
+		print("{:10}".format(label_names[i]),class_acc[i])
 		sum_corr += class_acc[i,i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
 
