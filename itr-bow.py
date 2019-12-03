@@ -156,6 +156,8 @@ class ITR_Extractor:
 		self.num_files += 1
 
 	def finalize_corpus(self):
+		print("corpus size:", len(self.corpus))
+
 		for k in self.corpus:
 			if(k not in self.vocabulary):
 				count = self.corpus[k]
