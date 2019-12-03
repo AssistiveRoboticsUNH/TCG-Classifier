@@ -147,7 +147,7 @@ class ITR_Extractor:
 	def add_file_to_corpus(self, txt_file):
 
 		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
-		for token, count in self.extract_itr_seq(txt_file):
+		for token in self.extract_itr_seq(txt_file):
 
 			if(token not in self.corpus):
 				self.corpus[token] = 0
