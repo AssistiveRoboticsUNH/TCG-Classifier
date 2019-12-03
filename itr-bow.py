@@ -1,6 +1,7 @@
 from sets import Set
 import os, sys
 import numpy as np
+from collections import Counter
 # I need to sort all of the indiividual actions by feature. Then
 # I can get the ITR with the next feature for each each row. I 
 # do not need to figure out the relationship between A0 and C7. Just the most adjacent values of A and C.
@@ -169,9 +170,10 @@ class ITR_Extractor:
 	def add_vector_counts(self, txt_file, label):
 
 		tokens = self.extract_itr_seq(txt_file)
+		counts = Counter(tokens)
 
 		for k in self.vocabulary:
-			cnt = tokens.count(k)
+			cnt = counts[k]
 			self.vocabulary[k][label].append(cnt)
 			self.doc_sizes[label]+= cnt
 
