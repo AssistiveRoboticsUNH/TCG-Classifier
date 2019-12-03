@@ -168,7 +168,7 @@ class ITR_Extractor:
 		v = np.zeros(len(self.vocabulary))
 
 		for token in self.extract_itr_seq(txt_file):
-			if(idx in self.vocabulary):
+			if(token in self.vocabulary):
 				idx = self.vocabulary.index(token)
 				v[idx] += 1
 
