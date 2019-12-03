@@ -161,7 +161,7 @@ class ITR_Extractor:
 			if( count > 1 and count < self.num_files ):
 				self.vocabulary.add(k)
 
-		self.label_vector = np.zeros(label, len(self.vocabulary))
+		self.label_vector = np.zeros(self.num_classes, len(self.vocabulary))
 
 	def vectorize(self, txt_file):
 		v = np.zeros(len(self.vocabulary))
