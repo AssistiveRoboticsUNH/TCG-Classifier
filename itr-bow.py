@@ -180,7 +180,7 @@ class ITR_Extractor:
 	def finalize_vector_counts(self):
 
 		for k in self.vocabulary:
-			self.vocabulary[token] = np.array(self.vocabulary[token][label])
+			self.vocabulary[k] = np.array(self.vocabulary[k][label])
 
 
 	def tf_idf(self, txt_file):
@@ -246,7 +246,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	print("corpus generated")
 
 	for ex in train_data:
-		print("adding:", ex['txt_path'])
+		#print("adding:", ex['txt_path'])
 		tcg.add_vector_counts(ex['txt_path'], ex['label'])
 
 	print("finalizing vector counts")
