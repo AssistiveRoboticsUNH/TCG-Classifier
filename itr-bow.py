@@ -136,7 +136,7 @@ class ITR_Extractor:
 			j = i+1
 			while(j < len(events) and events[j].name != events[i].name):
 
-				for itr_name in self.all_itrs(events[i], events[j], 2):
+				for itr_name in self.all_itrs(events[i], events[j], self.bound):
 
 					if('i' not in itr_name):
 						e1 = events[i].name#+"_"+str(events[i].occurence) 
@@ -224,6 +224,7 @@ class ITR_Extractor:
 	def __init__(self, num_classes):
 		self.num_classes = num_classes
 		self.ngram = 1
+		self.bound = 2
 
 		self.documents = []
 		for i in range(self.num_classes):
@@ -271,14 +272,14 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	label_names = [""]* 13
 	for ex in test_data:
 		pred = tcg.tf_idf(ex['txt_path'])
-		label_name[ex['label']] = ex['label_name']
+		label_names[ex['label']] = ex['label_name']
 		print(ex['label_name'], pred, ex['label'])
 		class_acc[pred, ex['label']] += 1
 
 	
 	sum_corr = 0
 	for i in range(num_classes):
-		print(label_name[i]+'\t',class_acc[i])
+		print(label_names[i]+'\t',class_acc[i])
 		sum_corr += class_acc[i,i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
 
