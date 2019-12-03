@@ -147,7 +147,7 @@ class ITR_Extractor:
 	def add_file_to_corpus(self, txt_file):
 
 		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
-		for token in self.extract_itr_seq(txt_file):
+		for token, count in self.extract_itr_seq(txt_file):
 
 			if(token not in self.corpus):
 				self.corpus[token] = 0
@@ -157,52 +157,46 @@ class ITR_Extractor:
 
 	def finalize_corpus(self):
 
-		vocab = Set()
+		self.vocabulary = {}
 
 		for k in self.corpus:
 			count = self.corpus[k]
 			if( count > 1 and count < self.num_files ):
-				vocab.add(k)
+				self.vocabulary[k] = [ [] for i in range(self.num_classes)]
 
-		self.vocabulary = [token for token in vocab]
-
-		self.label_vector = np.zeros( (self.num_classes, len(self.vocabulary)) )
-
-	def vectorize(self, txt_file):
-		v = np.zeros(len(self.vocabulary))
-
-		for token in self.extract_itr_seq(txt_file):
-			if(token in self.vocabulary):
-				idx = self.vocabulary.index(token)
-				v[idx] += 1
-
-		return v
+		self.doc_sizes = [0]*self.num_classes
 
 	def add_vector_counts(self, txt_file, label):
-		self.label_count[label] += 1
-		self.documents[label].append(self.vectorize(txt_file))
+
+		tokens = self.extract_itr_seq(txt_file)
+
+		for k in self.vocabulary:
+			cnt = tokens.count(k)
+			self.vocabulary[token][label].append(cnt)
+			self.doc_sizes[label]+= cnt
 
 	def finalize_vector_counts(self):
-		for label in range(self.num_classes):
-			self.documents[label] = np.stack(self.documents[i])
+
+		for k in self.vocabulary:
+			self.vocabulary[token] = np.array(self.vocabulary[token][label])
 
 
 	def tf_idf(self, txt_file):
 
-		
-
 		label_rank = np.zeros(self.num_classes)
 
 		for token in self.extract_itr_seq(txt_file): 
+
 			if(token in self.vocabulary):
-				idx = self.vocabulary.index(token)
 
 				for label in range(self.num_classes):
+
 					#term_frequency - number of times word occurs in the given document
-					tf = float(self.documents[label][idx]) / np.sum(self.documents[label])
+					
+					tf = self.vocabulary[token][label] / float( self.doc_sizes[label] )
 
 					#inverse document frequency - how much information the word provides
-					num_file_containing_word = np.sum(self.documents[label][idx] > 0)
+					num_file_containing_word = np.sum(self.vocabulary[token][label] > 0)
 					idf = math.log( self.num_files / num_file_containing_word )
 
 					tfidf = tf * idf
