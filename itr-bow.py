@@ -241,11 +241,13 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	for ex in train_data:
 		tcg.add_file_to_corpus(ex['txt_path'])#, ex['label'])
 
+	print("finalizing corpus")
 	tcg.finalize_corpus()
 
 	for ex in train_data:
 		tcg.add_vector_counts(ex['txt_path'], ex['label'])
 
+	print("finalizing vector counts")
 	tcg.finalize_vector_counts()
 
 	class_acc = np.zeros((num_classes, num_classes))
