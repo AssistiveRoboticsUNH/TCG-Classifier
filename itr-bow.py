@@ -156,7 +156,6 @@ class ITR_Extractor:
 		self.num_files += 1
 
 	def finalize_corpus(self):
-		print("corpus size:", len(self.corpus))
 
 		vocab = Set()
 
@@ -248,12 +247,14 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 
 	print("finalizing corpus")
 	tcg.finalize_corpus()
+	print("corpus generated")
 
 	for ex in train_data:
 		tcg.add_vector_counts(ex['txt_path'], ex['label'])
 
 	print("finalizing vector counts")
 	tcg.finalize_vector_counts()
+	print("vector counts generated")
 
 	class_acc = np.zeros((num_classes, num_classes))
 	for ex in test_data:
