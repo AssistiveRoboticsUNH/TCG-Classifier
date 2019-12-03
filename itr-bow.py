@@ -180,7 +180,7 @@ class ITR_Extractor:
 	def finalize_vector_counts(self):
 
 		for k in self.vocabulary:
-			self.vocabulary[k] = np.array(self.vocabulary[k][label])
+			self.vocabulary[k] = np.array(self.vocabulary[k])
 
 
 	def tf_idf(self, txt_file):
