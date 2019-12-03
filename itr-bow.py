@@ -112,6 +112,17 @@ class ITR_Extractor:
 
 		return events.values()
 
+	def all_itrs(self, e1, e2, bound):
+
+		itrs = Set()
+		for i in range(-bound, bound):
+
+			itr_name = e1.get_itr_from_time(e1.start, e1.end+i, e2.start, e2.end)
+			itrs.add(itr_name)
+
+		return itrs
+
+
 	def extract_itr_seq(self, txt_file):
 
 		# get events from file
@@ -124,14 +135,15 @@ class ITR_Extractor:
 
 			j = i+1
 			while(j < len(events) and events[j].name != events[i].name):
-				itr_name = events[i].get_itr( events[j] )
 
-				if('i' not in itr_name):
-					e1 = events[i].name#+"_"+str(events[i].occurence) 
-					e2 = events[j].name#+"_"+str(events[j].occurence)
+				for itr_name in self.all_itrs(events[i], events[j], 4):
 
-					itr = (e1, itr_name, e2)
-					itr_seq.append(itr)
+					if('i' not in itr_name):
+						e1 = events[i].name#+"_"+str(events[i].occurence) 
+						e2 = events[j].name#+"_"+str(events[j].occurence)
+
+						itr = (e1, itr_name, e2)
+						itr_seq.append(itr)
 
 				j+=1
 
