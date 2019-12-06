@@ -2,12 +2,6 @@ from sets import Set
 import os, sys, math
 import numpy as np
 from collections import Counter
-# I need to sort all of the indiividual actions by feature. Then
-# I can get the ITR with the next feature for each each row. I 
-# do not need to figure out the relationship between A0 and C7. Just the most adjacent values of A and C.
-# progress from left to right means I can ignore reverses operations?
-
-# need to figure this out ASAP!
 
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
@@ -164,6 +158,7 @@ class ITR_Extractor:
 	def add_file_to_corpus(self, txt_file):
 
 		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
+
 		for token in self.extract_itr_seq(txt_file):
 
 			if(token not in self.corpus):
@@ -178,7 +173,7 @@ class ITR_Extractor:
 
 		for k in self.corpus:
 			count = self.corpus[k]
-			if( count > 1 and count < self.num_files ):
+			if( count > 0): #and count < self.num_files ):
 				self.vocabulary[k] = [ [] for i in range(self.num_classes)]
 
 		self.doc_sizes = [0]*self.num_classes
@@ -192,11 +187,16 @@ class ITR_Extractor:
 			cnt = counts[k]
 			self.vocabulary[k][label].append(cnt)
 			self.doc_sizes[label]+= cnt
+	
 
 	def finalize_vector_counts(self):
 
 		for k in self.vocabulary:
 			self.vocabulary[k] = np.array(self.vocabulary[k])
+			for i in range(self.num_classes):
+				self.vocabulary[k][i] = np.sum(self.vocabulary[k][i])
+
+		print("vocab size: ", len(self.vocabulary.keys()))
 
 
 	def tf_idf(self, txt_file):
@@ -211,11 +211,11 @@ class ITR_Extractor:
 
 					#term_frequency - number of times word occurs in the given document
 					
-					tf = np.sum(self.vocabulary[token][label]) / float( self.doc_sizes[label] )
+					tf = self.vocabulary[token][label] / float( self.doc_sizes[label] )
 
 					#inverse document frequency - how much information the word provides
-					num_file_containing_word = np.sum(self.vocabulary[token][label] > 0) + 1
-					idf = math.log( self.num_files / num_file_containing_word ) + 1
+					num_file_containing_word = np.sum(self.vocabulary[token] > 0) + 1
+					idf = math.log( self.num_classes / float(num_file_containing_word) ) + 1
 
 					tfidf = tf * idf
 
@@ -239,7 +239,7 @@ class ITR_Extractor:
 		self.label_count = [0]*self.num_classes
 		self.label_vector = [None]*self.num_classes
 
-def main(dataset_dir, csv_filename, dataset_type, dataset_id):
+def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 
 	num_classes = 13
 	tcg = ITR_Extractor(num_classes)
@@ -250,7 +250,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 		print("ERROR: Cannot open CSV file: "+ csv_filename)
 
 	for ex in csv_contents:
-		ex['txt_path'] = os.path.join(dataset_dir, "txt_"+dataset_type+"_"+str(dataset_id), str(0), ex['label_name'], ex['example_id']+'_0.txt')
+		ex['txt_path'] = os.path.join(dataset_dir, "txt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
 
 	train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
@@ -263,12 +263,12 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id):
 	print("corpus generated")
 
 	for ex in train_data:
-		print("adding:", ex['txt_path'])
+		#print("adding:", ex['txt_path'])
 		tcg.add_vector_counts(ex['txt_path'], ex['label'])
 
 	print("finalizing vector counts")
 	tcg.finalize_vector_counts()
-	print("vector counts generated")
+	print("vector counts generated " )
 
 	class_acc = np.zeros((num_classes, num_classes))
 	label_names = [""]* 13
@@ -293,15 +293,16 @@ if __name__ == '__main__':
 	#required command line args
 	parser.add_argument('dataset_dir', help='the directory where the dataset is located')
 	parser.add_argument('csv_filename', help='a csv file denoting the files in the dataset')
-	#parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow'])
+	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow'])
 	#parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
 
 	FLAGS = parser.parse_args()
 
 	main(FLAGS.dataset_dir, 
 		FLAGS.csv_filename,
-		"frames", #FLAGS.dataset_type,
-		1 #FLAGS.dataset_id
+		FLAGS.dataset_type,
+		1, #FLAGS.dataset_id
+		2
 		)
 
 
