@@ -6,6 +6,10 @@ from collections import Counter
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
+#vectorize and perform VLAD
+
+
+
 
 class ITR_Extractor:
 
@@ -201,10 +205,9 @@ class ITR_Extractor:
 			# if all vocab values have the same values then 
 			num_file_containing_word = np.sum(self.vocabulary[k] > 0)
 			idf = math.log( self.num_classes / float(num_file_containing_word ) ) 
+			print("IDF:", idf, self.num_classes, num_file_containing_word, )
 			if(idf == 0):
 				remove_k.append(k)
-		
-		print("vocab size: ", len(self.vocabulary.keys()))	
 		
 		for k in remove_k:
 			del self.vocabulary[k]
