@@ -198,8 +198,8 @@ class ITR_Extractor:
 
 			# if all vocab values have the same values then 
 			num_file_containing_word = np.sum(self.vocabulary[k] > 0) + 1
-			idf = math.log( self.num_classes / float(num_file_containing_word) ) + 1
-			print("IDF:", idf)
+			idf = math.log( self.num_classes / float(num_file_containing_word) + 1 ) 
+			print("IDF:", idf, self.num_classes, num_file_containing_word)
 
 		print("vocab size: ", len(self.vocabulary.keys()))		
 
