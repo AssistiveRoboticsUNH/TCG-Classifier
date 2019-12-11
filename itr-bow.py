@@ -196,7 +196,12 @@ class ITR_Extractor:
 			for i in range(self.num_classes):
 				self.vocabulary[k][i] = np.sum(self.vocabulary[k][i])
 
-		print("vocab size: ", len(self.vocabulary.keys()))
+			# if all vocab values have the same values then 
+			num_file_containing_word = np.sum(self.vocabulary[k] > 0) + 1
+			idf = math.log( self.num_classes / float(num_file_containing_word) ) + 1
+			print("IDF:", idf)
+
+		print("vocab size: ", len(self.vocabulary.keys()))		
 
 
 	def tf_idf(self, txt_file):
