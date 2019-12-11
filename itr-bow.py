@@ -191,6 +191,8 @@ class ITR_Extractor:
 
 	def finalize_vector_counts(self):
 
+		remove_k = []
+
 		for k in self.vocabulary:
 			self.vocabulary[k] = np.array(self.vocabulary[k])
 			for i in range(self.num_classes):
@@ -201,7 +203,10 @@ class ITR_Extractor:
 			idf = math.log( self.num_classes / float(num_file_containing_word ) ) 
 			print("IDF:", idf, self.num_classes, num_file_containing_word, )
 			if(idf == 0):
-				del self.vocabulary[k]
+				remove_k.append(k)
+		
+		for k in remove_k:
+			del self.vocabulary[k]
 
 		print("vocab size: ", len(self.vocabulary.keys()))		
 
