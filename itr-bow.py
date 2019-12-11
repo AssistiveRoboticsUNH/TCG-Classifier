@@ -211,7 +211,11 @@ class ITR_Extractor:
 
 					#term_frequency - number of times word occurs in the given document
 					
-					tf = self.vocabulary[token][label] / float( self.doc_sizes[label] )
+					#print(token, label)
+					#print(label, self.vocabulary[token][label], self.doc_sizes[label]+1)
+					tf = self.vocabulary[token][label] / float( self.doc_sizes[label]+1 )
+					
+
 
 					#inverse document frequency - how much information the word provides
 					num_file_containing_word = np.sum(self.vocabulary[token] > 0) + 1
@@ -273,6 +277,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 	class_acc = np.zeros((num_classes, num_classes))
 	label_names = [""]* 13
 	for ex in test_data:
+		print(ex['txt_path'])
 		pred = tcg.tf_idf(ex['txt_path'])
 		label_names[ex['label']] = ex['label_name']
 		print(ex['label_name'], pred, ex['label'])
@@ -293,7 +298,7 @@ if __name__ == '__main__':
 	#required command line args
 	parser.add_argument('dataset_dir', help='the directory where the dataset is located')
 	parser.add_argument('csv_filename', help='a csv file denoting the files in the dataset')
-	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow'])
+	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow', 'both'])
 	#parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
 
 	FLAGS = parser.parse_args()
@@ -302,15 +307,5 @@ if __name__ == '__main__':
 		FLAGS.csv_filename,
 		FLAGS.dataset_type,
 		1, #FLAGS.dataset_id
-		3
+		0
 		)
-
-
-
-
-	
-
-
-		
-
-
