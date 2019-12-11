@@ -225,7 +225,7 @@ class ITR_Extractor:
 					#term_frequency - number of times word occurs in the given document
 					
 					#tf = self.vocabulary[token][label] / float( self.doc_sizes[label]+1 )
-					tf = self.vocabulary[token][label] / float( self.doc_sizes[label] +1)
+					tf = self.vocabulary[token][label] / float( self.doc_sizes[label] )
 					
 
 
