@@ -204,10 +204,10 @@ class ITR_Extractor:
 			if(idf == 0):
 				remove_k.append(k)
 		
-		print("vocab size: ", len(self.vocabulary.keys()))	
-		
-		for k in remove_k:
-			del self.vocabulary[k]
+		#print("vocab size: ", len(self.vocabulary.keys()))	
+
+		#for k in remove_k:
+		#	del self.vocabulary[k]
 
 		print("vocab size: ", len(self.vocabulary.keys()))		
 
