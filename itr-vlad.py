@@ -214,8 +214,21 @@ class ITR_Extractor:
 
 		print("vocab size: ", len(self.vocabulary.keys()))		
 
+	def vectorize(self, txt_file):
+		v = np.zeros(len(self.vocabulary))
+		tokens = self.extract_itr_seq(txt_file)
 
-	def tf_idf(self, txt_file):
+		counts = Counter(tokens)
+
+		for k in counts.keys():
+			if self.vocabulary.index(k)
+				v[k] = counts[k]
+
+		return v
+
+
+
+	def evluate(self, txt_file):
 
 		label_rank = np.zeros(self.num_classes)
 
@@ -235,7 +248,7 @@ class ITR_Extractor:
 
 					#inverse document frequency - how much information the word provides
 					num_file_containing_word = np.sum(self.vocabulary[token] > 0) + 1
-					idf = math.log( self.num_classes / float(num_file_containing_word) ) + 1
+					idf = math.log( self.num_classes / float(num_file_containing_word) )
 
 					tfidf = tf * idf
 
