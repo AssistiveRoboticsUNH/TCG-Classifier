@@ -233,7 +233,7 @@ class ITR_Extractor:
 					#num_file_containing_word = np.sum(self.vocabulary[token] > 0) + 1
 					#idf = math.log( self.num_classes / float(num_file_containing_word) ) + 1
 					num_file_containing_word = np.sum(self.vocabulary[token] > 0) + 1
-					idf = math.log( self.num_classes / float(num_file_containing_word) ) +1 
+					idf = math.log( self.num_classes / float(num_file_containing_word) )  
 
 					tfidf = tf * idf
 
