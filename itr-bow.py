@@ -299,13 +299,14 @@ if __name__ == '__main__':
 	parser.add_argument('dataset_dir', help='the directory where the dataset is located')
 	parser.add_argument('csv_filename', help='a csv file denoting the files in the dataset')
 	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow', 'both'])
-	#parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
+	parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
+	parser.add_argument('dataset_depth', type=int, help='a csv file denoting the files in the dataset')
 
 	FLAGS = parser.parse_args()
 
 	main(FLAGS.dataset_dir, 
 		FLAGS.csv_filename,
 		FLAGS.dataset_type,
-		1, #FLAGS.dataset_id
-		0
+		FLAGS.dataset_id,
+		FLAGS.dataset_depth
 		)
