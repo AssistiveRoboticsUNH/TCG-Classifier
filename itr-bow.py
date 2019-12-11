@@ -200,6 +200,8 @@ class ITR_Extractor:
 			num_file_containing_word = np.sum(self.vocabulary[k] > 0)
 			idf = math.log( self.num_classes / float(num_file_containing_word ) ) 
 			print("IDF:", idf, self.num_classes, num_file_containing_word, )
+			if(idf == 0):
+				del self.vocabulary[k]
 
 		print("vocab size: ", len(self.vocabulary.keys()))		
 
