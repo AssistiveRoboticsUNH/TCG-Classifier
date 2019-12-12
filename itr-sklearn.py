@@ -7,6 +7,12 @@ sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
 
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+
+
+
 class ITR_Extractor:
 
 	class AtomicEvent():
@@ -142,7 +148,7 @@ class ITR_Extractor:
 						itr_seq.append(itr)
 
 				j+=1
-
+		'''
 		# generate n-grams here
 		if(self.ngram > 1):
 			ngram_seq = []
@@ -152,114 +158,47 @@ class ITR_Extractor:
 				ngram_seq.append(data)
 
 			itr_seq = ngram_seq
-
+		'''
 		return itr_seq
 						
-	def add_file_to_corpus(self, txt_file):
 
-		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
+	def add_file_to_corpus(self, txt_file, label):
+		txt = ''
+		for itr in self.extract_itr_seq(txt_file):
+			s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
+			txt += s
+			#print(s)
+		self.corpus.append(txt)
+		self.labels.append(label)
 
-		for token in self.extract_itr_seq(txt_file):
+	def fit(self):
+		self.clf = MultinomialNB().fit(self.tfidf, self.labels)
 
-			if(token not in self.corpus):
-				self.corpus[token] = 0
-			self.corpus[token] += 1
+	def pred(self, txt_file):
 
-		self.num_files += 1
+		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
 
-	def finalize_corpus(self):
+		txt = ''
+		for itr in self.extract_itr_seq(txt_file):
+			s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
+			txt += s
 
-		self.vocabulary = {}
+		data = self.tfidf.fit_transform([txt])
+		print("data:", data)
 
-		for k in self.corpus:
-			count = self.corpus[k]
-			if( count > 0): #and count < self.num_files ):
-				self.vocabulary[k] = [ [] for i in range(self.num_classes)]
+		return self.clf.predict(data)
 
-		self.doc_sizes = [0]*self.num_classes
-
-	def add_vector_counts(self, txt_file, label):
-
-		tokens = self.extract_itr_seq(txt_file)
-		counts = Counter(tokens)
-
-		for k in self.vocabulary:
-			cnt = counts[k]
-			self.vocabulary[k][label].append(cnt)
-			self.doc_sizes[label]+= cnt
-	
-
-	def finalize_vector_counts(self):
-
-		remove_k = []
-
-		for k in self.vocabulary:
-			self.vocabulary[k] = np.array(self.vocabulary[k])
-			for i in range(self.num_classes):
-				self.vocabulary[k][i] = np.sum(self.vocabulary[k][i])
-
-			# if all vocab values have the same values then 
-			num_file_containing_word = np.sum(self.vocabulary[k] > 0) + 1
-			idf = math.log( self.num_classes / float(num_file_containing_word) )  +1 
-			#print("idf:", idf, self.num_classes, num_file_containing_word)
-			if(self.num_classes == num_file_containing_word):
-				remove_k.append(k)
-		
-		print("vocab size: ", len(self.vocabulary.keys()))	
-
-		#for k in remove_k:
-		#	del self.vocabulary[k]
-
-		print("vocab size: ", len(self.vocabulary.keys()))		
-
-
-	def tf_idf(self, txt_file):
-
-		label_rank = np.zeros(self.num_classes)
-
-		for token in self.extract_itr_seq(txt_file): 
-
-			if(token in self.vocabulary):
-
-				for label in range(self.num_classes):
-
-					#term_frequency - number of times word occurs in the given document
-					
-					#tf = self.vocabulary[token][label] / float( self.doc_sizes[label]+1 )
-					tf = self.vocabulary[token][label] / float( self.doc_sizes[label] )
-					
-
-
-					#inverse document frequency - how much information the word provides
-					num_file_containing_word = np.sum(self.vocabulary[token] > 0) + 1
-					idf = math.log( self.num_classes / float(num_file_containing_word) ) + 1
-					#num_file_containing_word = np.sum(self.vocabulary[token] > 0) + 1
-					#idf = math.log( (self.num_classes+ 1) / float(num_file_containing_word) )  
-
-
-					#only get lower accuracy when IDF losses the +1 not when TF losses the +1
-
-					tfidf = tf * idf
-
-					label_rank[label] += tfidf
-
-		return np.argmax(label_rank)
 
 	def __init__(self, num_classes):
 		self.num_classes = num_classes
-		self.ngram = 1
-		self.bound = 0#2
 
-		self.documents = []
-		for i in range(self.num_classes):
-			self.documents.append([])
+		self.bound = 0
 
-		self.corpus = {}
-		self.num_files = 0
-		self.vocabulary = []
+		self.corpus = []
+		self.labels = []
 
-		self.label_count = [0]*self.num_classes
-		self.label_vector = [None]*self.num_classes
+		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w-\w+\b")
+		
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 
@@ -278,8 +217,10 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	
 	for ex in train_data:
-		tcg.add_file_to_corpus(ex['txt_path'])#, ex['label'])
+		tcg.add_file_to_corpus(ex['txt_path'], ex['label'])
 
+	tcg.fit()
+	'''
 	print("finalizing corpus")
 	tcg.finalize_corpus()
 	print("corpus generated")
@@ -291,12 +232,12 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 	print("finalizing vector counts")
 	tcg.finalize_vector_counts()
 	print("vector counts generated " )
-
+	'''
 	class_acc = np.zeros((num_classes, num_classes))
 	label_names = [""]* 13
 	for ex in test_data:
 		print(ex['txt_path'])
-		pred = tcg.tf_idf(ex['txt_path'])
+		pred = tcg.pred(ex['txt_path'])
 		label_names[ex['label']] = ex['label_name']
 		print(ex['label_name'], pred, ex['label'])
 		class_acc[pred, ex['label']] += 1
@@ -307,7 +248,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 		print("{:13}".format(label_names[i]),class_acc[i])
 		sum_corr += class_acc[i,i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
-
+	
 	
 
 if __name__ == '__main__':
