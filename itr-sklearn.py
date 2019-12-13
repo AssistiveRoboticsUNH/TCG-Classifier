@@ -10,6 +10,7 @@ from csv_utils import read_csv
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from sklearn import svm
 
 
 
@@ -172,7 +173,7 @@ class ITR_Extractor:
 		self.labels.append(label)
 
 	def fit(self):
-		self.clf = MultinomialNB().fit(self.tfidf, self.labels)
+		self.clf = svm.SVC().fit(self.tfidf, self.labels)
 
 	def pred(self, txt_file):
 
