@@ -177,7 +177,7 @@ class ITR_Extractor:
 		self.evalcorpus.append(txt)
 		self.evallabels.append(label)
 
-		self.label_name[label] = label_name
+		self.label_names[label] = label_name
 
 	def fit(self):
 		train_mat = self.tfidf.fit_transform(self.corpus)
