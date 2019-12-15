@@ -168,7 +168,7 @@ class ITR_Extractor:
 		self.corpus.append(txt)
 		self.labels.append(label)
 
-	def add_file_to_corpus(self, txt_file, label, label_name):
+	def add_file_to_eval_corpus(self, txt_file, label, label_name):
 		txt = ''
 		for itr in self.extract_itr_seq(txt_file):
 			s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
