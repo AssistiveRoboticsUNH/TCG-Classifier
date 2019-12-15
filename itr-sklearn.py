@@ -11,6 +11,9 @@ from csv_utils import read_csv
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn import svm
+from sklearn import metrics
+
+from sklearn.linear_model import SGDClassifier
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -165,6 +168,17 @@ class ITR_Extractor:
 		self.corpus.append(txt)
 		self.labels.append(label)
 
+	def add_file_to_corpus(self, txt_file, label, label_name):
+		txt = ''
+		for itr in self.extract_itr_seq(txt_file):
+			s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
+			txt += s
+			#print(s)
+		self.evalcorpus.append(txt)
+		self.evallabels.append(label)
+
+		self.label_name[label] = label_name
+
 	def fit(self):
 		train_mat = self.tfidf.fit_transform(self.corpus)
 
@@ -187,6 +201,17 @@ class ITR_Extractor:
 
 		return self.clf.predict(data)
 
+	def eval(self):
+		data = self.tfidf.transform(self.evalcorpus)
+		pred = self.clf.predict(data)
+
+		label_names = 
+
+		print(metrics.classification_report(self.labels, pred,
+			target_names=self.label_names))
+
+
+
 
 	def __init__(self, num_classes):
 		self.num_classes = num_classes
@@ -196,8 +221,13 @@ class ITR_Extractor:
 		self.corpus = []
 		self.labels = []
 
-		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b")
-		#self.tfidf = CountVectorizer(token_pattern=r"\b\w+-\w-\w+\b")
+		self.label_names = ['']* self.num_classes
+
+		self.evalcorpus = []
+		self.evallabels = []
+
+		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", )
+		#self.tfidf = CountVectorizer(token_pattern=r"\b\w+-\w+-\w+\b")
 		
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
@@ -222,7 +252,11 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 	tcg.fit()
 	
 	# CLASSIFY 
-	
+
+	for ex in test_data:
+		tcg.add_file_to_eval_corpus(ex['txt_path'], ex['label'], ex['label_name'])
+
+	'''
 	class_acc = np.zeros((num_classes, num_classes), np.uint8)
 	label_names = [""]* 13
 	for ex in test_data:
@@ -235,7 +269,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 		print("{:13}".format(label_names[i]),class_acc[i])
 		sum_corr += class_acc[i,i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
-	
+	'''
 	# GEN PYPLOT
 	'''
 	fig, ax = plt.subplots()
@@ -283,5 +317,5 @@ if __name__ == '__main__':
 			FLAGS.csv_filename,
 			FLAGS.dataset_type,
 			FLAGS.dataset_id,
-			i#FLAGS.dataset_depth
+			0#FLAGS.dataset_depth
 			)
