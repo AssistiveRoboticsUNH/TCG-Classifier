@@ -205,8 +205,7 @@ class ITR_Extractor:
 		data = self.tfidf.transform(self.evalcorpus)
 		pred = self.clf.predict(data)
 
-		print(metrics.classification_report(self.labels, pred,
-			target_names=self.label_names))
+		print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
 
 
 
