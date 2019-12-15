@@ -118,7 +118,6 @@ class ITR_Extractor:
 
 		return itrs
 
-
 	def extract_itr_seq(self, txt_file):
 
 		# get events from file
@@ -135,84 +134,50 @@ class ITR_Extractor:
 				for itr_name in self.all_itrs(events[i], events[j], self.bound):
 
 					if('i' not in itr_name):
-						e1 = events[i].name#+"_"+str(events[i].occurence) 
-						e2 = events[j].name#+"_"+str(events[j].occurence)
+						e1 = events[i].name
+						e2 = events[j].name
 
 						itr = (e1, itr_name, e2)
 						itr_seq.append(itr)
-
 				j+=1
-
-		# generate n-grams here
-		if(self.ngram > 1):
-			ngram_seq = []
-			for i in range( len(itr_seq) - (self.ngram - 1) ):
-				data = str(itr_seq[i:i+self.ngram])
-
-				ngram_seq.append(data)
-
-			itr_seq = ngram_seq
-
+		
 		return itr_seq
-						
-	def add_file_to_corpus(self, txt_file):
+		
 
-		# determine if those ITRS are already in TCG, if not add them, if they are increase their count
-
-		for token in self.extract_itr_seq(txt_file):
-
-			if(token not in self.corpus):
-				self.corpus[token] = 0
-			self.corpus[token] += 1
-
-		self.num_files += 1
-
-	def finalize_corpus(self):
-
-		self.vocabulary = {}
-
-		for k in self.corpus:
-			count = self.corpus[k]
-			if( count > 0): #and count < self.num_files ):
-				self.vocabulary[k] = [ [] for i in range(self.num_classes)]
-
-		self.doc_sizes = [0]*self.num_classes
-
-	def add_vector_counts(self, txt_file, label):
-
+	def add_file_to_corpus(self, txt_file, label):
+		
 		tokens = self.extract_itr_seq(txt_file)
 		counts = Counter(tokens)
 
-		for k in self.vocabulary:
-			cnt = counts[k]
-			self.vocabulary[k][label].append(cnt)
-			self.doc_sizes[label]+= cnt
+		for k in counts.keys():
+			if k not in self.vocabulary:
+				self.vocabulary[k] = 0
+			self.vocabulary[k] += counts[k]
+
+		self.corpus.append(counts)
+		self.labels.append(label)
+
+	def finalize(self):
+
+		print("vocab size: ", len(self.vocabulary.keys()))
+
+		for k in self.vocabulary.keys():
+			s = "{0}-{1}-{2} ".format(k[0], k[1], k[2])
+			print(s)
+
+		self.tfidf = np.zeros((len(self.corpus), len(self.vocabulary)))
+		for d, doc in enumerate(self.corpus):
+			for k, key in enumerate(self.vocabulary.keys()):
+				#tf = 
+				#idf =
+
+				self.tfidf[d][k] = doc[k]
+
+
+
+
+
 	
-
-	def finalize_vector_counts(self):
-
-		remove_k = []
-
-		for k in self.vocabulary:
-			self.vocabulary[k] = np.array(self.vocabulary[k])
-			for i in range(self.num_classes):
-				self.vocabulary[k][i] = np.sum(self.vocabulary[k][i])
-
-			# if all vocab values have the same values then 
-			num_file_containing_word = np.sum(self.vocabulary[k] > 0) + 1
-			idf = math.log( self.num_classes / float(num_file_containing_word) )  +1 
-			#print("idf:", idf, self.num_classes, num_file_containing_word)
-			if(self.num_classes == num_file_containing_word):
-				remove_k.append(k)
-		
-		print("vocab size: ", len(self.vocabulary.keys()))	
-
-		#for k in remove_k:
-		#	del self.vocabulary[k]
-
-		print("vocab size: ", len(self.vocabulary.keys()))		
-
-
 	def tf_idf(self, txt_file):
 
 		label_rank = np.zeros(self.num_classes)
@@ -250,16 +215,12 @@ class ITR_Extractor:
 		self.ngram = 1
 		self.bound = 0#2
 
-		self.documents = []
-		for i in range(self.num_classes):
-			self.documents.append([])
+		self.corpus = []
+		self.vocabulary = {}
+		self.labels = []
 
-		self.corpus = {}
-		self.num_files = 0
-		self.vocabulary = []
+		self.tfidf = []
 
-		self.label_count = [0]*self.num_classes
-		self.label_vector = [None]*self.num_classes
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 
@@ -277,21 +238,13 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 	train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	
-	for ex in train_data:
-		tcg.add_file_to_corpus(ex['txt_path'])#, ex['label'])
-
-	print("finalizing corpus")
-	tcg.finalize_corpus()
-	print("corpus generated")
-
-	for ex in train_data:
-		#print("adding:", ex['txt_path'])
-		tcg.add_vector_counts(ex['txt_path'], ex['label'])
+	for ex in train_data[:5]:
+		tcg.add_file_to_corpus(ex['txt_path'], ex['label'])
 
 	print("finalizing vector counts")
-	tcg.finalize_vector_counts()
+	tcg.finalize()
 	print("vector counts generated " )
-
+	'''
 	class_acc = np.zeros((num_classes, num_classes))
 	label_names = [""]* 13
 	for ex in test_data:
@@ -307,7 +260,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 		print("{:13}".format(label_names[i]),class_acc[i])
 		sum_corr += class_acc[i,i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
-
+	'''
 	
 
 if __name__ == '__main__':

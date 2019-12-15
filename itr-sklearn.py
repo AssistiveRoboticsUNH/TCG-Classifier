@@ -8,10 +8,12 @@ from csv_utils import read_csv
 
 
 
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn import svm
 
+import matplotlib
+import matplotlib.pyplot as plt
 
 
 class ITR_Extractor:
@@ -126,6 +128,7 @@ class ITR_Extractor:
 		return itrs
 
 
+	
 	def extract_itr_seq(self, txt_file):
 
 		# get events from file
@@ -142,25 +145,15 @@ class ITR_Extractor:
 				for itr_name in self.all_itrs(events[i], events[j], self.bound):
 
 					if('i' not in itr_name):
-						e1 = events[i].name#+"_"+str(events[i].occurence) 
-						e2 = events[j].name#+"_"+str(events[j].occurence)
+						e1 = events[i].name
+						e2 = events[j].name
 
 						itr = (e1, itr_name, e2)
 						itr_seq.append(itr)
-
 				j+=1
-		'''
-		# generate n-grams here
-		if(self.ngram > 1):
-			ngram_seq = []
-			for i in range( len(itr_seq) - (self.ngram - 1) ):
-				data = str(itr_seq[i:i+self.ngram])
-
-				ngram_seq.append(data)
-
-			itr_seq = ngram_seq
-		'''
+		
 		return itr_seq
+	
 						
 
 	def add_file_to_corpus(self, txt_file, label):
@@ -173,7 +166,11 @@ class ITR_Extractor:
 		self.labels.append(label)
 
 	def fit(self):
-		self.clf = svm.SVC().fit(self.tfidf, self.labels)
+		train_mat = self.tfidf.fit_transform(self.corpus)
+
+		print(train_mat.shape)
+		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
+		self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
 
 	def pred(self, txt_file):
 
@@ -184,8 +181,9 @@ class ITR_Extractor:
 			s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
 			txt += s
 
-		data = self.tfidf.fit_transform([txt])
-		print("data:", data)
+		#print("txt:", txt)
+		data = self.tfidf.transform([txt])
+		#print("data:", data)
 
 		return self.clf.predict(data)
 
@@ -198,7 +196,8 @@ class ITR_Extractor:
 		self.corpus = []
 		self.labels = []
 
-		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w-\w+\b")
+		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b")
+		#self.tfidf = CountVectorizer(token_pattern=r"\b\w+-\w-\w+\b")
 		
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
@@ -217,39 +216,51 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 	train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	
+	# TRAIN
 	for ex in train_data:
 		tcg.add_file_to_corpus(ex['txt_path'], ex['label'])
-
 	tcg.fit()
-	'''
-	print("finalizing corpus")
-	tcg.finalize_corpus()
-	print("corpus generated")
-
-	for ex in train_data:
-		#print("adding:", ex['txt_path'])
-		tcg.add_vector_counts(ex['txt_path'], ex['label'])
-
-	print("finalizing vector counts")
-	tcg.finalize_vector_counts()
-	print("vector counts generated " )
-	'''
-	class_acc = np.zeros((num_classes, num_classes))
+	
+	# CLASSIFY 
+	
+	class_acc = np.zeros((num_classes, num_classes), np.uint8)
 	label_names = [""]* 13
 	for ex in test_data:
-		print(ex['txt_path'])
 		pred = tcg.pred(ex['txt_path'])
 		label_names[ex['label']] = ex['label_name']
-		print(ex['label_name'], pred, ex['label'])
 		class_acc[pred, ex['label']] += 1
 
-	
 	sum_corr = 0
 	for i in range(num_classes):
 		print("{:13}".format(label_names[i]),class_acc[i])
 		sum_corr += class_acc[i,i]
 	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
 	
+	# GEN PYPLOT
+	'''
+	fig, ax = plt.subplots()
+	ax.imshow(class_acc, cmap='hot', interpolation='nearest')
+	ax.set_xticks(np.arange(len(label_names)))
+	ax.set_yticks(np.arange(len(label_names)))
+	ax.set_xticklabels(label_names)
+	ax.set_yticklabels(label_names)
+
+	plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+		 rotation_mode="anchor")
+
+	for i in range(len(label_names)):
+		for j in range(len(label_names)):
+			if(class_acc[i, j] < 0.5):
+				text = ax.text(j, i, class_acc[i, j],
+							   ha="center", va="center", color="w")
+			else:
+				text = ax.text(j, i, class_acc[i, j],
+							   ha="center", va="center", color="k")
+
+	fig.tight_layout()
+
+	#plt.show()
+	'''
 	
 
 if __name__ == '__main__':
@@ -260,13 +271,17 @@ if __name__ == '__main__':
 	parser.add_argument('csv_filename', help='a csv file denoting the files in the dataset')
 	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow', 'both'])
 	parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
-	parser.add_argument('dataset_depth', type=int, help='a csv file denoting the files in the dataset')
+	#parser.add_argument('dataset_depth', type=int, help='a csv file denoting the files in the dataset')
 
 	FLAGS = parser.parse_args()
 
-	main(FLAGS.dataset_dir, 
-		FLAGS.csv_filename,
-		FLAGS.dataset_type,
-		FLAGS.dataset_id,
-		FLAGS.dataset_depth
-		)
+	for i in range(5):
+		print("depth: ", i)
+
+
+		main(FLAGS.dataset_dir, 
+			FLAGS.csv_filename,
+			FLAGS.dataset_type,
+			FLAGS.dataset_id,
+			i#FLAGS.dataset_depth
+			)
