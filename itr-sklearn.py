@@ -253,6 +253,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 
 	for ex in test_data:
 		tcg.add_file_to_eval_corpus(ex['txt_path'], ex['label'], ex['label_name'])
+	tcg.eval()
+
 
 	'''
 	class_acc = np.zeros((num_classes, num_classes), np.uint8)
@@ -307,7 +309,7 @@ if __name__ == '__main__':
 
 	FLAGS = parser.parse_args()
 
-	for i in range(5):
+	for i in range(1):
 		print("depth: ", i)
 
 
@@ -315,5 +317,5 @@ if __name__ == '__main__':
 			FLAGS.csv_filename,
 			FLAGS.dataset_type,
 			FLAGS.dataset_id,
-			0#FLAGS.dataset_depth
+			i#FLAGS.dataset_depth
 			)
