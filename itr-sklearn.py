@@ -185,6 +185,7 @@ class ITR_Extractor:
 		print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
 		self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
+		#self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
 
 	def pred(self, txt_file):
 
@@ -207,6 +208,7 @@ class ITR_Extractor:
 
 		print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
 
+		print(metrics.accuracy_score(self.evallabels, pred, target_names=self.label_names))
 
 
 
