@@ -225,7 +225,7 @@ class ITR_Extractor:
 		self.evalcorpus = []
 		self.evallabels = []
 
-		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", )
+		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
 		#self.tfidf = CountVectorizer(token_pattern=r"\b\w+-\w+-\w+\b")
 		
 
