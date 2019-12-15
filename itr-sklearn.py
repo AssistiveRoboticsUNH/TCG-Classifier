@@ -208,7 +208,7 @@ class ITR_Extractor:
 
 		print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
 
-		print(metrics.accuracy_score(self.evallabels, pred, target_names=self.label_names))
+		print(metrics.accuracy_score(self.evallabels, pred)#, target_names=self.label_names))
 
 
 
