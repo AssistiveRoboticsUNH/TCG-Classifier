@@ -310,7 +310,7 @@ if __name__ == '__main__':
 
 	FLAGS = parser.parse_args()
 
-	for i in range(1):
+	for i in range(5):
 		print("depth: ", i)
 
 
