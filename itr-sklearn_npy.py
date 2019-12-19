@@ -95,7 +95,9 @@ class ITR_Extractor:
 	def parse_txt_file(self, txt_file):
 		f = np.load(txt_file)
 		max_v, mean_v, min_v = f["max"], f["mean"], f["min"]
-		return np.stack(max_v, mean_v, min_v).reshape(-1)#.flatten()
+		data =  np.stack(max_v, mean_v, min_v)#.reshape(-1)#.flatten()
+		print("data_shape:", data.shape)
+		return data
 
 	def add_file_to_corpus(self, txt_file, label):
 		txt = self.parse_txt_file(txt_file)
