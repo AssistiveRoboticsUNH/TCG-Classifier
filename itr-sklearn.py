@@ -185,7 +185,9 @@ class ITR_Extractor:
 		print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
 		#self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
-		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
+		#self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
+		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, random_state=42,max_iter=5, tol=None, verbose=1).fit(train_mat, np.array(self.labels))
+
 
 	def pred(self, txt_file):
 
@@ -229,9 +231,8 @@ class ITR_Extractor:
 		#self.tfidf = CountVectorizer(token_pattern=r"\b\w+-\w+-\w+\b")
 		
 
-def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
+def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes):
 
-	num_classes = 13
 	tcg = ITR_Extractor(num_classes)
 	
 	try:
@@ -306,17 +307,20 @@ if __name__ == '__main__':
 	parser.add_argument('csv_filename', help='a csv file denoting the files in the dataset')
 	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow', 'both'])
 	parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
+	parser.add_argument('num_classes', type=int, help='the number of classes in the dataset')
 	#parser.add_argument('dataset_depth', type=int, help='a csv file denoting the files in the dataset')
 
 	FLAGS = parser.parse_args()
 
-	for i in range(5):
-		print("depth: ", i)
+	#for i in range(5):
+	i=2
+	print("depth: ", i)
 
 
-		main(FLAGS.dataset_dir, 
-			FLAGS.csv_filename,
-			FLAGS.dataset_type,
-			FLAGS.dataset_id,
-			i#FLAGS.dataset_depth
-			)
+	main(FLAGS.dataset_dir, 
+		FLAGS.csv_filename,
+		FLAGS.dataset_type,
+		FLAGS.dataset_id,
+		i,
+		FLAGS.num_classes
+		)
