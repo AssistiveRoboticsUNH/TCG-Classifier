@@ -99,7 +99,7 @@ class ITR_Extractor:
 		print("max_v:", max_v.shape)
 		print("mean_v:", mean_v.shape)
 		print("min_v:", min_v.shape)
-		data =  np.stack(max_v, mean_v, min_v)#.reshape(-1)#.flatten()
+		data =  np.concatenate((max_v, mean_v, min_v))#.reshape(-1)#.flatten()
 		print("data_shape:", data.shape)
 		return data
 
