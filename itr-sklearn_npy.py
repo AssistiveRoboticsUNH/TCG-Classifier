@@ -96,12 +96,7 @@ class ITR_Extractor:
 		f = np.load(txt_file)
 		max_v, mean_v, min_v = f["max"], f["mean"], f["min"]
 
-		print("max_v:", max_v.shape)
-		print("mean_v:", mean_v.shape)
-		print("min_v:", min_v.shape)
-		data =  np.concatenate((max_v, mean_v, min_v))#.reshape(-1)#.flatten()
-		print("data_shape:", data.shape)
-		return data
+		return np.concatenate((max_v, mean_v, min_v))
 
 	def add_file_to_corpus(self, txt_file, label):
 		txt = self.parse_txt_file(txt_file)
