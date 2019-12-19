@@ -91,77 +91,11 @@ class ITR_Extractor:
 				return 'bi'
 
 
-
-
-
-	def read_file(self, txt_file):
-		
-		events = {}
-		for line in list(open(txt_file, 'r')):
-			line = line.split()
-
-			event_tokens = line[0].split('_')
-			time = float(line[1])
-			
-			event_name = event_tokens[0]
-			event_occur = int(event_tokens[1])
-			event_bound = event_tokens[2]
-
-			event_id = event_name+'_'+str(event_occur)
-			if (event_id not in events):
-				events[event_id] = self.AtomicEvent(event_name, event_occur)
-
-			if(event_bound == 's'):
-				events[event_id].start = time
-			else:
-				events[event_id].end = time
-
-		return events.values()
-
-	def all_itrs(self, e1, e2, bound):
-
-		itrs = Set()
-		for i in range(-bound, bound):
-
-			itr_name = e1.get_itr_from_time(e1.start, e1.end+i, e2.start, e2.end)
-			itrs.add(itr_name)
-		itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
-		itrs.add(itr_name)
-
-		return itrs
-
-
-	
-	def extract_itr_seq(self, txt_file):
-
-		# get events from file
-		events = sorted(self.read_file(txt_file)) 
-
-		# get a list of all of the ITRs in the txt_file
-		itr_seq = []
-
-		for i in range(len(events)):
-
-			j = i+1
-			while(j < len(events) and events[j].name != events[i].name):
-
-				for itr_name in self.all_itrs(events[i], events[j], self.bound):
-
-					if('i' not in itr_name):
-						e1 = events[i].name
-						e2 = events[j].name
-
-						itr = (e1, itr_name, e2)
-						itr_seq.append(itr)
-				j+=1
-		
-		return itr_seq
 	
 	def parse_txt_file(self, txt_file):
-		txt = ''
-		for itr in self.extract_itr_seq(txt_file):
-			s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
-			txt += s
+		f = np.load(txt_file)
+		max_v, mean_v, min_v = f["max"], f["mean"], f["min"]
+		return max_v
 
 	def add_file_to_corpus(self, txt_file, label):
 		txt = parse_txt_file(txt_file)
@@ -176,22 +110,23 @@ class ITR_Extractor:
 		self.label_names[label] = label_name
 
 	def fit(self):
-		train_mat = self.tfidf.fit_transform(self.corpus)
+		#train_mat = self.tfidf.fit_transform(self.corpus)
 
-		print(train_mat.shape)
+		#print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
 		#self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
 		#self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
+		train_mat = np.array(self.corpus)
 		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, random_state=42,max_iter=5, tol=None, verbose=1).fit(train_mat, np.array(self.labels))
 
 	def pred(self, txt_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
-		txt = parse_txt_file(txt_file)
-		data = self.tfidf.transform([txt])
-		return self.clf.predict(data)
+		data = parse_txt_file(txt_file)
+		#data = self.tfidf.transform([txt])
+		return self.clf.predict([data])
 
 	def eval(self):
-		data = self.tfidf.transform(self.evalcorpus)
+		data = np.array(self.evalcorpus)
 		pred = self.clf.predict(data)
 
 		print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
