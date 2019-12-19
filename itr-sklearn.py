@@ -164,12 +164,12 @@ class ITR_Extractor:
 			txt += s
 
 	def add_file_to_corpus(self, txt_file, label):
-		txt = parse_txt_file(txt_file)
+		txt = self.parse_txt_file(txt_file)
 		self.corpus.append(txt)
 		self.labels.append(label)
 
 	def add_file_to_eval_corpus(self, txt_file, label, label_name):
-		txt = parse_txt_file(txt_file)
+		txt = self.parse_txt_file(txt_file)
 		self.evalcorpus.append(txt)
 		self.evallabels.append(label)
 
@@ -186,7 +186,7 @@ class ITR_Extractor:
 
 	def pred(self, txt_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
-		txt = parse_txt_file(txt_file)
+		txt = self.parse_txt_file(txt_file)
 		data = self.tfidf.transform([txt])
 		return self.clf.predict(data)
 

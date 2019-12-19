@@ -98,12 +98,12 @@ class ITR_Extractor:
 		return max_v
 
 	def add_file_to_corpus(self, txt_file, label):
-		txt = parse_txt_file(txt_file)
+		txt = self.parse_txt_file(txt_file)
 		self.corpus.append(txt)
 		self.labels.append(label)
 
 	def add_file_to_eval_corpus(self, txt_file, label, label_name):
-		txt = parse_txt_file(txt_file)
+		txt = self.parse_txt_file(txt_file)
 		self.evalcorpus.append(txt)
 		self.evallabels.append(label)
 
@@ -121,7 +121,7 @@ class ITR_Extractor:
 
 	def pred(self, txt_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
-		data = parse_txt_file(txt_file)
+		data = self.parse_txt_file(txt_file)
 		#data = self.tfidf.transform([txt])
 		return self.clf.predict([data])
 
@@ -161,7 +161,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 		print("ERROR: Cannot open CSV file: "+ csv_filename)
 
 	for ex in csv_contents:
-		ex['txt_path'] = os.path.join(dataset_dir, "txt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
+		ex['txt_path'] = os.path.join(dataset_dir, "txt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt.npz')
 
 	train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
