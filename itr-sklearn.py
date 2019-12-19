@@ -182,7 +182,7 @@ class ITR_Extractor:
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
 		#self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
 		#self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
-		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, random_state=42,max_iter=1000, tol=None, verbose=1).fit(train_mat, np.array(self.labels))
+		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, random_state=42,max_iter=5, tol=None, verbose=1).fit(train_mat, np.array(self.labels))
 
 	def pred(self, txt_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
