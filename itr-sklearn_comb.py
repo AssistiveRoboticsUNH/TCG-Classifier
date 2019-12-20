@@ -194,7 +194,7 @@ class ITR_Extractor:
 	def pred(self, txt_file, npy_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
 		txt = self.parse_txt_file(txt_file)
-		npy = self.parse_txt_file(npy_file)
+		npy = self.parse_npy_file(npy_file)
 		data = np.concatenate((txt, npy))
 
 		#data = self.tfidf.transform([txt])
