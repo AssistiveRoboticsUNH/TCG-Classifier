@@ -185,7 +185,7 @@ class ITR_Extractor:
 		print("train_mat.shape", train_mat.shape, type(train_mat))
 
 		print("self.npy_corpus.shape", np.array(self.npy_corpus).shape)
-		train_mat = np.concatenate( [np.array(train_mat), np.array(self.npy_corpus)] )
+		train_mat = np.concatenate( [train_mat.toarray(), np.array(self.npy_corpus)] )
 		print("train_mat.shape", train_mat.shape)
 
 		#print(train_mat.shape)
