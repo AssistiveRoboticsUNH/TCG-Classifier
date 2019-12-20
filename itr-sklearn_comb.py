@@ -249,7 +249,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	
 	# TRAIN
-	for ex in train_data[:5]:
+	for ex in train_data:
 		tcg.add_file_to_corpus(ex['txt_path'], ex['npz_path'], ex['label'])
 	tcg.fit()
 	
