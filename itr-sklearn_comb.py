@@ -180,7 +180,7 @@ class ITR_Extractor:
 		self.label_names[label] = label_name
 
 	def fit(self):
-		txt = self.tfidf.transform(self.corpus).toarray()
+		txt = self.tfidf.fit_transform(self.corpus).toarray()
 		npy = np.array(self.npy_corpus)
 
 		data = np.concatenate( [txt, npy] , axis = 1)
