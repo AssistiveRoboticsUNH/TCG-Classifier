@@ -182,7 +182,7 @@ class ITR_Extractor:
 	def fit(self):
 		train_mat = self.tfidf.fit_transform(self.corpus)
 
-		print("train_mat.shape", train_mat.shape, type(train_mat))
+		print("train_mat.shape", train_mat.toarray().shape, type(train_mat.toarray()))
 
 		print("self.npy_corpus.shape", np.array(self.npy_corpus).shape)
 		train_mat = np.concatenate( [train_mat.toarray(), np.array(self.npy_corpus)] )
