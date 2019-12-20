@@ -249,14 +249,22 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	
 	# TRAIN
+	print("adding data...")
 	for ex in train_data:
 		tcg.add_file_to_corpus(ex['txt_path'], ex['npz_path'], ex['label'])
+	
+	print("fitting model...")
 	tcg.fit()
 	
 	# CLASSIFY 
+	print("adding eval data...")
 	for ex in test_data:
 		tcg.add_file_to_eval_corpus(ex['txt_path'], ex['npz_path'], ex['label'], ex['label_name'])
+	print("evaluating model...")
 	tcg.eval()
+
+
+	
 
 	# GEN PYPLOT
 	'''
