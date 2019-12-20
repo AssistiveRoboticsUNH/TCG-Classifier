@@ -188,7 +188,7 @@ class ITR_Extractor:
 		#self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
 		#self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
 		train_mat = np.array(self.corpus)
-		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, random_state=42,max_iter=1000, tol=None, verbose=0).fit(train_mat, np.array(self.labels))
+		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, random_state=42,max_iter=1000, tol=None, verbose=0, njobs=-1).fit(train_mat, np.array(self.labels))
 
 	def pred(self, txt_file, npy_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
@@ -218,11 +218,13 @@ class ITR_Extractor:
 		self.bound = 0
 
 		self.corpus = []
+		self.npy_corpus = []
 		self.labels = []
 
 		self.label_names = ['']* self.num_classes
 
 		self.evalcorpus = []
+		self.evalnpy_corpus = []
 		self.evallabels = []
 
 		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
@@ -295,14 +297,15 @@ if __name__ == '__main__':
 
 	FLAGS = parser.parse_args()
 
-	for i in range(5):
-		print("depth: ", i)
+	i=2
+	#for i in range(5):
+	print("depth: ", i)
 
 
-		main(FLAGS.dataset_dir, 
-			FLAGS.csv_filename,
-			FLAGS.dataset_type,
-			FLAGS.dataset_id,
-			i,
-			FLAGS.num_classes
-			)
+	main(FLAGS.dataset_dir, 
+		FLAGS.csv_filename,
+		FLAGS.dataset_type,
+		FLAGS.dataset_id,
+		i,
+		FLAGS.num_classes
+		)
