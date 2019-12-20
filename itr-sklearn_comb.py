@@ -180,20 +180,16 @@ class ITR_Extractor:
 		self.label_names[label] = label_name
 
 	def fit(self):
-		train_mat = self.tfidf.fit_transform(self.corpus)
+		txt = self.tfidf.transform(self.corpus).toarray()
+		npy = np.array(self.npy_corpus)
 
-		print("train_mat.shape", train_mat.toarray().shape, type(train_mat.toarray()))
-
-		print("self.npy_corpus.shape", np.array(self.npy_corpus).shape)
-		train_mat = np.concatenate( [train_mat.toarray(), np.array(self.npy_corpus)] , axis = 1)
-		print("train_mat.shape", train_mat.shape)
-
+		data = np.concatenate( [txt, npy] , axis = 1)
 		#print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
 		#self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
 		#self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
 		train_mat = np.array(self.corpus)
-		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, random_state=42,max_iter=1000, tol=None, verbose=0, njobs=-1).fit(train_mat, np.array(self.labels))
+		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, random_state=42,max_iter=1000, tol=None, verbose=0, n_jobs=-1).fit(train_mat, np.array(self.labels))
 
 	def pred(self, txt_file, npy_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
@@ -205,10 +201,10 @@ class ITR_Extractor:
 		return self.clf.predict([data])
 
 	def eval(self):
-		txt = self.tfidf.transform(self.evalcorpus)
+		txt = self.tfidf.transform(self.evalcorpus).toarray()
 		npy = np.array(self.evalnpy_corpus)
 
-		data = np.concatenate((txt, npy))
+		data = np.concatenate( [txt, npy] , axis = 1)
 
 		pred = self.clf.predict(data)
 
