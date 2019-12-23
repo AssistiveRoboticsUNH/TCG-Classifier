@@ -208,7 +208,7 @@ class ITR_Extractor:
 		return self.clf.predict([data])
 
 	def eval(self):
-		txt = self.tfidf.fit_transform(self.corpus)#.toarray()
+		txt = self.tfidf.transform(self.corpus)#.toarray()
 		npy = np.array(self.npy_corpus)
 		#npy = np.array(self.evalnpy_corpus)
 
