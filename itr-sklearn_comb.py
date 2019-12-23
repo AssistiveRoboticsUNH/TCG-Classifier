@@ -185,6 +185,9 @@ class ITR_Extractor:
 		npy = np.array(self.npy_corpus)
 		#data = np.concatenate( [txt, npy] , axis = 1)
 
+		print("txt:", txt.shape)
+		print("npy:", npy.shape)
+
 		data = hstack( [txt, npy] )
 		print("data:", data.shape)
 
