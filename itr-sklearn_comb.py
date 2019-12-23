@@ -180,10 +180,11 @@ class ITR_Extractor:
 		self.label_names[label] = label_name
 
 	def fit(self):
-		txt = self.tfidf.fit_transform(self.corpus)#.toarray()
-		npy = np.array(self.npy_corpus)
+		#txt = self.tfidf.fit_transform(self.corpus)#.toarray()
+		#npy = np.array(self.npy_corpus)
+		#data = np.concatenate( [txt, npy] , axis = 1)
 
-		data = np.concatenate( [txt, npy] , axis = 1)
+		data = scipy.concatenate( [txt, npy] , axis = 1)
 		#print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
 		#self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
