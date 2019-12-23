@@ -208,14 +208,15 @@ class ITR_Extractor:
 		return self.clf.predict([data])
 
 	def eval(self):
-		txt = self.tfidf.transform(self.corpus)#.toarray()
-		npy = np.array(self.npy_corpus)
+		txt = self.tfidf.transform(self.evalcorpus)#.toarray()
+		npy = np.array(self.evalnpy_corpus)
 		#npy = np.array(self.evalnpy_corpus)
 
-		print("txt: ", type(txt))
-		print("npy: ", type(npy))
+		print("txt:", txt.shape)
+		print("npy:", npy.shape)
 
 		data = hstack( [txt, npy] )
+		print("data:", data.shape)
 		#data = np.concatenate( [txt, npy] , axis = 1)
 
 		pred = self.clf.predict(data)
