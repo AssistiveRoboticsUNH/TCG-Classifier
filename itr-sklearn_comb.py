@@ -180,7 +180,7 @@ class ITR_Extractor:
 		self.label_names[label] = label_name
 
 	def fit(self):
-		txt = self.tfidf.fit_transform(self.corpus).toarray()
+		txt = self.tfidf.fit_transform(self.corpus)#.toarray()
 		npy = np.array(self.npy_corpus)
 
 		data = np.concatenate( [txt, npy] , axis = 1)
@@ -202,7 +202,11 @@ class ITR_Extractor:
 
 	def eval(self):
 		txt = self.tfidf.transform(self.evalcorpus).toarray()
-		npy = np.array(self.evalnpy_corpus)
+		npy = spmatrix(np.array(self.evalnpy_corpus))
+		#npy = np.array(self.evalnpy_corpus)
+
+		print("txt: ", type(txt))
+		print("npy: ", type(npy))
 
 		data = np.concatenate( [txt, npy] , axis = 1)
 
@@ -318,3 +322,9 @@ if __name__ == '__main__':
 		i,
 		FLAGS.num_classes
 		)
+
+	#scaling
+	#https://datascience.stackexchange.com/questions/989/svm-using-scikit-learn-runs-endlessly-and-never-completes-execution
+
+	# convert numpy to Scikit Learn Spase matrix
+	#https://docs.scipy.org/doc/scipy/reference/sparse.html
