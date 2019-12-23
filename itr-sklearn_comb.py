@@ -186,6 +186,8 @@ class ITR_Extractor:
 		#data = np.concatenate( [txt, npy] , axis = 1)
 
 		data = hstack( [txt, npy] )
+		print("data:", data.shape)
+
 		#print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
 		#self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
@@ -203,14 +205,15 @@ class ITR_Extractor:
 		return self.clf.predict([data])
 
 	def eval(self):
-		txt = self.tfidf.transform(self.evalcorpus).toarray()
-		npy = spmatrix(np.array(self.evalnpy_corpus))
+		txt = self.tfidf.fit_transform(self.corpus)#.toarray()
+		npy = np.array(self.npy_corpus)
 		#npy = np.array(self.evalnpy_corpus)
 
 		print("txt: ", type(txt))
 		print("npy: ", type(npy))
 
-		data = np.concatenate( [txt, npy] , axis = 1)
+		data = hstack( [txt, npy] )
+		#data = np.concatenate( [txt, npy] , axis = 1)
 
 		pred = self.clf.predict(data)
 
