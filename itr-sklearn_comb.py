@@ -12,6 +12,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn import svm
 from sklearn import metrics
+import scipy
 
 from sklearn.linear_model import SGDClassifier
 
