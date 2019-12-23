@@ -12,7 +12,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn import svm
 from sklearn import metrics
-import scipy
+from scipy.sparse import hstack
 
 from sklearn.linear_model import SGDClassifier
 
@@ -185,7 +185,7 @@ class ITR_Extractor:
 		npy = np.array(self.npy_corpus)
 		#data = np.concatenate( [txt, npy] , axis = 1)
 
-		data = scipy.concatenate( [txt, npy] , axis = 1)
+		data = hstack( [txt, npy] )
 		#print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
 		#self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
