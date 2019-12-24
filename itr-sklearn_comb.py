@@ -263,7 +263,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 	
 	# TRAIN
 	print("adding data...")
-	for ex in train_data:
+	for ex in train_data[:1000]:
 		tcg.add_file_to_corpus(ex['txt_path'], ex['npz_path'], ex['label'])
 	
 	print("fitting model...")
