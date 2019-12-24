@@ -15,6 +15,7 @@ from sklearn import metrics
 from scipy.sparse import hstack
 
 from sklearn.linear_model import SGDClassifier
+import time
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -262,12 +263,15 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	
 	# TRAIN
+	t_s = time.time()
 	print("adding data...")
 	for ex in train_data[:1000]:
 		tcg.add_file_to_corpus(ex['txt_path'], ex['npz_path'], ex['label'])
 	
 	print("fitting model...")
+	t_s = time.time()
 	tcg.fit()
+	print("Total time: ", time.time() - t_s)
 	
 	# CLASSIFY 
 	print("adding eval data...")
