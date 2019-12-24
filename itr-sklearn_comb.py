@@ -197,7 +197,7 @@ class ITR_Extractor:
 		#self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
 		#self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
 		#train_mat = np.array(self.corpus)
-		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, random_state=42,max_iter=400, tol=None, verbose=0).fit(data, np.array(self.labels))
+		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-4, random_state=42,max_iter=200, tol=None, verbose=0).fit(data, np.array(self.labels))
 
 	def pred(self, txt_file, npy_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
@@ -265,7 +265,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 	# TRAIN
 	t_s = time.time()
 	print("adding data...")
-	for ex in train_data[:1000]:
+	for ex in train_data[:2000]:
 		tcg.add_file_to_corpus(ex['txt_path'], ex['npz_path'], ex['label'])
 	
 	print("fitting model...")
