@@ -189,7 +189,8 @@ class ITR_Extractor:
 		print("txt:", txt.shape)
 		print("npy:", npy.shape)
 
-		data = txt#hstack( [txt, npy] )
+		#data = txt
+		data = hstack( [txt, npy] )
 		print("data:", data.shape)
 
 		#print(train_mat.shape)
@@ -216,7 +217,8 @@ class ITR_Extractor:
 		print("txt:", txt.shape)
 		print("npy:", npy.shape)
 
-		data = txt #data = hstack( [txt, npy] )
+		#data = txt 
+		data = hstack( [txt, npy] )
 		print("data:", data.shape)
 		#data = np.concatenate( [txt, npy] , axis = 1)
 
