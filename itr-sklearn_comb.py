@@ -325,18 +325,18 @@ if __name__ == '__main__':
 
 	FLAGS = parser.parse_args()
 
-	i=2
-	#for i in range(5):
-	print("depth: ", i)
+
+	for i in range(5):
+		print("depth: ", i)
 
 
-	main(FLAGS.dataset_dir, 
-		FLAGS.csv_filename,
-		FLAGS.dataset_type,
-		FLAGS.dataset_id,
-		i,
-		FLAGS.num_classes
-		)
+		main(FLAGS.dataset_dir, 
+			FLAGS.csv_filename,
+			FLAGS.dataset_type,
+			FLAGS.dataset_id,
+			i,
+			FLAGS.num_classes
+			)
 
 	#scaling
 	#https://datascience.stackexchange.com/questions/989/svm-using-scikit-learn-runs-endlessly-and-never-completes-execution
