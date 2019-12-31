@@ -267,7 +267,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 	# TRAIN
 	t_s = time.time()
 	print("adding data...")
-	for ex in train_data[:5]:
+	for ex in train_data:
 		tcg.add_file_to_corpus(ex['txt_path'], ex['npz_path'], ex['label'])
 	
 	print("fitting model...")
