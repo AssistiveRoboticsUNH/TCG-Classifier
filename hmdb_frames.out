@@ -1,0 +1,355 @@
+('depth: ', 0)
+adding data...
+fitting model...
+('txt:', (3570, 23646))
+('npy:', (3570, 192))
+('data:', (3570, 23838))
+('Total time: ', 213.14282393455505)
+adding eval data...
+evaluating model...
+('txt:', (1530, 23646))
+('npy:', (1530, 192))
+('data:', (1530, 23838))
+                precision    recall  f1-score   support
+
+    brush_hair       0.30      0.47      0.37        30
+     cartwheel       0.00      0.00      0.00        30
+         catch       0.29      0.53      0.38        30
+          chew       0.14      0.10      0.12        30
+          clap       0.00      0.00      0.00        30
+  climb_stairs       0.13      0.17      0.14        30
+         climb       0.22      0.20      0.21        30
+          dive       0.62      0.17      0.26        30
+    draw_sword       0.03      0.03      0.03        30
+       dribble       0.13      0.30      0.18        30
+         drink       0.21      0.17      0.19        30
+           eat       0.12      0.27      0.17        30
+    fall_floor       0.17      0.17      0.17        30
+       fencing       0.17      0.10      0.12        30
+     flic_flac       0.17      0.20      0.18        30
+          golf       0.37      0.80      0.51        30
+     handstand       0.13      0.07      0.09        30
+           hit       0.18      0.20      0.19        30
+           hug       0.07      0.03      0.05        30
+          jump       0.09      0.07      0.08        30
+     kick_ball       0.16      0.17      0.16        30
+          kick       0.00      0.00      0.00        30
+          kiss       0.53      0.53      0.53        30
+         laugh       0.04      0.03      0.04        30
+          pick       0.10      0.03      0.05        30
+          pour       0.34      0.33      0.34        30
+        pullup       0.15      0.30      0.20        30
+         punch       0.05      0.03      0.04        30
+          push       0.20      0.23      0.22        30
+        pushup       0.07      0.07      0.07        30
+     ride_bike       0.09      0.10      0.09        30
+    ride_horse       0.12      0.17      0.14        30
+           run       0.09      0.07      0.08        30
+   shake_hands       0.09      0.07      0.08        30
+    shoot_ball       0.00      0.00      0.00        30
+     shoot_bow       0.14      0.17      0.15        30
+     shoot_gun       0.07      0.07      0.07        30
+           sit       0.14      0.33      0.20        30
+         situp       0.12      0.13      0.13        30
+         smile       0.22      0.13      0.17        30
+         smoke       0.06      0.03      0.04        30
+    somersault       0.07      0.07      0.07        30
+         stand       0.19      0.20      0.20        30
+swing_baseball       0.00      0.00      0.00        30
+sword_exercise       0.00      0.00      0.00        30
+         sword       0.04      0.03      0.04        30
+          talk       0.26      0.37      0.30        30
+         throw       0.19      0.23      0.21        30
+          turn       0.04      0.03      0.04        30
+          walk       0.10      0.10      0.10        30
+          wave       0.00      0.00      0.00        30
+
+     micro avg       0.16      0.16      0.16      1530
+     macro avg       0.14      0.16      0.14      1530
+  weighted avg       0.14      0.16      0.14      1530
+
+0.15816993464052287
+('depth: ', 1)
+adding data...
+fitting model...
+('txt:', (3570, 94360))
+('npy:', (3570, 384))
+('data:', (3570, 94744))
+('Total time: ', 922.4529747962952)
+adding eval data...
+evaluating model...
+('txt:', (1530, 94360))
+('npy:', (1530, 384))
+('data:', (1530, 94744))
+                precision    recall  f1-score   support
+
+    brush_hair       0.35      0.67      0.46        30
+     cartwheel       0.17      0.17      0.17        30
+         catch       0.58      0.50      0.54        30
+          chew       0.31      0.33      0.32        30
+          clap       0.15      0.10      0.12        30
+  climb_stairs       0.43      0.10      0.16        30
+         climb       0.26      0.37      0.31        30
+          dive       0.23      0.23      0.23        30
+    draw_sword       0.29      0.07      0.11        30
+       dribble       0.30      0.23      0.26        30
+         drink       0.17      0.17      0.17        30
+           eat       0.21      0.33      0.26        30
+    fall_floor       0.18      0.07      0.10        30
+       fencing       0.27      0.27      0.27        30
+     flic_flac       0.30      0.30      0.30        30
+          golf       0.72      0.77      0.74        30
+     handstand       0.24      0.30      0.27        30
+           hit       0.04      0.03      0.04        30
+           hug       0.00      0.00      0.00        30
+          jump       0.41      0.30      0.35        30
+     kick_ball       0.30      0.23      0.26        30
+          kick       0.16      0.17      0.16        30
+          kiss       0.78      0.60      0.68        30
+         laugh       0.22      0.43      0.30        30
+          pick       0.00      0.00      0.00        30
+          pour       0.68      0.50      0.58        30
+        pullup       0.27      0.80      0.40        30
+         punch       0.10      0.23      0.14        30
+          push       0.18      0.13      0.15        30
+        pushup       0.30      0.30      0.30        30
+     ride_bike       0.17      0.37      0.23        30
+    ride_horse       0.64      0.30      0.41        30
+           run       0.09      0.10      0.10        30
+   shake_hands       0.18      0.30      0.23        30
+    shoot_ball       0.09      0.03      0.05        30
+     shoot_bow       0.32      0.23      0.27        30
+     shoot_gun       0.27      0.50      0.35        30
+           sit       0.04      0.03      0.03        30
+         situp       0.29      0.13      0.18        30
+         smile       0.38      0.20      0.26        30
+         smoke       0.18      0.17      0.17        30
+    somersault       0.14      0.03      0.05        30
+         stand       0.06      0.20      0.10        30
+swing_baseball       0.11      0.03      0.05        30
+sword_exercise       0.05      0.03      0.04        30
+         sword       0.38      0.10      0.16        30
+          talk       0.56      0.30      0.39        30
+         throw       0.18      0.20      0.19        30
+          turn       0.29      0.30      0.30        30
+          walk       0.44      0.27      0.33        30
+          wave       0.05      0.03      0.04        30
+
+     micro avg       0.25      0.25      0.25      1530
+     macro avg       0.27      0.25      0.24      1530
+  weighted avg       0.27      0.25      0.24      1530
+
+0.24640522875816995
+('depth: ', 2)
+adding data...
+fitting model...
+('txt:', (3570, 95987))
+('npy:', (3570, 384))
+('data:', (3570, 96371))
+('Total time: ', 1737.7214210033417)
+adding eval data...
+evaluating model...
+('txt:', (1530, 95987))
+('npy:', (1530, 384))
+('data:', (1530, 96371))
+                precision    recall  f1-score   support
+
+    brush_hair       0.36      0.53      0.43        30
+     cartwheel       0.22      0.20      0.21        30
+         catch       0.45      0.60      0.51        30
+          chew       0.34      0.33      0.34        30
+          clap       0.39      0.23      0.29        30
+  climb_stairs       0.29      0.23      0.26        30
+         climb       0.42      0.37      0.39        30
+          dive       0.29      0.27      0.28        30
+    draw_sword       0.22      0.27      0.24        30
+       dribble       0.16      0.10      0.12        30
+         drink       0.12      0.10      0.11        30
+           eat       0.14      0.17      0.15        30
+    fall_floor       0.29      0.27      0.28        30
+       fencing       0.17      0.13      0.15        30
+     flic_flac       0.43      0.50      0.46        30
+          golf       0.69      0.73      0.71        30
+     handstand       0.23      0.10      0.14        30
+           hit       0.25      0.33      0.29        30
+           hug       0.05      0.03      0.04        30
+          jump       0.24      0.13      0.17        30
+     kick_ball       0.23      0.33      0.27        30
+          kick       0.23      0.20      0.21        30
+          kiss       0.44      0.53      0.48        30
+         laugh       0.27      0.23      0.25        30
+          pick       0.00      0.00      0.00        30
+          pour       0.42      0.53      0.47        30
+        pullup       0.47      0.67      0.55        30
+         punch       0.15      0.23      0.18        30
+          push       0.21      0.20      0.20        30
+        pushup       0.31      0.27      0.29        30
+     ride_bike       0.40      0.63      0.49        30
+    ride_horse       0.31      0.53      0.39        30
+           run       0.20      0.10      0.13        30
+   shake_hands       0.34      0.40      0.37        30
+    shoot_ball       0.07      0.03      0.05        30
+     shoot_bow       0.37      0.37      0.37        30
+     shoot_gun       0.16      0.27      0.20        30
+           sit       0.18      0.27      0.22        30
+         situp       0.26      0.37      0.31        30
+         smile       0.27      0.27      0.27        30
+         smoke       0.32      0.27      0.29        30
+    somersault       0.41      0.30      0.35        30
+         stand       0.29      0.20      0.24        30
+swing_baseball       0.04      0.03      0.04        30
+sword_exercise       0.13      0.13      0.13        30
+         sword       0.18      0.20      0.19        30
+          talk       0.27      0.33      0.30        30
+         throw       0.00      0.00      0.00        30
+          turn       0.19      0.17      0.18        30
+          walk       0.19      0.20      0.20        30
+          wave       0.12      0.07      0.09        30
+
+     micro avg       0.27      0.27      0.27      1530
+     macro avg       0.26      0.27      0.26      1530
+  weighted avg       0.26      0.27      0.26      1530
+
+0.2738562091503268
+('depth: ', 3)
+adding data...
+fitting model...
+('txt:', (3570, 95672))
+('npy:', (3570, 384))
+('data:', (3570, 96056))
+('Total time: ', 861.41130900383)
+adding eval data...
+evaluating model...
+('txt:', (1530, 95672))
+('npy:', (1530, 384))
+('data:', (1530, 96056))
+                precision    recall  f1-score   support
+
+    brush_hair       0.81      0.87      0.84        30
+     cartwheel       0.82      0.60      0.69        30
+         catch       0.72      0.77      0.74        30
+          chew       0.64      0.60      0.62        30
+          clap       0.74      0.57      0.64        30
+  climb_stairs       0.64      0.53      0.58        30
+         climb       0.71      0.80      0.75        30
+          dive       0.40      0.40      0.40        30
+    draw_sword       0.38      0.37      0.37        30
+       dribble       0.67      0.80      0.73        30
+         drink       0.55      0.57      0.56        30
+           eat       0.52      0.50      0.51        30
+    fall_floor       0.41      0.23      0.30        30
+       fencing       0.62      0.87      0.72        30
+     flic_flac       0.80      0.80      0.80        30
+          golf       0.82      0.93      0.87        30
+     handstand       0.62      0.67      0.65        30
+           hit       0.50      0.53      0.52        30
+           hug       0.63      0.63      0.63        30
+          jump       0.32      0.27      0.29        30
+     kick_ball       0.50      0.57      0.53        30
+          kick       0.64      0.23      0.34        30
+          kiss       0.86      0.80      0.83        30
+         laugh       0.75      0.80      0.77        30
+          pick       0.21      0.27      0.24        30
+          pour       0.73      0.80      0.76        30
+        pullup       0.91      0.97      0.94        30
+         punch       0.25      0.33      0.29        30
+          push       0.73      0.73      0.73        30
+        pushup       0.84      0.90      0.87        30
+     ride_bike       0.85      0.97      0.91        30
+    ride_horse       0.90      0.87      0.88        30
+           run       0.38      0.50      0.43        30
+   shake_hands       0.80      0.80      0.80        30
+    shoot_ball       0.58      0.50      0.54        30
+     shoot_bow       0.70      0.53      0.60        30
+     shoot_gun       0.53      0.57      0.55        30
+           sit       0.46      0.53      0.49        30
+         situp       0.81      0.83      0.82        30
+         smile       0.69      0.60      0.64        30
+         smoke       0.85      0.73      0.79        30
+    somersault       0.53      0.80      0.64        30
+         stand       0.28      0.17      0.21        30
+swing_baseball       0.44      0.23      0.30        30
+sword_exercise       0.11      0.13      0.12        30
+         sword       0.43      0.20      0.27        30
+          talk       0.75      0.80      0.77        30
+         throw       0.17      0.27      0.21        30
+          turn       0.50      0.57      0.53        30
+          walk       0.50      0.50      0.50        30
+          wave       0.35      0.27      0.30        30
+
+     micro avg       0.59      0.59      0.59      1530
+     macro avg       0.59      0.59      0.58      1530
+  weighted avg       0.59      0.59      0.58      1530
+
+0.5895424836601307
+('depth: ', 4)
+adding data...
+fitting model...
+('txt:', (3570, 96268))
+('npy:', (3570, 384))
+('data:', (3570, 96652))
+('Total time: ', 484.3278269767761)
+adding eval data...
+evaluating model...
+('txt:', (1530, 96268))
+('npy:', (1530, 384))
+('data:', (1530, 96652))
+                precision    recall  f1-score   support
+
+    brush_hair       0.76      0.83      0.79        30
+     cartwheel       0.86      0.63      0.73        30
+         catch       0.76      0.83      0.79        30
+          chew       0.90      0.63      0.75        30
+          clap       0.74      0.67      0.70        30
+  climb_stairs       0.65      0.57      0.61        30
+         climb       0.87      0.90      0.89        30
+          dive       0.66      0.70      0.68        30
+    draw_sword       0.52      0.47      0.49        30
+       dribble       0.93      0.93      0.93        30
+         drink       0.65      0.80      0.72        30
+           eat       0.73      0.80      0.76        30
+    fall_floor       0.64      0.30      0.41        30
+       fencing       0.62      0.70      0.66        30
+     flic_flac       0.87      0.87      0.87        30
+          golf       0.86      1.00      0.92        30
+     handstand       0.73      0.80      0.76        30
+           hit       0.50      0.53      0.52        30
+           hug       0.74      0.83      0.78        30
+          jump       0.42      0.37      0.39        30
+     kick_ball       0.82      0.60      0.69        30
+          kick       0.60      0.40      0.48        30
+          kiss       0.82      0.90      0.86        30
+         laugh       0.70      0.93      0.80        30
+          pick       0.21      0.17      0.19        30
+          pour       0.96      0.90      0.93        30
+        pullup       0.94      0.97      0.95        30
+         punch       0.49      0.57      0.52        30
+          push       0.86      0.80      0.83        30
+        pushup       0.93      0.90      0.92        30
+     ride_bike       0.97      1.00      0.98        30
+    ride_horse       0.85      0.97      0.91        30
+           run       0.49      0.60      0.54        30
+   shake_hands       0.72      0.87      0.79        30
+    shoot_ball       0.88      0.93      0.90        30
+     shoot_bow       0.88      0.97      0.92        30
+     shoot_gun       0.86      0.83      0.85        30
+           sit       0.46      0.43      0.45        30
+         situp       0.91      1.00      0.95        30
+         smile       0.61      0.47      0.53        30
+         smoke       0.81      0.87      0.84        30
+    somersault       0.64      0.83      0.72        30
+         stand       0.31      0.40      0.35        30
+swing_baseball       0.77      0.33      0.47        30
+sword_exercise       0.23      0.30      0.26        30
+         sword       0.45      0.33      0.38        30
+          talk       0.92      0.77      0.84        30
+         throw       0.40      0.47      0.43        30
+          turn       0.53      0.63      0.58        30
+          walk       0.43      0.43      0.43        30
+          wave       0.35      0.27      0.30        30
+
+     micro avg       0.69      0.69      0.69      1530
+     macro avg       0.69      0.69      0.68      1530
+  weighted avg       0.69      0.69      0.68      1530
+
+0.6862745098039216
