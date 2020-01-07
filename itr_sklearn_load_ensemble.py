@@ -158,11 +158,6 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	weight_scheme = np.array(weight_scheme)
 	med = np.median(weight_scheme)
 
-	print(weight_scheme, med)
-	print(np.argwhere(weight_scheme > med))
-	print(np.argwhere(weight_scheme == med))
-	print(np.argwhere(weight_scheme < med))
-
 	weight_scheme[np.argwhere(weight_scheme > med)] = 1.0
 	weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
 	weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
