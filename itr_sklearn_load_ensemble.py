@@ -149,19 +149,20 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		tcg.add_file_to_eval_corpus(txt_files, ex['label'], ex['label_name'])
 	print("evaluating model...")
 
-	acc = []
+	weight_scheme = []
 	for depth in range(5):
-		acc = tcg.eval_single(depth)
+		acc = tcg.eval_single(depth) 
 		print("depth: {:d}, acc: {:.4f}".format(depth, acc))
+		weight_scheme.append(acc)
 
-	med = np.median(acc)
+	med = np.median(weight_scheme)
 
-	print(acc, med)
-	print(np.argwhere(acc > med))
-	acc[np.argwhere(acc > med)] = 1.0
-	acc[np.argwhere(acc == med)] = 0.5
+	print(weight_scheme, med)
+	print(np.argwhere(weight_scheme > med))
+	weight_scheme[np.argwhere(weight_scheme > med)] = 1.0
+	weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
 
-	print("ensemble, acc: {:.4f}".format(tcg.eval([acc])))
+	print("ensemble, acc: {:.4f}".format(tcg.eval([weight_scheme])))
 	
 
 	# GEN PYPLOT
