@@ -47,7 +47,7 @@ class ITR_Extractor_Ensemble:
 
 
 
-	def pred(self, txt_files):
+	def pred(self, txt_files, weight_scheme):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
 
 		confidence_values = []
@@ -59,7 +59,7 @@ class ITR_Extractor_Ensemble:
 			confidence_values.append( self.models[depth].clf.predict_proba(data) )
 
 		#print("confidence_values:", confidence_values)
-		confidence_values *= np.array([[1.0, 1.0, 0.0, 0.0, 0.0]]).reshape(5,1,1)
+		confidence_values *= np.array(weight_scheme).reshape(5,1,1)
 		#confidence_values *= np.array([[0.0, 0.0, 0.5, 1.0, 1.0]]).reshape(5,1,1)
 		
 
@@ -149,11 +149,16 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		tcg.add_file_to_eval_corpus(txt_files, ex['label'], ex['label_name'])
 	print("evaluating model...")
 
+	acc = []
 	for depth in range(5):
-		print("depth: {:d}, acc: {:.4f}".format(depth, tcg.eval_single(depth)))
+		acc = tcg.eval_single(depth)
+		print("depth: {:d}, acc: {:.4f}".format(depth, acc))
 
-	
-	print("ensemble, acc: {:.4f}".format(tcg.eval()))
+	med = np.median(acc)
+	acc[acc > med] = 1.0
+	acc[acc == med] = 0.5
+
+	print("ensemble, acc: {:.4f}".format(tcg.eval([acc])))
 	
 
 	# GEN PYPLOT
