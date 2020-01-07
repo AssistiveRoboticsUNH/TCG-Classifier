@@ -191,5 +191,5 @@ if __name__ == '__main__':
 		FLAGS.dataset_type,
 		FLAGS.dataset_id,
 		FLAGS.num_classes,
-		FLAGS.save_name+'_'+str(depth)
+		FLAGS.save_name
 		)
