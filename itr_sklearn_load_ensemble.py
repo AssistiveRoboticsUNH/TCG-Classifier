@@ -110,7 +110,7 @@ class ITR_Extractor_Ensemble:
 		self.models = []
 		for depth in range(5):
 
-			save_file = os.path.join(save_name, dataset_id, dataset_type)
+			save_file = os.path.join(save_name, str(dataset_id), dataset_type)
 			filename = save_file.replace('/', '_')+'_'+str(depth)+".joblib"
 			
 			self.models.append(ITR_Extractor(num_classes, os.path.join(save_file, filename)))
