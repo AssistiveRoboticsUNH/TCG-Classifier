@@ -28,7 +28,9 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 
 	max_accuracy = 0
 
-	for i in range(5):
+	for iteration in range(repeat):
+		print("Processing depth: {:d}, iter: {:d}/{:d}".format(depth, iteration, repeat))
+	
 
 		tcg = ITR_Extractor(num_classes)
 		
@@ -44,24 +46,26 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		
 		# TRAIN
-		print("adding data...")
+		#print("adding data...")
 		for ex in train_data:
 			tcg.add_file_to_corpus(ex['txt_path'], ex['label'])
 		print("fitting model...")
 		tcg.fit()
 		
 		# CLASSIFY 
-		print("adding eval data...")
+		#print("adding eval data...")
 		for ex in test_data:
 			tcg.add_file_to_eval_corpus(ex['txt_path'], ex['label'], ex['label_name'])
 		print("evaluating model...")
 		cur_accuracy = tcg.eval()
 
+
+
 		if(cur_accuracy > max_accuracy and save_name != ""):
 			tcg.save_model(save_name+".joblib")
 			max_accuracy = cur_accuracy
 
-	print("Max_accuracy: ", max_accuracy)
+		print("Training depth: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(depth, iteration, repeat, cur_accuracy, max_accuracy))
 	
 
 if __name__ == '__main__':
