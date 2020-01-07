@@ -86,9 +86,6 @@ class ITR_Extractor_Ensemble:
 			txt_files = [self.models[depth].evalcorpus[i] for depth in range(5)]
 			pred.append( self.pred(txt_files, weight_scheme) )
 
-		print("pred:", np.array(pred).shape)
-		print("labels:", np.array(self.evallabels).shape)
-
 		#print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
 		#print(metrics.accuracy_score(self.evallabels, pred))
 		return metrics.accuracy_score(self.evallabels, pred)
@@ -165,7 +162,6 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	weight_scheme = np.array([weight_scheme])
 
 	print("weight_scheme", weight_scheme)
-
 	print("ensemble, acc: {:.4f}".format(tcg.eval(weight_scheme)))
 	
 
