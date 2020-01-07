@@ -198,7 +198,7 @@ class ITR_Extractor:
 			confidence_values.append( self.models[depth].predict_proba(data) )
 
 		#print("confidence_values:", confidence_values)
-		confidence_values *= np.array([[0.1, 0.2, 0.8, 0.9, 1.0]]).reshape(5,1,1)
+		confidence_values *= np.array([[0.0, 0.0, 0.0, 0.9, 1.0]]).reshape(5,1,1)
 		#confidence_values *= np.array([[0.25, 0.5, 0.8, 0.9, 1.0]]).reshape(5,1,1)
 
 		#print("confid_shape: ", np.array(confidence_values).shape)
