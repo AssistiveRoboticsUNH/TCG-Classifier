@@ -59,7 +59,7 @@ class ITR_Extractor_Ensemble:
 			confidence_values.append( self.models[depth].clf.predict_proba(data) )
 
 		#print("confidence_values:", confidence_values)
-		confidence_values *= np.array([[1.0, 1.0, 0.5, 0.0, 0.0]]).reshape(5,1,1)
+		confidence_values *= np.array([[1.0, 1.0, 0.0, 0.0, 0.0]]).reshape(5,1,1)
 		#confidence_values *= np.array([[0.0, 0.0, 0.5, 1.0, 1.0]]).reshape(5,1,1)
 		
 
