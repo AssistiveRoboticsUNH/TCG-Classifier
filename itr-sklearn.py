@@ -19,6 +19,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 
+from joblib import dump, load
+
+
 class ITR_Extractor:
 
 	class AtomicEvent():
@@ -195,10 +198,16 @@ class ITR_Extractor:
 		data = self.tfidf.transform(self.evalcorpus)
 		pred = self.clf.predict(data)
 
-		print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
-		print(metrics.accuracy_score(self.evallabels, pred))
+		#print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
+		#print(metrics.accuracy_score(self.evallabels, pred))
 
+		return metrics.accuracy_score(self.evallabels, pred)
 
+	def save_model(self, name='model.joblib')
+		dump(self.clf, name) 
+
+	def load_model(self, name='model.joblib')
+		self.clf = load(name) 
 
 	def __init__(self, num_classes):
 		self.num_classes = num_classes
@@ -217,7 +226,7 @@ class ITR_Extractor:
 		
 		
 
-def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes):
+def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes, save_name=""):
 
 	tcg = ITR_Extractor(num_classes)
 	
@@ -244,7 +253,13 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 	for ex in test_data:
 		tcg.add_file_to_eval_corpus(ex['txt_path'], ex['label'], ex['label_name'])
 	print("evaluating model...")
-	tcg.eval()
+	cur_accuracy = tcg.eval()
+
+	print(cur_accuracy)
+
+	if(save_name != ""):
+		tcg.save_model(save_name+".joblib")
+	
 
 	# GEN PYPLOT
 	"""
@@ -282,6 +297,8 @@ if __name__ == '__main__':
 	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow', 'both'])
 	parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
 	parser.add_argument('num_classes', type=int, help='the number of classes in the dataset')
+
+	parser.add_argument('--save_name', default="", help='what to save the model as')
 	#parser.add_argument('dataset_depth', type=int, help='a csv file denoting the files in the dataset')
 
 	FLAGS = parser.parse_args()
@@ -297,5 +314,6 @@ if __name__ == '__main__':
 			FLAGS.dataset_type,
 			FLAGS.dataset_id,
 			i,
-			FLAGS.num_classes
+			FLAGS.num_classes,
+			FLAGS.save_name
 			)
