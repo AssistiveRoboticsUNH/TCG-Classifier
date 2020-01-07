@@ -155,6 +155,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		print("depth: {:d}, acc: {:.4f}".format(depth, acc))
 		weight_scheme.append(acc)
 
+	weight_scheme = np.array(weight_scheme)
 	med = np.median(weight_scheme)
 
 	print(weight_scheme, med)
