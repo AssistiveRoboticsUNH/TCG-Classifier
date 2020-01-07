@@ -66,8 +66,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 			save_file = os.path.join(save_name, str(dataset_id), dataset_type)
 			print(save_file)
 			filename = save_file.replace('/', '_')+'_'+str(depth)+".joblib"
-			if (not os.path.exists(save_name)):
-				os.makedirs(save_name)
+			if (not os.path.exists(save_file)):
+				os.makedirs(save_file)
 
 			print(os.path.join(save_file, filename))
 
