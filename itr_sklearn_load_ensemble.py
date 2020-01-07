@@ -160,6 +160,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 	print(weight_scheme, med)
 	print(np.argwhere(weight_scheme > med))
+	print(np.argwhere(weight_scheme == med))
+
 	weight_scheme[np.argwhere(weight_scheme > med)] = 1.0
 	weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
 	weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
