@@ -108,7 +108,7 @@ class ITR_Extractor_Ensemble:
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	tcg = ITR_Extractor_Ensemble(num_classes)
+	tcg = ITR_Extractor_Ensemble(num_classes, save_name)
 	
 	try:
 		csv_contents = read_csv(csv_filename)
