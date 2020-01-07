@@ -157,6 +157,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	med = np.median(acc)
 
 	print(acc, med)
+	print(np.argwhere(acc > med))
 	acc[np.argwhere(acc > med)] = 1.0
 	acc[np.argwhere(acc == med)] = 0.5
 
