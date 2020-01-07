@@ -22,80 +22,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 
-class ITR_Extractor:
+class ITR_Extractor_Ensemble:
 
-	class AtomicEvent():
-		def __init__(self, name, occurence, start=-1, end=-1):
-			self.name = name
-			self.occurence = occurence
-			self.start = start
-			self.end = end
-
-		def __lt__(self, other):
-			if( self.start < other.start ):
-				return True
-			return self.start == other.start and self.end < other.end
-
-		def get_itr(self, other):
-			return self.get_itr_from_time(self.start, self.end, other.start, other.end)
-
-		def get_itr_from_time(self, a1, a2, b1, b2):
-
-			#before
-			if (a2 < b1):
-				return 'b'
-
-			#meets
-			if (a2 == b1):
-				return 'm'
-
-			#overlaps
-			if (a1 < b1 and a2 < b2 and b1 < a2):
-				return 'o'
-
-			#during
-			if (a1 < b1 and b2 < a2):
-				return 'd'
-
-			#finishes
-			if (b1 < a1 and a2 == b2):
-				return 'f'
-
-			#starts
-			if (a1 == b1 and a2 < b2):
-				return 's'
-
-			#equals
-			if (a1 == b1 and a2 == b2):
-				return 'eq'
-
-			#startedBy
-			if (a1 == b1 and b2 < a2):
-				return 'si'
-
-			#contains
-			if (b1 < a1 and a2 < b2):
-				return 'di'
-
-			#finishedBy
-			if (a1 < b1 and a2 == b2):
-				return 'fi'
-
-			#overlappedBy
-			if (b1 < a1 and b2 < a2 and a1 < b2):
-				return 'oi'
-
-			#metBy
-			if (b2 == a1):
-				return 'mi'
-
-			#after
-			if (b2 < a1):
-				return 'bi'
-
-
-
-
+	
 
 	def read_file(self, txt_file):
 		
@@ -184,7 +113,7 @@ class ITR_Extractor:
 		for depth in range(5):
 			train_mat = self.tfidf[depth].fit_transform(self.corpus[depth])
 			print(depth, train_mat.shape)
-			self.models[depth].fit(train_mat, np.array(self.labels))
+			#self.models[depth].fit(train_mat, np.array(self.labels))
 
 	def pred(self, txt_files):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
@@ -195,10 +124,10 @@ class ITR_Extractor:
 		for depth in range(5):
 			txt = txt_files[depth]#self.parse_txt_file(txt_files[depth])
 			data = self.tfidf[depth].transform([txt])
-			confidence_values.append( self.models[depth].predict_proba(data) )
+			confidence_values.append( self.models[depth].clf.predict_proba(data) )
 
 		#print("confidence_values:", confidence_values)
-		confidence_values *= np.array([[0.0, 0.0, 0.5, 1.0, 1.0]]).reshape(5,1,1)
+		#confidence_values *= np.array([[0.0, 0.0, 0.5, 1.0, 1.0]]).reshape(5,1,1)
 		#confidence_values *= np.array([[0.0, 0.0, 0.5, 1.0, 1.0]]).reshape(5,1,1)
 		
 
@@ -227,7 +156,7 @@ class ITR_Extractor:
 
 
 
-	def __init__(self, num_classes):
+	def __init__(self, num_classes, save_name):
 		self.num_classes = num_classes
 
 		self.bound = 0
@@ -240,12 +169,11 @@ class ITR_Extractor:
 		self.evalcorpus = [[] for i in range(5)]
 		self.evallabels = []
 
-		self.tfidf = []
 		self.models = []
-		for i in range(5):
-			self.tfidf.append(TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True))
-			self.models.append(SGDClassifier(loss='modified_huber', penalty='l2',alpha=1e-4, max_iter=1000, tol=1e-4, verbose=0, n_jobs=-1))
-		
+		for depth in range(5):
+			self.models.append(ITR_Extractor(num_classes, save_name+'_'+str(depth)))
+
+			
 		
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes):

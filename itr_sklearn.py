@@ -209,7 +209,7 @@ class ITR_Extractor:
 	def load_model(self, name='model.joblib'):
 		self.clf = load(name) 
 
-	def __init__(self, num_classes):
+	def __init__(self, num_classes, save_name=""):
 		self.num_classes = num_classes
 
 		self.bound = 0
@@ -224,6 +224,8 @@ class ITR_Extractor:
 
 		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
 		
+		if(save_name != ""):
+			self.load_model(save_name)
 		
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes, save_name=""):
