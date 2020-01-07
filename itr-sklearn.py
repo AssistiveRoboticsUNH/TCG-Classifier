@@ -203,10 +203,10 @@ class ITR_Extractor:
 
 		return metrics.accuracy_score(self.evallabels, pred)
 
-	def save_model(self, name='model.joblib')
+	def save_model(self, name='model.joblib'):
 		dump(self.clf, name) 
 
-	def load_model(self, name='model.joblib')
+	def load_model(self, name='model.joblib'):
 		self.clf = load(name) 
 
 	def __init__(self, num_classes):
