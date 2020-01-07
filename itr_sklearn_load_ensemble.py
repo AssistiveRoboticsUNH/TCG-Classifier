@@ -101,7 +101,7 @@ class ITR_Extractor_Ensemble:
 
 		self.models = []
 		for depth in range(5):
-			self.models.append(ITR_Extractor(num_classes, save_name+'_'+str(depth)))
+			self.models.append(ITR_Extractor(num_classes, save_name+'_'+str(depth)+".joblib"))
 
 			
 		
