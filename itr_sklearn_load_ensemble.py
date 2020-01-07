@@ -153,7 +153,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		print("depth: {:d}, acc: {:.4f}".format(depth, tcg.eval_single(depth)))
 
 	
-	print("ensemble, acc: {:.4f}".format(depth, tcg.eval()))
+	print("ensemble, acc: {:.4f}".format(tcg.eval()))
 	
 
 	# GEN PYPLOT
