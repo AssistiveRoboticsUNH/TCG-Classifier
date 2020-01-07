@@ -203,7 +203,7 @@ class ITR_Extractor:
 	def __init__(self, num_classes):
 		self.num_classes = num_classes
 
-		self.bound = 0
+		self.bound = 2#0
 
 		self.corpus = []
 		self.labels = []
