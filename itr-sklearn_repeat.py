@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 from joblib import dump, load
 
 
-from itr-sklearn import ITR_Extractor
+from itr_sklearn import ITR_Extractor
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes, save_name="", repeat=1):
 
