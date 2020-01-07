@@ -45,6 +45,8 @@ class ITR_Extractor_Ensemble:
 			print(depth, train_mat.shape)
 			#self.models[depth].fit(train_mat, np.array(self.labels))
 
+
+
 	def pred(self, txt_files):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
 
@@ -67,6 +69,14 @@ class ITR_Extractor_Ensemble:
 
 		return np.argmax(confidence_values)
 
+	def eval_single(self, depth):
+		
+		data = self.models[depth].tfidf.transform([self.models[depth].evalcorpus])
+		pred = self.models[depth].clf.predict(data) 
+
+		return metrics.accuracy_score(self.evallabels, pred)
+
+
 	def eval(self):
 
 		pred = []
@@ -79,8 +89,9 @@ class ITR_Extractor_Ensemble:
 		print("pred:", np.array(pred).shape)
 		print("labels:", np.array(self.evallabels).shape)
 
-		print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
-		print(metrics.accuracy_score(self.evallabels, pred))
+		#print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
+		#print(metrics.accuracy_score(self.evallabels, pred))
+		return metrics.accuracy_score(self.evallabels, pred)
 
 
 
@@ -137,7 +148,13 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		txt_files = [ex['txt_path_'+str(d)] for d in range(5)]
 		tcg.add_file_to_eval_corpus(txt_files, ex['label'], ex['label_name'])
 	print("evaluating model...")
-	tcg.eval()
+
+	for depth in range(5):
+		print("depth: {:d}, acc: {:.4f}".format(depth, tcg.eval_single(depth)))
+
+	
+	print("ensemble, acc: {:.4f}".format(depth, tcg.eval()))
+	
 
 	# GEN PYPLOT
 	'''
