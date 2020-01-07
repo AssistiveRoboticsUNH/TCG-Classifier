@@ -90,7 +90,7 @@ if __name__ == '__main__':
 			FLAGS.csv_filename,
 			FLAGS.dataset_type,
 			FLAGS.dataset_id,
-			i,
+			depth,
 			FLAGS.num_classes,
 			FLAGS.save_name+'_'+str(depth),
 			FLAGS.repeat
