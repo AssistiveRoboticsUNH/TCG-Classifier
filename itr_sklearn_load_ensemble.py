@@ -21,97 +21,27 @@ from sklearn.ensemble import VotingClassifier
 import matplotlib
 import matplotlib.pyplot as plt
 
+from itr_sklearn import ITR_Extractor
 
 class ITR_Extractor_Ensemble:
 
-	
-
-	def read_file(self, txt_file):
-		
-		events = {}
-		for line in list(open(txt_file, 'r')):
-			line = line.split()
-
-			event_tokens = line[0].split('_')
-			time = float(line[1])
-			
-			event_name = event_tokens[0]
-			event_occur = int(event_tokens[1])
-			event_bound = event_tokens[2]
-
-			event_id = event_name+'_'+str(event_occur)
-			if (event_id not in events):
-				events[event_id] = self.AtomicEvent(event_name, event_occur)
-
-			if(event_bound == 's'):
-				events[event_id].start = time
-			else:
-				events[event_id].end = time
-
-		return events.values()
-
-	def all_itrs(self, e1, e2, bound):
-
-		itrs = Set()
-		for i in range(-bound, bound):
-
-			itr_name = e1.get_itr_from_time(e1.start, e1.end+i, e2.start, e2.end)
-			itrs.add(itr_name)
-		itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
-		itrs.add(itr_name)
-
-		return itrs
-
-
-	
-	def extract_itr_seq(self, txt_file):
-
-		# get events from file
-		events = sorted(self.read_file(txt_file)) 
-
-		# get a list of all of the ITRs in the txt_file
-		itr_seq = []
-
-		for i in range(len(events)):
-
-			j = i+1
-			while(j < len(events) and events[j].name != events[i].name):
-
-				for itr_name in self.all_itrs(events[i], events[j], self.bound):
-
-					if('i' not in itr_name):
-						e1 = events[i].name
-						e2 = events[j].name
-
-						itr = (e1, itr_name, e2)
-						itr_seq.append(itr)
-				j+=1
-		
-		return itr_seq
-	
-	def parse_txt_file(self, txt_file):
-		txt = ''
-		for itr in self.extract_itr_seq(txt_file):
-			s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
-			txt += s
-		return txt
 
 	def add_file_to_corpus(self, txt_files, label):
 		for depth in range(5):
 			txt = self.parse_txt_file(txt_files[depth])
-			self.corpus[depth].append(txt)
+			self.model[depth].corpus.append(txt)
 		self.labels.append(label)
 
 	def add_file_to_eval_corpus(self, txt_files, label, label_name):
 		for depth in range(5):
 			txt = self.parse_txt_file(txt_files[depth])
-			self.evalcorpus[depth].append(txt)
+			self.model[depth].evalcorpus.append(txt)
 		self.evallabels.append(label)
 		self.label_names[label] = label_name
 
 	def fit(self):
 		for depth in range(5):
-			train_mat = self.tfidf[depth].fit_transform(self.corpus[depth])
+			train_mat = self.model[depth].tfidf.fit_transform(self.model[depth].corpus)
 			print(depth, train_mat.shape)
 			#self.models[depth].fit(train_mat, np.array(self.labels))
 
@@ -123,7 +53,7 @@ class ITR_Extractor_Ensemble:
 		#depth=4
 		for depth in range(5):
 			txt = txt_files[depth]#self.parse_txt_file(txt_files[depth])
-			data = self.tfidf[depth].transform([txt])
+			data = self.models[depth].tfidf.transform([txt])
 			confidence_values.append( self.models[depth].clf.predict_proba(data) )
 
 		#print("confidence_values:", confidence_values)
@@ -141,9 +71,9 @@ class ITR_Extractor_Ensemble:
 
 		pred = []
 
-		for i in range(len(self.evalcorpus[0])):
+		for i in range(len(self.models[0].evalcorpus)):
 
-			txt_files = [self.evalcorpus[depth][i] for depth in range(5)]
+			txt_files = [self.models[depth].evalcorpus[i] for depth in range(5)]
 			pred.append( self.pred(txt_files) )
 
 		print("pred:", np.array(pred).shape)
@@ -176,9 +106,9 @@ class ITR_Extractor_Ensemble:
 			
 		
 
-def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes):
+def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	tcg = ITR_Extractor(num_classes)
+	tcg = ITR_Extractor_Ensemble(num_classes)
 	
 	try:
 		csv_contents = read_csv(csv_filename)
@@ -247,6 +177,8 @@ if __name__ == '__main__':
 	parser.add_argument('num_classes', type=int, help='the number of classes in the dataset')
 	#parser.add_argument('dataset_depth', type=int, help='a csv file denoting the files in the dataset')
 
+	parser.add_argument('--save_name', default="", help='what to save the model as')
+
 	FLAGS = parser.parse_args()
 
 	#i=2
@@ -258,5 +190,6 @@ if __name__ == '__main__':
 		FLAGS.csv_filename,
 		FLAGS.dataset_type,
 		FLAGS.dataset_id,
-		FLAGS.num_classes
+		FLAGS.num_classes,
+		FLAGS.save_name+'_'+str(depth)
 		)
