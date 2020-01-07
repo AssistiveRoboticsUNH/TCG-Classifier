@@ -157,20 +157,23 @@ class ITR_Extractor:
 		
 		return itr_seq
 	
-	def parse_txt_file(self, txt_file):
+						
+
+	def add_file_to_corpus(self, txt_file, label):
 		txt = ''
 		for itr in self.extract_itr_seq(txt_file):
 			s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
 			txt += s
-		return txt
-
-	def add_file_to_corpus(self, txt_file, label):
-		txt = self.parse_txt_file(txt_file)
+			#print(s)
 		self.corpus.append(txt)
 		self.labels.append(label)
 
 	def add_file_to_eval_corpus(self, txt_file, label, label_name):
-		txt = self.parse_txt_file(txt_file)
+		txt = ''
+		for itr in self.extract_itr_seq(txt_file):
+			s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
+			txt += s
+			#print(s)
 		self.evalcorpus.append(txt)
 		self.evallabels.append(label)
 
@@ -182,13 +185,21 @@ class ITR_Extractor:
 		print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
 		#self.clf = svm.SVC().fit(train_mat, np.array(self.labels))
-		#self.clf = SGDClassifier(loss='modified_huber', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
-		self.clf = SGDClassifier(loss='modified_huber', penalty='l2',alpha=1e-4, max_iter=1000, tol=1e-4, verbose=0, n_jobs=-1).fit(train_mat, np.array(self.labels))
+		self.clf = SGDClassifier(loss='hinge', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
 
 	def pred(self, txt_file):
+
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
-		txt = self.parse_txt_file(txt_file)
+
+		txt = ''
+		for itr in self.extract_itr_seq(txt_file):
+			s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
+			txt += s
+
+		#print("txt:", txt)
 		data = self.tfidf.transform([txt])
+		#print("data:", data)
+
 		return self.clf.predict(data)
 
 	def eval(self):
@@ -196,7 +207,8 @@ class ITR_Extractor:
 		pred = self.clf.predict(data)
 
 		print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
-		print(metrics.accuracy_score(self.evallabels, pred))
+
+		print(metrics.accuracy_score(self.evallabels, pred))#, target_names=self.label_names))
 
 
 
@@ -214,11 +226,12 @@ class ITR_Extractor:
 		self.evallabels = []
 
 		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
-		
+		#self.tfidf = CountVectorizer(token_pattern=r"\b\w+-\w+-\w+\b")
 		
 
-def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes):
+def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth):
 
+	num_classes = 13
 	tcg = ITR_Extractor(num_classes)
 	
 	try:
@@ -233,31 +246,40 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	
 	# TRAIN
-	print("adding data...")
 	for ex in train_data:
 		tcg.add_file_to_corpus(ex['txt_path'], ex['label'])
-	print("fitting model...")
 	tcg.fit()
 	
 	# CLASSIFY 
-	print("adding eval data...")
+
 	for ex in test_data:
 		tcg.add_file_to_eval_corpus(ex['txt_path'], ex['label'], ex['label_name'])
-	print("evaluating model...")
 	tcg.eval()
 
+
+	'''
+	class_acc = np.zeros((num_classes, num_classes), np.uint8)
+	label_names = [""]* 13
+	for ex in test_data:
+		pred = tcg.pred(ex['txt_path'])
+		label_names[ex['label']] = ex['label_name']
+		class_acc[pred, ex['label']] += 1
+	sum_corr = 0
+	for i in range(num_classes):
+		print("{:13}".format(label_names[i]),class_acc[i])
+		sum_corr += class_acc[i,i]
+	print("TOTAL ACC: ", sum_corr/np.sum(class_acc))
+	'''
 	# GEN PYPLOT
-	"""
+	'''
 	fig, ax = plt.subplots()
 	ax.imshow(class_acc, cmap='hot', interpolation='nearest')
 	ax.set_xticks(np.arange(len(label_names)))
 	ax.set_yticks(np.arange(len(label_names)))
 	ax.set_xticklabels(label_names)
 	ax.set_yticklabels(label_names)
-
 	plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
 		 rotation_mode="anchor")
-
 	for i in range(len(label_names)):
 		for j in range(len(label_names)):
 			if(class_acc[i, j] < 0.5):
@@ -266,11 +288,9 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 			else:
 				text = ax.text(j, i, class_acc[i, j],
 							   ha="center", va="center", color="k")
-
 	fig.tight_layout()
-
 	#plt.show()
-	"""
+	'''
 	
 
 if __name__ == '__main__':
@@ -281,12 +301,9 @@ if __name__ == '__main__':
 	parser.add_argument('csv_filename', help='a csv file denoting the files in the dataset')
 	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow', 'both'])
 	parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
-	parser.add_argument('num_classes', type=int, help='the number of classes in the dataset')
 	#parser.add_argument('dataset_depth', type=int, help='a csv file denoting the files in the dataset')
 
 	FLAGS = parser.parse_args()
-
-	#i=2
 
 	for i in range(5):
 		print("depth: ", i)
@@ -296,6 +313,5 @@ if __name__ == '__main__':
 			FLAGS.csv_filename,
 			FLAGS.dataset_type,
 			FLAGS.dataset_id,
-			i,
-			FLAGS.num_classes
+			i#FLAGS.dataset_depth
 			)
