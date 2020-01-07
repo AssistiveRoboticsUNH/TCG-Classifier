@@ -28,20 +28,20 @@ class ITR_Extractor_Ensemble:
 
 	def add_file_to_corpus(self, txt_files, label):
 		for depth in range(5):
-			txt = self.model[depth].parse_txt_file(txt_files[depth])
-			self.model[depth].corpus.append(txt)
+			txt = self.models[depth].parse_txt_file(txt_files[depth])
+			self.models[depth].corpus.append(txt)
 		self.labels.append(label)
 
 	def add_file_to_eval_corpus(self, txt_files, label, label_name):
 		for depth in range(5):
-			txt = self.model[depth].parse_txt_file(txt_files[depth])
-			self.model[depth].evalcorpus.append(txt)
+			txt = self.models[depth].parse_txt_file(txt_files[depth])
+			self.models[depth].evalcorpus.append(txt)
 		self.evallabels.append(label)
 		self.label_names[label] = label_name
 
 	def fit(self):
 		for depth in range(5):
-			train_mat = self.model[depth].tfidf.fit_transform(self.model[depth].corpus)
+			train_mat = self.models[depth].tfidf.fit_transform(self.models[depth].corpus)
 			print(depth, train_mat.shape)
 			#self.models[depth].fit(train_mat, np.array(self.labels))
 
