@@ -70,8 +70,11 @@ class ITR_Extractor_Ensemble:
 		return np.argmax(confidence_values)
 
 	def eval_single(self, depth):
+
+		txt = self.models[depth].evalcorpus
+		print("txt.shape:", txt.shape)
 		
-		data = self.models[depth].tfidf.transform([self.models[depth].evalcorpus])
+		data = self.models[depth].tfidf.transform([txt])
 		pred = self.models[depth].clf.predict(data) 
 
 		return metrics.accuracy_score(self.evallabels, pred)
