@@ -164,6 +164,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
 	weight_scheme = np.array([weight_scheme])
 
+	print("weight_scheme", weight_scheme)
+
 	print("ensemble, acc: {:.4f}".format(tcg.eval(weight_scheme)))
 	
 
