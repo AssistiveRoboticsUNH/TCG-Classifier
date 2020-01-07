@@ -60,6 +60,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 		if(cur_accuracy > max_accuracy and save_name != ""):
 			tcg.save_model(save_name+".joblib")
 			max_accuracy = cur_accuracy
+
+	print("Max_accuracy: ", max_accuracy)
 	
 
 if __name__ == '__main__':
@@ -80,8 +82,8 @@ if __name__ == '__main__':
 
 	#i=2
 
-	for i in range(5):
-		print("depth: ", i)
+	for depth in range(5):
+		print("depth: ", depth)
 
 
 		main(FLAGS.dataset_dir, 
@@ -90,6 +92,6 @@ if __name__ == '__main__':
 			FLAGS.dataset_id,
 			i,
 			FLAGS.num_classes,
-			FLAGS.save_name,
+			FLAGS.save_name+'_'+str(depth),
 			FLAGS.repeat
 			)
