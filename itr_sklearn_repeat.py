@@ -63,7 +63,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 
 		if(cur_accuracy > max_accuracy and save_name != ""):
 
-			save_file = os.path.join(save_name, str(dataset_id), dataset_type, str(depth))
+			save_file = os.path.join(save_name, str(dataset_id), dataset_type)
 			print(save_file)
 			filename = save_file.replace('/', '_')+'_'+str(depth)+".joblib"
 			if (not os.path.exists(save_name)):
