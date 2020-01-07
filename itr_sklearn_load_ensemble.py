@@ -155,8 +155,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		print("depth: {:d}, acc: {:.4f}".format(depth, acc))
 
 	med = np.median(acc)
-	acc[acc > med] = 1.0
-	acc[acc == med] = 0.5
+	acc[np.argwhere(acc > med)] = 1.0
+	acc[np.argwhere(acc == med)] = 0.5
 
 	print("ensemble, acc: {:.4f}".format(tcg.eval([acc])))
 	
