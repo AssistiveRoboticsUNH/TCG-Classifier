@@ -62,7 +62,13 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 
 
 		if(cur_accuracy > max_accuracy and save_name != ""):
-			tcg.save_model(save_name+".joblib")
+
+			save_file = os.path.join(save_name, dataset_id, dataset_type, depth)
+			filename = save_file.replace('/', '_')+'_'+str(depth)+".joblib"
+			if (not os.path.exists(save_name)):
+				os.makedirs(save_name)
+
+			tcg.save_model(os.path.join(save_file, filename))
 			max_accuracy = cur_accuracy
 
 		print("Training depth: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(depth, iteration, repeat, cur_accuracy, max_accuracy))
@@ -96,6 +102,6 @@ if __name__ == '__main__':
 			FLAGS.dataset_id,
 			depth,
 			FLAGS.num_classes,
-			FLAGS.save_name+'_'+str(depth),
+			FLAGS.save_name,
 			FLAGS.repeat
 			)

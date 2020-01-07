@@ -94,7 +94,7 @@ class ITR_Extractor_Ensemble:
 
 
 
-	def __init__(self, num_classes, save_name):
+	def __init__(self, num_classes, dataset_id, dataset_type, save_name):
 		self.num_classes = num_classes
 
 		self.bound = 0
@@ -109,14 +109,18 @@ class ITR_Extractor_Ensemble:
 
 		self.models = []
 		for depth in range(5):
-			self.models.append(ITR_Extractor(num_classes, save_name+'_'+str(depth)+".joblib"))
+
+			save_file = os.path.join(save_name, dataset_id, dataset_type)
+			filename = save_file.replace('/', '_')+'_'+str(depth)+".joblib"
+			
+			self.models.append(ITR_Extractor(num_classes, os.path.join(save_file, filename)))
 
 			
 		
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	tcg = ITR_Extractor_Ensemble(num_classes, save_name)
+	tcg = ITR_Extractor_Ensemble(num_classes, dataset_id, dataset_type, save_name)
 	
 	try:
 		csv_contents = read_csv(csv_filename)
