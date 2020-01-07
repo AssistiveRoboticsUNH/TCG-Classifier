@@ -69,6 +69,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 			if (not os.path.exists(save_name)):
 				os.makedirs(save_name)
 
+			print(os.path.join(save_file, filename))
+
 			tcg.save_model(os.path.join(save_file, filename))
 			max_accuracy = cur_accuracy
 
