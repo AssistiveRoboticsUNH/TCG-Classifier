@@ -71,10 +71,7 @@ class ITR_Extractor_Ensemble:
 
 	def eval_single(self, depth):
 
-		txt = self.models[depth].evalcorpus
-		print("txt.shape:", txt.shape)
-		
-		data = self.models[depth].tfidf.transform([txt])
+		data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
 		pred = self.models[depth].clf.predict(data) 
 
 		return metrics.accuracy_score(self.evallabels, pred)
