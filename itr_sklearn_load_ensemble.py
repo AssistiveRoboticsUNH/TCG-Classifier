@@ -133,9 +133,10 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			ex['txt_path_'+str(depth)] = os.path.join(dataset_dir, "btxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
 
 
-		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
+		#train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
-		
+	
+	'''	
 	# TRAIN
 	print("adding data...")
 	for ex in train_data:
@@ -143,7 +144,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		tcg.add_file_to_corpus(txt_files, ex['label'])
 	print("fitting model...")
 	tcg.fit()
-		
+	'''
 	# CLASSIFY 
 	print("adding eval data...")
 	for ex in test_data:
