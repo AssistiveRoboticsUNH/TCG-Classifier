@@ -57,6 +57,8 @@ class ITR_Extractor_Ensemble:
 			pred = self.models[depth].clf.predict(data)
 			prob = self.models[depth].clf.predict_proba(data)
 
+			print(prob)
+
 			pred = np.argmax(prob, axis=1)
 
 			acc = metrics.accuracy_score(self.evallabels, pred)
