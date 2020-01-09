@@ -23,98 +23,9 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
-class ITR_Extractor_Ensemble:
 
 
-	def add_file_to_corpus(self, txt_files, label):
-		for depth in range(5):
-			txt = self.models[depth].parse_txt_file(txt_files[depth])
-			self.models[depth].corpus.append(txt)
-		self.labels.append(label)
-
-	def add_file_to_eval_corpus(self, txt_files, label, label_name):
-		for depth in range(5):
-			txt = self.models[depth].parse_txt_file(txt_files[depth])
-			self.models[depth].evalcorpus.append(txt)
-		self.evallabels.append(label)
-		self.label_names[label] = label_name
-
-	'''
-	def fit(self):
-		for depth in range(5):
-			train_mat = self.models[depth].tfidf.fit_transform(self.models[depth].corpus)
-			print(depth, train_mat.shape)
-			#self.models[depth].fit(train_mat, np.array(self.labels))
-	'''
-
-
-	def pred(self, txt_files, weight_scheme):
-		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
-
-		confidence_values = []
-
-		#depth=4
-		for depth in range(5):
-			txt = txt_files[depth]#self.parse_txt_file(txt_files[depth])
-			data = self.models[depth].tfidf.transform([txt])
-			confidence_values.append( self.models[depth].clf.predict_proba(data) )
-
-		#print("confidence_values:", confidence_values)
-		confidence_values *= np.array(weight_scheme).reshape(5,1,1)
-		#confidence_values *= np.array([[0.0, 0.0, 0.5, 1.0, 1.0]]).reshape(5,1,1)
-		
-
-		#print("confid_shape: ", np.array(confidence_values).shape)
-		confidence_values = np.mean(confidence_values, axis=(0,1))
-		#print("confid_shape: ", np.array(confidence_values).shape)
-
-		return np.argmax(confidence_values)
-
-	def eval_single(self, depth):
-
-		data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
-		pred = self.models[depth].clf.predict(data) 
-
-		return metrics.accuracy_score(self.evallabels, pred)
-
-
-	def eval(self, weight_scheme):
-
-		pred = []
-
-		for i in range(len(self.models[0].evalcorpus)):
-
-			txt_files = [self.models[depth].evalcorpus[i] for depth in range(5)]
-			pred.append( self.pred(txt_files, weight_scheme) )
-
-		#print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
-		#print(metrics.accuracy_score(self.evallabels, pred))
-		return metrics.accuracy_score(self.evallabels, pred)
-
-
-
-
-
-	def __init__(self, num_classes, dataset_id, dataset_type, save_name):
-		self.num_classes = num_classes
-
-		self.bound = 0
-
-		self.corpus = [[] for i in range(5)]
-		self.labels = []
-
-		self.label_names = ['']* self.num_classes
-
-		self.evalcorpus = [[] for i in range(5)]
-		self.evallabels = []
-
-		self.models = []
-		for depth in range(5):
-
-			save_file = os.path.join(save_name, str(dataset_id), dataset_type)
-			filename = save_file.replace('/', '_')+'_'+str(depth)#+".joblib"
-			
-			self.models.append(ITR_Extractor(num_classes, os.path.join(save_file, filename)))
+ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
 			
 		

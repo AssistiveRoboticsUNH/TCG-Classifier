@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 
 
 from joblib import dump, load
+import cPickle as pickle
 
 
 class ITR_Extractor:
@@ -203,11 +204,21 @@ class ITR_Extractor:
 
 		return metrics.accuracy_score(self.evallabels, pred)
 
-	def save_model(self, name='model.joblib'):
-		dump(self.clf, name) 
+	def save_model(self, name='model'):
+		# save model
+		dump(self.clf, name+'.joblib') 
 
-	def load_model(self, name='model.joblib'):
-		self.clf = load(name) 
+		#save vectorizer
+		with open(name+'.pk', 'wb') as file_loc:
+			pickle.dump(self.tfidf, file_loc)
+
+	def load_model(self, name='model'):
+		#load model
+		self.clf = load(name+'.joblib') 
+
+		#load vectorizer
+		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True, 
+			vocabulary=pickle.load(open(name+'.pk', "rb") ) )#, decode_error="replace" )
 
 	def __init__(self, num_classes, save_name=""):
 		self.num_classes = num_classes
