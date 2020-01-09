@@ -97,18 +97,19 @@ if __name__ == '__main__':
 
 	for dataset_type in ['frames']:#, 'flow', 'both']:
 		for dataset_id in [3]:
-			for depth in range(5):
-				print("dataset_type: ", dataset_type)
-				print("dataset_id: ", dataset_id)
-				print("depth: ", depth)
+			depth = 4
+			#for depth in range(5):
+			print("dataset_type: ", dataset_type)
+			print("dataset_id: ", dataset_id)
+			print("depth: ", depth)
 
 
-				main(FLAGS.dataset_dir, 
-					FLAGS.csv_filename,
-					dataset_type,
-					dataset_id,
-					depth,
-					FLAGS.num_classes,
-					FLAGS.save_name,
-					FLAGS.repeat
-					)
+			main(FLAGS.dataset_dir, 
+				FLAGS.csv_filename,
+				dataset_type,
+				dataset_id,
+				depth,
+				FLAGS.num_classes,
+				FLAGS.save_name,
+				FLAGS.repeat
+				)
