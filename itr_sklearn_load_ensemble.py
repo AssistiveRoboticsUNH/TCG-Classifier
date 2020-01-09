@@ -71,19 +71,19 @@ class ITR_Extractor_Ensemble:
 		weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
 		weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
 		
-		weight_scheme = np.array([weight_scheme])
+		weight_scheme = [[1,0,0,0,0]]#np.array([weight_scheme])
 		print("weight_scheme:", weight_scheme)
 
 		print("probs:", np.array(probs).shape)
 		probs *= np.array(weight_scheme).reshape(5,1,1)
 
 		# make confidence prediction
-		print("probs:", probs.shape)
+		print("weighted probs:", probs.shape)
 		probs = np.mean(probs, axis=0)
 
-		print("probs:", probs.shape)
+		print("averaged probs:", probs.shape)
 		ensembel_pred = np.argmax(probs, axis = 1)
-		print("probs:", ensembel_pred.shape)
+		print("ensemble pred:", ensembel_pred.shape)
 
 		return metrics.accuracy_score(self.evallabels, ensembel_pred)
 
