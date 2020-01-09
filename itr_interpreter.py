@@ -25,15 +25,18 @@ from itr_sklearn import ITR_Extractor
 
 
 
-ITR_Extractor(num_classes, os.path.join(save_file, filename))
+
 
 			
 		
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	tcg = ITR_Extractor_Ensemble(num_classes, dataset_id, dataset_type, save_name)
-	
+	restore model
+	save_file = os.path.join(save_name, str(dataset_id), dataset_type)
+	filename = save_file.replace('/', '_')+'_'+str(depth)
+	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
+
 	try:
 		csv_contents = read_csv(csv_filename)
 	except:
@@ -106,7 +109,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 	#plt.show()
 	'''
-	
+"""
 
 if __name__ == '__main__':
 	import argparse
