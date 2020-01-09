@@ -80,7 +80,7 @@ class ITR_Extractor_Ensemble:
 
 		print("probs:", probs.shape)
 		ensembel_pred = np.argmax(probs, axis = 1)
-		print("probs:", probs.shape)
+		print("probs:", ensembel_pred.shape)
 
 		return metrics.accuracy_score(self.evallabels, ensembel_pred)
 
