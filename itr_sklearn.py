@@ -217,8 +217,7 @@ class ITR_Extractor:
 		self.clf = load(name+'.joblib') 
 
 		#load vectorizer
-		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True, 
-			vocabulary=pickle.load(open(name+'.pk', "rb") ) , decode_error="replace" )
+		self.tfidf = pickle.load(open(name+'.pk', "rb"))
 
 	def __init__(self, num_classes, save_name=""):
 		self.num_classes = num_classes
