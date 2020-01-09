@@ -72,6 +72,8 @@ class ITR_Extractor_Ensemble:
 		weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
 		
 		weight_scheme = np.array([weight_scheme])
+		print("weight_scheme:", weight_scheme)
+
 		probs *= np.array(weight_scheme).reshape(5,1,1)
 
 		# make confidence prediction
