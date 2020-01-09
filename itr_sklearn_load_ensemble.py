@@ -47,7 +47,7 @@ class ITR_Extractor_Ensemble:
 			#self.models[depth].fit(train_mat, np.array(self.labels))
 	'''
 
-	def fast_pred(self):
+	def eval(self):
 		probs = []
 		preds = []
 
@@ -110,7 +110,7 @@ class ITR_Extractor_Ensemble:
 
 		return metrics.accuracy_score(self.evallabels, pred)
 
-
+	'''
 	def eval(self, weight_scheme):
 
 		pred = []
@@ -125,7 +125,7 @@ class ITR_Extractor_Ensemble:
 		#print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
 		#print(metrics.accuracy_score(self.evallabels, pred))
 		return metrics.accuracy_score(self.evallabels, pred)
-
+	'''
 
 
 
@@ -186,7 +186,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		txt_files = [ex['txt_path_'+str(d)] for d in range(5)]
 		tcg.add_file_to_eval_corpus(txt_files, ex['label'], ex['label_name'])
 	print("evaluating model...")
-
+	'''
 	weight_scheme = []
 	for depth in range(5):
 		acc = tcg.eval_single(depth) 
@@ -204,7 +204,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 	print("weight_scheme", weight_scheme)
 	print("ensemble, acc: {:.4f}".format(tcg.eval(weight_scheme)))
-	
+	'''
+	print("ensemble, acc: {:.4f}".format(tcg.eval()))
 
 	# GEN PYPLOT
 	'''
