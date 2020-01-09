@@ -199,7 +199,7 @@ class ITR_Extractor:
 		data = self.tfidf.transform(self.evalcorpus)
 		pred = self.clf.predict(data)
 
-		print( np.concat( (np.argmax(self.clf.predict_proba(data), axis=1), self.evallabels) ) )
+		print( np.concatenate( (np.argmax(self.clf.predict_proba(data), axis=1), self.evallabels) ) )
 
 		#print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
 		#print(metrics.accuracy_score(self.evallabels, pred))
