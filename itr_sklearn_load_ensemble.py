@@ -64,6 +64,8 @@ class ITR_Extractor_Ensemble:
 		weight_scheme = np.array(preds)
 		med = np.median(preds)
 
+		print(weight_scheme, med)
+
 		weight_scheme[np.argwhere(weight_scheme > med)] = 1.0
 		weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
 		weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
