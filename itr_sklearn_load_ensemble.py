@@ -75,6 +75,7 @@ class ITR_Extractor_Ensemble:
 		probs *= np.array(weight_scheme).reshape(5,1,1)
 
 		# make confidence prediction
+		print("probs:", probs.shape)
 		probs = np.mean(probs, axis=(0,1))
 
 		print("probs:", probs.shape)
