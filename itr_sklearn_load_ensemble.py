@@ -47,6 +47,39 @@ class ITR_Extractor_Ensemble:
 			#self.models[depth].fit(train_mat, np.array(self.labels))
 	'''
 
+	def fast_pred(self):
+		probs = []
+		preds = []
+
+		for depth in range(5):
+			data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
+
+			pred = self.models[depth].clf.predict(data)
+			preds.append( pred )
+			probs.append( self.models[depth].clf.predict_proba(data) )
+
+			print( metrics.accuracy_score(self.evallabels, pred) )
+
+		#determine ensemble weighting scheme
+		weight_scheme = np.array(preds)
+		med = np.median(preds)
+
+		weight_scheme[np.argwhere(weight_scheme > med)] = 1.0
+		weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
+		weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
+		
+		weight_scheme = np.array([weight_scheme])
+		probs *= np.array(weight_scheme).reshape(5,1,1)
+
+		# make confidence prediction
+		confidence_values = np.mean(confidence_values, axis=(0,1))
+
+		print("confidence_values:", confidence_values.shape)
+		ensembel_pred = np.argmax(confidence_values)
+		print("confidence_values:", confidence_values.shape)
+
+		return metrics.accuracy_score(self.evallabels, ensembel_pred)
+
 
 	def pred(self, txt_files, weight_scheme):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
