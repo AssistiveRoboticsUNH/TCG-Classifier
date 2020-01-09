@@ -76,10 +76,10 @@ class ITR_Extractor_Ensemble:
 
 		# make confidence prediction
 		print("probs:", probs.shape)
-		probs = np.mean(probs, axis=(0,1))
+		probs = np.mean(probs, axis=0)
 
 		print("probs:", probs.shape)
-		ensembel_pred = np.argmax(probs)
+		ensembel_pred = np.argmax(probs, axis = 1)
 		print("probs:", probs.shape)
 
 		return metrics.accuracy_score(self.evallabels, ensembel_pred)
