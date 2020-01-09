@@ -185,7 +185,7 @@ class ITR_Extractor:
 
 		print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
-		self.clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True ).fit(train_mat, np.array(self.labels))
+		self.clf = svm.SVC(max_iter=5000, tol=1e-4, probability=True ).fit(train_mat, np.array(self.labels))
 		#self.clf = SGDClassifier(loss='modified_huber', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
 		#self.clf = SGDClassifier(loss='modified_huber', penalty='l2',alpha=1e-4, max_iter=1000, tol=1e-4, verbose=0, n_jobs=-1).fit(train_mat, np.array(self.labels))
 
