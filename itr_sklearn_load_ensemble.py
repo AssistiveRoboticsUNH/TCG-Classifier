@@ -59,7 +59,7 @@ class ITR_Extractor_Ensemble:
 
 			print(prob, prob.shape)
 
-			pred = np.argmax(prob, axis=1)
+			#pred = np.argmax(prob, axis=1)
 
 			acc = metrics.accuracy_score(self.evallabels, pred)
 
