@@ -85,7 +85,9 @@ class ITR_Extractor_Ensemble:
 		for i in range(len(self.models[0].evalcorpus)):
 
 			txt_files = [self.models[depth].evalcorpus[i] for depth in range(5)]
-			pred.append( self.pred(txt_files, weight_scheme) )
+			pred_v = self.pred(txt_files, weight_scheme)
+
+			pred.append( pred_v )
 
 		#print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
 		#print(metrics.accuracy_score(self.evallabels, pred))
