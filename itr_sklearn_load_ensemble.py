@@ -55,10 +55,11 @@ class ITR_Extractor_Ensemble:
 			data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
 
 			pred = self.models[depth].clf.predict(data)
-			preds.append( pred )
+			acc = metrics.accuracy_score(self.evallabels, pred)
+			preds.append( acc )
 			probs.append( self.models[depth].clf.predict_proba(data) )
 
-			print( metrics.accuracy_score(self.evallabels, pred) )
+			print( acc )
 
 		#determine ensemble weighting scheme
 		weight_scheme = np.array(preds)
