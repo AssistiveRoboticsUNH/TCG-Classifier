@@ -55,9 +55,14 @@ class ITR_Extractor_Ensemble:
 			data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
 
 			pred = self.models[depth].clf.predict(data)
+			prob = self.models[depth].clf.predict_proba(data)
+
+			pred = argmax(prob, axis=1)
+
 			acc = metrics.accuracy_score(self.evallabels, pred)
+
 			preds.append( acc )
-			probs.append( self.models[depth].clf.predict_proba(data) )
+			probs.append( prob )
 
 			print( acc )
 
