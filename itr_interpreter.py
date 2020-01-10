@@ -27,7 +27,7 @@ from itr_sklearn import ITR_Extractor
 
 
 
-def f_importances(coef, names, top=10):
+def f_importances(coef, names, top=20):
 	print(type(coef), len(names))
 	print(coef)
 
