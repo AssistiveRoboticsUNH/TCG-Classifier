@@ -46,8 +46,8 @@ class ITR_Extractor_Ensemble:
 			print(depth, train_mat.shape)
 			#self.models[depth].fit(train_mat, np.array(self.labels))
 	'''
-	'''
-	def eval(self):
+	
+	def eval2(self):
 		probs = []
 		preds = []
 
@@ -57,8 +57,8 @@ class ITR_Extractor_Ensemble:
 			prob = self.models[depth].clf.predict_proba(data)
 			pred = self.models[depth].clf.predict(data)
 
-			print(self.models[depth].clf.classes_)
-			print(prob, prob.shape)
+			#print(self.models[depth].clf.classes_)
+			#print(prob, prob.shape)
 
 			#pred = np.argmax(prob, axis=1)
 
@@ -94,7 +94,7 @@ class ITR_Extractor_Ensemble:
 		print("ensemble pred:", ensembel_pred.shape)
 
 		return metrics.accuracy_score(self.evallabels, ensembel_pred)
-	'''
+	
 
 	def pred(self, txt_files, weight_scheme):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
