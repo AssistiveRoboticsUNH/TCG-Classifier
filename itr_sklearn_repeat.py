@@ -95,8 +95,8 @@ if __name__ == '__main__':
 
 	#i=2
 	for depth in range(5):
-		print("dataset_type: ", dataset_type)
-		print("dataset_id: ", dataset_id)
+		#print("dataset_type: ", dataset_type)
+		#print("dataset_id: ", dataset_id)
 		print("depth: ", depth)
 
 
