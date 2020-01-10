@@ -31,7 +31,7 @@ def f_importances(coef, names):
 	print(type(coef), len(names))
 	print(coef)
 
-	imp = coef
+	imp = coef.toarray()
 	imp,names = zip(*sorted(zip(imp,names)))
 	plt.barh(range(len(names)), imp, align='center')
 	plt.yticks(range(len(names)), names)
