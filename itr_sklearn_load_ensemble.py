@@ -217,7 +217,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	
 	weight_scheme = np.array([weight_scheme])
 	'''
-	predict_proba
+	weight_scheme = [[1,0,0,0,0]]
 	print("weight_scheme", weight_scheme)
 	print("ensemble, acc: {:.4f}".format(tcg.eval(weight_scheme)))
 	
