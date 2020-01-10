@@ -45,10 +45,10 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
 
-	codef = tcg.clf.coef_
+	coef = tcg.clf.coef_
 	names = tcg.tfidf.get_feature_names()
 
-	f_importances(codef, names)
+	f_importances(abs(clf.coef_[0]), names)
 
 """
 	# determine which features are most influential
