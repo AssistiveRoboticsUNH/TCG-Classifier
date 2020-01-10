@@ -48,7 +48,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	coef = tcg.clf.coef_
 	names = tcg.tfidf.get_feature_names()
 
-	f_importances(abs(coef_[0]), names)
+	f_importances(abs(coef[0]), names)
 
 """
 	# determine which features are most influential
