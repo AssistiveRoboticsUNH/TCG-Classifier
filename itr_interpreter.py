@@ -34,11 +34,13 @@ def f_importances(coef, names, top=10):
 	imp = coef.toarray()[0]
 
 	imp,names = zip(*sorted(zip(imp,names)))
+	imp = imp[::-1]
+	names = names[::-1]
 
-	print(imp[:10], imp[::-1][:10])
-	#plt.barh(range(len(names)), imp, align='center')
-	#plt.yticks(range(len(names)), names)
-	#plt.savefig("test.png")
+
+	plt.barh(range(top), imp[:top], align='center')
+	plt.yticks(range(top), names[:top])
+	plt.savefig("test.png")
 			
 		
 
