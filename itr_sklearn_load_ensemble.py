@@ -54,7 +54,7 @@ class ITR_Extractor_Ensemble:
 		for depth in range(5):
 			data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
 
-			prob = self.models[depth].clf.predict_proba(data)
+			prob = self.models[depth].clf.decision_function(data)
 			pred = self.models[depth].clf.predict(data)
 
 			#print(self.models[depth].clf.classes_)
