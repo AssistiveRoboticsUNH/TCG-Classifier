@@ -57,6 +57,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	coef = tcg.clf.coef_
 	names = tcg.tfidf.get_feature_names()
 
+	print(coef.shape)
+
 	f_importances(abs(coef[0]), names)
 
 """
