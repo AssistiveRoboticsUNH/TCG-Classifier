@@ -38,8 +38,8 @@ def f_importances(coef, names, top=5):
 	names = names[::-1]
 
 	# place into chart
-	plt.barh(range(top), np.concatenate(imp[:top], imp[top:]), align='center')
-	plt.yticks(range(top), np.concatenate(names[:top], names[top:]))
+	plt.barh(range(top), np.stack(imp[:top], imp[top:]), align='center')
+	plt.yticks(range(top), np.stack(names[:top], names[top:]))
 	plt.savefig("test.png")
 			
 		
