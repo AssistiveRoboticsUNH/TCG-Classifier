@@ -54,7 +54,7 @@ class ITR_Extractor_Ensemble:
 		for depth in range(5):
 			data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
 
-			prob = self.models[depth].clf.predict_proba(data)
+			prob = self.models[depth].clf.decision_function(data)
 			pred = self.models[depth].clf.predict(data)
 
 			#print(self.models[depth].clf.classes_)
@@ -79,8 +79,8 @@ class ITR_Extractor_Ensemble:
 		weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
 		weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
 		
-		weight_scheme = np.array([weight_scheme])
-		#weight_scheme = [[1,0,0,0,0]]#np.array([weight_scheme])
+		#weight_scheme = np.array([weight_scheme])
+		weight_scheme = [[1,0,0,0,0]]#np.array([weight_scheme])
 		print("weight_scheme:", weight_scheme)
 
 		print("probs:", np.array(probs).shape)
@@ -221,7 +221,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	weight_scheme = [[1,0,0,0,0]]
 	print("weight_scheme", weight_scheme)
 	print("ensemble, acc: {:.4f}".format(tcg.eval2()))
-	print("ensemble, acc: {:.4f}".format(tcg.eval(weight_scheme)))
+	#print("ensemble, acc: {:.4f}".format(tcg.eval(weight_scheme)))
 	
 	#print("ensemble, acc: {:.4f}".format(tcg.eval()))
 
