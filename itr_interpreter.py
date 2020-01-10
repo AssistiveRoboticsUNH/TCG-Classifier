@@ -66,8 +66,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	print(coef.shape)
 
 	#select the first class only 
-	f_importances(coef[0], names)
-	#f_importances(abs(coef[0]), names)
+	#f_importances(coef[0], names)
+	f_importances(abs(coef[0]), names)
 
 
 if __name__ == '__main__':
