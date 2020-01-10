@@ -26,7 +26,12 @@ from itr_sklearn import ITR_Extractor
 
 
 
-
+def f_importances(coef, names):
+    imp = coef
+    imp,names = zip(*sorted(zip(imp,names)))
+    plt.barh(range(len(names)), imp, align='center')
+    plt.yticks(range(len(names)), names)
+    plt.saveimg("test.png")
 			
 		
 
@@ -40,8 +45,10 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
 
-	print(tcg.clf.coef_)
-	print(tcg.tfidf.get_feature_names())
+	codef = tcg.clf.coef_
+	names = tcg.tfidf.get_feature_names()
+
+	f_importances(codef, names)
 
 """
 	# determine which features are most influential
