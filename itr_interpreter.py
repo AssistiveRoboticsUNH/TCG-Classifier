@@ -38,11 +38,8 @@ def f_importances(coef, names, top=5):
 	names = names[::-1]
 
 	# place into chart
-
-	print ( imp.shape )
-
-	plt.barh(range(top), np.stack((imp[:top], imp[top:])), align='center')
-	plt.yticks(range(top), np.stack((names[:top], names[top:])))
+	plt.barh(range(top), imp[:top], align='center')
+	plt.yticks(range(top), names[:top])
 	plt.savefig("test.png")
 			
 		
@@ -66,7 +63,6 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	print(coef.shape)
 
 	#select the first class only 
-	#f_importances(coef[0], names)
 	f_importances(abs(coef[0]), names)
 
 
