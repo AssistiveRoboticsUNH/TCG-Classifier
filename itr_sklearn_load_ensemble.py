@@ -57,7 +57,7 @@ class ITR_Extractor_Ensemble:
 			prob = self.models[depth].clf.decision_function(data)
 			pred = self.models[depth].clf.predict(data)
 
-			print(self.models.classes)
+			print(self.models.classes_)
 			print(prob, prob.shape)
 
 			#pred = np.argmax(prob, axis=1)
