@@ -27,13 +27,13 @@ from itr_sklearn import ITR_Extractor
 
 
 
-def f_importances(coef, names):
+def f_importances(coef, names, top=10):
 	print(type(coef), len(names))
 	print(coef)
 
 	imp = coef.toarray()[0]
 
-	imp,names = zip(*sorted(zip(imp,names)))
+	imp,names = zip(*sorted(zip(imp,names))[:top])
 	plt.barh(range(len(names)), imp, align='center')
 	plt.yticks(range(len(names)), names)
 	plt.savefig("test.png")
