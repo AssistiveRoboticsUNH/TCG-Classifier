@@ -37,9 +37,12 @@ def f_importances(coef, names, top=5):
 	imp = imp[::-1]
 	names = names[::-1]
 
+	data = np.stack((imp[:top], imp[top:]))
+	label = np.stack((names[:top], names[top:]))
+
 	# place into chart
-	plt.barh(range(top), imp[:top], align='center')
-	plt.yticks(range(top), names[:top])
+	plt.barh(range(top*2), data, align='center')
+	plt.yticks(range(top*2), label)
 	plt.savefig("test.png")
 			
 		
