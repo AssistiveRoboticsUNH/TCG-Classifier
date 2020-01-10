@@ -94,7 +94,23 @@ if __name__ == '__main__':
 	FLAGS = parser.parse_args()
 
 	#i=2
+	for depth in range(5):
+		print("dataset_type: ", dataset_type)
+		print("dataset_id: ", dataset_id)
+		print("depth: ", depth)
 
+
+		main(FLAGS.dataset_dir, 
+			FLAGS.csv_filename,
+			FLAGS.dataset_type,
+			FLAGS.dataset_id,
+			depth,
+			FLAGS.num_classes,
+			FLAGS.save_name,
+			FLAGS.repeat
+			)
+
+	'''
 	for dataset_type in ['frames']:#, 'flow', 'both']:
 		for dataset_id in [3]:
 			#depth = 4
@@ -113,3 +129,4 @@ if __name__ == '__main__':
 					FLAGS.save_name,
 					FLAGS.repeat
 					)
+	'''
