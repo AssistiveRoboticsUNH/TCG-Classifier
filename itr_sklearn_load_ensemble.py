@@ -46,7 +46,7 @@ class ITR_Extractor_Ensemble:
 			print(depth, train_mat.shape)
 			#self.models[depth].fit(train_mat, np.array(self.labels))
 	'''
-
+	'''
 	def eval(self):
 		probs = []
 		preds = []
@@ -94,7 +94,7 @@ class ITR_Extractor_Ensemble:
 		print("ensemble pred:", ensembel_pred.shape)
 
 		return metrics.accuracy_score(self.evallabels, ensembel_pred)
-
+	'''
 
 	def pred(self, txt_files, weight_scheme):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
@@ -125,7 +125,7 @@ class ITR_Extractor_Ensemble:
 
 		return metrics.accuracy_score(self.evallabels, pred)
 
-	'''
+	
 	def eval(self, weight_scheme):
 
 		pred = []
@@ -140,7 +140,7 @@ class ITR_Extractor_Ensemble:
 		#print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
 		#print(metrics.accuracy_score(self.evallabels, pred))
 		return metrics.accuracy_score(self.evallabels, pred)
-	'''
+	
 
 
 
@@ -216,11 +216,12 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
 	
 	weight_scheme = np.array([weight_scheme])
-
+	'''
+	predict_proba
 	print("weight_scheme", weight_scheme)
 	print("ensemble, acc: {:.4f}".format(tcg.eval(weight_scheme)))
-	'''
-	print("ensemble, acc: {:.4f}".format(tcg.eval()))
+	
+	#print("ensemble, acc: {:.4f}".format(tcg.eval()))
 
 	# GEN PYPLOT
 	'''
