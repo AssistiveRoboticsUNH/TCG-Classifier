@@ -79,7 +79,8 @@ class ITR_Extractor_Ensemble:
 		weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
 		weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
 		
-		weight_scheme = [[1,0,0,0,0]]#np.array([weight_scheme])
+		weight_scheme = np.array([weight_scheme])
+		#weight_scheme = [[1,0,0,0,0]]#np.array([weight_scheme])
 		print("weight_scheme:", weight_scheme)
 
 		print("probs:", np.array(probs).shape)
