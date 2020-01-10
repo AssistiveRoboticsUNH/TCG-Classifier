@@ -28,8 +28,10 @@ from itr_sklearn import ITR_Extractor
 
 
 def f_importances(coef, names):
+	print(coef)
+
     imp = coef
-    imp,names = zip(*sorted(zip(imp,names)))
+	imp,names = zip(*sorted(zip(imp,names)))
     plt.barh(range(len(names)), imp, align='center')
     plt.yticks(range(len(names)), names)
     plt.saveimg("test.png")
