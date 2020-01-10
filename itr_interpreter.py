@@ -27,19 +27,20 @@ from itr_sklearn import ITR_Extractor
 
 
 
-def f_importances(coef, names, top=20):
+def f_importances(ax, coef, names, top=5):
 	
 	# convert Scipy matrix to one dimensional vector
 	imp = coef.toarray()[0]
 
 	# sorted into ascending order so I need to reverse 
-	imp,names = zip(*sorted(zip(imp,names)))[::-1]
-	#imp = imp[::-1]
-	#names = names[::-1]
+	imp,names = zip(*sorted(zip(imp,names)))
+	imp = imp[::-1]
+	names = names[::-1]
 
-	plt.barh(range(top), imp[:top], align='center')
-	plt.yticks(range(top), names[:top])
-	plt.savefig("test.png")
+	# place into chart
+	ax.barh(range(top), imp[:top], align='center')
+	ax.yticks(range(top), names[:top])
+	
 			
 		
 
@@ -52,7 +53,6 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	filename = save_file.replace('/', '_')+'_'+str(depth)
 	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
-
 	coef = tcg.clf.coef_
 	names = tcg.tfidf.get_feature_names()
 
@@ -62,8 +62,14 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	'''
 	print(coef.shape)
 
+
+	fig, axes = plt.subplots(nrows=1, ncols=coef.shape[0], figsize=(2, 13))
+
 	#select the first class only 
-	f_importances(abs(coef[0]), names)
+	f_importances(axes[0], abs(coef[0]), names)
+	f_importances(axes[1], abs(coef[1]), names)
+
+	plt.savefig("test.png")
 
 
 if __name__ == '__main__':
