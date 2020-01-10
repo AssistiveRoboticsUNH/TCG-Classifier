@@ -37,7 +37,15 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	filename = save_file.replace('/', '_')+'_'+str(depth)
 	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
+
+	print(tcg.coef_)
+
+"""
 	# determine which features are most influential
+	# Depends on how well I can get SVC to work compared to SGD.
+
+
+
 
 
 
