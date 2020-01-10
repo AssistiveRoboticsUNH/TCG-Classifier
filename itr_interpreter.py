@@ -28,6 +28,7 @@ from itr_sklearn import ITR_Extractor
 
 
 def f_importances(coef, names):
+	print(type(coef))
 	print(coef)
 
 	imp = coef
