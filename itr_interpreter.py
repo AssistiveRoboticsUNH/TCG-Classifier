@@ -33,12 +33,15 @@ from itr_sklearn import ITR_Extractor
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
 	#restore model
+	depth = 4
+
 	save_file = os.path.join(save_name, str(dataset_id), dataset_type)
 	filename = save_file.replace('/', '_')+'_'+str(depth)
 	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
 
-	print(tcg.coef_)
+	print(tcg.clf.coef_)
+	print(tcg.tfidf.get_feature_names())
 
 """
 	# determine which features are most influential
