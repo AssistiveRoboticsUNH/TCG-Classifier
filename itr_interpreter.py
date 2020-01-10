@@ -28,15 +28,14 @@ from itr_sklearn import ITR_Extractor
 
 
 def f_importances(coef, names, top=20):
-	print(type(coef), len(names))
-	print(coef)
-
+	
+	# convert Scipy matrix to one dimensional vector
 	imp = coef.toarray()[0]
 
-	imp,names = zip(*sorted(zip(imp,names)))
-	imp = imp[::-1]
-	names = names[::-1]
-
+	# sorted into ascending order so I need to reverse 
+	imp,names = zip(*sorted(zip(imp,names)))[::-1]
+	#imp = imp[::-1]
+	#names = names[::-1]
 
 	plt.barh(range(top), imp[:top], align='center')
 	plt.yticks(range(top), names[:top])
@@ -57,93 +56,15 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	coef = tcg.clf.coef_
 	names = tcg.tfidf.get_feature_names()
 
+	'''
+	Coef has shape of n_classes, n_features due to one vs rest setting of linear SVM learner
+	Each coef shows the significance of a particular feature towards that classifcation
+	'''
 	print(coef.shape)
 
+	#select the first class only 
 	f_importances(abs(coef[0]), names)
 
-"""
-	# determine which features are most influential
-	# Depends on how well I can get SVC to work compared to SGD.
-
-
-
-
-
-
-
-	try:
-		csv_contents = read_csv(csv_filename)
-	except:
-		print("ERROR: Cannot open CSV file: "+ csv_filename)
-
-	for depth in range(5):
-		for ex in csv_contents:
-			ex['txt_path_'+str(depth)] = os.path.join(dataset_dir, "btxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
-
-
-		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
-		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
-		
-	# TRAIN
-	print("adding data...")
-	for ex in train_data:
-		txt_files = [ex['txt_path_'+str(d)] for d in range(5)]
-		tcg.add_file_to_corpus(txt_files, ex['label'])
-	print("fitting model...")
-	tcg.fit()
-		
-	# CLASSIFY 
-	print("adding eval data...")
-	for ex in test_data:
-		txt_files = [ex['txt_path_'+str(d)] for d in range(5)]
-		tcg.add_file_to_eval_corpus(txt_files, ex['label'], ex['label_name'])
-	print("evaluating model...")
-
-	weight_scheme = []
-	for depth in range(5):
-		acc = tcg.eval_single(depth) 
-		print("depth: {:d}, acc: {:.4f}".format(depth, acc))
-		weight_scheme.append(acc)
-
-	weight_scheme = np.array(weight_scheme)
-	med = np.median(weight_scheme)
-
-	weight_scheme[np.argwhere(weight_scheme > med)] = 1.0
-	weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
-	weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
-	
-	weight_scheme = np.array([weight_scheme])
-
-	print("weight_scheme", weight_scheme)
-	print("ensemble, acc: {:.4f}".format(tcg.eval(weight_scheme)))
-	
-
-	# GEN PYPLOT
-	'''
-	fig, ax = plt.subplots()
-	ax.imshow(class_acc, cmap='hot', interpolation='nearest')
-	ax.set_xticks(np.arange(len(label_names)))
-	ax.set_yticks(np.arange(len(label_names)))
-	ax.set_xticklabels(label_names)
-	ax.set_yticklabels(label_names)
-
-	plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
-		 rotation_mode="anchor")
-
-	for i in range(len(label_names)):
-		for j in range(len(label_names)):
-			if(class_acc[i, j] < 0.5):
-				text = ax.text(j, i, class_acc[i, j],
-							   ha="center", va="center", color="w")
-			else:
-				text = ax.text(j, i, class_acc[i, j],
-							   ha="center", va="center", color="k")
-
-	fig.tight_layout()
-
-	#plt.show()
-	'''
-"""
 
 if __name__ == '__main__':
 	import argparse
