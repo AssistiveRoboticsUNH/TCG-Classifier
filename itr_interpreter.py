@@ -27,7 +27,7 @@ from itr_sklearn import ITR_Extractor
 
 
 
-def f_importances(ax, coef, names, top=5):
+def f_importances(coef, names, top=5):
 	
 	# convert Scipy matrix to one dimensional vector
 	imp = coef.toarray()[0]
@@ -38,9 +38,9 @@ def f_importances(ax, coef, names, top=5):
 	names = names[::-1]
 
 	# place into chart
-	ax.barh(range(top), imp[:top], align='center')
-	ax.yticks(range(top), names[:top])
-	
+	plt.barh(range(top), np.concatenate(imp[:top], imp[top:]), align='center')
+	plt.yticks(range(top), np.concatenate(names[:top], names[top:]))
+	plt.savefig("test.png")
 			
 		
 
@@ -62,14 +62,9 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	'''
 	print(coef.shape)
 
-
-	fig, axes = plt.subplots(nrows=1, ncols=coef.shape[0], figsize=(2, 13))
-
 	#select the first class only 
-	f_importances(axes[0], abs(coef[0]), names)
-	f_importances(axes[1], abs(coef[1]), names)
-
-	plt.savefig("test.png")
+	f_importances(coef[0], names)
+	#f_importances(abs(coef[0]), names)
 
 
 if __name__ == '__main__':
