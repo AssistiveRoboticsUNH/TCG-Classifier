@@ -16,6 +16,8 @@ from sklearn import metrics
 from sklearn.linear_model import SGDClassifier
 from sklearn.ensemble import RandomForestClassifier
 
+from sklearn.multiclass import OneVsRestClassifier
+
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -186,7 +188,10 @@ class ITR_Extractor:
 
 		print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
-		self.clf = svm.SVC(max_iter=5000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr' ).fit(train_mat, np.array(self.labels))
+		#self.clf = svm.SVC(max_iter=5000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr' ).fit(train_mat, np.array(self.labels))
+		self.clf = OneVsRestClassifier(svm.SVC(max_iter=5000, tol=1e-4, probability=True, kernel='linear')).fit(train_mat, np.array(self.labels))
+		
+(SVC())
 		#self.clf = RandomForestClassifier(n_estimators=100).fit(train_mat, np.array(self.labels))
 
 		#self.clf = SGDClassifier(loss='modified_huber', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
