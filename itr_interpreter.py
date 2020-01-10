@@ -6,7 +6,8 @@ from collections import Counter
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
-
+import matplotlib
+matplotlib.use('Agg')
 
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
