@@ -58,7 +58,7 @@ class ITR_Extractor_Ensemble:
 			pred = self.models[depth].clf.predict(data)
 
 			#print(self.models[depth].clf.classes_)
-			#print(prob, prob.shape)
+			print(prob, prob.shape)
 
 			#pred = np.argmax(prob, axis=1)
 
@@ -68,6 +68,10 @@ class ITR_Extractor_Ensemble:
 			probs.append( prob )
 
 			print( acc )
+
+		#votes = [(i if decision_function[p] > 0 else j) for p,(i,j) in enumerate((i,j) 
+        #                                   for i in range(num_classes)
+        #                                   for j in range(i+1,num_classes))]
 
 		#determine ensemble weighting scheme
 		weight_scheme = np.array(preds)
