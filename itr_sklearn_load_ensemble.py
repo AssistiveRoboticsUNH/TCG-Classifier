@@ -59,26 +59,10 @@ class ITR_Extractor_Ensemble:
 			prob = self.models[depth].clf.decision_function(data)
 			pred = self.models[depth].clf.predict(data)
 
-			#print(self.models[depth].clf.classes_)
 			print(prob.shape)
 
 			pred2 = np.argmax(prob, axis=1)
-			#print(pred2)	
-
-			#votes = np.zeros((prob.shape[1], self.num_classes))
-
-			'''
-			votes = [(i if prob[p] > 0 else j) for p,(i,j) in enumerate((i,j) 
-					for i in range(self.num_classes)
-						for j in range(i+1,self.num_classes))]
 			
-			print("votes:", votes)
-
-			pred_new = self.clf.classes_[max(set(votes), key=votes.count)]
-			print("pred_new:", pred_new)
-			'''
-			#pred = np.argmax(prob, axis=1)
-
 			acc = metrics.accuracy_score(self.evallabels, pred)
 			acc2 = metrics.accuracy_score(self.evallabels, pred2)
 
@@ -103,8 +87,8 @@ class ITR_Extractor_Ensemble:
 		weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
 		weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
 		
-		weight_scheme = np.array([weight_scheme])
-		#weight_scheme = [[1,0,0,0,0]]#np.array([weight_scheme])
+		#weight_scheme = np.array([weight_scheme])
+		weight_scheme = [[1,0,0,0,0]]#np.array([weight_scheme])
 		print("weight_scheme:", weight_scheme)
 
 		print("probs:", np.array(probs).shape)
