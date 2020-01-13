@@ -80,11 +80,13 @@ class ITR_Extractor_Ensemble:
 			#pred = np.argmax(prob, axis=1)
 
 			acc = metrics.accuracy_score(self.evallabels, pred)
+			acc2 = metrics.accuracy_score(self.evallabels, pred2)
 
 			preds.append( acc )
 			probs.append( prob )
 
 			print( acc )
+			print( acc2 )
 
 
 		# for every decision point, check to see if the value is above 0 and choose one classe
