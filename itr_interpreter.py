@@ -44,7 +44,7 @@ def f_importances(coef, names, count=5):
 
 
 
-	print(top.shape, type(top))
+	print(top, type(top))
 
 
 	# place into chart
