@@ -38,16 +38,8 @@ class ITR_Extractor_Ensemble:
 			self.models[depth].evalcorpus.append(txt)
 		self.evallabels.append(label)
 		self.label_names[label] = label_name
-
-	'''
-	def fit(self):
-		for depth in range(5):
-			train_mat = self.models[depth].tfidf.fit_transform(self.models[depth].corpus)
-			print(depth, train_mat.shape)
-			#self.models[depth].fit(train_mat, np.array(self.labels))
-	'''
 	
-	def eval2(self):
+	def eval(self):
 		probs = []
 		preds = []
 
@@ -78,65 +70,13 @@ class ITR_Extractor_Ensemble:
 		weight_scheme = np.array([weight_scheme])
 		#weight_scheme = [[1,0,0,0,0]]#np.array([weight_scheme])
 		print("weight_scheme:", weight_scheme)
-
-		print("probs:", np.array(probs).shape)
 		probs *= np.array(weight_scheme).reshape(5,1,1)
 
 		# make confidence prediction
-		print("weighted probs:", probs.shape)
 		probs = np.mean(probs, axis=0)
+		ensemble_pred = np.argmax(probs, axis = 1)
 
-		print("averaged probs:", probs.shape)
-		ensembel_pred = np.argmax(probs, axis = 1)
-		print("ensemble pred:", ensembel_pred.shape)
-
-		return metrics.accuracy_score(self.evallabels, ensembel_pred)
-	
-
-	def pred(self, txt_files, weight_scheme):
-		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
-
-		confidence_values = []
-
-		#depth=4
-		for depth in range(5):
-			txt = txt_files[depth]#self.parse_txt_file(txt_files[depth])
-			data = self.models[depth].tfidf.transform([txt])
-			confidence_values.append( self.models[depth].clf.predict_proba(data) )
-
-		#print("confidence_values:", confidence_values)
-		confidence_values *= np.array(weight_scheme).reshape(5,1,1)
-		#confidence_values *= np.array([[0.0, 0.0, 0.5, 1.0, 1.0]]).reshape(5,1,1)
-		
-
-		#print("confid_shape: ", np.array(confidence_values).shape)
-		confidence_values = np.mean(confidence_values, axis=(0,1))
-		#print("confid_shape: ", np.array(confidence_values).shape)
-
-		return np.argmax(confidence_values)
-
-	def eval_single(self, depth):
-
-		data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
-		pred = self.models[depth].clf.predict(data) 
-
-		return metrics.accuracy_score(self.evallabels, pred)
-
-	
-	def eval(self, weight_scheme):
-
-		pred = []
-
-		for i in range(len(self.models[0].evalcorpus)):
-
-			txt_files = [self.models[depth].evalcorpus[i] for depth in range(5)]
-			pred_v = self.pred(txt_files, weight_scheme)
-
-			pred.append( pred_v )
-
-		#print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
-		#print(metrics.accuracy_score(self.evallabels, pred))
-		return metrics.accuracy_score(self.evallabels, pred)
+		return metrics.accuracy_score(self.evallabels, ensemble_pred)
 	
 
 
@@ -179,46 +119,17 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		for ex in csv_contents:
 			ex['txt_path_'+str(depth)] = os.path.join(dataset_dir, "atxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
 
-
-		#train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	
-	'''	
-	# TRAIN
-	print("adding data...")
-	for ex in train_data:
-		txt_files = [ex['txt_path_'+str(d)] for d in range(5)]
-		tcg.add_file_to_corpus(txt_files, ex['label'])
-	print("fitting model...")
-	tcg.fit()
-	'''
 	# CLASSIFY 
 	print("adding eval data...")
 	for ex in test_data:
 		txt_files = [ex['txt_path_'+str(d)] for d in range(5)]
 		tcg.add_file_to_eval_corpus(txt_files, ex['label'], ex['label_name'])
 	print("evaluating model...")
-	'''
-	weight_scheme = []
-	for depth in range(5):
-		acc = tcg.eval_single(depth) 
-		print("depth: {:d}, acc: {:.4f}".format(depth, acc))
-		weight_scheme.append(acc)
-
-	weight_scheme = np.array(weight_scheme)
-	med = np.median(weight_scheme)
-
-	weight_scheme[np.argwhere(weight_scheme > med)] = 1.0
-	weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
-	weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
 	
-	weight_scheme = np.array([weight_scheme])
-	'''
+	print("ensemble, acc: {:.4f}".format(tcg.eval()))
 	
-	print("ensemble, acc: {:.4f}".format(tcg.eval2()))
-	#print("ensemble, acc: {:.4f}".format(tcg.eval(weight_scheme)))
-	
-	#print("ensemble, acc: {:.4f}".format(tcg.eval()))
 
 	# GEN PYPLOT
 	'''
