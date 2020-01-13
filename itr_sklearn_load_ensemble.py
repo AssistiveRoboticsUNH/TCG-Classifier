@@ -67,7 +67,7 @@ class ITR_Extractor_Ensemble:
 
 			print("votes:", votes)
 
-			pred_new = cs[max(set(votes), key=votes.count)]
+			pred_new = self.clf.classes_[max(set(votes), key=votes.count)]
 			print("pred_new:", pred_new)
 
 			#pred = np.argmax(prob, axis=1)
