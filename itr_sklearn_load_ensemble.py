@@ -60,13 +60,14 @@ class ITR_Extractor_Ensemble:
 			pred = self.models[depth].clf.predict(data)
 
 			#print(self.models[depth].clf.classes_)
-			print(prob, prob.shape)
+			print(prob.shape)
+
+			pred2 = np.argmax(prob, axis=1)
+			#print(pred2)	
+
+			#votes = np.zeros((prob.shape[1], self.num_classes))
 
 			'''
-			votes = np.zeros((prob.shape[1], self.num_classes))
-
-
-
 			votes = [(i if prob[p] > 0 else j) for p,(i,j) in enumerate((i,j) 
 					for i in range(self.num_classes)
 						for j in range(i+1,self.num_classes))]
