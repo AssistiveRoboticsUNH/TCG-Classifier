@@ -54,22 +54,28 @@ class ITR_Extractor_Ensemble:
 		for depth in range(5):
 			data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
 
+			print(data.shape)
+
 			prob = self.models[depth].clf.decision_function(data)
 			pred = self.models[depth].clf.predict(data)
 
 			#print(self.models[depth].clf.classes_)
 			print(prob, prob.shape)
 
-			votes = [(i if prob[p] > 0 else j) for p,(i,j) in enumerate((i,j) 
-			for i in range(self.num_classes)
-				for j in range(i+1,self.num_classes))]
-			
+			'''
+			votes = np.zeros((prob.shape[1], self.num_classes))
 
+
+
+			votes = [(i if prob[p] > 0 else j) for p,(i,j) in enumerate((i,j) 
+					for i in range(self.num_classes)
+						for j in range(i+1,self.num_classes))]
+			
 			print("votes:", votes)
 
 			pred_new = self.clf.classes_[max(set(votes), key=votes.count)]
 			print("pred_new:", pred_new)
-
+			'''
 			#pred = np.argmax(prob, axis=1)
 
 			acc = metrics.accuracy_score(self.evallabels, pred)
