@@ -60,7 +60,7 @@ class ITR_Extractor_Ensemble:
 			#print(self.models[depth].clf.classes_)
 			print(prob, prob.shape)
 
-			votes = [(i if decision_function[p] > 0 else j) for p,(i,j) in enumerate((i,j) 
+			votes = [(i if prob[p] > 0 else j) for p,(i,j) in enumerate((i,j) 
 			for i in range(self.num_classes)
 				for j in range(i+1,self.num_classes))]
 			
