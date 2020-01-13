@@ -45,12 +45,12 @@ def f_importances(coef, names, count=5):
 
 
 	print(top.shape, type(top))
-	
+
 
 	# place into chart
 	plt.barh(range(count), top, align='center')
 	plt.yticks(range(count), label)
-	plt.savefig("test.png")
+	#plt.savefig("test.png")
 			
 		
 
