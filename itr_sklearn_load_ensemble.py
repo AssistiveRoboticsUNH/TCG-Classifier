@@ -61,11 +61,13 @@ class ITR_Extractor_Ensemble:
 			print(prob, prob.shape)
 
 			votes = [(i if decision_function[p] > 0 else j) for p,(i,j) in enumerate((i,j) 
-			for i in range(num_classes)
-				for j in range(i+1,num_classes))]
-			pred_new = cs[max(set(votes), key=votes.count)]
+			for i in range(self.num_classes)
+				for j in range(i+1,self.num_classes))]
+			
 
 			print("votes:", votes)
+
+			pred_new = cs[max(set(votes), key=votes.count)]
 			print("pred_new:", pred_new)
 
 			#pred = np.argmax(prob, axis=1)
