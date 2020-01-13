@@ -27,7 +27,7 @@ from itr_sklearn import ITR_Extractor
 
 
 
-def f_importances(coef, names, top=5):
+def f_importances(coef, names, count=5):
 	
 	# convert Scipy matrix to one dimensional vector
 	imp = coef.toarray()[0]
@@ -39,14 +39,17 @@ def f_importances(coef, names, top=5):
 
 	#print(imp.shape)
 
-	data = imp[:top]#np.stack((imp[:top], imp[top:]))
-	label = names[:top]#np.stack((names[:top], names[top:]))
+	top, bot = imp[:count], imp[count:]#np.stack((imp[:top], imp[top:]))
+	top_n, bot_n = names[:count], names[count:]#np.stack((names[:top], names[top:]))
 
 
+
+	print(top.shape, type(top))
+	
 
 	# place into chart
-	plt.barh(range(top), data, align='center')
-	plt.yticks(range(top), label)
+	plt.barh(range(count), top, align='center')
+	plt.yticks(range(count), label)
 	plt.savefig("test.png")
 			
 		
