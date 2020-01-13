@@ -40,7 +40,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 			print("ERROR: Cannot open CSV file: "+ csv_filename)
 
 		for ex in csv_contents:
-			ex['txt_path'] = os.path.join(dataset_dir, "ctxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
+			ex['txt_path'] = os.path.join(dataset_dir, "etxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
 
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
