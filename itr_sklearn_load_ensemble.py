@@ -60,6 +60,14 @@ class ITR_Extractor_Ensemble:
 			#print(self.models[depth].clf.classes_)
 			print(prob, prob.shape)
 
+			votes = [(i if decision_function[p] > 0 else j) for p,(i,j) in enumerate((i,j) 
+			for i in range(num_classes)
+				for j in range(i+1,num_classes))]
+			pred_new = cs[max(set(votes), key=votes.count)]
+
+			print("votes:", votes)
+			print("pred_new:", pred_new)
+
 			#pred = np.argmax(prob, axis=1)
 
 			acc = metrics.accuracy_score(self.evallabels, pred)
@@ -69,9 +77,10 @@ class ITR_Extractor_Ensemble:
 
 			print( acc )
 
-		#votes = [(i if decision_function[p] > 0 else j) for p,(i,j) in enumerate((i,j) 
-        #                                   for i in range(num_classes)
-        #                                   for j in range(i+1,num_classes))]
+
+		# for every decision point, check to see if the value is above 0 and choose one classe
+		#, or choose the other class
+		
 
 		#determine ensemble weighting scheme
 		weight_scheme = np.array(preds)
