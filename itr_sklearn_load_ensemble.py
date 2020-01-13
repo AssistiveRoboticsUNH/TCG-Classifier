@@ -54,34 +54,20 @@ class ITR_Extractor_Ensemble:
 		for depth in range(5):
 			data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
 
-			print(data.shape)
-
 			prob = self.models[depth].clf.decision_function(data)
 			pred = self.models[depth].clf.predict(data)
 
-			print(prob.shape)
-
-			pred2 = np.argmax(prob, axis=1)
-			
 			acc = metrics.accuracy_score(self.evallabels, pred)
-			acc2 = metrics.accuracy_score(self.evallabels, pred2)
 
 			preds.append( acc )
 			probs.append( prob )
 
-			print( acc )
-			print( acc2 )
-
-
 		# for every decision point, check to see if the value is above 0 and choose one classe
 		#, or choose the other class
 		
-
 		#determine ensemble weighting scheme
 		weight_scheme = np.array(preds)
 		med = np.median(preds)
-
-		print(weight_scheme, med)
 
 		weight_scheme[np.argwhere(weight_scheme > med)] = 1.0
 		weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
