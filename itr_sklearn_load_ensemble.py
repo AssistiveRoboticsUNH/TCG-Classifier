@@ -62,6 +62,8 @@ class ITR_Extractor_Ensemble:
 			preds.append( acc )
 			probs.append( prob )
 
+			print(acc)
+
 		# for every decision point, check to see if the value is above 0 and choose one classe
 		#, or choose the other class
 		
