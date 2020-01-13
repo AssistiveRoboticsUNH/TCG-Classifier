@@ -49,7 +49,7 @@ def f_importances(coef, names, count=5):
 
 	# place into chart
 	plt.barh(range(count), top, align='center')
-	plt.yticks(range(count), label)
+	plt.yticks(range(count), top_n)
 	#plt.savefig("test.png")
 			
 		
