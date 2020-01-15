@@ -52,12 +52,7 @@ def f_importances(coef, names, count=5):
 	colors = ['b']*count + ['r']*count
 
 	# place into chart
-<<<<<<< Updated upstream
-	plt.barh(range(count), top, align='center')
-	plt.yticks(range(count), top_n)
-	#plt.savefig("test.png")
-			
-=======
+
 	plt.barh(range(count*2), data, align='center', color=colors)
 	plt.yticks(range(count*2), labels)
 	plt.tight_layout()
@@ -65,7 +60,6 @@ def f_importances(coef, names, count=5):
 	plt.show()
 	plt.savefig("test.png")
 	
->>>>>>> Stashed changes
 		
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
