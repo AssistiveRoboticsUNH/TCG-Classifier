@@ -57,9 +57,10 @@ feature_names = feature_names[::-1]
 for fn, imp in zip(feature_names, importance):
 	print(fn, imp)
 
+print(clf.support_)
 print(clf.n_support_)
 
-	
+
 '''	
 importance = clf.coef_.toarray()
 feature_names = tfidf.vocabulary_
