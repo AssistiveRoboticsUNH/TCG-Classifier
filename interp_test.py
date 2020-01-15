@@ -29,8 +29,8 @@ feature_names = tfidf.get_feature_names()#.vocabulary_
 
 
 
-for i in X.shape[0]:
-	for j in X.shape[1]:
+for i in range(X.shape[0]):
+	for j in range(X.shape[1]):
 		print(feature_names[j], X[i][j])
 
 clf = svm.SVC(tol=1e-4, probability=True, 
