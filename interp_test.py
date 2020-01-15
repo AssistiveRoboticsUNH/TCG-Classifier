@@ -14,12 +14,16 @@ corpus = [
 		"which forms part of the wolf-like canids, and is the most widely abundant terrestrial carnivore.",
 		"The dog and the extant gray wolf are sister taxa as modern wolves are not closely related to the wolves",
 		"that were first domesticated, which implies that the direct ancestor of the dog is extinct. "]
-Y = [0,0,0,0,0, 1,1,1,1,1]
+Y = [0,0,0,0,0,1,1,1,1,1]
 
 tfidf = TfidfVectorizer(sublinear_tf=True)
 
 X = tfidf.fit_transform(corpus)
-clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr' ).fit(X, Y)
+
+print(X.shape)
+
+clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, 
+	kernel='linear', decision_function_shape='ovr' ).fit(X, Y)
 		
 importance = clf.coef_
 feature_names = tfidf.get_feature_names()
