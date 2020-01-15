@@ -98,9 +98,9 @@ def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_i
 
 	t_s = time.time()
 
-	#perm = PermutationImportance(tcg.clf).fit(data.toarray(), tcg.evallabels)
-	#out = eli5.show_weights(perm, feature_names=tcg.tfidf.get_feature_names())
-	#print(out.data)
+	perm = PermutationImportance(tcg.clf).fit(data.toarray(), tcg.evallabels)
+	out = eli5.show_weights(perm, feature_names=tcg.tfidf.get_feature_names())
+	print(out.data)
 	print("Elapsed Time:", time.time() - t_s)
 
 	return None, None
