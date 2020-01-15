@@ -28,21 +28,20 @@ clf = svm.SVC(tol=1e-4, probability=True,
 	kernel='linear', decision_function_shape='ovr' ).fit(X, Y)
 
 importance = clf.coef_.toarray()[0]
-prev_order = range(len(importance))
 feature_names = tfidf.vocabulary_
+array = ['']*len(feature_names)
 
-importance, prev_order = zip(*sorted(zip(importance,prev_order)))
-importance, prev_order = np.array(importance), np.array(prev_order)
+for k in feature_names:
+	array[feature_names[k]] = k
+
+importance, feature_names = zip(*sorted(zip(importance,feature_names)))
+importance, feature_names = np.array(importance), np.array(feature_names)
 
 importance = importance[::-1]
-prev_order = prev_order[::-1]
+feature_names = feature_names[::-1]
 
-for f in feature_names.keys():
-	#print(feature_names[f])
-	imp_loc = prev_order[feature_names[f]]
-
-	print(f, importance[imp_loc])
-
+for fn, imp in zip(feature_names, importance)
+	print(fn, imp)
 '''	
 importance = clf.coef_.toarray()
 feature_names = tfidf.vocabulary_
