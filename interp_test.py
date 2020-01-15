@@ -54,7 +54,7 @@ perm = PermutationImportance(clf).fit(Xmat.toarray(), Y)
 out = eli5.show_weights(perm)
 
 
-print(out)
+print(out.data)
 
 '''
 te = TextExplainer(random_state=42)
