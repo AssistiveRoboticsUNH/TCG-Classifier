@@ -23,9 +23,11 @@ Y_p = [1]
 
 #tfidf = TfidfVectorizer(sublinear_tf=True)
 tfidf = CountVectorizer()
+X = tfidf.fit_transform(corpus)
+
 feature_names = tfidf.get_feature_names()#.vocabulary_
 
-X = tfidf.fit_transform(corpus)
+
 
 for i in X.shape[0]:
 	for j in X.shape[1]:
