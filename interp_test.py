@@ -30,6 +30,9 @@ Xmat = tfidf.fit_transform(corpus)
 feature_names_alpha = tfidf.get_feature_names()
 feature_names = tfidf.vocabulary_
 
+
+
+
 print(X.shape, len(feature_names_alpha))
 
 for j in range(X.shape[1]):
@@ -53,6 +56,10 @@ feature_names = feature_names[::-1]
 
 for fn, imp in zip(feature_names, importance):
 	print(fn, imp)
+
+print(clf.n_support_)
+
+	
 '''	
 importance = clf.coef_.toarray()
 feature_names = tfidf.vocabulary_
