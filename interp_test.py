@@ -5,6 +5,7 @@ import numpy as np
 
 import eli5
 from eli5.lime import TextExplainer
+from eli5.sklearn import PermutationImportance
 
 from sklearn.pipeline import Pipeline, make_pipeline
 
@@ -48,12 +49,21 @@ clf = svm.SVC(tol=1e-4, probability=True,
 
 pipe = make_pipeline(tfidf, clf)
 
+
+perm = PermutationImportance(pipe).fit(Xmat, Y)
+out = eli5.show_weights(perm)
+
+
+print(out)
+
+'''
 te = TextExplainer(random_state=42)
 te.fit(corpus[7], pipe.predict_proba)
 out = te.show_prediction(target_names=[0,1])
 
 print(out.data)
 print(out.url)
+'''
 
 '''
 importance = clf.coef_.toarray()[0]
