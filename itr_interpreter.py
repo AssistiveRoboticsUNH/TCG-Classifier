@@ -125,11 +125,6 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 	return feature_names[:1000], None#top_n, bot_n
 
-def convert_aaa_to_num(aaa):
-	action_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
-	return action_labels.index(aaa)
-
-
 def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad.png'):
 	# find the IAD that best matches the given IADs and color it and save fig
 	tcg.evalcorpus = []
@@ -192,12 +187,14 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 	canvas = np.ones((num_features, max_window))
 
 	events = tcg.read_file(files[top]["txt_path"])
+
+	action_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
+
 	for i, e in enumerate(events):
 		feature = e.name #figure this out
 		print(e.name, convert_aaa_to_num(feature), e.start, e.end)
-		
 
-		canvas[i , int(e.start):int(e.end)] = 0
+		canvas[action_labels.indexx(aaa) , int(e.start):int(e.end)] = 0
 	
 	#cv2.imsave(out_name, canvas)
 	#cv2.imshow('img', canvas)
