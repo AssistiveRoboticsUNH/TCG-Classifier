@@ -30,5 +30,5 @@ feature_names = tfidf.vocabulary_#get_feature_names()
 
 print(feature_names)
 
-#for i, f in enumerate(feature_names):
-#	print(f, clf.coef_[0][i], clf.coef_[1][i])
+for k in feature_names:
+	print(k, clf.coef_[0][feature_names[k]], clf.coef_[1][feature_names[k]])
