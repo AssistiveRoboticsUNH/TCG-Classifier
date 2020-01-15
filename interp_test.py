@@ -50,7 +50,9 @@ pipe = make_pipeline(tfidf, clf)
 
 te = TextExplainer(random_state=42)
 te.fit(corpus[0], pipe.predict_proba)
-te.show_prediction(target_names=[0,1])
+out = te.show_prediction(target_names=[0,1])
+
+print(out)
 
 '''
 importance = clf.coef_.toarray()[0]
