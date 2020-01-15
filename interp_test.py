@@ -57,6 +57,7 @@ feature_names = feature_names[::-1]
 for fn, imp in zip(feature_names, importance):
 	print(fn, imp)
 
+print(clf.support_vectors_)
 print(clf.support_)
 print(clf.n_support_)
 
