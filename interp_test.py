@@ -1,6 +1,8 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
 
+import numpy as np
+
 
 corpus = [
 		"The cat (Felis catus) is a small carnivorous mammal.",
