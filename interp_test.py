@@ -49,7 +49,7 @@ clf = svm.SVC(tol=1e-4, probability=True,
 pipe = make_pipeline(tfidf, clf)
 
 te = TextExplainer(random_state=42)
-te.fit(corpus[0], pipe.predict_proba)
+te.fit(corpus[2], pipe.predict_proba)
 out = te.show_prediction(target_names=[0,1])
 
 print(out.data)
