@@ -120,11 +120,12 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	#plt.show()
 	#plt.savefig(out)
 
-	return top_n, bot_n
+	return importance[importance > 0], None#top_n, bot_n
 
-def find_best_matching_IAD(tcg, label, top_features, csv_contents):
+def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad.png'):
 	# find the IAD that best matches the given IADs and color it and save fig
 	tcg.evalcorpus = []
+	
 	
 	files  = [ex for ex in csv_contents if ex["label"] == label]
 	
@@ -139,35 +140,34 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents):
 	top = np.argmax(prob[:, label], axis =0)
 	print(prob[top], files[top]["iad_path"])
 
+	'''
 	itr_seq = [itr[0]+'-'+itr[1]+'-'+itr[2] for itr in tcg.extract_itr_seq(files[top]["txt_path"])]
 	for f in top_features:
 		print(f, f in itr_seq)
-
-
 	'''
-	max_label = ''
-	max_count = 0
 
 	for i, ex in enumerate(files):
 
 		itr_seq = [itr[0]+'-'+itr[1]+'-'+itr[2] for itr in tcg.extract_itr_seq(ex["txt_path"])]
 		#itr_seq = [itr[1] for itr in tcg.extract_itr_seq(ex["txt_path"])] #+ ['adi-eq-aaa']
 
-		count = 0
+		tally = 0
 		for f in top_features:
 			if(f in itr_seq):
-				count += 1
+				tally += 1
 			#print(f, f in itr_seq)
 
 		if(count > max_count):
 			max_label = ex["txt_path"]
 			max_count = count
 
-	print(max_count, max_label)
+		print(ex["example_id"], tally)
+
+	#print(max_count, max_label)
 
 	#DEBUG: investigate to see how many of the top_features are present in the specified class
 
-	'''
+	
 
 	# It looks better if I can just paste it ontop of an existing IAD
 
@@ -188,9 +188,10 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents):
 
 		canvas[i, int(e.start):int(e.end)] = 0
 	
-	cv2.imshow('img', canvas)
-	cv2.waitKey(0)
-	cv2.destroyAllWindows()
+	#cv2.imsave(out_name, canvas)
+	#cv2.imshow('img', canvas)
+	#cv2.waitKey(0)
+	#cv2.destroyAllWindows()
 
 
 
