@@ -191,10 +191,9 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 	action_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
 
 	for i, e in enumerate(events):
-		feature = e.name #figure this out
-		print(e.name, convert_aaa_to_num(feature), e.start, e.end)
+		print(e.name, action_labels.indexx(e.name) , e.start, e.end)
 
-		canvas[action_labels.indexx(aaa) , int(e.start):int(e.end)] = 0
+		canvas[action_labels.indexx(e.name) , int(e.start):int(e.end)] = 0
 	
 	#cv2.imsave(out_name, canvas)
 	#cv2.imshow('img', canvas)
