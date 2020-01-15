@@ -30,9 +30,9 @@ X_p = [
 		"Its night vision and sense of smell are well developed. Cat communication includes vocalizations like meowing, purring,",
 		"trilling, hissing, growling and grunting as well as cat-specific body language. It is a solitary hunter, but a social species.",
 
-		"Their long association with humans has led dogs to be uniquely attuned to human behavior"
-		"and they are able to thrive on a starch-rich diet that would be inadequate for other canids."
-		"Dogs vary widely in shape, size and colors. They perform many roles for humans, such as hunting,"
+		"Their long association with humans has led dogs to be uniquely attuned to human behavior",
+		"and they are able to thrive on a starch-rich diet that would be inadequate for other canids.",
+		"Dogs vary widely in shape, size and colors. They perform many roles for humans, such as hunting,",
 		"herding, pulling loads, protection, assisting police and military, companionship and, more recently, aiding disabled people and therapeutic roles."
 		]
 
