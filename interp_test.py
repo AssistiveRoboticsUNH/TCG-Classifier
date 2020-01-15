@@ -6,6 +6,8 @@ import numpy as np
 import eli5
 from eli5.lime import TextExplainer
 
+from sklearn.pipeline import Pipeline, make_pipeline
+
 
 corpus = [
 		"The cat (Felis catus) is a small carnivorous mammal.",
@@ -44,8 +46,10 @@ for j in range(X.shape[1]):
 clf = svm.SVC(tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovr' ).fit(Xmat, Y)
 
+pipe = make_pipeline(tfidf, clf)
+
 te = TextExplainer(random_state=42)
-te.fit(corpus[0], clf.predict_proba)
+te.fit(corpus[0], pipe.predict_proba)
 te.show_prediction(target_names=[0,1])
 
 '''
