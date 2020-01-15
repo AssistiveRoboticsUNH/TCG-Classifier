@@ -32,4 +32,4 @@ print(feature_names)
 print(clf.coef_.shape)
 
 for k in feature_names:
-	print(k, clf.coef_[0][feature_names[k]], clf.coef_[1][feature_names[k]])
+	print(k, clf.coef_[0][feature_names[k]]#, clf.coef_[1][feature_names[k]])
