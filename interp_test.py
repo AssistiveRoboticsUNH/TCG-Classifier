@@ -1,4 +1,4 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn import svm
 
 import numpy as np
@@ -18,7 +18,8 @@ corpus = [
 		"that were first domesticated, dog which implies that the direct ancestor of the dog is extinct. "]
 Y = [0,0,0,0,0,1,1,1,1,1]
 
-tfidf = TfidfVectorizer(sublinear_tf=True)
+#tfidf = TfidfVectorizer(sublinear_tf=True)
+tfidf = CountVectorizer()
 
 X = tfidf.fit_transform(corpus)
 
