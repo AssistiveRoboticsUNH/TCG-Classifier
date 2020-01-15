@@ -6,8 +6,8 @@ from collections import Counter
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
-#import matplotlib
-#matplotlib.use('Agg')
+import matplotlib
+matplotlib.use('Agg')
 
 import cv2
 
