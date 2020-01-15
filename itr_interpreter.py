@@ -103,6 +103,8 @@ def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_i
 	#print(out.data)
 	print(time.time() - t_s)
 
+	return None, None
+
 '''
 def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"):
 	# get the top and bottom most features and save them in a plotable figure
@@ -261,10 +263,10 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		# from there we need to open an IAD and highlight the rows that are described in the table
 		# use the same colorsfor the regions specified
 
-		find_best_matching_IAD(tcg, label, top_features, csv_contents)
+		#find_best_matching_IAD(tcg, label, top_features, csv_contents)
 
 		# lastly we can look at frames in the video corresponding to those IADs
-		find_video_frames()
+		#find_video_frames()
 
 		print('----------------')
 
