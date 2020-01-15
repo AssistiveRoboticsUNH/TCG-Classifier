@@ -54,7 +54,7 @@ perm = PermutationImportance(pipe).fit(Xmat, Y)
 out = eli5.show_weights(perm)
 
 
-print(out)
+print(out.toarray())
 
 '''
 te = TextExplainer(random_state=42)
