@@ -24,8 +24,17 @@ corpus = [
 		"that were first domesticated, dog which implies that the direct ancestor of the dog is extinct. "]
 Y = [0,0,0,0,0,1,1,1,1,1]
 
-X_p = ["The dog and the cat are unalike because the dog is"]
-Y_p = [1]
+X_p = [
+		"The cat is similar in anatomy to the other felid species, ",
+		"has a strong flexible body, quick reflexes, sharp teeth and retractable claws adapted to killing small prey.",
+		"Its night vision and sense of smell are well developed. Cat communication includes vocalizations like meowing, purring,",
+		"trilling, hissing, growling and grunting as well as cat-specific body language. It is a solitary hunter, but a social species.",
+
+		"Their long association with humans has led dogs to be uniquely attuned to human behavior"
+		"and they are able to thrive on a starch-rich diet that would be inadequate for other canids."
+		"Dogs vary widely in shape, size and colors. They perform many roles for humans, such as hunting,"
+		"herding, pulling loads, protection, assisting police and military, companionship and, more recently, aiding disabled people and therapeutic roles."
+Y_p = [0,0,0,0,1,1,1,1]
 
 tfidf = TfidfVectorizer(sublinear_tf=True)
 #tfidf = CountVectorizer()
@@ -50,8 +59,8 @@ clf = svm.SVC(tol=1e-4, probability=True,
 pipe = make_pipeline(tfidf, clf)
 
 
-perm = PermutationImportance(clf).fit(Xmat.toarray(), Y)
-out = eli5.show_weights(perm)
+perm = PermutationImportance(pipe).fit(X_p, Y_p)
+out = eli5.show_weights(perm, feature_names=feature_names)
 
 
 print(out.data)
