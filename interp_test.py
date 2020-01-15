@@ -27,12 +27,13 @@ X = tfidf.fit_transform(corpus).toarray()
 Xmat = tfidf.fit_transform(corpus)
 
 
-feature_names = tfidf.get_feature_names()#.vocabulary_
+feature_names_alpha = tfidf.get_feature_names()
+feature_names = tfidf.vocabulary_
 
-print(X.shape, len(feature_names))
+print(X.shape, len(feature_names_alpha))
 
 for j in range(X.shape[1]):
-	print(feature_names[j], [X[i][j] for i in range(X.shape[0])])
+	print(feature_names_alpha[j], [X[i][j] for i in range(X.shape[0])])
 
 clf = svm.SVC(tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovr' ).fit(Xmat, Y)
