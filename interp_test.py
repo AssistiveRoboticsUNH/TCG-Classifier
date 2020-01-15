@@ -35,7 +35,7 @@ importance, prev_order = zip(*sorted(zip(importance,prev_order)))
 importance, prev_order = np.array(importance), np.array(prev_order)
 
 importance = importance[::-1]
-feature_names = feature_names[::-1]
+prev_order = prev_order[::-1]
 
 for f in feature_names.keys():
 	#print(feature_names[f])
