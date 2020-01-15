@@ -23,16 +23,19 @@ Y_p = [1]
 
 #tfidf = TfidfVectorizer(sublinear_tf=True)
 tfidf = CountVectorizer()
+feature_names = tfidf.get_feature_names()#.vocabulary_
 
 X = tfidf.fit_transform(corpus)
 
-print(X)
+for i in X.shape[0]:
+	for j in X.shape[1]:
+		print(feature_names[j], X[i][j])
 
 clf = svm.SVC(tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovr' ).fit(X, Y)
 
 importance = clf.coef_.toarray()[0]
-feature_names = tfidf.vocabulary_
+
 array = ['']*len(feature_names)
 
 for k in feature_names:
