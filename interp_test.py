@@ -3,6 +3,9 @@ from sklearn import svm
 
 import numpy as np
 
+import eli5
+from eli5.lime import TextExplainer
+
 
 corpus = [
 		"The cat (Felis catus) is a small carnivorous mammal.",
@@ -41,6 +44,11 @@ for j in range(X.shape[1]):
 clf = svm.SVC(tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovr' ).fit(Xmat, Y)
 
+te = TextExplainer(random_state=42)
+te.fit(corpus, clf.decision_function)
+te.show_prediction(target_names=[0,1])
+
+'''
 importance = clf.coef_.toarray()[0]
 
 array = ['']*len(feature_names)
@@ -60,7 +68,7 @@ for fn, imp in zip(feature_names, importance):
 print(clf.support_vectors_)
 print(clf.support_)
 print(clf.n_support_)
-
+'''
 
 '''	
 importance = clf.coef_.toarray()
