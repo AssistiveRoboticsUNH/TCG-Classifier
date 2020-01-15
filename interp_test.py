@@ -29,7 +29,7 @@ importance = clf.coef_.toarray()
 feature_names = tfidf.vocabulary_#get_feature_names()
 
 print(feature_names)
-print(len(clf.coef_[0]))
+print(len(importance[0]))
 
 for k in feature_names:
-	print(k, clf.coef_[0][feature_names[k]])#, clf.coef_[1][feature_names[k]])
+	print(k, importance[0][feature_names[k]])#, clf.coef_[1][feature_names[k]])
