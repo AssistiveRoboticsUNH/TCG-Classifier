@@ -26,10 +26,11 @@ clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True,
 	kernel='linear', decision_function_shape='ovr' ).fit(X, Y)
 		
 importance = clf.coef_.toarray()
-feature_names = tfidf.vocabulary_#get_feature_names()
+feature_names = tfidf.vocabulary_
+sortedt_names = tfidf.get_feature_names()
 
 print(feature_names)
 print(len(importance[0]))
 
-for k in feature_names:
+for k in sortedt_names:
 	print(k, importance[0][feature_names[k]])#, clf.coef_[1][feature_names[k]])
