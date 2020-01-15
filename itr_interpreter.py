@@ -152,7 +152,8 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 		#itr_seq = [itr[1] for itr in tcg.extract_itr_seq(ex["txt_path"])] #+ ['adi-eq-aaa']
 
 		tally = 0
-		for f in top_features:
+		for j, f in enumerate(top_features):
+			print(j)
 			if(f in itr_seq):
 				tally += 1
 			#print(f, f in itr_seq)
