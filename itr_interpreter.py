@@ -120,7 +120,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	#plt.show()
 	#plt.savefig(out)
 
-	return feature_names[:5000], None#top_n, bot_n
+	return feature_names[:10000], None#top_n, bot_n
 
 def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad.png'):
 	# find the IAD that best matches the given IADs and color it and save fig
