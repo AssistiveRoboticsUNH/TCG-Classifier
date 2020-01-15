@@ -25,7 +25,7 @@ print(X.shape)
 clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovr' ).fit(X, Y)
 		
-importance = clf.coef_
+importance = clf.coef_.toarray()
 feature_names = tfidf.vocabulary_#get_feature_names()
 
 print(feature_names)
