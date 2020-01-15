@@ -157,9 +157,9 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 				tally += 1
 			#print(f, f in itr_seq)
 
-		if(count > max_count):
-			max_label = ex["txt_path"]
-			max_count = count
+		#if(count > max_count):
+		#	max_label = ex["txt_path"]
+		#	max_count = count
 
 		print(ex["example_id"], tally)
 
