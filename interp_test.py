@@ -21,8 +21,8 @@ Y = [0,0,0,0,0,1,1,1,1,1]
 X_p = ["The dog and the cat are unalike because the dog is"]
 Y_p = [1]
 
-#tfidf = TfidfVectorizer(sublinear_tf=True)
-tfidf = CountVectorizer()
+tfidf = TfidfVectorizer(sublinear_tf=True)
+#tfidf = CountVectorizer()
 X = tfidf.fit_transform(corpus).toarray()
 Xmat = tfidf.fit_transform(corpus)
 
