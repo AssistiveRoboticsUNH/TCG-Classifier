@@ -61,7 +61,7 @@ clf = svm.SVC(tol=1e-4, probability=True,
 pipe = make_pipeline(tfidf, clf)
 
 
-perm = PermutationImportance(pipe).fit(X_p, Y_p)
+perm = PermutationImportance(clf).fit(tfidf.transform(X_p), Y_p)
 out = eli5.show_weights(perm, feature_names=feature_names)
 
 
