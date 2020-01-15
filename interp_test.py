@@ -40,7 +40,7 @@ importance, feature_names = np.array(importance), np.array(feature_names)
 importance = importance[::-1]
 feature_names = feature_names[::-1]
 
-for fn, imp in zip(feature_names, importance)
+for fn, imp in zip(feature_names, importance):
 	print(fn, imp)
 '''	
 importance = clf.coef_.toarray()
