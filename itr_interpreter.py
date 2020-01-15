@@ -193,10 +193,11 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 	events = tcg.read_file(files[top]["txt_path"])
 	for i, e in enumerate(events):
-		print(e.name, e.start, e.end)
 		feature = e.name #figure this out
+		print(e.name, convert_aaa_to_num(feature), e.start, e.end)
+		
 
-		canvas[i, convert_aaa_to_num(feature), int(e.start):int(e.end)] = 0
+		canvas[i , int(e.start):int(e.end)] = 0
 	
 	#cv2.imsave(out_name, canvas)
 	#cv2.imshow('img', canvas)
