@@ -36,8 +36,8 @@ importance, feature_names = np.array(importance), np.array(feature_names)
 importance = importance[::-1]
 feature_names = feature_names[::-1]
 
-for f in feature_names:
-	print(feature_names[f])
+for f in feature_names.keys():
+	#print(feature_names[f])
 	print(f, importance[0][feature_names[f]])
 
 '''	
