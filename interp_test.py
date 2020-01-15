@@ -55,13 +55,17 @@ print(X.shape, len(feature_names_alpha))
 for j in range(X.shape[1]):
 	print(j, feature_names_alpha[j], [X[i][j] for i in range(X.shape[0])])
 
+#clf = svm.SVC(tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr' ).fit(Xmat, Y)
+
 clf = svm.SVC(tol=1e-4, probability=True, 
-	kernel='linear', decision_function_shape='ovr' ).fit(Xmat, Y)
+	kernel='linear', decision_function_shape='ovr' )
+clf.fit(Xmat, Y)
 
 pipe = make_pipeline(tfidf, clf)
 
 X_pmat = tfidf.transform(X_p).toarray()
 print(X_pmat.shape)
+
 perm = PermutationImportance(clf).fit(X_pmat, Y_p)
 out = eli5.show_weights(perm, feature_names=feature_names)
 
