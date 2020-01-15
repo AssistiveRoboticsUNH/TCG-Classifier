@@ -67,7 +67,7 @@ X_pmat = tfidf.transform(X_p).toarray()
 print(X_pmat.shape, len(Y_p))
 
 perm = PermutationImportance(clf).fit(X_pmat, Y_p)
-out = eli5.show_weights(perm, feature_names=feature_names)
+out = eli5.show_weights(perm, feature_names=feature_names_alpha)
 
 
 print(out.data)
