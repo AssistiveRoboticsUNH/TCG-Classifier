@@ -52,7 +52,8 @@ te = TextExplainer(random_state=42)
 te.fit(corpus[0], pipe.predict_proba)
 out = te.show_prediction(target_names=[0,1])
 
-print(out.__repr__())
+print(out.data)
+print(out.url)
 
 '''
 importance = clf.coef_.toarray()[0]
