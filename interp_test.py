@@ -50,11 +50,11 @@ clf = svm.SVC(tol=1e-4, probability=True,
 pipe = make_pipeline(tfidf, clf)
 
 
-perm = PermutationImportance(pipe).fit(Xmat, Y)
+perm = PermutationImportance(pipe).fit(Xmat.toarray(), Y)
 out = eli5.show_weights(perm)
 
 
-print(out.toarray())
+print(out)
 
 '''
 te = TextExplainer(random_state=42)
