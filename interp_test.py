@@ -66,6 +66,7 @@ pipe = make_pipeline(tfidf, clf)
 X_pmat = tfidf.transform(X_p).toarray()
 print(X_pmat.shape, len(Y_p))
 
+#https://medium.com/towards-artificial-intelligence/how-to-use-scikit-learn-eli5-library-to-compute-permutation-importance-9af131ece387
 perm = PermutationImportance(clf).fit(X_pmat, Y_p)
 out = eli5.show_weights(perm, feature_names=feature_names_alpha)
 

@@ -31,6 +31,8 @@ from itertools import product
 from string import ascii_lowercase
 #https://buhrmann.github.io/tfidf-analysis.html
 
+from eli5.sklearn import PermutationImportance
+
 
 '''
 def f_importances(coef, names, count=5):
@@ -86,6 +88,19 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 '''
 
+def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_importance.png"):
+
+	files = [ex for ex in csv_contents if ex["label"] == label]
+	for i, ex in enumerate(files):
+		tcg.add_file_to_eval_corpus(ex["txt_path"], label, ex["label_name"])
+
+	data = tcg.tfidf.transform(tcg.evalcorpus)
+
+	perm = PermutationImportance(tcg.clf).fit(data, self.tcg.evallabels)
+	out = eli5.show_weights(perm, feature_names=tcg.tfidf.get_feature_names())
+	print(out.data)
+
+'''
 def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"):
 	# get the top and bottom most features and save them in a plotable figure
 
@@ -124,8 +139,12 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	#plt.savefig(out)
 
 	return feature_names[:1000], None#top_n, bot_n
+'''
 
 def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad.png'):
+
+	print("CUREENTLY DISABLED")
+	return None
 	# find the IAD that best matches the given IADs and color it and save fig
 	tcg.evalcorpus = []
 	
@@ -234,7 +253,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	for label in range(1):#num_classes):
 
 		# generate a plot that shows the top 5 and bottom five features for each label.
-		top_features, bottom_features = generate_top_bottom_table(tcg, label, count=50, out='test.png')
+		top_features, bottom_features = generate_top_bottom_table(tcg, label, csv_contents, count=50, out='test.png')
 
 		# from there we need to open an IAD and highlight the rows that are described in the table
 		# use the same colorsfor the regions specified
