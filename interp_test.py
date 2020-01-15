@@ -28,5 +28,7 @@ clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True,
 importance = clf.coef_
 feature_names = tfidf.vocabulary_#get_feature_names()
 
-for i, f in enumerate(feature_names):
-	print(f, clf.coef_[0][i], clf.coef_[1][i])
+print(feature_names)
+
+#for i, f in enumerate(feature_names):
+#	print(f, clf.coef_[0][i], clf.coef_[1][i])
