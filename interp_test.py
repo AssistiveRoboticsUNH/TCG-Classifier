@@ -11,11 +11,11 @@ corpus = [
 		"Domestic cats are valued by humans for companionship and for their ability to hunt rodents.", 
 		"About cat breeds are recognized by various cat registries.",
 		
-		"The domestic dog (Canis lupus familiaris when considered a subspecies of the dog  wolf",
+		"The domestic dog (Canis lupus familiaris when considered a subspecies of the wolf",
 		"or Canis familiaris dog when considered a distinct species) is a member of the genus Canis (canines)",
 		"which forms part of dog the wolf-like canids, and is the most widely abundant terrestrial carnivore.",
 		"The dog and the extant dog gray wolf are sister taxa as modern wolves are not closely related to the wolves",
-		"that were first domesticated, dog which implies that the direct ancestor of the dog is extinct. dog dog "]
+		"that were first domesticated, dog which implies that the direct ancestor of the dog is extinct. "]
 Y = [0,0,0,0,0,1,1,1,1,1]
 
 #tfidf = TfidfVectorizer(sublinear_tf=True)
