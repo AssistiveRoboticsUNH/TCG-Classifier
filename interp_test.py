@@ -22,7 +22,7 @@ X = tfidf.fit_transform(corpus)
 
 print(X.shape)
 
-clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, 
+clf = svm.SVC(tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovr' ).fit(X, Y)
 		
 importance = clf.coef_.toarray()
