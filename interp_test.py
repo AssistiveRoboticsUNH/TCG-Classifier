@@ -18,12 +18,15 @@ corpus = [
 		"that were first domesticated, dog which implies that the direct ancestor of the dog is extinct. "]
 Y = [0,0,0,0,0,1,1,1,1,1]
 
+X_p = ["The dog and the cat are unalike because the dog is"]
+Y_p = [1]
+
 #tfidf = TfidfVectorizer(sublinear_tf=True)
 tfidf = CountVectorizer()
 
 X = tfidf.fit_transform(corpus)
 
-print(X.shape)
+print(X)
 
 clf = svm.SVC(tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovr' ).fit(X, Y)
