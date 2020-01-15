@@ -27,7 +27,7 @@ X = tfidf.fit_transform(corpus)
 
 feature_names = tfidf.get_feature_names()#.vocabulary_
 
-
+print(X.shape, len(feature_names))
 
 for i in range(X.shape[0]):
 	for j in range(X.shape[1]):
