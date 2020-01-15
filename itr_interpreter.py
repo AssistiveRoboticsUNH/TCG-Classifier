@@ -9,7 +9,7 @@ from csv_utils import read_csv
 import matplotlib
 matplotlib.use('Agg')
 
-import cv2
+import cv2, time
 
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
@@ -96,9 +96,12 @@ def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_i
 
 	data = tcg.tfidf.transform(tcg.evalcorpus)
 
-	perm = PermutationImportance(tcg.clf).fit(data.toarray(), tcg.evallabels)
-	out = eli5.show_weights(perm, feature_names=tcg.tfidf.get_feature_names())
-	print(out.data)
+	t_s = time.time()
+
+	#perm = PermutationImportance(tcg.clf).fit(data.toarray(), tcg.evallabels)
+	#out = eli5.show_weights(perm, feature_names=tcg.tfidf.get_feature_names())
+	#print(out.data)
+	print(time.time() - t_s)
 
 '''
 def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"):
