@@ -24,7 +24,20 @@ print(X.shape)
 
 clf = svm.SVC(tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovr' ).fit(X, Y)
-		
+
+importance = clf.coef_.toarray()
+feature_names = tfidf.vocabulary_
+
+importance, feature_names = zip(*sorted(zip(importance,feature_names)))
+importance, feature_names = np.array(importance), np.array(feature_names)
+
+importance = importance[::-1]
+feature_names = feature_names[::-1]
+
+for f in feature_names:
+	print(f, importance[0][feature_names[f]])
+
+'''	
 importance = clf.coef_.toarray()
 feature_names = tfidf.vocabulary_
 sortedt_names = tfidf.get_feature_names()
@@ -34,3 +47,4 @@ print(len(importance[0]))
 
 for k in sortedt_names:
 	print(k, importance[0][feature_names[k]])#, clf.coef_[1][feature_names[k]])
+'''
