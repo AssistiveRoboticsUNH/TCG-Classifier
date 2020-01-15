@@ -34,6 +34,8 @@ X_p = [
 		"and they are able to thrive on a starch-rich diet that would be inadequate for other canids."
 		"Dogs vary widely in shape, size and colors. They perform many roles for humans, such as hunting,"
 		"herding, pulling loads, protection, assisting police and military, companionship and, more recently, aiding disabled people and therapeutic roles."
+		]
+
 Y_p = [0,0,0,0,1,1,1,1]
 
 tfidf = TfidfVectorizer(sublinear_tf=True)
