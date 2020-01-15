@@ -23,7 +23,9 @@ Y_p = [1]
 
 #tfidf = TfidfVectorizer(sublinear_tf=True)
 tfidf = CountVectorizer()
-X = tfidf.fit_transform(corpus)
+X = tfidf.fit_transform(corpus).toarray()
+Xmat = tfidf.fit_transform(corpus)
+
 
 feature_names = tfidf.get_feature_names()#.vocabulary_
 
@@ -36,7 +38,7 @@ for i in range(X.shape[0]):
 		print(X[i][j])
 
 clf = svm.SVC(tol=1e-4, probability=True, 
-	kernel='linear', decision_function_shape='ovr' ).fit(X, Y)
+	kernel='linear', decision_function_shape='ovr' ).fit(Xmat, Y)
 
 importance = clf.coef_.toarray()[0]
 
