@@ -107,7 +107,7 @@ def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_i
 	te = TextExplainer(random_state=42)
 	pipe = make_pipeline(tcg.tfidf, tcg.clf)
 	te.fit(tcg.evalcorpus[0], pipe.predict_proba)
-	out = te.explain_weights(target_names=range(13))
+	out = te.show_weights(target_names=range(13))
 	print(out)
 	print(out.data)
 	'''
