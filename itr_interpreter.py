@@ -32,6 +32,7 @@ from string import ascii_lowercase
 #https://buhrmann.github.io/tfidf-analysis.html
 
 from eli5.sklearn import PermutationImportance
+from sklearn.pipeline import Pipeline, make_pipeline
 
 
 '''
@@ -98,9 +99,15 @@ def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_i
 
 	t_s = time.time()
 
+	te = TextExplainer(random_state=42)
+	pipe = make_pipeline(tcg.tfidf, tcg.clf)
+	te.fit(data, pipe.predict_proba)
+	out = te.explain_weights(target_names=[0,1])
+	'''
 	perm = PermutationImportance(tcg.clf).fit(data.toarray(), tcg.evallabels)
 	out = eli5.show_weights(perm, feature_names=tcg.tfidf.get_feature_names())
 	print(out.data)
+	'''
 	print("Elapsed Time:", time.time() - t_s)
 
 	return None, None
