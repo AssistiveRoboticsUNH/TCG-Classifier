@@ -95,15 +95,18 @@ def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_i
 
 	files = [ex for ex in csv_contents if ex["label"] == label]
 	for i, ex in enumerate(files):
-		tcg.add_file_to_eval_corpus(ex["txt_path"], label, ex["label_name"])
+		#tcg.add_file_to_eval_corpus(ex["txt_path"], label, ex["label_name"])
+		tcg.evalcorpus(tcg.parse_txt_file(ex["txt_path"]))
+		tcg.evallabels.append(label)
 
-	data = tcg.tfidf.transform(tcg.evalcorpus)
+
+	#data = tcg.tfidf.transform(tcg.evalcorpus)
 
 	t_s = time.time()
 
 	te = TextExplainer(random_state=42)
 	pipe = make_pipeline(tcg.tfidf, tcg.clf)
-	te.fit(data, pipe.predict_proba)
+	te.fit(tcg.evalcorpus, pipe.predict_proba)
 	out = te.explain_weights(target_names=[0,1])
 	'''
 	perm = PermutationImportance(tcg.clf).fit(data.toarray(), tcg.evallabels)
