@@ -166,9 +166,14 @@ print(sv.shape)
 print(sv)
 k = [np.dot(vi, X) for vi in sv]
 
+print("kernel:", k)
+
 # define the start and end index for support vectors for each class
 start = [sum(nv[:i]) for i in range(len(nv))]
 end = [start[i] + nv[i] for i in range(len(nv))]
+
+print("start:", start)
+print("end:", end)
 
 # calculate: sum(a_p * k(x_p, x)) between every 2 classes
 c = [ sum(a[ i ][p] * k[p] for p in range(start[j], end[j])) +
