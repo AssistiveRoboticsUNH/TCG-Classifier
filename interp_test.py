@@ -151,6 +151,33 @@ print(np.argmax(np.dot(a, b), axis = 1))
 print(clf.decision_function(a))
 
 
+print('--------------')
+print('')
+
+params = clf.get_params()
+sv = clf.support_vectors_
+nv = clf.n_support_
+a = clf.dual_coef_
+b = clf.intercept_
+cs = fn_src
+X  = a
+
+k = kernel(params, sv, X)
+
+# define the start and end index for support vectors for each class
+start = [sum(nv[:i]) for i in range(len(nv))]
+end = [start[i] + nv[i] for i in range(len(nv))]
+
+# calculate: sum(a_p * k(x_p, x)) between every 2 classes
+c = [ sum(a[ i ][p] * k[p] for p in range(start[j], end[j])) +
+      sum(a[j-1][p] * k[p] for p in range(start[i], end[i]))
+            for i in range(len(nv)) for j in range(i+1,len(nv))]
+
+# add the intercept
+print( [sum(x) for x in zip(c, b)] )
+
+
+
 
 '''
 perm = PermutationImportance(clf).fit(tfidf.transform(Xeval).toarray(), Yeval)
