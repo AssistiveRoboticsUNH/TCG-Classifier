@@ -135,6 +135,11 @@ print(clf.intercept_)
 print(tfidf.transform(Xeval).shape)
 print(coef.shape)
 
+
+
+print('--------------')
+print('')
+
 a = tfidf.transform(Xeval)
 b = coef.T
 
