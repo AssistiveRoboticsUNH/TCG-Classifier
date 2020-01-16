@@ -182,7 +182,7 @@ print("sum_of_conf div")
 print((3 * (np.abs(sum_of_conf) +1)))
 
 #trans_conf = sum_of_conf / (3 * (np.abs(sum_of_conf) +1))
-trans_conf = sum_of_conf / (4 * (np.abs(sum_of_conf) ))
+trans_conf = sum_of_conf / (2 * (np.abs(sum_of_conf) ))
 print("trans_conf")
 print(trans_conf)
 
