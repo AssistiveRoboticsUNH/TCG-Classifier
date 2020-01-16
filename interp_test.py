@@ -47,7 +47,7 @@ pipe = make_pipeline(tfidf, clf)
 
 # fit model
 pipe.fit(Xtrain, Ytrain)
-pipe.score(Xeval, Yeval)
+print(pipe.score(Xeval, Yeval))
 
 
 '''
