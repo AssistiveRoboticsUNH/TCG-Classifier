@@ -135,6 +135,8 @@ print(clf.intercept_)
 print(tfidf.transform(Xeval).shape)
 print(coef.shape)
 
+print(np.dot(tfidf.transform(Xeval).T, coef).shape)
+
 
 
 '''
