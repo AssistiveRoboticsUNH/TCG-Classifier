@@ -75,6 +75,9 @@ print(coef.shape)
 
 for label in range(3):
 
+	print('')
+	print("Label: ", label)
+
 	cf = coef[label].reshape(-1)
 
 	order = cf.argsort()
