@@ -56,12 +56,12 @@ print(metrics.accuracy_score(pred, Yeval))
 fn = tfidf.get_feature_names()
 print(fn)
 
-cf = clf.coef_.toarray()
+cf = clf.coef_.toarray().reshape(-1)
 print(cf.shape)
 
-order = cf.reshape(-1).argsort()
-cf = cf.reshape(-1)[order][::-1]
-fn = fn.reshape(-1)[order][::-1]
+order = cf.argsort()
+cf = cf[order][::-1]
+fn = fn[order][::-1]
 
 for f, c in zip(fn, cn):
 	print(f, c)
