@@ -132,10 +132,10 @@ for label in range(coef.shape[0]):
 		print(f, vocab[f], c)
 
 print(clf.intercept_)
-print(tfidf.transform(Xeval))
+print(tfidf.transform(Xeval).shape)
+print(coef.shape)
 
 
-print(tfidf.transform(Xeval).toarray() * clf.coef_ + clf.intercept_)
 
 '''
 perm = PermutationImportance(clf).fit(tfidf.transform(Xeval).toarray(), Yeval)
