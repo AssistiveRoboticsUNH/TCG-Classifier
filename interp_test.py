@@ -146,6 +146,7 @@ b = coef.T
 print(a.shape, b.shape)
 
 print(np.dot(a, b).shape)
+print(np.dot(a, b))
 
 
 
