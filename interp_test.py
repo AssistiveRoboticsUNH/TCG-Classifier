@@ -157,7 +157,7 @@ print('')
 params = clf.get_params()
 sv = clf.support_vectors_
 nv = clf.n_support_
-a = clf.dual_coef_
+a = clf.dual_coef_.toarray()
 b = clf.intercept_
 cs = fn_src
 X  = tfidf.transform(Xeval).toarray()
