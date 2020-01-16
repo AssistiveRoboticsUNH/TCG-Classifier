@@ -181,7 +181,7 @@ print(k)
 
 #print("kernel:", k)
 #print(nv)
-'''
+
 # define the start and end index for support vectors for each class
 start = [sum(nv[:i]) for i in range(len(nv))]
 end = [start[i] + nv[i] for i in range(len(nv))]
@@ -193,7 +193,7 @@ print("end:", end)
 
 
 
-
+'''
 print("a:", a.shape)
 print(a)
 #print("a[0]:", a[0])
@@ -207,7 +207,7 @@ for i in range(len(nv)):
 			print(a[ i ][p])
 			print(k[p])
 			print(a[j-1][p])
-
+'''
 c = [ sum(a[ i ][p] * k[p] for p in range(start[j], end[j])) +
       sum(a[j-1][p] * k[p] for p in range(start[i], end[i]))
             for i in range(len(nv)) for j in range(i+1,len(nv))]
@@ -215,7 +215,7 @@ c = [ sum(a[ i ][p] * k[p] for p in range(start[j], end[j])) +
 # add the intercept
 df = [sum(x) for x in zip(c, b)] 
 print(np.array(df))
-'''
+
 
 
 
