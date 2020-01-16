@@ -1,5 +1,5 @@
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn import svm
+from sklearn import svm, metrics
 
 import numpy as np
 
@@ -50,7 +50,7 @@ clf.fit(Xtrain_tfidf, Ytrain)
 
 # fit model
 pred = clf.predict(tfidf.transform(Xeval))
-print(sklearn.metrics.accuracy_score(pred, Yeval))
+print(metrics.accuracy_score(pred, Yeval))
 
 # build LIME TextExplainer
 te = TextExplainer(random_state=42)
