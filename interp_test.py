@@ -63,7 +63,7 @@ order = cf.argsort()
 cf = cf[order][::-1]
 fn = fn[order][::-1]
 
-for f, c in zip(fn, cn):
+for f, c in zip(fn, cf):
 	print(f, c)
 
 
