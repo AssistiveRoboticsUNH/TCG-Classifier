@@ -55,6 +55,18 @@ Xtrain = [
 Ytrain = [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
 
 Xeval = [
+		"it was a cat",
+		"it was a dog",
+		"it was a rat",
+
+		"I watched cat where it sat",
+		"I watched dog where it sat",
+		"I watched rat where it sat",
+				
+			]
+
+'''
+Xeval = [
 		"The cat is similar in anatomy to the other felid species, ",
 		"has a strong flexible body, quick reflexes, sharp teeth and retractable claws cat adapted to killing small prey.",
 		"Its night vision and sense of smell are well developed. Cat communication cat includes vocalizations like meowing, purring,",
@@ -70,8 +82,9 @@ Xeval = [
 		"its common name includes the term rat, while if it is smaller, ",
 		"its name includes the term mouse. The rat common terms rat and mouse are not taxonomically specific.",
 		]
+'''
 
-Yeval = [0,0,0,0,1,1,1,1,2,2,2,2]
+Yeval = [0,1,2,0,1,2]#[0,0,0,0,1,1,1,1,2,2,2,2]
 
 
 # define model
