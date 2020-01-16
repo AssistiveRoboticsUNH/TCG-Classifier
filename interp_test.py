@@ -167,13 +167,15 @@ print(sv)
 
 k = []
 for vi in sv:
+	print('')
 	print(vi)
 	k.append(np.dot(vi, X))
+	print(np.dot(vi, X))
 
 
 #k = [np.dot(vi, X) for vi in sv]
 
-print("kernel:", k.shape)#len(k), len(k[0]))
+print("kernel:", len(k))#len(k), len(k[0]))
 print(k)
 
 #print("kernel:", k)
