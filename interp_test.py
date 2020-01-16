@@ -24,11 +24,11 @@ Xtrain = [
 		"how about that dog",
 		"the dog there sat",
 
-		#"I am a rat",
-		#"What do i rat",
-		#"a rat is where its at",
-		#"how about that rat",
-		#"the rat there sat",
+		"I am a rat",
+		"What do i rat",
+		"a rat is where its at",
+		"how about that rat",
+		"the rat there sat",
 		]
 
 '''
@@ -53,17 +53,17 @@ Xtrain = [
 		]
 '''
 
-Ytrain = [0,0,0,0,0,1,1,1,1,1]
-#Ytrain = [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
+#Ytrain = [0,0,0,0,0,1,1,1,1,1]
+Ytrain = [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
 
 Xeval = [
 		"it was a cat",
 		"it was a dog",
-		#"it was a rat",
+		"it was a rat",
 
 		"I watched cat where it sat",
 		"I watched dog where it sat",
-		#"I watched rat where it sat",
+		"I watched rat where it sat",
 				
 			]
 
@@ -88,8 +88,8 @@ Xeval = [
 		]
 '''
 
-#Yeval = [0,1,2,0,1,2]#[0,0,0,0,1,1,1,1,2,2,2,2]
-Yeval = [0,1,0,1]#[0,0,0,0,1,1,1,1,2,2,2,2]
+Yeval = [0,1,2,0,1,2]#[0,0,0,0,1,1,1,1,2,2,2,2]
+#Yeval = [0,1,0,1]#[0,0,0,0,1,1,1,1,2,2,2,2]
 
 
 # define model
