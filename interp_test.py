@@ -59,6 +59,13 @@ print(fn)
 cf = clf.coef_
 print(cf.shape)
 
+order = cf.argsort()
+cf = cf[order][::-1]
+fn = fn[order][::-1]
+
+for f, c in zip(fn, cn):
+	print(f, c)
+
 
 '''
 # build LIME TextExplainer
