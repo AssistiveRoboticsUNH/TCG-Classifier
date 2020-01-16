@@ -162,7 +162,8 @@ b = clf.intercept_
 cs = fn_src
 X  = a
 
-k = kernel(params, sv, X)
+
+k = [np.dot(vi, X) for vi in sv]
 
 # define the start and end index for support vectors for each class
 start = [sum(nv[:i]) for i in range(len(nv))]
