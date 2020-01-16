@@ -49,7 +49,8 @@ Xtrain_tfidf = tfidf.fit_transform(Xtrain)
 clf.fit(Xtrain_tfidf, Ytrain)
 
 # fit model
-print(clf.score(tfidf.transform(Xeval, Yeval)))
+pred = clf.predict(tfidf.transform(Xeval))
+print(sklearn.metrics.accuracy_score(pred, Yeval))
 
 # build LIME TextExplainer
 te = TextExplainer(random_state=42)
