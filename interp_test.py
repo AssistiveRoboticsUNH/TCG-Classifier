@@ -182,7 +182,7 @@ print("kernel:", len(k))
 
 print("a:", a.shape)
 print(a)
-print(a[0])
+print("a[0]:", a[0])
 
 for i in range(len(nv)):
 	for j in range(i+1,len(nv)):
