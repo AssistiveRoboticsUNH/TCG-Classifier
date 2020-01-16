@@ -108,6 +108,7 @@ def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_i
 	pipe = make_pipeline(tcg.tfidf, tcg.clf)
 	te.fit(tcg.evalcorpus[0], pipe.predict_proba)
 	out = te.explain_weights(target_names=range(13))
+	print(out.data)
 	'''
 	perm = PermutationImportance(tcg.clf).fit(data.toarray(), tcg.evallabels)
 	out = eli5.show_weights(perm, feature_names=tcg.tfidf.get_feature_names())
