@@ -50,6 +50,8 @@ pipe.fit(Xtrain, Ytrain)
 print(pipe.score(Xeval, Yeval))
 print(pipe.predict(Xeval))
 
+print(tfidf.get_feature_names())
+
 
 # build LIME TextExplainer
 te = TextExplainer(random_state=42)
