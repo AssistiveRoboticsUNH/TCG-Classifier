@@ -135,7 +135,7 @@ print(clf.intercept_)
 print(tfidf.transform(Xeval))
 
 
-print(tfidf.transform(Xeval) * clf.coef_ + clf.intercept_)
+print(tfidf.transform(Xeval).toarray() * clf.coef_ + clf.intercept_)
 
 '''
 perm = PermutationImportance(clf).fit(tfidf.transform(Xeval).toarray(), Yeval)
