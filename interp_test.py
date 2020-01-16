@@ -141,7 +141,7 @@ print('--------------')
 print('')
 
 a = tfidf.transform(Xeval).toarray()
-b = coef.T
+b = clf.coef_.toarray().T
 
 print(a.shape, b.shape)
 
