@@ -78,7 +78,7 @@ te = TextExplainer(random_state=42)
 te.fit(corpus[7], pipe.predict_proba)
 out = te.show_prediction(target_names=[0,1])
 
-out = te.explain_weights(target_names=[0,1])
+out = te.show_weights(target_names=[0,1])
 
 print(out)
 
