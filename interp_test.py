@@ -10,6 +10,27 @@ from eli5.sklearn import PermutationImportance
 from sklearn.pipeline import Pipeline, make_pipeline
 
 # Setup training/eval data
+
+Xtrain = [
+		"I am a cat",
+		"What do i cat",
+		"a cat is where its at",
+		"how about that cat",
+		"the cat there sat",
+
+		"I am a dog",
+		"What do i dog",
+		"a dog is where its at",
+		"how about that dog",
+		"the dog there sat",
+
+		"I am a rat",
+		"What do i rat",
+		"a rat is where its at",
+		"how about that rat",
+		"the rat there sat",]
+
+'''
 Xtrain = [
 		"The cat (Felis catus) is a small carnivorous mammal.",
 		"It is the only domesticated species in the family Felidae and often referred to as the domestic cat to distinguish it from wild members of the family.",
@@ -29,7 +50,7 @@ Xtrain = [
 		"Other rat genera rat include Neotoma (pack rats),",
 		"Bandicota (bandicoot rats) and rat Dipodomys (kangaroo rats).",
 		]
-
+'''
 
 Ytrain = [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
 
