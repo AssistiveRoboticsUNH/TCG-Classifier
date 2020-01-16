@@ -52,10 +52,15 @@ clf.fit(Xtrain_tfidf, Ytrain)
 pred = clf.predict(tfidf.transform(Xeval))
 print(metrics.accuracy_score(pred, Yeval))
 
-#cf = clf.coef_[0]
+# understanding features
 fn = tfidf.get_feature_names()
 print(fn)
 
+cf = clf.coef_
+print(cf.shape)
+
+
+'''
 # build LIME TextExplainer
 te = TextExplainer(random_state=42)
 pipe = make_pipeline(tfidf, clf)
@@ -64,7 +69,7 @@ te.fit(Xeval[0], pipe.predict_proba)
 out = te.show_weights(target_names=[0,1])#eli5.show_weights(te, feature_names=tfidf.get_feature_names())
 
 print(out.data)
-
+'''
 
 
 
