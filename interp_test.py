@@ -140,8 +140,8 @@ print(coef.shape)
 print('--------------')
 print('')
 
-a = tfidf.transform(Xeval).toarray().T
-b = coef
+a = tfidf.transform(Xeval).toarray()
+b = coef.T
 
 print(a.shape, b.shape)
 
