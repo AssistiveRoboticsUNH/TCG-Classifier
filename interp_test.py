@@ -175,6 +175,7 @@ for i in range(n_class):
 		k+=1
 
 print(sum_of_conf)
+print((3 * (np.abs(sum_of_conf) +1)))
 
 trans_conf = sum_of_conf / (3 * (np.abs(sum_of_conf) +1))
 out = votes + trans_conf
