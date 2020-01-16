@@ -70,15 +70,19 @@ print(metrics.accuracy_score(pred, Yeval))
 fn = np.array(tfidf.get_feature_names())
 print(fn)
 
-cf = clf.coef_.toarray()#.reshape(-1)
-print(cf.shape)
+coef = clf.coef_.toarray()#.reshape(-1)
+print(coef.shape)
 
-order = cf.argsort()
-cf = cf[order][::-1]
-fn = fn[order][::-1]
+for label in range(3):
 
-for f, c in zip(fn, cf):
-	print(f, c)
+	cf = coef[label].reshape(-1)
+
+	order = cf.argsort()
+	cf = cf[order][::-1]
+	fn = fn[order][::-1]
+
+	for f, c in zip(fn, cf):
+		print(f, c)
 
 
 '''
