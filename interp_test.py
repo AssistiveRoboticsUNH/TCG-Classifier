@@ -141,7 +141,7 @@ print('--------------')
 print('')
 
 a = tfidf.transform(Xeval)
-b = coef.T
+b = coef
 
 print(a.shape, b.shape)
 
