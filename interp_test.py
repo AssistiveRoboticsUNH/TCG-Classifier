@@ -155,7 +155,7 @@ print('--------------')
 print('')
 
 params = clf.get_params()
-sv = clf.support_vectors#.toarray()
+sv = clf.support_vectors_.toarray()
 nv = clf.n_support_
 a = clf.dual_coef_.toarray()
 b = clf.intercept_
