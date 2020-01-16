@@ -89,7 +89,7 @@ for label in range(3):
 
 
 
-perm = PermutationImportance(clf).fit(tfidf.transform(Xeval), Yeval)
+perm = PermutationImportance(clf).fit(tfidf.transform(Xeval).toarray(), Yeval)
 out = eli5.show_weights(perm, feature_names=fn)
 
 print(out.data)
