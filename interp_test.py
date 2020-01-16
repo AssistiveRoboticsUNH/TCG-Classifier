@@ -44,18 +44,12 @@ Yeval = [0,0,0,0,1,1,1,1]
 tfidf = TfidfVectorizer(ngram_range=(1,1), sublinear_tf=True)
 clf = svm.SVC(max_iter=100, tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovr' )
-pipe = make_pipeline(tfidf, clf)
-
 
 Xtrain_tfidf = tfidf.fit_transform(Xtrain)
 clf.fit(Xtrain_tfidf, Ytrain)
 
 # fit model
-print(pipe.score(Xeval, Yeval))
-print(pipe.predict(Xeval))
-
-print(tfidf.get_feature_names())
-
+print(clf.score(tfidf.transform(Xeval, Yeval)))
 
 # build LIME TextExplainer
 te = TextExplainer(random_state=42)
