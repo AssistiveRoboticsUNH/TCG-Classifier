@@ -60,8 +60,8 @@ cf = clf.coef_
 print(cf.shape)
 
 order = cf.reshape(-1).argsort()
-cf = cf[order][::-1]
-fn = fn[order][::-1]
+cf = cf.reshape(-1)[order][::-1]
+fn = fn.reshape(-1)[order][::-1]
 
 for f, c in zip(fn, cn):
 	print(f, c)
