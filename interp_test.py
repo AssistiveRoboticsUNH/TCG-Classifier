@@ -110,7 +110,7 @@ pred = clf.predict(tfidf.transform(Xeval))
 print(metrics.accuracy_score(pred, Yeval))
 
 # understanding features
-fn = np.array(tfidf.get_feature_names())
+fn_src = np.array(tfidf.get_feature_names())
 print(fn)
 
 coef = clf.coef_.toarray()
@@ -125,7 +125,7 @@ for label in range(coef.shape[0]):
 
 	order = cf.argsort()
 	cf = cf[order][::-1]
-	fn = fn[order][::-1]
+	fn = fn_src[:][order][::-1]
 
 	for f, c in zip(fn, cf):
 		print(f, c)
