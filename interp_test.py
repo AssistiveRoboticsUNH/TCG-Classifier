@@ -98,7 +98,7 @@ Yeval = [0,1,2,0,1,2]
 tfidf = CountVectorizer()
 #tfidf = TfidfVectorizer(ngram_range=(1,1), sublinear_tf=True)
 clf = svm.SVC(max_iter=100, tol=1e-4, probability=True, 
-	kernel='linear', decision_function_shape='ovo' )
+	kernel='linear', decision_function_shape='ovr' )
 
 #clf = svm.LinearSVC( )
 
@@ -145,11 +145,41 @@ b = clf.coef_.toarray().T
 
 print(a.shape, b.shape)
 
-print(np.dot(a, b).shape)
-print(np.dot(a, b))
-print(np.argmax(np.dot(a, b), axis = 1))
+dec = np.dot(a, b)
+
+print(dec.shape)
+print(dec)
+print(np.argmax(dec, axis = 1))
 
 print(clf.decision_function(a))
+
+
+
+print('--')
+
+pred = dec < 0
+conf = -dec
+n_class = len(clf.classes_)
+n_samples = dec.shape[0]
+
+votes = np.zeros((n_samples, n_class))
+sum_of_conf = np.zeros((n_samples, n_class))
+
+k = 0
+for i in range(n_class):
+	for j in range(i+1, n_class):
+		sum_of_conf[:, i] -= conf[:, k]
+		sum_of_conf[:, j] += conf[:, k]
+		votes[pred[:, k] == 0, i] += 1
+		votes[pred[:, k] == 1, j] += 1
+		k+=1
+
+trans_conf = sum_of_conf / (3 * np.abs(sum_of_conf) +1)
+out = votes + trans_conf
+
+print(out)
+
+
 
 
 
