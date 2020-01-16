@@ -48,6 +48,7 @@ pipe = make_pipeline(tfidf, clf)
 # fit model
 pipe.fit(Xtrain, Ytrain)
 print(pipe.score(Xeval, Yeval))
+print(pipe.predict(Xeval))
 
 
 # build LIME TextExplainer
