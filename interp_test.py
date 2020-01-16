@@ -1,4 +1,4 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn import svm
 
 import numpy as np
@@ -40,8 +40,9 @@ Yeval = [0,0,0,0,1,1,1,1]
 
 
 # define model
-tfidf = TfidfVectorizer(ngram_range=(1,1), sublinear_tf=True)
-clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, 
+tfidf = CountVectorizer()
+#tfidf = TfidfVectorizer(ngram_range=(1,1), sublinear_tf=True)
+clf = svm.SVC(max_iter=100, tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovr' )
 pipe = make_pipeline(tfidf, clf)
 
