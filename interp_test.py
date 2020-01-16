@@ -148,7 +148,7 @@ print(a.shape, b.shape)
 print(np.dot(a, b).shape)
 print(np.dot(a, b))
 print(np.argmax(np.dot(a, b), axis = 1))
-print(clf.decision_function(a))
+
 
 
 print('--------------')
@@ -189,6 +189,7 @@ end = [start[i] + nv[i] for i in range(len(nv))]
 print("start:", start)
 print("end:", end)
 
+
 # calculate: sum(a_p * k(x_p, x)) between every 2 classes
 
 
@@ -220,7 +221,7 @@ print(clf.coef_.toarray())
 df = [sum(x) for x in zip(c, b)] 
 print(np.array(df))
 
-
+print(clf.decision_function(X))
 
 
 '''
