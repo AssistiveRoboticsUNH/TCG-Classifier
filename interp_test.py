@@ -49,6 +49,9 @@ pipe = make_pipeline(tfidf, clf)
 pipe.fit(Xtrain, Ytrain)
 pipe.score(Xeval, Yeval)
 
+
+'''
+
 # build LIME TextExplainer
 te = TextExplainer(random_state=42)
 te.fit(Xeval, pipe.predict_proba)
@@ -57,7 +60,7 @@ out = te.show_prediction(target_names=[0,1], feature_names=tfidf.get_feature_nam
 
 print(out.data)
 
-
+'''
 
 
 
