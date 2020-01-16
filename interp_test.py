@@ -96,7 +96,7 @@ Yeval = [0,1,2,0,1,2]#[0,0,0,0,1,1,1,1,2,2,2,2]
 tfidf = CountVectorizer()
 #tfidf = TfidfVectorizer(ngram_range=(1,1), sublinear_tf=True)
 clf = svm.SVC(max_iter=100, tol=1e-4, probability=True, 
-	kernel='linear', decision_function_shape='ovo' )
+	kernel='linear', decision_function_shape='ovr' )
 
 Xtrain_tfidf = tfidf.fit_transform(Xtrain)
 clf.fit(Xtrain_tfidf, Ytrain)
@@ -109,7 +109,7 @@ print(metrics.accuracy_score(pred, Yeval))
 fn = np.array(tfidf.get_feature_names())
 print(fn)
 
-coef = clf.coef_.toarray()#.reshape(-1) 
+coef = clf.coef_.toarray()
 print(coef.shape)
 
 for label in range(coef.shape[0]):
@@ -127,12 +127,12 @@ for label in range(coef.shape[0]):
 		print(f, c)
 
 
-
+'''
 perm = PermutationImportance(clf).fit(tfidf.transform(Xeval).toarray(), Yeval)
 out = eli5.show_weights(perm, feature_names=fn)
 
 print(out.data)
-
+'''
 
 '''
 # build LIME TextExplainer
