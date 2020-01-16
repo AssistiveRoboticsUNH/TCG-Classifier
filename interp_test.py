@@ -56,7 +56,7 @@ print(metrics.accuracy_score(pred, Yeval))
 fn = tfidf.get_feature_names()
 print(fn)
 
-cf = clf.coef_
+cf = clf.coef_.toarray()
 print(cf.shape)
 
 order = cf.reshape(-1).argsort()
