@@ -166,6 +166,9 @@ print("sv:", sv.shape)
 print(sv)
 k = [np.dot(vi, X) for vi in sv]
 
+print("kernel:", k.shape)#len(k), len(k[0]))
+print(k)
+
 #print("kernel:", k)
 #print(nv)
 
@@ -178,8 +181,7 @@ print("end:", end)
 
 # calculate: sum(a_p * k(x_p, x)) between every 2 classes
 
-print("kernel:", k.shape)#len(k), len(k[0]))
-print(k)
+
 
 
 print("a:", a.shape)
