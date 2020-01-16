@@ -23,11 +23,11 @@ Xtrain = [
 		"The dog and the extant dog gray wolf are sister taxa as modern wolves are not closely related to the wolves",
 		"that were first domesticated, dog which implies that the direct ancestor of the dog is extinct. ",
 
-		"Rats are various medium-sized, long-tailed rodents.",
-		"Species of rats are found throughout the order Rodentia,",
-		"but stereotypical rats are found in the genus Rattus. ",
-		"Other rat genera include Neotoma (pack rats),",
-		"Bandicota (bandicoot rats) and Dipodomys (kangaroo rats).",
+		"Rats rat are various medium-sized, long-tailed rodents.",
+		"Species of rat rats are found throughout the order Rodentia,",
+		"but stereotypical rats are rat found in the genus Rattus. ",
+		"Other rat genera rat include Neotoma (pack rats),",
+		"Bandicota (bandicoot rats) and rat Dipodomys (kangaroo rats).",
 		]
 
 
@@ -44,10 +44,10 @@ Xeval = [
 		"Dogs vary widely in shape, size and colors. They perform dog many roles for humans, such as hunting,",
 		"herding, pulling loads, protection, assisting police dog and military, companionship and, more recently, aiding disabled people and therapeutic roles.",
 		
-		"Rats are typically distinguished from mice by their size." ,
-		"Generally, when someone discovers a large muroid rodent, ",
+		"Rats are typically distinguished rat from mice by their size." ,
+		"Generally, when someone discovers a rat large muroid rodent, ",
 		"its common name includes the term rat, while if it is smaller, ",
-		"its name includes the term mouse. The common terms rat and mouse are not taxonomically specific.",
+		"its name includes the term mouse. The rat common terms rat and mouse are not taxonomically specific.",
 		]
 
 Yeval = [0,0,0,0,1,1,1,1,2,2,2,2]
