@@ -180,7 +180,7 @@ print("end:", end)
 
 print("kernel:", len(k))
 
-print(a.shape)
+print("a:", a.shape)
 print(a)
 
 for i in range(len(nv)):
