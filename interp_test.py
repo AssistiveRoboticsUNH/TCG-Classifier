@@ -70,7 +70,7 @@ print(metrics.accuracy_score(pred, Yeval))
 fn = np.array(tfidf.get_feature_names())
 print(fn)
 
-cf = clf.coef_.toarray().reshape(-1)
+cf = clf.coef_.toarray()#.reshape(-1)
 print(cf.shape)
 
 order = cf.argsort()
