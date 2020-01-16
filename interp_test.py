@@ -162,6 +162,8 @@ conf = -dec
 n_class = len(clf.classes_)
 n_samples = pred.shape[0]
 
+print(n_class, n_samples)
+
 votes = np.zeros((n_samples, n_class))
 sum_of_conf = np.zeros((n_samples, n_class))
 
