@@ -90,7 +90,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	#f_importances(abs(coef[0]), names)
 
 '''
-
+'''
 def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_importance.png"):
 
 	files = [ex for ex in csv_contents if ex["label"] == label]
@@ -110,16 +110,16 @@ def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_i
 	out = te.show_weights(target_names=range(13))
 	print(out)
 	print(out.data)
-	'''
+	"""
 	perm = PermutationImportance(tcg.clf).fit(data.toarray(), tcg.evallabels)
 	out = eli5.show_weights(perm, feature_names=tcg.tfidf.get_feature_names())
 	print(out.data)
-	'''
+	"""
 	print("Elapsed Time:", time.time() - t_s)
 
 	return None, None
-
 '''
+
 def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"):
 	# get the top and bottom most features and save them in a plotable figure
 
@@ -158,7 +158,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	#plt.savefig(out)
 
 	return feature_names[:1000], None#top_n, bot_n
-'''
+
 
 def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad.png'):
 

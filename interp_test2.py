@@ -21,17 +21,8 @@ Xtrain = [
 		"or Canis familiaris dog when considered a distinct species) is a member of the genus Canis (canines)",
 		"which forms part cat cat of dog the wolf-like canids, and is the most widely abundant terrestrial carnivore.",
 		"The dog and the extant dog gray wolf are sister taxa as modern wolves are not closely related to the wolves",
-		"that were first domesticated, dog which implies that the direct ancestor of the dog is extinct. ",
-
-		"Rats are various medium-sized, long-tailed rodents.",
-		"Species of rats are found throughout the order Rodentia,",
-		"but stereotypical rats are found in the genus Rattus. ",
-		"Other rat genera include Neotoma (pack rats),",
-		"Bandicota (bandicoot rats) and Dipodomys (kangaroo rats).",
-		]
-
-
-Ytrain = [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
+		"that were first domesticated, dog which implies that the direct ancestor of the dog is extinct. "]
+Ytrain = [0,0,0,0,0,1,1,1,1,1]
 
 Xeval = [
 		"The cat is similar in anatomy to the other felid species, ",
@@ -42,15 +33,10 @@ Xeval = [
 		"Their long association with humans has led dogs to be uniquely dog attuned to human behavior",
 		"and they are able to thrive on a starch-rich diet that would dog be inadequate for other canids.",
 		"Dogs vary widely in shape, size and colors. They perform dog many roles for humans, such as hunting,",
-		"herding, pulling loads, protection, assisting police dog and military, companionship and, more recently, aiding disabled people and therapeutic roles.",
-		
-		"Rats are typically distinguished from mice by their size." ,
-		"Generally, when someone discovers a large muroid rodent, ",
-		"its common name includes the term rat, while if it is smaller, ",
-		"its name includes the term mouse. The common terms rat and mouse are not taxonomically specific.",
+		"herding, pulling loads, protection, assisting police dog and military, companionship and, more recently, aiding disabled people and therapeutic roles."
 		]
 
-Yeval = [0,0,0,0,1,1,1,1,2,2,2,2]
+Yeval = [0,0,0,0,1,1,1,1]
 
 
 # define model
