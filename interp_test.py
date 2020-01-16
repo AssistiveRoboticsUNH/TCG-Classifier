@@ -113,7 +113,7 @@ print(metrics.accuracy_score(pred, Yeval))
 fn = np.array(tfidf.get_feature_names())
 print(fn)
 
-coef = clf.coef_.toarray()
+coef = clf.coef_#.toarray()
 print(coef.shape)
 
 for label in range(coef.shape[0]):
