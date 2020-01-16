@@ -59,7 +59,7 @@ print(fn)
 cf = clf.coef_
 print(cf.shape)
 
-order = cf.argsort()
+order = cf.reshape(-1).argsort()
 cf = cf[order][::-1]
 fn = fn[order][::-1]
 
