@@ -53,8 +53,8 @@ print(pipe.score(Xeval, Yeval))
 # build LIME TextExplainer
 te = TextExplainer(random_state=42)
 te.fit(Xeval[0], pipe.predict_proba)
-out = te.show_prediction(target_names=[0,1], feature_names=tfidf.get_feature_names())
-#out = te.show_weights(target_names=[0,1])
+out = te.show_prediction(target_names=[0,1])
+#out = te.show_weights(target_names=[0,1], feature_names=tfidf.get_feature_names())
 
 print(out.data)
 
