@@ -53,7 +53,7 @@ pred = clf.predict(tfidf.transform(Xeval))
 print(metrics.accuracy_score(pred, Yeval))
 
 # understanding features
-fn = tfidf.get_feature_names()
+fn = np.array(tfidf.get_feature_names())
 print(fn)
 
 cf = clf.coef_.toarray().reshape(-1)
