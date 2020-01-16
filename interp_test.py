@@ -177,6 +177,10 @@ print("start:", start)
 print("end:", end)
 
 # calculate: sum(a_p * k(x_p, x)) between every 2 classes
+
+print(a.shape)
+print(a)
+
 c = [ sum(a[ i ][p] * k[p] for p in range(start[j], end[j])) +
       sum(a[j-1][p] * k[p] for p in range(start[i], end[i]))
             for i in range(len(nv)) for j in range(i+1,len(nv))]
