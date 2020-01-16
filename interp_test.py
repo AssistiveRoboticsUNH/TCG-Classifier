@@ -93,8 +93,8 @@ Yeval = [0,1,0,1]#[0,0,0,0,1,1,1,1,2,2,2,2]
 
 
 # define model
-#tfidf = CountVectorizer()
-tfidf = TfidfVectorizer(ngram_range=(1,1), sublinear_tf=True)
+tfidf = CountVectorizer()
+#tfidf = TfidfVectorizer(ngram_range=(1,1), sublinear_tf=True)
 clf = svm.SVC(max_iter=100, tol=1e-4, probability=True, 
 	kernel='linear', decision_function_shape='ovo' )
 
