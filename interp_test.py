@@ -147,6 +147,7 @@ print(a.shape, b.shape)
 
 print(np.dot(a, b).shape)
 print(np.dot(a, b))
+print(np.argmax(np.dot(a, b)))
 
 
 
