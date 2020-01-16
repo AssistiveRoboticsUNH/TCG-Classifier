@@ -160,7 +160,7 @@ nv = clf.n_support_
 a = clf.dual_coef_
 b = clf.intercept_
 cs = fn_src
-X  = a
+X  = tfidf.transform(Xeval).toarray()
 
 print(sv.shape)
 print(sv)
