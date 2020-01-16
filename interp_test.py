@@ -164,7 +164,14 @@ X  = tfidf.transform(Xeval).toarray().T
 
 print("sv:", sv.shape)
 print(sv)
-k = [np.dot(vi, X) for vi in sv]
+
+k = []
+for vi in sv:
+	print(vi)
+	k.append(np.dot(vi, X))
+
+
+#k = [np.dot(vi, X) for vi in sv]
 
 print("kernel:", k.shape)#len(k), len(k[0]))
 print(k)
