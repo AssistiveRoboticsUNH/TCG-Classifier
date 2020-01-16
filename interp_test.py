@@ -155,14 +155,14 @@ print('--------------')
 print('')
 
 params = clf.get_params()
-sv = clf.support_vectors_.toarray()
+sv = clf.support_vectors_
 nv = clf.n_support_
 a = clf.dual_coef_.toarray()
 b = clf.intercept_
 cs = fn_src
 X  = tfidf.transform(Xeval).toarray()
 
-print(sv.shape)
+print("sv:", sv.shape)
 print(sv)
 k = [np.dot(vi, X) for vi in sv]
 
