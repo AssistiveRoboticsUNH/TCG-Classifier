@@ -111,6 +111,7 @@ print(metrics.accuracy_score(pred, Yeval))
 
 # understanding features
 fn_src = np.array(tfidf.get_feature_names())
+vocab = tfidf.vocabulary_
 print(fn_src)
 
 coef = clf.coef_.toarray()
@@ -128,10 +129,11 @@ for label in range(coef.shape[0]):
 	fn = fn_src[:][order][::-1]
 
 	for f, c in zip(fn, cf):
-		print(f, c)
+		print(f, vocab[f], c)
 
 print(clf.intercept_)
 print(tfidf.transform(Xeval))
+
 
 
 '''
