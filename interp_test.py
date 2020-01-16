@@ -160,7 +160,7 @@ print('--')
 pred = dec < 0
 conf = -dec
 n_class = len(clf.classes_)
-n_samples = dec.shape[0]
+n_samples = pred.shape[0]
 
 votes = np.zeros((n_samples, n_class))
 sum_of_conf = np.zeros((n_samples, n_class))
