@@ -186,7 +186,10 @@ print("trans_conf")
 print(trans_conf)
 
 out = votes + trans_conf
+print("votes")
+print(votes)
 
+print("out")
 print(out)
 
 
