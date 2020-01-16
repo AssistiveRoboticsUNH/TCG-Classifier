@@ -31,6 +31,8 @@ from itertools import product
 from string import ascii_lowercase
 #https://buhrmann.github.io/tfidf-analysis.html
 
+import eli5
+from eli5.lime import TextExplainer
 from eli5.sklearn import PermutationImportance
 from sklearn.pipeline import Pipeline, make_pipeline
 
