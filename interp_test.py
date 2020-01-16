@@ -14,7 +14,7 @@ Xtrain = [
 		"The cat (Felis catus) is a small carnivorous mammal.",
 		"It is the only domesticated species in the family Felidae and often referred to as the domestic cat to distinguish it from wild members of the family.",
 		"The cat is either a house cat, a farm cat or a feral cat",
-		"Domestic cat are valued by humans for companionship and for their ability to hunt rodents.", 
+		"Domestic cats are valued by humans for companionship and for their ability to hunt rodents.", 
 		"About cat breeds are recognized by various cat registries.",
 		
 		"The domestic dog (Canis lupus familiaris when considered a subspecies of the wolf",
@@ -41,8 +41,8 @@ Yeval = [0,0,0,0,1,1,1,1]
 
 # define model
 tfidf = TfidfVectorizer(sublinear_tf=True)
-clf = svm.SVC(tol=1e-4, probability=True, kernel='linear', 
-	decision_function_shape='ovr' )
+clf = svm.SVC(max_iter=100, tol=1e-4, probability=True, 
+	kernel='linear', decision_function_shape='ovr' )
 pipe = make_pipeline(tfidf, clf)
 
 # fit model
