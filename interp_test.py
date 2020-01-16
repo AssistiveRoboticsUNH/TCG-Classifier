@@ -178,7 +178,8 @@ print("end:", end)
 
 # calculate: sum(a_p * k(x_p, x)) between every 2 classes
 
-print("kernel:", len(k))
+print("kernel:", len(k), len(k[0]))
+print(k)
 
 print("a:", a.shape)
 print(a)
