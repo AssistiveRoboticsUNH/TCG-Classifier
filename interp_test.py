@@ -174,6 +174,8 @@ for i in range(n_class):
 		votes[pred[:, k] == 1, j] += 1
 		k+=1
 
+print(sum_of_conf)
+
 trans_conf = sum_of_conf / (3 * (np.abs(sum_of_conf) +1))
 out = votes + trans_conf
 
