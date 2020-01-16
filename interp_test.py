@@ -97,10 +97,10 @@ Yeval = [0,1,2,0,1,2]
 # define model
 tfidf = CountVectorizer()
 #tfidf = TfidfVectorizer(ngram_range=(1,1), sublinear_tf=True)
-#clf = svm.SVC(max_iter=100, tol=1e-4, probability=True, 
-#	kernel='linear', decision_function_shape='ovr' )
+clf = svm.SVC(max_iter=100, tol=1e-4, probability=True, 
+	kernel='linear', decision_function_shape='ovr' )
 
-clf = svm.LinearSVC( )
+#clf = svm.LinearSVC( )
 
 Xtrain_tfidf = tfidf.fit_transform(Xtrain)
 clf.fit(Xtrain_tfidf, Ytrain)
