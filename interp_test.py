@@ -46,10 +46,11 @@ clf = svm.SVC(max_iter=100, tol=1e-4, probability=True,
 	kernel='linear', decision_function_shape='ovr' )
 pipe = make_pipeline(tfidf, clf)
 
-tfidf.fit_transform(Xtrain)
+
+Xtrain_tfidf = tfidf.fit_transform(Xtrain)
+clf.fit(Xtrain_tfidf, Ytrain)
 
 # fit model
-pipe.fit(Xtrain, Ytrain)
 print(pipe.score(Xeval, Yeval))
 print(pipe.predict(Xeval))
 
