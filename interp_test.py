@@ -200,7 +200,7 @@ c = [ sum(a[ i ][p] * k[p] for p in range(start[j], end[j])) +
 
 # add the intercept
 df = [sum(x) for x in zip(c, b)] 
-print(df.toarray())
+print(df)
 
 
 
