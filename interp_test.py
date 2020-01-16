@@ -169,8 +169,9 @@ k = []
 for vi in sv:
 	print('')
 	print(vi)
-	k.append(np.dot(vi, X))
 	print(np.dot(vi, X))
+	k.append(np.dot(vi, X))
+	
 
 
 #k = [np.dot(vi, X) for vi in sv]
