@@ -155,10 +155,10 @@ print('--------------')
 print('')
 
 params = clf.get_params()
-sv = clf.support_vectors_
-nv = clf.n_support_
+sv = clf.support_vectors_.toarray()
+nv = clf.n_support_.toarray()
 a = clf.dual_coef_.toarray()
-b = clf.intercept_
+b = clf.intercept_.toarray()
 cs = fn_src
 X  = tfidf.transform(Xeval).toarray()
 
@@ -182,7 +182,7 @@ print("kernel:", len(k))
 
 print("a:", a.shape)
 print(a)
-print("a[0]:", a[0])
+#print("a[0]:", a[0])
 
 for i in range(len(nv)):
 	for j in range(i+1,len(nv)):
