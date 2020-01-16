@@ -100,7 +100,7 @@ tfidf = CountVectorizer()
 #clf = svm.SVC(max_iter=100, tol=1e-4, probability=True, 
 #	kernel='linear', decision_function_shape='ovr' )
 
-clf = svm.LinearSVC()
+clf = svm.LinearSVC( )
 
 Xtrain_tfidf = tfidf.fit_transform(Xtrain)
 clf.fit(Xtrain_tfidf, Ytrain)
