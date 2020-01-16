@@ -88,6 +88,13 @@ for label in range(3):
 		print(f, c)
 
 
+
+perm = PermutationImportance(clf).fit(tfidf.transform(Xeval), Yeval)
+out = eli5.show_weights(perm, feature_names=fn)
+
+print(out.data)
+
+
 '''
 # build LIME TextExplainer
 te = TextExplainer(random_state=42)
