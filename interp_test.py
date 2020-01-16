@@ -131,6 +131,7 @@ for label in range(coef.shape[0]):
 		print(f, c)
 
 print(clf.intercept_)
+print(tfidf.transform(Xeval))
 
 
 '''
