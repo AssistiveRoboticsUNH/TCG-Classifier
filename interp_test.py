@@ -189,8 +189,9 @@ for i in range(len(nv)):
 			print('')
 			print(i, j, p)
 
-			print(a[ i ][p] * k[p])
-			print(a[j-1][p] * k[p])
+			print(a[ i ][p])
+			print(k[p])
+			print(a[j-1][p])
 
 c = [ sum(a[ i ][p] * k[p] for p in range(start[j], end[j])) +
       sum(a[j-1][p] * k[p] for p in range(start[i], end[i]))
