@@ -80,6 +80,8 @@ out = te.show_prediction(target_names=[0,1])
 
 out = te.explain_weights(target_names=[0,1])
 
+print(out)
+
 print(out.data)
 print(out.url)
 
