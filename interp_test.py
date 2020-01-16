@@ -167,6 +167,7 @@ print(sv)
 k = [np.dot(vi, X) for vi in sv]
 
 print("kernel:", k)
+print(nv)
 
 # define the start and end index for support vectors for each class
 start = [sum(nv[:i]) for i in range(len(nv))]
