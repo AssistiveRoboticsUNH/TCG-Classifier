@@ -212,6 +212,10 @@ c = [ sum(a[ i ][p] * k[p] for p in range(start[j], end[j])) +
       sum(a[j-1][p] * k[p] for p in range(start[i], end[i]))
             for i in range(len(nv)) for j in range(i+1,len(nv))]
 
+print("coeficients")
+print(c)
+print(clf.coef_)
+
 # add the intercept
 df = [sum(x) for x in zip(c, b)] 
 print(np.array(df))
