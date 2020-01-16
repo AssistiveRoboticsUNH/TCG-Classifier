@@ -96,7 +96,7 @@ def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_i
 	files = [ex for ex in csv_contents if ex["label"] == label]
 	for i, ex in enumerate(files):
 		#tcg.add_file_to_eval_corpus(ex["txt_path"], label, ex["label_name"])
-		tcg.evalcorpus(tcg.parse_txt_file(ex["txt_path"]))
+		tcg.evalcorpus.append(tcg.parse_txt_file(ex["txt_path"]))
 		tcg.evallabels.append(label)
 
 
