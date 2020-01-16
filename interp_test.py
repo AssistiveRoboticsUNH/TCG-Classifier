@@ -91,7 +91,7 @@ Yeval = [0,1,2,0,1,2]#[0,0,0,0,1,1,1,1,2,2,2,2]
 #tfidf = CountVectorizer()
 tfidf = TfidfVectorizer(ngram_range=(1,1), sublinear_tf=True)
 clf = svm.SVC(max_iter=100, tol=1e-4, probability=True, 
-	kernel='linear', decision_function_shape='ovr' )
+	kernel='linear', decision_function_shape='ovo' )
 
 Xtrain_tfidf = tfidf.fit_transform(Xtrain)
 clf.fit(Xtrain_tfidf, Ytrain)
@@ -107,7 +107,7 @@ print(fn)
 coef = clf.coef_.toarray()#.reshape(-1)
 print(coef.shape)
 
-for label in range(3):
+for label in range(coef.shape[0]):
 
 	print('')
 	print("Label: ", label)
