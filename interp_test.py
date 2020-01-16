@@ -165,6 +165,9 @@ X  = tfidf.transform(Xeval).toarray()
 print("sv:", sv.shape)
 print(sv)
 
+print("a:", a.shape)
+print(a)
+
 k = []
 for vi in sv:
 	print('')
@@ -179,8 +182,7 @@ for vi in sv:
 print("kernel:", len(k))#len(k), len(k[0]))
 print(k)
 
-print("a:", a.shape)
-print(a)
+
 
 #print("kernel:", k)
 #print(nv)
