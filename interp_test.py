@@ -199,7 +199,8 @@ c = [ sum(a[ i ][p] * k[p] for p in range(start[j], end[j])) +
             for i in range(len(nv)) for j in range(i+1,len(nv))]
 
 # add the intercept
-print( [sum(x) for x in zip(c, b)] )
+df = [sum(x) for x in zip(c, b)] 
+print(df.toarray())
 
 
 
