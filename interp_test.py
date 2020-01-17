@@ -170,6 +170,7 @@ sum_of_conf = np.zeros((n_samples, n_class))
 k = 0
 for i in range(n_class):
 	for j in range(i+1, n_class):
+		print(i, j, k)
 		sum_of_conf[:, i] -= conf[:, k]
 		sum_of_conf[:, j] += conf[:, k]
 		votes[pred[:, k] == 0, i] += 1
@@ -181,7 +182,7 @@ print(sum_of_conf)
 print("sum_of_conf div")
 print((3 * (np.abs(sum_of_conf) +1)))
 
-trans_conf = (sum_of_conf / (3 * (np.abs(sum_of_conf) +1)))
+trans_conf = sum_of_conf / (3 * (np.abs(sum_of_conf) +1))
 #trans_conf = sum_of_conf / (2 * (np.abs(sum_of_conf) ))
 print("trans_conf")
 print(trans_conf)
