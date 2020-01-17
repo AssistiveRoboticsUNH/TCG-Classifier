@@ -157,6 +157,8 @@ print(clf.decision_function(a))
 
 print('--')
 
+print(clf.decision_function_shape == 'ovr' and len(clf.classes_) > 2)
+
 predictions = dec < 0
 confidences = -dec
 n_classes = len(clf.classes_)
