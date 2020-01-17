@@ -297,7 +297,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 		else:
 			iad[action_labels.index(e.name) , int(e.start):int(e.end), 0]  = 0
 
-	cv2.imwrite(out_name, canvas)
+	cv2.imwrite(out_name, iad)
 	#cv2.imshow('img', canvas)
 	#cv2.waitKey(0)
 	#cv2.destroyAllWindows()
