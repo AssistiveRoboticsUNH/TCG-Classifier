@@ -274,7 +274,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 	events = tcg.read_file(files[top]["txt_path"])
 
-	print(iad.shape, iad.depth)
+	print(iad.shape)
 
 	iad = cv2.cvtColor(iad,cv2.COLOR_GRAY2BGR)
 	iad = cv2.cvtColor(iad,cv2.COLOR_BGR2HSV)
