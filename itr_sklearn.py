@@ -245,6 +245,7 @@ class ITR_Extractor:
 		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
 		
 		if(save_name != ""):
+			print("load model:", save_name)
 			self.load_model(save_name)
 		
 

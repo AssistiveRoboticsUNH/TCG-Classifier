@@ -124,8 +124,41 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	# get the top and bottom most features and save them in a plotable figure
 
 	# convert Scipy matrix to one dimensional vector
-	importance = tcg.clf.coef_[label].toarray()[0]
+	#importance = tcg.clf.coef_[label].toarray()[0]
 	feature_names = tcg.tfidf.get_feature_names()
+
+
+	n_classes = len(tcg.clf.classes_)
+
+	sort_matrix = np.zeros(  ( n_classes, tcg.clf.coef_.shape[0] )  )
+
+	k = 0
+	for i in range(n_classes):
+		for j in range(i + 1, n_classes):
+			sort_matrix[i][k] += 1
+			sort_matrix[j][k] -= 1
+			k+=1
+
+	print("coef:", tcg.clf.coef_.shape)
+	print("sort:", sort_matrix.shape)
+
+	importance = np.dot(tcg.clf.coef_.toarray().T, sort_matrix.T)
+	print("out:", importance.shape)	
+	importance = importance[:, label]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	# place features in descending order
 	importance, feature_names = zip(*sorted(zip(importance,feature_names)))
@@ -133,6 +166,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 	importance = importance[::-1]
 	feature_names = feature_names[::-1]
+
 
 
 	if(count > 0):
@@ -155,31 +189,42 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 		#plt.yticks(range(len(feature_names)), feature_names)
 
 	#plt.show()
-	#plt.savefig(out)
+	plt.savefig(out)
 
-	return feature_names[:1000], None#top_n, bot_n
+	return top_n, None#top_n, bot_n
 
 
 def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad.png'):
 
-	print("CUREENTLY DISABLED")
-	return None
+	#print("CUREENTLY DISABLED")
+	#return None
 	# find the IAD that best matches the given IADs and color it and save fig
 	tcg.evalcorpus = []
-	
-	
-	files  = [ex for ex in csv_contents if ex["label"] == label]
+
+	files = [ex for ex in csv_contents if ex["label"] == label]
 	
 	# files list of files with the same label
 	for i, ex in enumerate(files):
-		tcg.add_file_to_eval_corpus(ex["txt_path"], label, ex["label_name"])
+		tcg.add_file_to_eval_corpus(ex["txt_path"], ex["label"], ex["label_name"])
 
 	data = tcg.tfidf.transform(tcg.evalcorpus)
 	prob = tcg.clf.decision_function(data)
 
+	pred = tcg.clf.predict(data)
+
+	print("prob.shape:", prob.shape)
+	print(pred)
+	print(tcg.evallabels)
+
+
 	# select the greatest decision function in favor of the class
 	top = np.argmax(prob[:, label], axis =0)
 	print(prob[top], files[top]["iad_path"])
+
+
+	#for x, y in zip(tcg.evallabels, pred):
+	#	print(x,y)
+	print("metrics:", metrics.accuracy_score(pred, tcg.evallabels))
 
 	'''
 	itr_seq = [itr[0]+'-'+itr[1]+'-'+itr[2] for itr in tcg.extract_itr_seq(files[top]["txt_path"])]
@@ -187,6 +232,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 		print(f, f in itr_seq)
 	'''
 
+	
 	for i, ex in enumerate(files):
 
 		itr_seq = [itr[0]+'-'+itr[1]+'-'+itr[2] for itr in tcg.extract_itr_seq(ex["txt_path"])]
@@ -207,7 +253,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 		print(ex["example_id"], tally)
 
 	#print(max_count, max_label)
-
+	
 	#DEBUG: investigate to see how many of the top_features are present in the specified class
 
 	
@@ -217,7 +263,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 
 	#Generate IAD from txt file
-
+	
 	#iad = np.zeros
 
 	num_features = 128 #get from the num used features
@@ -229,9 +275,9 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 	action_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
 
 	for i, e in enumerate(events):
-		print(e.name, action_labels.indexx(e.name) , e.start, e.end)
+		print(e.name, action_labels.index(e.name) , e.start, e.end)
 
-		canvas[action_labels.indexx(e.name) , int(e.start):int(e.end)] = 0
+		canvas[action_labels.index(e.name) , int(e.start):int(e.end)] = 0
 	
 	#cv2.imsave(out_name, canvas)
 	#cv2.imshow('img', canvas)
@@ -239,7 +285,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 	#cv2.destroyAllWindows()
 
 
-
+	
 
 	return None
 	return iad, frame_durations
@@ -251,7 +297,7 @@ def find_video_frames():
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	depth = 4
+	depth = 0
 
 	#open files
 	try:
@@ -261,7 +307,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 	for ex in csv_contents:
 		ex['iad_path'] = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id), ex['label_name'], ex['example_id']+"_"+str(depth)+".npz")
-		ex['txt_path'] = os.path.join(dataset_dir, "gtxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
+		ex['txt_path'] = os.path.join(dataset_dir, "btxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
 	csv_contents = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 
 	# open saved model
@@ -272,12 +318,12 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	for label in range(1):#num_classes):
 
 		# generate a plot that shows the top 5 and bottom five features for each label.
-		top_features, bottom_features = generate_top_bottom_table(tcg, label, csv_contents, count=50, out='test.png')
+		top_features, bottom_features = generate_top_bottom_table(tcg, label, count=5, out='test.png')
 
 		# from there we need to open an IAD and highlight the rows that are described in the table
 		# use the same colorsfor the regions specified
 
-		#find_best_matching_IAD(tcg, label, top_features, csv_contents)
+		find_best_matching_IAD(tcg, label, top_features, csv_contents)
 
 		# lastly we can look at frames in the video corresponding to those IADs
 		#find_video_frames()
