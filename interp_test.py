@@ -157,11 +157,35 @@ print(clf.decision_function(a))
 
 print('--')
 
-pred = dec < 0
-conf = -dec
-n_class = len(clf.classes_)
-n_samples = pred.shape[0]
+predictions = dec < 0
+confidences = -dec
+n_classes = len(clf.classes_)
 
+n_samples = predictions.shape[0]
+votes = np.zeros((n_samples, n_classes))
+sum_of_confidences = np.zeros((n_samples, n_classes))
+
+k = 0
+for i in range(n_classes):
+    for j in range(i + 1, n_classes):
+        sum_of_confidences[:, i] -= confidences[:, k]
+        sum_of_confidences[:, j] += confidences[:, k]
+        votes[predictions[:, k] == 0, i] += 1
+        votes[predictions[:, k] == 1, j] += 1
+        k += 1
+
+# Monotonically transform the sum_of_confidences to (-1/3, 1/3)
+# and add it with votes. The monotonic transformation  is
+# f: x -> x / (3 * (|x| + 1)), it uses 1/3 instead of 1/2
+# to ensure that we won't reach the limits and change vote order.
+# The motivation is to use confidence levels as a way to break ties in
+# the votes without switching any decision made based on a difference
+# of 1 vote.
+transformed_confidences = (sum_of_confidences /
+                           (3 * (np.abs(sum_of_confidences) + 1)))
+out =  votes + transformed_confidences
+print(out)
+'''
 print(n_class, n_samples)
 
 votes = np.zeros((n_samples, n_class))
@@ -245,7 +269,7 @@ print("end:", end)
 
 
 # calculate: sum(a_p * k(x_p, x)) between every 2 classes
-
+'''
 
 
 '''
