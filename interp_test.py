@@ -172,7 +172,9 @@ for i in range(n_class):
 	for j in range(i+1, n_class):
 		print(i, j, k)
 		sum_of_conf[:, i] -= conf[:, k]
+		print (sum_of_conf)
 		sum_of_conf[:, j] += conf[:, k]
+		print (sum_of_conf)
 		votes[pred[:, k] == 0, i] += 1
 		votes[pred[:, k] == 1, j] += 1
 		k+=1
