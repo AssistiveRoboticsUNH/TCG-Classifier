@@ -184,6 +184,7 @@ for i in range(n_classes):
 transformed_confidences = (sum_of_confidences /
                            (3 * (np.abs(sum_of_confidences) + 1)))
 out =  votes + transformed_confidences
+print("out:")
 print(out)
 '''
 print(n_class, n_samples)
