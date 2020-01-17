@@ -270,7 +270,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 	num_features = 128 #get from the num used features
 	max_window = 256 
-	iad = np.ones((num_features, max_window))
+	iad = np.array(np.ones((num_features, max_window)), dtype=np.uint8)
 
 	events = tcg.read_file(files[top]["txt_path"])
 
