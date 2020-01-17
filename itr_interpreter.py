@@ -300,6 +300,8 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 		iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 255
 
+	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
+
 	cv2.imwrite(out_name, iad)
 	#cv2.imshow('img', canvas)
 	#cv2.waitKey(0)
