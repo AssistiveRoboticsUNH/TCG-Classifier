@@ -270,7 +270,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 	num_features = 128 #get from the num used features
 	max_window = 256 
-	iad = np.array(np.ones((num_features, max_window)), dtype=np.uint8)
+	iad = np.array(np.zeros((num_features, max_window)), dtype=np.uint8)
 
 	events = tcg.read_file(files[top]["txt_path"])
 
@@ -294,8 +294,8 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 		if e.name in top_events:
 			iad[action_labels.index(e.name) , int(e.start):int(e.end), 0] = 256*float(i)/len(events)
-		else:
-			iad[action_labels.index(e.name) , int(e.start):int(e.end), 0]  = 0
+		#else:
+		#	iad[action_labels.index(e.name) , int(e.start):int(e.end), 0]  = 255
 
 	cv2.imwrite(out_name, iad)
 	#cv2.imshow('img', canvas)
