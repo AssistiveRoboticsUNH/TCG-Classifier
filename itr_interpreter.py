@@ -232,7 +232,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 		print(f, f in itr_seq)
 	'''
 
-	
+	'''
 	for i, ex in enumerate(files):
 
 		itr_seq = [itr[0]+'-'+itr[1]+'-'+itr[2] for itr in tcg.extract_itr_seq(ex["txt_path"])]
@@ -251,7 +251,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 		#	max_count = count
 
 		print(ex["example_id"], tally)
-
+	'''
 	#print(max_count, max_label)
 	
 	#DEBUG: investigate to see how many of the top_features are present in the specified class
@@ -266,20 +266,36 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 	
 	#iad = np.zeros
 
+	#files[top]["iad_path"]
+
 	num_features = 128 #get from the num used features
 	max_window = 256 
-	canvas = np.ones((num_features, max_window))
+	iad = np.ones((num_features, max_window))
 
 	events = tcg.read_file(files[top]["txt_path"])
 
+	iad = cv2.cvtColor(iad,cv2.COLOR_GRAY2BGR)
+	iad = cv2.cvtColor(iad,cv2.COLOR_BGR2HSV)
+
 	action_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
+
+
+	top_events = Set()
+	for itr in top_features:
+		itr_s = itr.split('-')
+		top_events.add(itr_s[0])
+		top_events.add(itr_s[2])
+
 
 	for i, e in enumerate(events):
 		print(e.name, action_labels.index(e.name) , e.start, e.end)
 
-		canvas[action_labels.index(e.name) , int(e.start):int(e.end)] = 0
-	
-	#cv2.imsave(out_name, canvas)
+		if e in top_events:
+			canvas[action_labels.index(e.name) , int(e.start):int(e.end), 0] = 256*float(i)/len(events)
+		else:
+			canvas[action_labels.index(e.name) , int(e.start):int(e.end), 0]  = 0
+
+	cv2.imsave(out_name, canvas)
 	#cv2.imshow('img', canvas)
 	#cv2.waitKey(0)
 	#cv2.destroyAllWindows()
