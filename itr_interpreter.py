@@ -277,7 +277,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 	print(iad.shape)
 
 	iad = cv2.cvtColor(iad,cv2.COLOR_GRAY2BGR)
-	#iad = cv2.cvtColor(iad,cv2.COLOR_BGR2HSV)
+	iad = cv2.cvtColor(iad,cv2.COLOR_BGR2HSV)
 
 	print("iad[0,0]:", iad[0,0])
 
@@ -300,7 +300,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 		iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 1
 
-	#iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
+	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
 
 	cv2.imwrite(out_name, iad)
 	#cv2.imshow('img', canvas)
