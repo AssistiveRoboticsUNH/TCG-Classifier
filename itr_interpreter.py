@@ -270,7 +270,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 	num_features = 128 #get from the num used features
 	max_window = 256 
-	iad = np.array(np.ones((num_features, max_window)), dtype=np.uint8) * 255
+	iad = np.zeros((num_features, max_window))#np.array(np.ones((num_features, max_window)), dtype=np.uint8) * 255
 
 	events = tcg.read_file(files[top]["txt_path"])
 
@@ -301,6 +301,8 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 		iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0.75
 
 	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
+
+	iad = iad.astype(np.uint8)
 
 	cv2.imwrite(out_name, iad)
 	#cv2.imshow('img', canvas)
