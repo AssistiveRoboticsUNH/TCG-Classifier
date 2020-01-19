@@ -350,7 +350,7 @@ def find_video_frames():
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	depth = 0
+	depth = 4
 
 	#open files
 	try:
