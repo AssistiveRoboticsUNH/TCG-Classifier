@@ -290,7 +290,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 	event_colors = {}
 
-	color_list = range(0, 256, 20)
+	color_list = range(0, 256, 50)
 	c_i = 0
 
 	top_events = Set()
