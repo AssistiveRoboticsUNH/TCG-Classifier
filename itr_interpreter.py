@@ -307,7 +307,11 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
 
+	print("format iad[0,0]:", iad[0,0])
+
 	iad = iad.astype(np.uint8)
+
+	print("type iad[0,0]:", iad[0,0])
 
 	cv2.imwrite(out_name, iad)
 	#cv2.imshow('img', canvas)
