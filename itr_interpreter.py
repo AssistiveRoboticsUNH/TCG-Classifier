@@ -268,8 +268,8 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 	#files[top]["iad_path"]
 
-	iad_info = np.load(files[top]["iad_path"])["data"].shape
-	print("iad_info:", iad_info)
+	#iad_info = np.load(files[top]["iad_path"])["data"].shape
+	#print("iad_info:", iad_info)
 
 
 	num_features = 128 #get from the num used features
@@ -354,7 +354,7 @@ def find_video_frames():
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	depth = 4
+	depth = 1
 
 	#open files
 	try:
