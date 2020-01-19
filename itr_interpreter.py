@@ -291,7 +291,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 		top_events.add(itr_s[2])
 	print(top_events)
 
-	iad[0 , 0:10, 0]  = 128
+	iad[0 , 0:10, 0]  = 50
 	iad[0 , 0:10, 2]  = 0.75
 
 	for i, e in enumerate(events):
