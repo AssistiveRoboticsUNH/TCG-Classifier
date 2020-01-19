@@ -298,7 +298,7 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 		#	iad[action_labels.index(e.name) , int(e.start):int(e.end), 0] = 256*float(i)/len(top_events)#len(events)
 		#else:
 		iad[action_labels.index(e.name) , int(e.start):int(e.end), 0]  = 128
-		iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 100
+		iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0.75
 
 	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
 
