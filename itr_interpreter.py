@@ -309,6 +309,10 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 
 	print("format iad[0,0]:", iad[0,0])
 
+	iad *= 255
+
+	print("incr iad[0,0]:", iad[0,0])
+
 	iad = iad.astype(np.uint8)
 
 	print("type iad[0,0]:", iad[0,0])
