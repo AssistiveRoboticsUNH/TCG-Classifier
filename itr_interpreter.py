@@ -409,7 +409,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 		print('----------------')
 
-def make_graph():
+def make_graph(top_features):
 
 	import pydot
 
