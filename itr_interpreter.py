@@ -210,8 +210,8 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 		c_i = 0
 		for i, itr in enumerate(top_n):
 			itr_colors[itr] = np.linspace(0, 255, num=len(top_n), dtype=np.uint8)[i]
-			rgb_color = list(colorsys.hsv_to_rgb(itr_colors[itr]/256.0, 1, 1))
-			rgb_color = tuple([int(x*255) for x in rgb_color])
+			rgb_color = colorsys.hsv_to_rgb(itr_colors[itr]/256.0, 1.0, 1.0)
+			
 
 			label_colors.append(rgb_color)
 
