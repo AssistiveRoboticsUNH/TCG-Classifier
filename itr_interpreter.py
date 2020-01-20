@@ -352,6 +352,10 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	iad = iad.astype(np.uint8)
 
+	scale = 6
+	iad = cv2.resize(iad, (iad.shape[1]*scale, iad.shape[0]*scale), interpolation=cv2.INTER_NEAREST)
+
+
 	#print("type iad[0,0]:", iad[0,0])
 
 	cv2.imwrite(out_name, iad)
