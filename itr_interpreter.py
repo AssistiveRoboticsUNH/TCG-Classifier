@@ -415,9 +415,7 @@ def make_graph(top_features):
 
 	gfile = open('mygraph.dot', 'w')
 
-	header = '''
-	digraph A {
-	rankdir = LR;'''
+	header = '''digraph A {\nrankdir = LR;\n'''
 	gfile.write(header)
 
 
