@@ -448,7 +448,7 @@ def combine_images(features="", iad = "", graph="" ):
 
 	print("feature2:", feature_img.shape)
 	print("graph2:", graph_img.shape)
-	fg_img = np.concatenate((feature_img, graph_img), axis = 0)
+	fg_img = np.concatenate((feature_img, graph_img), axis = 1)
 
 	cv2.imwrite("fg_img.png", fg_img)
 	#resize IAD to be the same scale as the width
