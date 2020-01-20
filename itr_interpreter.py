@@ -429,7 +429,7 @@ node [shape=circle,style=filled] 6
 node [shape=circle,style=filled] 7
 node [shape=circle,style=filled] 8
 node [shape=circle,style=filled] 9
-node [shape=doublecircle,style=filled] 10'''
+node [shape=doublecircle,style=filled] 10\n'''
 	gfile.write(nodes)
 	
 	edges = '''0 -> 4 [label="g "];
