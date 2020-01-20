@@ -400,7 +400,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		# from there we need to open an IAD and highlight the rows that are described in the table
 		# use the same colorsfor the regions specified
 
-		find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, name='before_iad_'+str(depth)+'.png')
+		find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name='before_iad_'+str(depth)+'.png')
 
 		# lastly we can look at frames in the video corresponding to those IADs
 		#find_video_frames()
