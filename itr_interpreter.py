@@ -203,17 +203,18 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 
 		itr_colors = {}
+		label_colors = []
 
 		c_i = 0
 		for i, itr in enumerate(top_n):
 			itr_colors[itr] = np.linspace(0, 255, num=len(top_n), dtype=np.uint8)[i]
-
+			label_colors.append(colorsys.hsv_to_rgb(itr_colors[itr], 1, 1))
 
 		colors = ['b']*count + ['r']*count
 
 		# place into chart
 		plt.barh(range(count*2), data, align='center', color = colors)
-		plt.yticks(range(count*2), names)
+		plt.yticks(range(count*2), names, color = label_colors)
 	else:
 		colors = ['b']*len(importance[importance > 0]) + ['r']*len(importance[importance < 0])
 
@@ -438,7 +439,7 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" penwidth="3"]\n'.format(itr_s[0], itr_s[2], itr_s[1], round(c, 3))
 
 	for e in events:
-		nodes += "node [shape=circle,style=filled] {0}\n".format(e)
+		nodes += "node [shape=circle,style=filled, penwidth="3"] {0}\n".format(e)
 	gfile.write(nodes)
 	
 	
