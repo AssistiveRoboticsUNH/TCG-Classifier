@@ -415,30 +415,30 @@ def make_graph(top_features):
 
 	gfile = open('mygraph.dot', 'w')
 
-	header = '''digraph A {\nrankdir = LR;\n'''
+	header = "digraph A {\nrankdir = LR;\n"
 	gfile.write(header)
 
 
 	nodes = '''
-	node [shape=circle,style=filled] 0
-	node [shape=circle,style=filled] 1
-	node [shape=circle,style=filled] 2
-	node [shape=circle,style=filled] 3
-	node [shape=circle,style=filled] 4
-	node [shape=circle,style=filled] 5
-	node [shape=circle,style=filled] 6
-	node [shape=circle,style=filled] 7
-	node [shape=circle,style=filled] 8
-	node [shape=circle,style=filled] 9
-	node [shape=doublecircle,style=filled] 10'''
+node [shape=circle,style=filled] 0
+node [shape=circle,style=filled] 1
+node [shape=circle,style=filled] 2
+node [shape=circle,style=filled] 3
+node [shape=circle,style=filled] 4
+node [shape=circle,style=filled] 5
+node [shape=circle,style=filled] 6
+node [shape=circle,style=filled] 7
+node [shape=circle,style=filled] 8
+node [shape=circle,style=filled] 9
+node [shape=doublecircle,style=filled] 10'''
 	gfile.write(nodes)
 	
 	edges = '''
-	0 -> 4 [label="g "];
-	0 -> 1 [label="b "];
-	1 -> 2 [label="o "];
-	2 -> 7 [label="y "];
-	2 -> 3 [label="o "];'''
+0 -> 4 [label="g "];
+0 -> 1 [label="b "];
+1 -> 2 [label="o "];
+2 -> 7 [label="y "];
+2 -> 3 [label="o "];'''
 	gfile.write(edges)
 
 	gfile.close()
