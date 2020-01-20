@@ -260,7 +260,8 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	print("metrics:", metrics.accuracy_score(pred, tcg.evallabels))
 
 	
-
+	print("itr_colors")
+	print(itr_colors)
 
 	#SETUP WHICH EVENTS ARE COLORED
 	
@@ -276,8 +277,6 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 			e1 = events[i]
 			e2 = events[j]
 			itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)#tcg.all_itrs(events[i], events[j], 0)
-
-			print(itr_name)
 
 			if(itr_name in itr_colors):
 
