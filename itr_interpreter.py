@@ -269,7 +269,13 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	event_colors = {}
 
+	num_features = len(events)
+	max_window = 0
+
 	for i in range(len(events)):
+
+		if(events[i].end > max_window):
+			max_window = events[i].end
 
 		j = i+1
 		while(j < len(events) and events[j].name != events[i].name):
@@ -307,8 +313,8 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	# MAKE THE PICTURE
 
-	num_features = 128 #get from the num used features
-	max_window = 256 
+	#num_features = 128 #get from the num used features
+	#max_window = 256 
 	iad = np.ones((num_features, max_window), np.float32)#np.array(np.ones((num_features, max_window)), dtype=np.uint8) * 255
 
 	# change the colors space to HSV for simplicity 
@@ -326,7 +332,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 				colors = event_colors[e.name][timing_pair]
 				for idx in range(int(e.start), int(e.end)):
-					iad[action_labels.index(e.name) , idx, 0] = colors[(idx/2.0) % len(colors)]
+					iad[action_labels.index(e.name) , idx, 0] = colors[idx % len(colors)]
 					iad[action_labels.index(e.name) , idx, 1]  = 1
 			#else:
 				#iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
