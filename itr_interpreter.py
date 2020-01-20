@@ -279,7 +279,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 				e1 = events[i]
 				e2 = events[j]
 
-				itr = "{0}-{1}-{2}".format(e1.name, itr_name, e2.name)
+				itr = "{0}-{1}-{2}".format(e1.name, itr_name[0], e2.name)
 
 				if e1.name not in event_colors:
 					event_colors[ e1.name ] = {}
