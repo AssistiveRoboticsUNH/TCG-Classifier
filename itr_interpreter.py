@@ -326,7 +326,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 				colors = event_colors[e.name][timing_pair]
 				for idx in range(int(e.start), int(e.end)):
-					iad[action_labels.index(e.name) , idx, 0] = colors[idx % len(colors)]
+					iad[action_labels.index(e.name) , idx, 0] = colors[(idx/2.0) % len(colors)]
 					iad[action_labels.index(e.name) , idx, 1]  = 1
 			#else:
 				#iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
