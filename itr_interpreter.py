@@ -387,75 +387,7 @@ def find_video_frames():
 	return 0
 
 
-def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	depth = 0
-
-	#open files
-	try:
-		csv_contents = read_csv(csv_filename)
-	except:
-		print("ERROR: Cannot open CSV file: "+ csv_filename)
-
-	for ex in csv_contents:
-		ex['iad_path'] = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id), ex['label_name'], ex['example_id']+"_"+str(depth)+".npz")
-		ex['txt_path'] = os.path.join(dataset_dir, "btxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
-	csv_contents = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
-
-	# open saved model
-	save_file = os.path.join(save_name, str(dataset_id), dataset_type)
-	filename = save_file.replace('/', '_')+'_'+str(depth)
-	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
-
-	for label in range(1,2):#num_classes):
-
-		# generate a plot that shows the top 5 and bottom five features for each label.
-		top_features, colors = generate_top_bottom_table(tcg, label, count=5, out='before_feature_importance_'+str(depth)+'.png')
-
-		# from there we need to open an IAD and highlight the rows that are described in the table
-		# use the same colorsfor the regions specified
-
-		find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name='before_iad_'+str(depth)+'.png')
-
-		# lastly we can look at frames in the video corresponding to those IADs
-		#find_video_frames()
-
-		make_graph(top_features, colors, name='before_graph_'+str(depth)+'.png')
-
-		combine_images(
-			features='before_feature_importance_'+str(depth)+'.png', 
-			iad ='before_iad_'+str(depth)+'.png',
-			graph='before_graph_'+str(depth)+'.png' )
-
-		print('----------------')
-
-def combine_images(features="", iad = "", graph="" ):
-
-	feature_img = cv2.imread(features)
-	graph_img = cv2.imread(graph)
-	iad_img = cv2.imread(iad)
-	
-	print("feature:", feature_img.shape)
-	print("graph:", graph_img.shape)
-
-	#resize feature and graph to be the same height
-	if(feature_img.shape[0] > graph_img.shape[0]):
-		scale = feature_img.shape[0]/float(graph_img.shape[0])
-		graph_img = cv2.resize(graph_img, (int(graph_img.shape[1]*scale), int(graph_img.shape[0]*scale)))
-	else:
-		scale = graph_img.shape[0]/float(feature_img.shape[0])
-		feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), int(feature_img.shape[0]*scale)))
-
-	print("feature2:", feature_img.shape)
-	print("graph2:", graph_img.shape)
-	fg_img = np.concatenate((feature_img, graph_img), axis = 1)
-
-	cv2.imwrite("fg_img.png", fg_img)
-	#resize IAD to be the same scale as the width
-	#iad = cv2.resize(iad, (w, h), interpolation=cv2.INTER_NEAREST)
-
-	#combine images together
-	#combined = 
 
 
 def make_graph(top_features, itr_colors, name="graph.png"):
@@ -498,6 +430,81 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 	from subprocess import check_call
 	check_call(['dot','-Tpng','mygraph.dot','-o',name])
 	
+def combine_images(features="", iad = "", graph="" ):
+
+	feature_img = cv2.imread(features)
+	graph_img = cv2.imread(graph)
+	iad_img = cv2.imread(iad)
+	
+	print("feature:", feature_img.shape)
+	print("graph:", graph_img.shape)
+
+	#resize feature and graph to be the same height
+	if(feature_img.shape[0] > graph_img.shape[0]):
+		scale = feature_img.shape[0]/float(graph_img.shape[0])
+		graph_img = cv2.resize(graph_img, (int(graph_img.shape[1]*scale), int(graph_img.shape[0]*scale)))
+	else:
+		scale = graph_img.shape[0]/float(feature_img.shape[0])
+		feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), int(feature_img.shape[0]*scale)))
+
+	print("feature2:", feature_img.shape)
+	print("graph2:", graph_img.shape)
+	fg_img = np.concatenate((feature_img, graph_img), axis = 1)
+
+	cv2.imwrite("fg_img.png", fg_img)
+	#resize IAD to be the same scale as the width
+	iad_img = cv2.copyMakeBorder(
+		iad_img,
+		right=feature_img.shape[1]-iad_img.shape[1],
+		borderType=cv2.BORDER_CONSTANT,
+		value=[0, 0, 0]
+	)
+
+	#combine images together
+	combined = np.concatenate((fg_img, iad_img), axis = 0)
+	cv2.imwrite("combined.png", combined)
+
+def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
+
+	depth = 0
+
+	#open files
+	try:
+		csv_contents = read_csv(csv_filename)
+	except:
+		print("ERROR: Cannot open CSV file: "+ csv_filename)
+
+	for ex in csv_contents:
+		ex['iad_path'] = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id), ex['label_name'], ex['example_id']+"_"+str(depth)+".npz")
+		ex['txt_path'] = os.path.join(dataset_dir, "btxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
+	csv_contents = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
+
+	# open saved model
+	save_file = os.path.join(save_name, str(dataset_id), dataset_type)
+	filename = save_file.replace('/', '_')+'_'+str(depth)
+	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
+
+	for label in range(1,2):#num_classes):
+
+		# generate a plot that shows the top 5 and bottom five features for each label.
+		top_features, colors = generate_top_bottom_table(tcg, label, count=5, out='before_feature_importance_'+str(depth)+'.png')
+
+		# from there we need to open an IAD and highlight the rows that are described in the table
+		# use the same colorsfor the regions specified
+
+		find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name='before_iad_'+str(depth)+'.png')
+
+		# lastly we can look at frames in the video corresponding to those IADs
+		#find_video_frames()
+
+		make_graph(top_features, colors, name='before_graph_'+str(depth)+'.png')
+
+		combine_images(
+			features='before_feature_importance_'+str(depth)+'.png', 
+			iad ='before_iad_'+str(depth)+'.png',
+			graph='before_graph_'+str(depth)+'.png' )
+
+		print('----------------')
 
 
 if __name__ == '__main__':
