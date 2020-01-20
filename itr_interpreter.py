@@ -428,7 +428,7 @@ def make_graph(top_features, itr_colors):
 		events.add(itr_s[0])
 		events.add(itr_s[2])
 
-		c = colorsys.hsv_to_rgb(itr_colors[itr], 1, 1)
+		c = colorsys.hsv_to_rgb(itr_colors[itr], 100, 100)
 
 
 		edges += '{0} -> {1} [label="{2}" color="{3}"]\n'.format(itr_s[0], itr_s[2], itr_s[1], c)
