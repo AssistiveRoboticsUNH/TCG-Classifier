@@ -274,8 +274,8 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	for i in range(len(events)):
 
-		if(events[i].end > max_window):
-			max_window = events[i].end
+		if(int(events[i].end) > max_window):
+			max_window = int(events[i].end)
 
 		j = i+1
 		while(j < len(events) and events[j].name != events[i].name):
