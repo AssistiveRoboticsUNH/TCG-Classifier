@@ -216,6 +216,8 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 			label_colors.append(rgb_color)
 
 		label_colors += ['k']*count
+		print("label_colors")
+		print(label_colors)
 
 		colors = ['b']*count + ['r']*count
 
