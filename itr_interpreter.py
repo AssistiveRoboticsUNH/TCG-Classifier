@@ -432,7 +432,7 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 		events.add(itr_s[0])
 		events.add(itr_s[2])
 
-		c = itr_colors[itr]/256.0
+		c = itr_colors[itr]/255.0
 
 
 		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0"]\n'.format(itr_s[0], itr_s[2], itr_s[1], round(c, 3))
