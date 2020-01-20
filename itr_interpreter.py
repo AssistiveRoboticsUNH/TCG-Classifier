@@ -223,7 +223,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 		# place into chart
 		plt.barh(range(count*2), data, align='center', color = colors)
-		plt.yticks(range(count*2), names, color = label_colors)
+		plt.yticks(range(count*2), names, color = colors)
 	else:
 		colors = ['b']*len(importance[importance > 0]) + ['r']*len(importance[importance < 0])
 
