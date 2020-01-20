@@ -273,13 +273,13 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 		j = i+1
 		while(j < len(events) and events[j].name != events[i].name):
 
-			itr_name = tcg.all_itrs(events[i], events[j], 0)
+			e1 = events[i]
+			e2 = events[j]
+			itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)#tcg.all_itrs(events[i], events[j], 0)
 
 			if('i' not in itr_name):
-				e1 = events[i]
-				e2 = events[j]
 
-				itr = "{0}-{1}-{2}".format(e1.name, itr_name[0], e2.name)
+				itr = "{0}-{1}-{2}".format(e1.name, itr_name, e2.name)
 
 				if e1.name not in event_colors:
 					event_colors[ e1.name ] = {}
