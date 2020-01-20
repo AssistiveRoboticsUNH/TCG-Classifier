@@ -358,7 +358,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	#print("format iad[0,0]:", iad[0,0])
 
 	iad *= 255
-
+	iad = iad[3:]
 	#print("incr iad[0,0]:", iad[0,0])
 
 	iad = iad.astype(np.uint8)
@@ -461,7 +461,7 @@ def combine_images(features="", iad = "", graph="" ):
 		left=0,
 		right=fg_img.shape[1]-iad_img.shape[1],
 		borderType=cv2.BORDER_CONSTANT,
-		value=[0, 0, 0]
+		value=[255,255,255]
 	)
 
 	#combine images together
