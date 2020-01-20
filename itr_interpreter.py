@@ -392,20 +392,20 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	filename = save_file.replace('/', '_')+'_'+str(depth)
 	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
-	for label in range(1):#num_classes):
+	for label in range(1,2):#num_classes):
 
 		# generate a plot that shows the top 5 and bottom five features for each label.
-		top_features, colors = generate_top_bottom_table(tcg, label, count=5, out='test.png')
+		top_features, colors = generate_top_bottom_table(tcg, label, count=5, out='before_feature_importance_'+str(depth)+'.png')
 
 		# from there we need to open an IAD and highlight the rows that are described in the table
 		# use the same colorsfor the regions specified
 
-		find_best_matching_IAD(tcg, label, top_features, colors, csv_contents)
+		find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, name='before_iad_'+str(depth)+'.png')
 
 		# lastly we can look at frames in the video corresponding to those IADs
 		#find_video_frames()
 
-		make_graph(top_features, colors)
+		make_graph(top_features, colors, name='before_graph_'+str(depth)+'.png')
 
 		print('----------------')
 
