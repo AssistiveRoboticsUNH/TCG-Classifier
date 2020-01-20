@@ -412,6 +412,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 def make_graph(top_features, itr_colors):
 
 	import pydot
+	import colorsys
 
 	gfile = open('mygraph.dot', 'w')
 
@@ -427,7 +428,7 @@ def make_graph(top_features, itr_colors):
 		events.add(itr_s[0])
 		events.add(itr_s[2])
 
-		c = cv2.cvtColor([itr_colors[itr], 1, 1],cv2.COLOR_HSV2BGR)
+		c = colorsys.hsv_to_rgb(itr_colors[itr], 1, 1)
 
 
 		edges += '{0} -> {1} [label="{2}" color="{3}"]\n'.format(itr_s[0], itr_s[2], itr_s[1], c)
