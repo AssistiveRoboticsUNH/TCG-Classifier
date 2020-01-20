@@ -419,8 +419,7 @@ def make_graph(top_features):
 	gfile.write(header)
 
 
-	nodes = '''
-node [shape=circle,style=filled] 0
+	nodes = '''node [shape=circle,style=filled] 0
 node [shape=circle,style=filled] 1
 node [shape=circle,style=filled] 2
 node [shape=circle,style=filled] 3
@@ -433,8 +432,7 @@ node [shape=circle,style=filled] 9
 node [shape=doublecircle,style=filled] 10'''
 	gfile.write(nodes)
 	
-	edges = '''
-0 -> 4 [label="g "];
+	edges = '''0 -> 4 [label="g "];
 0 -> 1 [label="b "];
 1 -> 2 [label="o "];
 2 -> 7 [label="y "];
