@@ -453,13 +453,13 @@ def combine_images(features="", iad = "", graph="" ):
 
 	cv2.imwrite("fg_img.png", fg_img)
 	#resize IAD to be the same scale as the width
-	print("border:", feature_img.shape[1]-iad_img.shape[1])
+	print("border:", fg_img.shape[1]-iad_img.shape[1])
 	iad_img = cv2.copyMakeBorder(
 		iad_img,
 		top=0,
 		bottom=0,
 		left=0,
-		right=feature_img.shape[1]-iad_img.shape[1],
+		right=fg_img.shape[1]-iad_img.shape[1],
 		borderType=cv2.BORDER_CONSTANT,
 		value=[0, 0, 0]
 	)
