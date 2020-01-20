@@ -441,7 +441,7 @@ node [shape=doublecircle,style=filled] 10\n'''
 
 	gfile.close()
 
-	print(pydot.graph_from_dot_file('mygraph.dot'))
+	print("pydot.graph_from_dot_file('mygraph.dot'):", pydot.graph_from_dot_file('mygraph.dot'))
 
 	(graph,) = pydot.graph_from_dot_file('mygraph.dot')
 	graph.write_png('graph.png')
