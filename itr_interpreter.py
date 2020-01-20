@@ -427,7 +427,7 @@ def make_graph(top_features):
 		events.add(itr_s[0])
 		events.add(itr_s[2])
 
-		edges += '{0} -> {1} [label="{2}"]\n'.format(*itr_s)
+		edges += '{0} -> {1} [label="{2}"]\n'.format(itr_s[0], itr_s[2], itr_s[1])
 
 	for e in events:
 		nodes += "node [shape=circle,style=filled] {0}\n".format(e)
