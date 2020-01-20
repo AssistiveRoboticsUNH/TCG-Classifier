@@ -276,24 +276,24 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 			itr_name = tcg.all_itrs(events[i], events[j], 0)
 
 			if('i' not in itr_name):
-				e1 = events[i].name
-				e2 = events[j].name
+				e1 = events[i]
+				e2 = events[j]
 
-				itr = "{0}-{1}-{2}".format(e1, itr_name, e2)
+				itr = "{0}-{1}-{2}".format(e1.name, itr_name, e2.name)
 
-				if e1 not in event_colors:
-					event_colors[ e1 ] = {}
-				if( (e1.start, e1.end) not in event_colors[ e1 ]):
-					event_colors[ e1 ][(e1.start, e1.end)] = []
+				if e1.name not in event_colors:
+					event_colors[ e1.name ] = {}
+				if( (e1.start, e1.end) not in event_colors[ e1.name ]):
+					event_colors[ e1.name ][(e1.start, e1.end)] = []
 
-				event_colors[ e1 ][(e1.start, e1.end)].append(itr_colors[itr])
+				event_colors[ e1.name ][(e1.start, e1.end)].append(itr_colors[itr])
 
-				if e2 not in event_colors:
-					event_colors[ e2 ] = {}
-				if( (e2.start, e2.end) not in event_colors[ e2 ]):
-					event_colors[ e2 ][(e2.start, e2.end)] = []
+				if e2.name not in event_colors:
+					event_colors[ e2.name ] = {}
+				if( (e2.start, e2.end) not in event_colors[ e2.name ]):
+					event_colors[ e2.name ][(e2.start, e2.end)] = []
 
-				event_colors[ e2 ][(e2.start, e2.end)].append(itr_colors[itr])
+				event_colors[ e2.name ][(e2.start, e2.end)].append(itr_colors[itr])
 
 
 			j+=1
