@@ -436,7 +436,8 @@ node [shape=doublecircle,style=filled] 10\n'''
 0 -> 1 [label="b "];
 1 -> 2 [label="o "];
 2 -> 7 [label="y "];
-2 -> 3 [label="o "];\n'''
+2 -> 3 [label="o "];\n
+}\n'''
 	gfile.write(edges)
 
 	gfile.close()
