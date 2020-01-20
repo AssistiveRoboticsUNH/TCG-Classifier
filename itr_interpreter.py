@@ -298,6 +298,9 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 			j+=1
 
+	print("event_colors")
+	print(event_colors)
+
 
 	# MAKE THE PICTURE
 
@@ -326,7 +329,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 				#iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
 		else:
 			iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
-			#
+
 
 	print("after iad[0,0]:", iad[0,0])
 
