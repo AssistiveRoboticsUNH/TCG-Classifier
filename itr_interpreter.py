@@ -444,8 +444,8 @@ def combine_images(features="", iad = "", graph="" ):
 		scale = graph_img.shape[1]/feature_img.shape[1]
 		feature_img = cv2.resize(feature_img, (feature_img.shape[1]*scale, feature_img.shape[0]*scale))
 
-	print("feature:", feature.shape)
-	print("graph:", graph.shape)
+	print("feature:", feature_img.shape)
+	print("graph:", graph_img.shape)
 	fg_img = np.concatenate((feature_img, graph_img), axis = 0)
 
 	cv2.imwrite("fg_img.png", fg_img)
