@@ -422,7 +422,37 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 		make_graph(top_features, colors, name='before_graph_'+str(depth)+'.png')
 
+		combine_images(
+			features='before_feature_importance_'+str(depth)+'.png', 
+			iad ='before_iad_'+str(depth)+'.png',
+			graph='before_graph_'+str(depth)+'.png' )
+
 		print('----------------')
+
+def combine_images(features="", iad = "", graph="" ):
+
+	feature_img = cv2.imread(features)
+	graph_img = cv2.imread(graph)
+	iad_img = cv2.imread(iad)
+	
+
+	#resize feature and graph to be the same height
+	if(feature_img.shape[1] > graph_img.shape[1]):
+		scale = feature_img.shape[1]/graph_img.shape[1]
+		graph_img = cv2.resize(graph_img, (graph_img.shape[1]*scale, graph_img.shape[0]*scale))
+	else:
+		scale = graph_img.shape[1]/feature_img.shape[1]
+		feature_img = cv2.resize(feature_img, (feature_img.shape[1]*scale, feature_img.shape[0]*scale))
+
+	fg_img = np.concatenate((feature_img, graph_img), axis = 0)
+
+	cv2.imwrite("fg_img.png", fg_img)
+	#resize IAD to be the same scale as the width
+	#iad = cv2.resize(iad, (w, h), interpolation=cv2.INTER_NEAREST)
+
+	#combine images together
+	#combined = 
+
 
 def make_graph(top_features, itr_colors, name="graph.png"):
 
