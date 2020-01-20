@@ -432,10 +432,10 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 		events.add(itr_s[0])
 		events.add(itr_s[2])
 
-		#c = colorsys.hsv_to_rgb(itr_colors[itr], 1, 1)
+		c = itr_colors[itr]/256.0
 
 
-		edges += '{0} -> {1} [label="{2}"]\n'.format(itr_s[0], itr_s[2], itr_s[1])
+		edges += '{0} -> {1} [label="{2} color="{3} 1.0 1.0" "]\n'.format(itr_s[0], itr_s[2], itr_s[1], c)
 
 	for e in events:
 		nodes += "node [shape=circle,style=filled] {0}\n".format(e)
