@@ -374,7 +374,7 @@ def find_video_frames():
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	depth = 2
+	depth = 1
 
 	#open files
 	try:
@@ -405,7 +405,49 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		# lastly we can look at frames in the video corresponding to those IADs
 		#find_video_frames()
 
+		make_graph(top_features)
+
 		print('----------------')
+
+def make_graph():
+
+	import pydot
+
+	gfile = open('mygraph.dot', 'w')
+
+	header = '''
+	digraph A {
+	rankdir = LR;'''
+	gfile.write(header)
+
+
+	nodes = '''
+	node [shape=circle,style=filled] 0
+	node [shape=circle,style=filled] 1
+	node [shape=circle,style=filled] 2
+	node [shape=circle,style=filled] 3
+	node [shape=circle,style=filled] 4
+	node [shape=circle,style=filled] 5
+	node [shape=circle,style=filled] 6
+	node [shape=circle,style=filled] 7
+	node [shape=circle,style=filled] 8
+	node [shape=circle,style=filled] 9
+	node [shape=doublecircle,style=filled] 10'''
+	gfile.write(nodes)
+	
+	edges = '''
+	0 -> 4 [label="g "];
+	0 -> 1 [label="b "];
+	1 -> 2 [label="o "];
+	2 -> 7 [label="y "];
+	2 -> 3 [label="o "];'''
+	gfile.write(edges)
+
+	gfile.close()
+
+	(graph,) = pydot.graph_from_dot_file('mygraph.dot')
+	graph.write_png('graph.png')
+	
 
 
 if __name__ == '__main__':
