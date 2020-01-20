@@ -120,6 +120,30 @@ def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_i
 	return None, None
 '''
 
+
+# Assign unique colors to each ITR
+# go through the ITR extraction processes to determine the specific event relationships
+
+# have a dictionary
+'''
+adict = {"event name": {[start:end] : ["color 1", "color2"], [start2:end2]: ["color2", "color3"]} }
+
+'''
+
+# Generate the IAD using black to fill in the actions
+
+# go backthrough and 
+
+
+
+
+
+
+
+
+
+
+
 def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"):
 	# get the top and bottom most features and save them in a plotable figure
 
@@ -176,6 +200,15 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 		data = np.concatenate((top, bot))
 		names = np.concatenate((top_n, bot_n))
 
+
+
+		itr_colors = {}
+
+		c_i = 0
+		for i, itr in enumerate(top_n):
+			itr_colors[itr] = np.linspace(0, 256, num=len(top_n), dtype=np.unit8)[i]
+
+
 		colors = ['b']*count + ['r']*count
 
 		# place into chart
@@ -191,13 +224,13 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	#plt.show()
 	plt.savefig(out)
 
-	return top_n, None#top_n, bot_n
+	return top_n, itr_colors
 
 
-def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad.png'):
+def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, out_name='iad.png'):
 
-	#print("CUREENTLY DISABLED")
-	#return None
+	# CHOOSE THE FILE TO DEMONSTRATE WITH
+
 	# find the IAD that best matches the given IADs and color it and save fig
 	tcg.evalcorpus = []
 
@@ -226,96 +259,72 @@ def find_best_matching_IAD(tcg, label, top_features, csv_contents, out_name='iad
 	#	print(x,y)
 	print("metrics:", metrics.accuracy_score(pred, tcg.evallabels))
 
-	'''
-	itr_seq = [itr[0]+'-'+itr[1]+'-'+itr[2] for itr in tcg.extract_itr_seq(files[top]["txt_path"])]
-	for f in top_features:
-		print(f, f in itr_seq)
-	'''
-
-	'''
-	for i, ex in enumerate(files):
-
-		itr_seq = [itr[0]+'-'+itr[1]+'-'+itr[2] for itr in tcg.extract_itr_seq(ex["txt_path"])]
-		#itr_seq = [itr[1] for itr in tcg.extract_itr_seq(ex["txt_path"])] #+ ['adi-eq-aaa']
-
-		tally = 0
-		print(len(top_features))
-
-		for j, f in enumerate(top_features):
-			if(f in itr_seq):
-				tally += 1
-			#print(f, f in itr_seq)
-
-		#if(count > max_count):
-		#	max_label = ex["txt_path"]
-		#	max_count = count
-
-		print(ex["example_id"], tally)
-	'''
-	#print(max_count, max_label)
-	
-	#DEBUG: investigate to see how many of the top_features are present in the specified class
-
 	
 
-	# It looks better if I can just paste it ontop of an existing IAD
 
-
-
-	#Generate IAD from txt file
+	#SETUP WHICH EVENTS ARE COLORED
 	
-	#iad = np.zeros
+	events = tcg.read_file(files[top]["txt_path"])
+	events = sorted(self.read_file(txt_file)) 
 
-	#files[top]["iad_path"]
+	event_colors = {}
 
-	#iad_info = np.load(files[top]["iad_path"])["data"].shape
-	#print("iad_info:", iad_info)
+	for i in range(len(events)):
 
+		j = i+1
+		while(j < len(events) and events[j].name != events[i].name):
+
+			itr_name = tcg.all_itrs(events[i], events[j], 0)
+
+			if('i' not in itr_name):
+				e1 = events[i].name
+				e2 = events[j].name
+
+				itr = "{0}-{1}-{2}".format(e1, itr_name, e2)
+
+				if e1 not in event_colors:
+					event_colors[ e1 ] = {}
+				if([(e1.start, e1.end)] not in event_colors[ e1 ]):
+					event_colors[ e1 ][(e1.start, e1.end)] = []
+
+				event_colors[ e1 ][(e1.start, e1.end)].append(itr_colors[itr])
+
+				if e2 not in event_colors:
+					event_colors[ e2 ] = {}
+				if([(e2.start, e2.end)] not in event_colors[ e2 ]):
+					event_colors[ e2 ][(e2.start, e2.end)] = []
+
+				event_colors[ e2 ][(e2.start, e2.end)].append(itr_colors[itr])
+
+
+			j+=1
+
+
+	# MAKE THE PICTURE
 
 	num_features = 128 #get from the num used features
 	max_window = 256 
 	iad = np.ones((num_features, max_window), np.float32)#np.array(np.ones((num_features, max_window)), dtype=np.uint8) * 255
 
-	events = tcg.read_file(files[top]["txt_path"])
-
-	print(iad.shape)
-
+	# change the colors space to HSV for simplicity 
 	iad = cv2.cvtColor(iad,cv2.COLOR_GRAY2BGR)
 	iad = cv2.cvtColor(iad,cv2.COLOR_BGR2HSV)
-
-	print("iad[0,0]:", iad[0,0])
 
 	action_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
 
 
-	event_colors = {}
-
-	color_list = range(0, 256, 50)
-	c_i = 0
-
-	top_events = Set()
-	for itr in top_features:
-		itr_s = itr.split('-')
-
-		if(itr_s[0] in event_colors):
-			c = event_colors[itr_s[0]]
-		elif(itr_s[2] in event_colors):
-			c = event_colors[itr_s[2]]
-		else:
-			c = color_list[c_i]
-			c_i += 1
-
-		event_colors[itr_s[0]] = c
-		event_colors[itr_s[2]] = c
-
-		
-	print(top_events)
-
 	for i, e in enumerate(events):
 
 		if e.name in event_colors:
-			iad[action_labels.index(e.name) , int(e.start):int(e.end), 0] = event_colors[e.name]
-			iad[action_labels.index(e.name) , int(e.start):int(e.end), 1]  = 1
+			timing_pair = (int(e.start),int(e.end))
+			if timing_pair in event_colors[e.name]:
+
+				colors = event_colors[e.name][timing_pair]
+				for idx in range(int(e.start), int(e.end)):
+					iad[action_labels.index(e.name) , idx, 0] = colors[c]
+					iad[action_labels.index(e.name) , idx, 1]  = 1
+			else:
+				iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
 		else:
 			iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
 			#
@@ -375,12 +384,12 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	for label in range(1):#num_classes):
 
 		# generate a plot that shows the top 5 and bottom five features for each label.
-		top_features, bottom_features = generate_top_bottom_table(tcg, label, count=5, out='test.png')
+		top_features, colors = generate_top_bottom_table(tcg, label, count=5, out='test.png')
 
 		# from there we need to open an IAD and highlight the rows that are described in the table
 		# use the same colorsfor the regions specified
 
-		find_best_matching_IAD(tcg, label, top_features, csv_contents)
+		find_best_matching_IAD(tcg, label, top_features, colors, csv_contents)
 
 		# lastly we can look at frames in the video corresponding to those IADs
 		#find_video_frames()
