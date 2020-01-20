@@ -455,6 +455,9 @@ def combine_images(features="", iad = "", graph="" ):
 	#resize IAD to be the same scale as the width
 	iad_img = cv2.copyMakeBorder(
 		iad_img,
+		top=0,
+		bottom=0,
+		left=0,
 		right=feature_img.shape[1]-iad_img.shape[1],
 		borderType=cv2.BORDER_CONSTANT,
 		value=[0, 0, 0]
