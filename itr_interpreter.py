@@ -36,6 +36,8 @@ from eli5.lime import TextExplainer
 from eli5.sklearn import PermutationImportance
 from sklearn.pipeline import Pipeline, make_pipeline
 
+import pydot
+import colorsys
 
 '''
 def f_importances(coef, names, count=5):
@@ -416,8 +418,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 def make_graph(top_features, itr_colors, name="graph.png"):
 
-	import pydot
-	import colorsys
+	
 
 	gfile = open('mygraph.dot', 'w')
 
