@@ -409,7 +409,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 		print('----------------')
 
-def make_graph(top_features, itr_colors):
+def make_graph(top_features, itr_colors, name="graph.png"):
 
 	import pydot
 	import colorsys
@@ -448,7 +448,7 @@ def make_graph(top_features, itr_colors):
 	#graph.write_png('graph.png')
 
 	from subprocess import check_call
-	check_call(['dot','-Tpng','mygraph.dot','-o','graph.png'])
+	check_call(['dot','-Tpng','mygraph.dot','-o',name])
 	
 
 
