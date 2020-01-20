@@ -418,37 +418,33 @@ def make_graph(top_features):
 	header = "digraph A {\nrankdir = LR;\n"
 	gfile.write(header)
 
+	nodes = ""
+	edges = ""
 
-	nodes = '''node [shape=circle,style=filled] 0
-node [shape=circle,style=filled] 1
-node [shape=circle,style=filled] 2
-node [shape=circle,style=filled] 3
-node [shape=circle,style=filled] 4
-node [shape=circle,style=filled] 5
-node [shape=circle,style=filled] 6
-node [shape=circle,style=filled] 7
-node [shape=circle,style=filled] 8
-node [shape=circle,style=filled] 9
-node [shape=doublecircle,style=filled] 10\n'''
+	events = Set()
+	for itr in top_features:
+		itr_s = itr.split('-')
+		events.add(itr_s[0])
+		events.add(itr_s[2])
+
+		edges += '{0} -> {1} [label="{2}"]\n'.format(*itr_s)
+
+	for e in events:
+		nodes += "node [shape=circle,style=filled] {0}\n".format(e)
 	gfile.write(nodes)
 	
-	edges = '''0 -> 4 [label="g "];
-0 -> 1 [label="b "];
-1 -> 2 [label="o "];
-2 -> 7 [label="y "];
-2 -> 3 [label="o "];\n
-}\n'''
-	gfile.write(edges)
+	
+	gfile.write(edges+"}\n")
 
 	gfile.close()
 
 	#print("pydot.graph_from_dot_file('mygraph.dot'):", pydot.graph_from_dot_file('mygraph.dot'))
 
-	(graph,) = pydot.graph_from_dot_file('mygraph.dot')
-	graph.write_png('graph.png')
+	#(graph,) = pydot.graph_from_dot_file('mygraph.dot')
+	#graph.write_png('graph.png')
 
-	#from subprocess import check_call
-	#check_call(['dot','-Tpng','mygraph.dot','-o','graph.png'])
+	from subprocess import check_call
+	check_call(['dot','-Tpng','mygraph.dot','-o','graph.png'])
 	
 
 
