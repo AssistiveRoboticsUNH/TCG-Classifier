@@ -283,14 +283,14 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 				if e1 not in event_colors:
 					event_colors[ e1 ] = {}
-				if([(e1.start, e1.end)] not in event_colors[ e1 ]):
+				if( (e1.start, e1.end) not in event_colors[ e1 ]):
 					event_colors[ e1 ][(e1.start, e1.end)] = []
 
 				event_colors[ e1 ][(e1.start, e1.end)].append(itr_colors[itr])
 
 				if e2 not in event_colors:
 					event_colors[ e2 ] = {}
-				if([(e2.start, e2.end)] not in event_colors[ e2 ]):
+				if( (e2.start, e2.end) not in event_colors[ e2 ]):
 					event_colors[ e2 ][(e2.start, e2.end)] = []
 
 				event_colors[ e2 ][(e2.start, e2.end)].append(itr_colors[itr])
