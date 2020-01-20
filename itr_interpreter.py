@@ -206,7 +206,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 		c_i = 0
 		for i, itr in enumerate(top_n):
-			itr_colors[itr] = np.linspace(0, 256, num=len(top_n), dtype=np.unit8)[i]
+			itr_colors[itr] = np.linspace(0, 256, num=len(top_n), dtype=np.uint8)[i]
 
 
 		colors = ['b']*count + ['r']*count
