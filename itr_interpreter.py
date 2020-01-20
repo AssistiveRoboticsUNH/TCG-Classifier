@@ -405,7 +405,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		# lastly we can look at frames in the video corresponding to those IADs
 		#find_video_frames()
 
-		make_graph(top_features)
+		make_graph(top_features, colors)
 
 		print('----------------')
 
