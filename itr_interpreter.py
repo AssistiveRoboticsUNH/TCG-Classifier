@@ -260,8 +260,8 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	print("metrics:", metrics.accuracy_score(pred, tcg.evallabels))
 
 	
-	print("itr_colors")
-	print(itr_colors)
+	#print("itr_colors")
+	#print(itr_colors)
 
 	#SETUP WHICH EVENTS ARE COLORED
 	
@@ -307,8 +307,8 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 			j+=1
 
-	print("event_colors")
-	print(event_colors)
+	#print("event_colors")
+	#print(event_colors)
 
 
 	# MAKE THE PICTURE
@@ -340,19 +340,19 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 			iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
 
 
-	print("after iad[0,0]:", iad[0,0])
+	#print("after iad[0,0]:", iad[0,0])
 
 	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
 
-	print("format iad[0,0]:", iad[0,0])
+	#print("format iad[0,0]:", iad[0,0])
 
 	iad *= 255
 
-	print("incr iad[0,0]:", iad[0,0])
+	#print("incr iad[0,0]:", iad[0,0])
 
 	iad = iad.astype(np.uint8)
 
-	print("type iad[0,0]:", iad[0,0])
+	#print("type iad[0,0]:", iad[0,0])
 
 	cv2.imwrite(out_name, iad)
 	#cv2.imshow('img', canvas)
@@ -374,7 +374,7 @@ def find_video_frames():
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	depth = 1
+	depth = 2
 
 	#open files
 	try:
