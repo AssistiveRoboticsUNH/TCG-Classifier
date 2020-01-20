@@ -264,8 +264,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	#SETUP WHICH EVENTS ARE COLORED
 	
-	events = tcg.read_file(files[top]["txt_path"])
-	events = sorted(tcg.read_file(txt_file)) 
+	events = sorted( tcg.read_file(files[top]["txt_path"]) )
 
 	event_colors = {}
 
