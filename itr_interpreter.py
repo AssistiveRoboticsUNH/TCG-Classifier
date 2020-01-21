@@ -41,6 +41,7 @@ import colorsys
 
 from matplotlib import rc
 rc('text', usetex=True)
+rc('text.latex', preamble='\usepackage{color}')
 
 '''
 def f_importances(coef, names, count=5):
@@ -228,7 +229,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 		plt.barh(range(count*2), data, align='center', color = colors)
 		#label = r"This is \textbf{line 1}"
 
-		names = [ "\\usepackage{color} \\textcolor[rgb]{0,1,1}{"+itr+"}" 
+		names = [ "\\textcolor[rgb]{0,1,1}{"+itr+"}" 
 					# "\textcolor[hsv]{"+str(itr_colors[itr])+",1,1}{"+itr+"}" 
 						if itr in itr_colors else itr for itr in names   ]
 
