@@ -363,7 +363,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	iad = iad.astype(np.uint8)
 
-	scale = 6
+	scale = 4
 	iad = cv2.resize(iad, (iad.shape[1]*scale, iad.shape[0]*scale), interpolation=cv2.INTER_NEAREST)
 
 
@@ -411,7 +411,7 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 		c = itr_colors[itr]/255.0
 
 
-		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" penwidth="3"]\n'.format(itr_s[0], itr_s[2], itr_s[1], round(c, 3))
+		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(itr_s[0], itr_s[2], itr_s[1], round(c, 3))
 
 	for e in events:
 		nodes += 'node [shape=circle,style=filled,penwidth="3"] {0}\n'.format(e)
