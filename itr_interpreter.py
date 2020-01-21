@@ -228,7 +228,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 		colors = ['b']*count + ['r']*count
 
 		# place into chart
-		plt.barh(range(count*2), data, align='center', color = colors)
+		
 		#label = r"This is \textbf{line 1}"
 
 		names = [ r"\textcolor[rgb]{0,0,1}{"+itr+"}" 
@@ -240,7 +240,9 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 		plt.figure(figsize=(5,3))
 
-		plt.xticks(np.arange(np.min(bot), np.max(top)))
+		plt.barh(range(count*2), data, align='center', color = colors)
+
+		#plt.xticks(np.arange(np.min(bot), np.max(top)))
 		plt.yticks(range(count*2), names)
 		plt.gca().invert_yaxis()
 		plt.title(title)
