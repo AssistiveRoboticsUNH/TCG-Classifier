@@ -240,7 +240,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 		plt.figure(figsize=(5,3))
 
-		#plt.xticks(np.arange(np.min(bot), np.max(top)))
+		plt.xticks(np.arange(np.min(bot), np.max(top)))
 		plt.yticks(range(count*2), names)
 		plt.gca().invert_yaxis()
 		plt.title(title)
