@@ -95,7 +95,7 @@ if __name__ == '__main__':
 	FLAGS = parser.parse_args()
 
 	#i=2
-	for depth in range(5):
+	for depth in range(4,5):#5):
 		#print("dataset_type: ", dataset_type)
 		#print("dataset_id: ", dataset_id)
 		print("depth: ", depth)
