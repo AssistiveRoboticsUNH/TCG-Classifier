@@ -545,7 +545,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 				features=feat_name, 
 				iad=iad_name,
 				graph=graph_name,
-				out=combined_name )
+				out_name=combined_name )
 
 			os.remove(feat_name)
 			os.remove(iad_name)
