@@ -238,7 +238,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 		#print("names")
 		#print(names)
 
-		plt.figure(figsize=(5,3))
+		plt.figure(figsize=(3,3))
 
 		plt.barh(range(count*2), data, align='center', color = colors)
 
