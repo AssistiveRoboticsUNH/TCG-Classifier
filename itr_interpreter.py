@@ -152,7 +152,7 @@ adict = {"event name": {[start:end] : ["color 1", "color2"], [start2:end2]: ["co
 
 
 
-def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"):
+def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png", title=""):
 	# get the top and bottom most features and save them in a plotable figure
 
 	# convert Scipy matrix to one dimensional vector
@@ -222,8 +222,8 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 			label_colors.append(rgb_color)
 
 		label_colors += [(0.0,0.0,0.0)]*count
-		print("label_colors")
-		print(label_colors)
+		#print("label_colors")
+		#print(label_colors)
 
 		colors = ['b']*count + ['r']*count
 
@@ -235,14 +235,14 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 					# "\textcolor[hsv]{"+str(itr_colors[itr])+",1,1}{"+itr+"}" 
 						if itr in itr_colors else itr for itr in names   ]
 
-		print("names")
-		print(names)
+		#print("names")
+		#print(names)
 
 
 
 		plt.yticks(range(count*2), names)
 		plt.gca().invert_yaxis()
-		plt.title("BEFORE, Depth 0")
+		plt.title(title)
 		plt.tight_layout()
 	else:
 		colors = ['b']*len(importance[importance > 0]) + ['r']*len(importance[importance < 0])
@@ -275,19 +275,19 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	pred = tcg.clf.predict(data)
 
-	print("prob.shape:", prob.shape)
-	print(pred)
-	print(tcg.evallabels)
+	#print("prob.shape:", prob.shape)
+	#print(pred)
+	#print(tcg.evallabels)
 
 
 	# select the greatest decision function in favor of the class
 	top = np.argmax(prob[:, label], axis =0)
-	print(prob[top], files[top]["iad_path"])
+	#print(prob[top], files[top]["iad_path"])
 
 
 	#for x, y in zip(tcg.evallabels, pred):
 	#	print(x,y)
-	print("metrics:", metrics.accuracy_score(pred, tcg.evallabels))
+	#print("metrics:", metrics.accuracy_score(pred, tcg.evallabels))
 
 	
 	#print("itr_colors")
@@ -337,8 +337,8 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 			j+=1
 
-	print("event_colors")
-	print(event_colors)
+	#print("event_colors")
+	#print(event_colors)
 
 
 	# MAKE THE PICTURE
@@ -449,14 +449,14 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 	from subprocess import check_call
 	check_call(['dot','-Tpng','mygraph.dot','-o',name])
 	
-def combine_images(features="", iad = "", graph="" ):
+def combine_images(features="", iad = "", graph="", out_name ="" ):
 
 	feature_img = cv2.imread(features)
 	graph_img = cv2.imread(graph)
 	iad_img = cv2.imread(iad)
 	
-	print("feature:", feature_img.shape)
-	print("graph:", graph_img.shape)
+	#print("feature:", feature_img.shape)
+	#print("graph:", graph_img.shape)
 
 	#resize feature and graph to be the same height
 	if(feature_img.shape[0] > graph_img.shape[0]):
@@ -466,13 +466,13 @@ def combine_images(features="", iad = "", graph="" ):
 		scale = graph_img.shape[0]/float(feature_img.shape[0])
 		feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), int(feature_img.shape[0]*scale)))
 
-	print("feature2:", feature_img.shape)
-	print("graph2:", graph_img.shape)
+	#print("feature2:", feature_img.shape)
+	#print("graph2:", graph_img.shape)
 	fg_img = np.concatenate((feature_img, graph_img), axis = 1)
 
-	cv2.imwrite("fg_img.png", fg_img)
+	#cv2.imwrite("fg_img.png", fg_img)
 	#resize IAD to be the same scale as the width
-	print("border:", fg_img.shape[1]-iad_img.shape[1])
+	#print("border:", fg_img.shape[1]-iad_img.shape[1])
 	iad_img = cv2.copyMakeBorder(
 		iad_img,
 		top=0,
@@ -485,49 +485,73 @@ def combine_images(features="", iad = "", graph="" ):
 
 	#combine images together
 	combined = np.concatenate((fg_img, iad_img), axis = 0)
-	cv2.imwrite("combined.png", combined)
+	cv2.imwrite(out_name, combined)
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	depth = 0
+	dir_name = os.path.join("pics", "bm")
+	if(not os.exists(dir_name)):
+		os.makedirs(dir_name)
 
-	#open files
-	try:
-		csv_contents = read_csv(csv_filename)
-	except:
-		print("ERROR: Cannot open CSV file: "+ csv_filename)
+	for depth in range(5):
 
-	for ex in csv_contents:
-		ex['iad_path'] = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id), ex['label_name'], ex['example_id']+"_"+str(depth)+".npz")
-		ex['txt_path'] = os.path.join(dataset_dir, "btxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
-	csv_contents = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
+		#open files
+		try:
+			csv_contents = read_csv(csv_filename)
+		except:
+			print("ERROR: Cannot open CSV file: "+ csv_filename)
 
-	# open saved model
-	save_file = os.path.join(save_name, str(dataset_id), dataset_type)
-	filename = save_file.replace('/', '_')+'_'+str(depth)
-	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
+		for ex in csv_contents:
+			ex['iad_path'] = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id), ex['label_name'], ex['example_id']+"_"+str(depth)+".npz")
+			ex['txt_path'] = os.path.join(dataset_dir, "btxt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
+		csv_contents = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 
-	for label in range(1,2):#num_classes):
+		# open saved model
+		save_file = os.path.join(save_name, str(dataset_id), dataset_type)
+		filename = save_file.replace('/', '_')+'_'+str(depth)
+		tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
-		# generate a plot that shows the top 5 and bottom five features for each label.
-		top_features, colors = generate_top_bottom_table(tcg, label, count=5, out='before_feature_importance_'+str(depth)+'.png')
+		for label in range(1,2):#num_classes):
 
-		# from there we need to open an IAD and highlight the rows that are described in the table
-		# use the same colorsfor the regions specified
+			label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
+			title = label_name.upper()+", Depth "+str(depth)
 
-		find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name='before_iad_'+str(depth)+'.png')
 
-		# lastly we can look at frames in the video corresponding to those IADs
-		#find_video_frames()
+			feat_name = os.path.join(dir_name, label_name+'_feat_'+str(depth)+'.png')
+			graph_name = os.path.join(dir_name, label_name+'_graph_'+str(depth)+'.png')
+			iad_name = os.path.join(dir_name, label_name+'_iad_'+str(depth)+'.png')
 
-		make_graph(top_features, colors, name='before_graph_'+str(depth)+'.png')
+			combined_name = label_name+'_'+str(depth)+'.png'
 
-		combine_images(
-			features='before_feature_importance_'+str(depth)+'.png', 
-			iad ='before_iad_'+str(depth)+'.png',
-			graph='before_graph_'+str(depth)+'.png' )
 
-		print('----------------')
+
+
+
+			# generate a plot that shows the top 5 and bottom five features for each label.
+			top_features, colors = generate_top_bottom_table(tcg, label, count=5, out=feat_name, title=title)
+
+			# from there we need to open an IAD and highlight the rows that are described in the table
+			# use the same colorsfor the regions specified
+
+			make_graph(top_features, colors, name=graph_name)
+
+			find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name=iad_name)
+
+			# lastly we can look at frames in the video corresponding to those IADs
+			#find_video_frames()
+
+
+			combine_images(
+				features=feat_name, 
+				iad=iad_name,
+				graph=graph_name,
+				out=combined_name )
+
+			os.remove(feat_name)
+			os.remove(iad_name)
+			os.remove(graph_name)
+
+			print('----------------')
 
 
 if __name__ == '__main__':
