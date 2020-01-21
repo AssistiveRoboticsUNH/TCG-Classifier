@@ -211,7 +211,7 @@ def plot_confusion_matrix(cm,
 
 
 
-cm = confusion_matrix(a[1], a[0], labels)
+cm = confusion_matrix(y_true=a[1], y_pred=a[0], labels)
 
 plot_confusion_matrix(cm, labels)
 
