@@ -167,6 +167,9 @@ def plot_confusion_matrix(cm,
     http://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
 
     """
+    import matplotlib
+	matplotlib.use('Agg')
+
     import matplotlib.pyplot as plt
     import numpy as np
     import itertools
