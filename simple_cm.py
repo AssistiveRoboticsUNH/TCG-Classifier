@@ -214,11 +214,11 @@ def plot_confusion_matrix(cm,
 	plt.savefig("tea_making_cm.png")
 
 
-
-
+print("a shape", a.shape)
+print("a[0]", a[0].shape, a[1].shape)
 cm = confusion_matrix(y_true=a[1], y_pred=a[0])
 
-plot_confusion_matrix(cm, labels)
+plot_confusion_matrix(cm, target_names=labels, title="I3D Accuracy")
 
 
 
