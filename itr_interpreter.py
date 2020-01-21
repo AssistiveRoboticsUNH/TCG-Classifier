@@ -525,7 +525,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		for label in range(num_classes):
 
 			label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
-			title = label_name.upper().replace('_', '')+", Depth "+str(depth)
+			title = label_name.upper().replace('_', ' ')+", Depth "+str(depth)
 
 			print(title)
 			feat_name = os.path.join(dir_name, label_name+'_feat_'+str(depth)+'.png')
