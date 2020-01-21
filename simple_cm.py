@@ -216,7 +216,7 @@ def plot_confusion_matrix(cm,
 
 print("a shape", a.T.shape)
 print("a[0]", a.T[0].shape, a.T[1].shape)
-cm = confusion_matrix(y_true=a[1], y_pred=a[0])
+cm = confusion_matrix(y_true=a.T[1], y_pred=a.T[0])
 
 plot_confusion_matrix(cm, target_names=labels, title="I3D Accuracy")
 
