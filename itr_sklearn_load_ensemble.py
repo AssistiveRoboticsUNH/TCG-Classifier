@@ -43,6 +43,8 @@ class ITR_Extractor_Ensemble:
 		probs = []
 		preds = []
 
+		weight_scheme = []
+
 		for depth in range(5):
 			data = self.models[depth].tfidf.transform(self.models[depth].evalcorpus)
 
@@ -50,6 +52,7 @@ class ITR_Extractor_Ensemble:
 			pred = self.models[depth].clf.predict(data)
 
 			acc = metrics.accuracy_score(self.evallabels, pred)
+			weight_scheme.append(acc)
 
 			preds.append( acc )
 			probs.append( prob )
@@ -60,13 +63,14 @@ class ITR_Extractor_Ensemble:
 		#, or choose the other class
 		
 		#determine ensemble weighting scheme
+		'''
 		weight_scheme = np.array(preds)
 		med = np.median(preds)
 
 		weight_scheme[np.argwhere(weight_scheme > med)] = 1.0
 		weight_scheme[np.argwhere(weight_scheme < med)] = 0.0
 		weight_scheme[np.argwhere(weight_scheme == med)] = 0.5
-		
+		'''
 		weight_scheme = np.array([weight_scheme])
 		#weight_scheme = [[1,0,0,0,0]]#np.array([weight_scheme])
 		print("weight_scheme:", weight_scheme)
