@@ -455,8 +455,8 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 	graph_img = cv2.imread(graph)
 	iad_img = cv2.imread(iad)
 	
-	#print("feature:", feature_img.shape)
-	#print("graph:", graph_img.shape)
+	print("feature:", feature_img.shape)
+	print("graph:", graph_img.shape)
 
 	#resize feature and graph to be the same height
 	if(feature_img.shape[0] > graph_img.shape[0]):
@@ -466,8 +466,8 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 		scale = graph_img.shape[0]/float(feature_img.shape[0])
 		feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), int(feature_img.shape[0]*scale)))
 
-	#print("feature2:", feature_img.shape)
-	#print("graph2:", graph_img.shape)
+	print("feature2:", feature_img.shape)
+	print("graph2:", graph_img.shape)
 	fg_img = np.concatenate((feature_img, graph_img), axis = 1)
 
 	#cv2.imwrite("fg_img.png", fg_img)
