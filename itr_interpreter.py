@@ -490,7 +490,7 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
 	dir_name = os.path.join("pics", "bm")
-	if(not os.exists(dir_name)):
+	if(not os.path.exists(dir_name)):
 		os.makedirs(dir_name)
 
 	for depth in range(5):
