@@ -39,6 +39,9 @@ from sklearn.pipeline import Pipeline, make_pipeline
 import pydot
 import colorsys
 
+from matplotlib import rc
+rc('text', usetex=True)
+
 '''
 def f_importances(coef, names, count=5):
 	
@@ -223,6 +226,11 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 		# place into chart
 		plt.barh(range(count*2), data, align='center', color = colors)
+		#label = r"This is \textbf{line 1}"
+
+		print("names")
+		print(names)
+
 		plt.yticks(range(count*2), names)
 		plt.gca().invert_yaxis()
 		plt.title("BEFORE, Depth 0")
