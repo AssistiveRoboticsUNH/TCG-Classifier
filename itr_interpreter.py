@@ -489,11 +489,15 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
-	dir_name = os.path.join("pics", "bm")
-	if(not os.path.exists(dir_name)):
-		os.makedirs(dir_name)
+	dir_root = os.path.join("pics", "bm")
+	
 
 	for depth in range(5):
+
+		dir_name = os.path.join(dir_root, str(depth))
+
+		if(not os.path.exists(dir_name)):
+			os.makedirs(dir_name)
 
 		#open files
 		try:
