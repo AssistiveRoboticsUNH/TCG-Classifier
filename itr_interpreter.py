@@ -128,7 +128,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	'''
 	event_colors = {}
 
-	num_features, max_window = 0, 0
+	num_features, max_window = 128, 0
 
 	events = sorted( tcg.read_file(files[top]["txt_path"]) )
 	event_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
