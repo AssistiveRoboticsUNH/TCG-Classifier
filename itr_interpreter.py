@@ -499,7 +499,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	dir_root = os.path.join("pics", "bm")
 	
 
-	for depth in range(1):#5):
+	for depth in range(5):
 
 		dir_name = os.path.join(dir_root, str(depth))
 
@@ -522,7 +522,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		filename = save_file.replace('/', '_')+'_'+str(depth)
 		tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
-		for label in range(1,2):#num_classes):
+		for label in range(num_classes):
 
 			label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
 			title = label_name.upper()+", Depth "+str(depth)
