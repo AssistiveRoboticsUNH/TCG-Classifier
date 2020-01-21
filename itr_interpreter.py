@@ -233,7 +233,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 		#plt.yticks(range(count*2), names)
 		plt.gca().invert_yaxis()
-		plt.title("BEFORE, Depth 0")
+		#plt.title("BEFORE, Depth 0")
 	else:
 		colors = ['b']*len(importance[importance > 0]) + ['r']*len(importance[importance < 0])
 
