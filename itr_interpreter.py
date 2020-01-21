@@ -521,7 +521,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			graph_name = os.path.join(dir_name, label_name+'_graph_'+str(depth)+'.png')
 			iad_name = os.path.join(dir_name, label_name+'_iad_'+str(depth)+'.png')
 
-			combined_name = os.path.join(label_name+'_'+str(depth)+'.png')
+			combined_name = os.path.join(dir_name, label_name+'_'+str(depth)+'.png')
 
 
 
