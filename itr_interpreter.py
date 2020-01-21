@@ -299,7 +299,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	event_colors = {}
 
-	num_features = len(events)
+	num_features = 128#len(events)
 	max_window = 0
 
 	for i in range(len(events)):
