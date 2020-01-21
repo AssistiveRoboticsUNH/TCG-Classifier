@@ -231,7 +231,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 		plt.barh(range(count*2), data, align='center', color = colors)
 		#label = r"This is \textbf{line 1}"
 
-		names = [ "\\textcolor[rgb]{0,0,1}{"+itr+"}" 
+		names = [ r"\\textcolor[rgb]{0,0,1}{"+itr+"}" 
 					# "\textcolor[hsv]{"+str(itr_colors[itr])+",1,1}{"+itr+"}" 
 						if itr in itr_colors else itr for itr in names   ]
 
