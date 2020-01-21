@@ -171,11 +171,11 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 			sort_matrix[j][k] -= 1
 			k+=1
 
-	print("coef:", tcg.clf.coef_.shape)
-	print("sort:", sort_matrix.shape)
+	#print("coef:", tcg.clf.coef_.shape)
+	#print("sort:", sort_matrix.shape)
 
 	importance = np.dot(tcg.clf.coef_.toarray().T, sort_matrix.T)
-	print("out:", importance.shape)	
+	#print("out:", importance.shape)	
 	importance = importance[:, label]
 
 
@@ -428,7 +428,7 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 		events.add(itr_s[2])
 
 		c = itr_colors[itr]/360.0
-		print("itr_colors[itr]:", c, itr_colors[itr])
+		#print("itr_colors[itr]:", c, itr_colors[itr])
 
 		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(itr_s[0], itr_s[2], itr_s[1], round(c, 3))
 
@@ -521,7 +521,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			graph_name = os.path.join(dir_name, label_name+'_graph_'+str(depth)+'.png')
 			iad_name = os.path.join(dir_name, label_name+'_iad_'+str(depth)+'.png')
 
-			combined_name = label_name+'_'+str(depth)+'.png'
+			combined_name = os.path.join(label_name+'_'+str(depth)+'.png')
 
 
 
