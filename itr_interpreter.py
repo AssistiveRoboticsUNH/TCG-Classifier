@@ -1,7 +1,6 @@
 from sets import Set
 import os, sys, math
 import numpy as np
-from collections import Counter
 
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
@@ -11,33 +10,11 @@ matplotlib.use('Agg')
 
 import cv2, time
 
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn import svm
 from sklearn import metrics
-
-from sklearn.linear_model import SGDClassifier
-
-from sklearn.ensemble import VotingClassifier
-
-
-import matplotlib
-
-
 from itr_sklearn import ITR_Extractor
-
 
 from itertools import product
 from string import ascii_lowercase
-#https://buhrmann.github.io/tfidf-analysis.html
-
-import eli5
-from eli5.lime import TextExplainer
-from eli5.sklearn import PermutationImportance
-from sklearn.pipeline import Pipeline, make_pipeline
-
-import pydot
-import colorsys
 
 from matplotlib import rc
 rc('text', usetex=True)
@@ -45,125 +22,17 @@ rc('text.latex', preamble='\usepackage{color}')
 
 import matplotlib.pyplot as plt
 
-'''
-def f_importances(coef, names, count=5):
-	
-	# convert Scipy matrix to one dimensional vector
-	imp = coef.toarray()[0]
-
-	# sorted into ascending order so I need to reverse 
-	imp,names = zip(*sorted(zip(imp,names)))
-	imp, names = np.array(imp), np.array(names)
-
-	imp = imp[::-1]
-	names = names[::-1]
-
-	#print(imp.shape)
-
-	top, bot = imp[:count], imp[-count:]#np.stack((imp[:top], imp[top:]))
-	top_n, bot_n = names[:count], names[-count:]#np.stack((names[:top], names[top:]))
-
-	data = np.concatenate((top, bot))
-	labels = np.concatenate((top_n, bot_n))
-	colors = ['b']*count + ['r']*count
-
-	# place into chart
-
-	plt.barh(range(count*2), data, align='center', color=colors)
-	plt.yticks(range(count*2), labels)
-	plt.tight_layout()
-
-	plt.show()
-	plt.savefig("test.png")
-	
-		
-
-def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
-
-	#restore model
-	depth = 4
-
-	save_file = os.path.join(save_name, str(dataset_id), dataset_type)
-	filename = save_file.replace('/', '_')+'_'+str(depth)
-	tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
-
-	coef = tcg.clf.coef_
-	names = tcg.tfidf.get_feature_names()
-
-	
-	#print(coef.shape)
-
-	#select the first class only 
-	f_importances((coef[0]), names)
-	#f_importances(abs(coef[0]), names)
-
-'''
-'''
-def generate_top_bottom_table(tcg, label, csv_contents, count=10, out="feature_importance.png"):
-
-	files = [ex for ex in csv_contents if ex["label"] == label]
-	for i, ex in enumerate(files):
-		#tcg.add_file_to_eval_corpus(ex["txt_path"], label, ex["label_name"])
-		tcg.evalcorpus.append(tcg.parse_txt_file(ex["txt_path"]))
-		tcg.evallabels.append(label)
-
-
-	#data = tcg.tfidf.transform(tcg.evalcorpus)
-
-	t_s = time.time()
-
-	te = TextExplainer(random_state=42)
-	pipe = make_pipeline(tcg.tfidf, tcg.clf)
-	te.fit(tcg.evalcorpus[0], pipe.predict_proba)
-	out = te.show_weights(target_names=range(13))
-	print(out)
-	print(out.data)
-	"""
-	perm = PermutationImportance(tcg.clf).fit(data.toarray(), tcg.evallabels)
-	out = eli5.show_weights(perm, feature_names=tcg.tfidf.get_feature_names())
-	print(out.data)
-	"""
-	print("Elapsed Time:", time.time() - t_s)
-
-	return None, None
-'''
-
-
-# Assign unique colors to each ITR
-# go through the ITR extraction processes to determine the specific event relationships
-
-# have a dictionary
-'''
-adict = {"event name": {[start:end] : ["color 1", "color2"], [start2:end2]: ["color2", "color3"]} }
-
-'''
-
-# Generate the IAD using black to fill in the actions
-
-# go backthrough and 
-
-
-
-
-
-
-
-
-
-
 
 def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png", title=""):
 	# get the top and bottom most features and save them in a plotable figure
 
 	# convert Scipy matrix to one dimensional vector
-	#importance = tcg.clf.coef_[label].toarray()[0]
 	feature_names = tcg.tfidf.get_feature_names()
 
-
+	# determine the importance of each ITR according to each class	
 	n_classes = len(tcg.clf.classes_)
-
 	sort_matrix = np.zeros(  ( n_classes, tcg.clf.coef_.shape[0] )  )
-
+	
 	k = 0
 	for i in range(n_classes):
 		for j in range(i + 1, n_classes):
@@ -171,88 +40,47 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 			sort_matrix[j][k] -= 1
 			k+=1
 
-	#print("coef:", tcg.clf.coef_.shape)
-	#print("sort:", sort_matrix.shape)
-
 	importance = np.dot(tcg.clf.coef_.toarray().T, sort_matrix.T)
-	#print("out:", importance.shape)	
+
+	# get only the importance ranks for the specific label
 	importance = importance[:, label]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	# place features in descending order
 	importance, feature_names = zip(*sorted(zip(importance,feature_names)))
 	importance, feature_names = np.array(importance), np.array(feature_names)
+	importance, feature_names = importance[::-1], feature_names[::-1]
 
-	importance = importance[::-1]
-	feature_names = feature_names[::-1]
+	assert count > 0, "Count value must be greater than 0"
 
+	# get the most and least important ITRs and their importance value
+	top, bot = importance[:count], importance[-count:]
+	data = np.concatenate((top, bot))
 
-
-	if(count > 0):
-		top, bot = importance[:count], importance[-count:]
-		top_n, bot_n = feature_names[:count], feature_names[-count:]
-
-		data = np.concatenate((top, bot))
-		names = np.concatenate((top_n, bot_n))
+	top_n, bot_n = feature_names[:count], feature_names[-count:]
+	names = np.concatenate((top_n, bot_n))
 
 
+	#define ITR-coloring scheme
+	itr_colors = {}
+	for i, itr in enumerate(top_n):
+		itr_colors[itr] = np.linspace(0, 255, num=len(top_n), dtype=np.uint8)[i]
 
-		itr_colors = {}
-		label_colors = []
+	bar_colors = ['b']*count + ['r']*count
 
-		c_i = 0
-		for i, itr in enumerate(top_n):
-			itr_colors[itr] = np.linspace(0, 255, num=len(top_n), dtype=np.uint8)[i]
-			rgb_color = colorsys.hsv_to_rgb(itr_colors[itr]/256.0, 1.0, 1.0)
+	# place into chart
+	names = [ r"\textcolor[rgb]{0,0,1}{"+itr+"}" 
+				# "\textcolor[hsv]{"+str(itr_colors[itr])+",1,1}{"+itr+"}" 
+					if itr in itr_colors else itr for itr in names   ]
 
+	# define plot
+	plt.figure(figsize=(3,3))
+	plt.barh(range(count*2), data, align='center', color=bar_colors)
 
-			label_colors.append(rgb_color)
-
-		label_colors += [(0.0,0.0,0.0)]*count
-		#print("label_colors")
-		#print(label_colors)
-
-		colors = ['b']*count + ['r']*count
-
-		# place into chart
-		
-		#label = r"This is \textbf{line 1}"
-
-		names = [ r"\textcolor[rgb]{0,0,1}{"+itr+"}" 
-					# "\textcolor[hsv]{"+str(itr_colors[itr])+",1,1}{"+itr+"}" 
-						if itr in itr_colors else itr for itr in names   ]
-
-		#print("names")
-		#print(names)
-
-		plt.figure(figsize=(3,3))
-
-		plt.barh(range(count*2), data, align='center', color = colors)
-
-		#plt.xticks(np.arange(np.min(bot), np.max(top)))
-		plt.yticks(range(count*2), names)
-		plt.gca().invert_yaxis()
-		plt.title(title)
-		plt.tight_layout()
-	else:
-		colors = ['b']*len(importance[importance > 0]) + ['r']*len(importance[importance < 0])
-
-		# place into chart
-		plt.barh(range(len(importance)), importance, align='center', color = colors)
-		#plt.yticks(range(len(feature_names)), feature_names)
+	#plt.xticks(np.arange(np.min(bot), np.max(top)))
+	plt.yticks(range(count*2), names)
+	plt.gca().invert_yaxis()
+	plt.title(title)
+	plt.tight_layout()
 
 	#plt.show()
 	plt.savefig(out)
@@ -261,15 +89,15 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 
 def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, out_name='iad.png'):
+	'''Find the best IAD match for the label and color the IAD according to the ITRs therein.'''
 
-	# CHOOSE THE FILE TO DEMONSTRATE WITH
+	# CHOOSE THE BEST FILE TO DEMONSTRATE WITH
 
 	# find the IAD that best matches the given IADs and color it and save fig
-	tcg.evalcorpus = []
-
 	files = [ex for ex in csv_contents if ex["label"] == label]
 	
 	# files list of files with the same label
+	tcg.evalcorpus = []
 	for i, ex in enumerate(files):
 		tcg.add_file_to_eval_corpus(ex["txt_path"], ex["label"], ex["label_name"])
 
@@ -278,50 +106,52 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	pred = tcg.clf.predict(data)
 
-	#print("prob.shape:", prob.shape)
-	#print(pred)
-	#print(tcg.evallabels)
-
-
 	# select the greatest decision function in favor of the class
 	top = np.argmax(prob[:, label], axis =0)
-	#print(prob[top], files[top]["iad_path"])
 
 
-	#for x, y in zip(tcg.evallabels, pred):
-	#	print(x,y)
-	#print("metrics:", metrics.accuracy_score(pred, tcg.evallabels))
-
-	
-	#print("itr_colors")
-	#print(itr_colors)
 
 	#SETUP WHICH EVENTS ARE COLORED
-	
-	events = sorted( tcg.read_file(files[top]["txt_path"]) )
+	'''This entire section is used to define the "event_colors" dictionary.
+	The dictionary is structured as follows. Since each feature can express multiple events
+	we want to separate those events by their start and stop times (the tuples). The individual
+	events can be related to one or more ITRs hence the list of colors. Each color represents 
+	one ITR with another event:
 
+		event_colors = {
+			"feature_name" : { 
+				(tuple with start and stop times of an event) : [list of colors for event] 
+			}	
+		}
+
+
+	'''
 	event_colors = {}
 
-	num_features = 128#len(events)
-	max_window = 0
+	num_features, max_window = 0, 0
+
+	events = sorted( tcg.read_file(files[top]["txt_path"]) )
+	event_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
 
 	for i in range(len(events)):
 
+		#update the size of the IAD
 		if(int(events[i].end) > max_window):
 			max_window = int(events[i].end)
+		if(event_labels.index(events[i].name) > num_features):
+			num_features = event_labels.index(events[i].name)
 
 		j = i+1
 		while(j < len(events) and events[j].name != events[i].name):
 
 			e1 = events[i]
 			e2 = events[j]
-			itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)#tcg.all_itrs(events[i], events[j], 0)
 
+			#get the ITRs in the IAD
+			itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
 			itr = "{0}-{1}-{2}".format(e1.name, itr_name, e2.name)
 
-			if(itr in itr_colors):
-
-				
+			if(itr in itr_colors):				
 
 				if e1.name not in event_colors:
 					event_colors[ e1.name ] = {}
@@ -337,25 +167,17 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 				event_colors[ e2.name ][(e2.start, e2.end)].append(itr_colors[itr])
 
-
 			j+=1
-
-	#print("event_colors")
-	#print(event_colors)
 
 
 	# MAKE THE PICTURE
 
-	#num_features = 128 #get from the num used features
-	#max_window = 256 
-	iad = np.ones((num_features, max_window), np.float32)#np.array(np.ones((num_features, max_window)), dtype=np.uint8) * 255
+	# an empty numpy array
+	iad = np.ones((num_features, max_window), np.float32)
 
 	# change the colors space to HSV for simplicity 
 	iad = cv2.cvtColor(iad,cv2.COLOR_GRAY2BGR)
 	iad = cv2.cvtColor(iad,cv2.COLOR_BGR2HSV)
-
-	action_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
-
 
 	for i, e in enumerate(events):
 
@@ -365,57 +187,32 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 				colors = event_colors[e.name][timing_pair]
 				for idx in range(int(e.start), int(e.end)):
-					iad[action_labels.index(e.name) , idx, 0] = colors[idx % len(colors)]
-					iad[action_labels.index(e.name) , idx, 1]  = 1
+					iad[event_labels.index(e.name) , idx, 0] = colors[idx % len(colors)]
+					iad[event_labels.index(e.name) , idx, 1]  = 1
 			#else:
-				#iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
+				#iad[event_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
 		else:
-			iad[action_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
+			iad[event_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
 
-
-	#print("after iad[0,0]:", iad[0,0])
-
+	# put back into the BGR colorspace for display/save
 	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
 
-	#print("format iad[0,0]:", iad[0,0])
+	# trim the front of the IAD
+	#iad = iad[3:]
 
+	# format the IAD as a uint8
 	iad *= 255
-	iad = iad[3:]
-	#print("incr iad[0,0]:", iad[0,0])
-
 	iad = iad.astype(np.uint8)
 
+	#resize the IAD
 	scale = 4
 	iad = cv2.resize(iad, (iad.shape[1]*scale, iad.shape[0]*scale), interpolation=cv2.INTER_NEAREST)
 
-
-	#print("type iad[0,0]:", iad[0,0])
-
 	cv2.imwrite(out_name, iad)
-	#cv2.imshow('img', canvas)
-	#cv2.waitKey(0)
-	#cv2.destroyAllWindows()
-
-
-	#https://www.youtube.com/watch?v=AAC-1wySMLM
-
-	
-
-	return None
-	return iad, frame_durations
-
-def find_video_frames():
-	# create a figure that highlights the frames in the iad
-	return 0
-
-
-
-
 
 def make_graph(top_features, itr_colors, name="graph.png"):
-
+	'''Make a graph from the top features, the edges indicate the ITRs being represented.'''
 	
-
 	gfile = open('mygraph.dot', 'w')
 
 	header = "digraph A {\nrankdir = LR;\n"
@@ -430,37 +227,35 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 		events.add(itr_s[0])
 		events.add(itr_s[2])
 
+		# pydot HSV goes up to 360 rather than 256
 		c = itr_colors[itr]/360.0
-		#print("itr_colors[itr]:", c, itr_colors[itr])
 
 		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(itr_s[0], itr_s[2], itr_s[1], round(c, 3))
 
+	# add nodes to the dot file
 	for e in events:
 		nodes += 'node [shape=circle,style=filled] {0}\n'.format(e)
 	gfile.write(nodes)
 	
-	
+	# add the edges to the dot files
 	gfile.write(edges+"}\n")
-
 	gfile.close()
 
-	#print("pydot.graph_from_dot_file('mygraph.dot'):", pydot.graph_from_dot_file('mygraph.dot'))
-
-	#(graph,) = pydot.graph_from_dot_file('mygraph.dot')
-	#graph.write_png('graph.png')
-
+	# generate image from dot file
 	from subprocess import check_call
 	check_call(['dot','-Tpng','mygraph.dot','-o',name])
+
+def find_video_frames():
+	# create a figure that highlights the frames in the iad
+	return 0
 	
 def combine_images(features="", iad = "", graph="", out_name ="" ):
+	'''Combine several images together into a single image'''
 
 	feature_img = cv2.imread(features)
 	graph_img = cv2.imread(graph)
 	iad_img = cv2.imread(iad)
 	
-	#print("feature:", feature_img.shape)
-	#print("graph:", graph_img.shape)
-
 	#resize feature and graph to be the same height
 	if(feature_img.shape[0] > graph_img.shape[0]):
 		scale = feature_img.shape[0]/float(graph_img.shape[0])
@@ -470,16 +265,10 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 		scale = graph_img.shape[0]/float(feature_img.shape[0])
 		feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), graph_img.shape[0]))
 
-	#print("feature2:", feature_img.shape)
-	#print("graph2:", graph_img.shape)
-
-
-
+	# combine feature and graph together
 	fg_img = np.concatenate((feature_img, graph_img), axis = 1)
 
-	#cv2.imwrite("fg_img.png", fg_img)
-	#resize IAD to be the same scale as the width
-	#print("border:", fg_img.shape[1]-iad_img.shape[1])
+	# add border to IAD until it is the same length as the feature-graph image
 	iad_img = cv2.copyMakeBorder(
 		iad_img,
 		top=0,
@@ -490,9 +279,11 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 		value=[255,255,255]
 	)
 
-	#combine images together
+	#combine all images together
 	combined = np.concatenate((fg_img, iad_img), axis = 0)
 	cv2.imwrite(out_name, combined)
+
+
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
