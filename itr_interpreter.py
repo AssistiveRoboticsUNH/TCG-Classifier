@@ -238,7 +238,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 		#print("names")
 		#print(names)
 
-		plt.figure(figsize=(3,3))
+		#plt.figure(figsize=(3,3))
 
 		plt.yticks(range(count*2), names)
 		plt.gca().invert_yaxis()
