@@ -455,8 +455,8 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 	graph_img = cv2.imread(graph)
 	iad_img = cv2.imread(iad)
 	
-	print("feature:", feature_img.shape)
-	print("graph:", graph_img.shape)
+	#print("feature:", feature_img.shape)
+	#print("graph:", graph_img.shape)
 
 	#resize feature and graph to be the same height
 	if(feature_img.shape[0] > graph_img.shape[0]):
@@ -467,8 +467,8 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 		scale = graph_img.shape[0]/float(feature_img.shape[0])
 		feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), graph_img.shape[0]))
 
-	print("feature2:", feature_img.shape)
-	print("graph2:", graph_img.shape)
+	#print("feature2:", feature_img.shape)
+	#print("graph2:", graph_img.shape)
 
 
 
@@ -476,7 +476,7 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 
 	#cv2.imwrite("fg_img.png", fg_img)
 	#resize IAD to be the same scale as the width
-	print("border:", fg_img.shape[1]-iad_img.shape[1])
+	#print("border:", fg_img.shape[1]-iad_img.shape[1])
 	iad_img = cv2.copyMakeBorder(
 		iad_img,
 		top=0,
@@ -524,7 +524,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
 			title = label_name.upper()+", Depth "+str(depth)
 
-
+			print(title)
 			feat_name = os.path.join(dir_name, label_name+'_feat_'+str(depth)+'.png')
 			graph_name = os.path.join(dir_name, label_name+'_graph_'+str(depth)+'.png')
 			iad_name = os.path.join(dir_name, label_name+'_iad_'+str(depth)+'.png')
