@@ -461,30 +461,11 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 	#resize feature and graph to be the same height
 	if(feature_img.shape[0] > graph_img.shape[0]):
 		scale = feature_img.shape[0]/float(graph_img.shape[0])
-		graph_img = cv2.resize(graph_img, (int(graph_img.shape[1]*scale), int(graph_img.shape[0]*scale)))
-		graph_img = cv2.copyMakeBorder(
-			graph_img,
-			top=0,
-			bottom=0,
-			left=0,
-			right=graph_img.shape[1]-feature_img.shape[1],
-			borderType=cv2.BORDER_CONSTANT,
-			value=[255,255,255]
-		)
+		graph_img = cv2.resize(graph_img, (int(graph_img.shape[1]*scale), feature_img.shape[0]))
 
 	else:
 		scale = graph_img.shape[0]/float(feature_img.shape[0])
-		feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), int(feature_img.shape[0]*scale)))
-
-		feature_img = cv2.copyMakeBorder(
-			feature_img,
-			top=0,
-			bottom=0,
-			left=0,
-			right=feature_img.shape[1]-graph_img.shape[1],
-			borderType=cv2.BORDER_CONSTANT,
-			value=[255,255,255]
-		)
+		feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), graph_img.shape[0]))
 
 	print("feature2:", feature_img.shape)
 	print("graph2:", graph_img.shape)
