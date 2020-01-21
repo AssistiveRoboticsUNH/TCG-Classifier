@@ -188,7 +188,7 @@ class ITR_Extractor:
 
 		print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
-		self.clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr' ).fit(train_mat, np.array(self.labels))
+		self.clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr').fit(train_mat, np.array(self.labels))
 		#self.clf = OneVsRestClassifier(svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear')).fit(train_mat, np.array(self.labels))
 
 		#self.clf = RandomForestClassifier(n_estimators=100).fit(train_mat, np.array(self.labels))

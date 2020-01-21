@@ -1,5 +1,5 @@
 from sets import Set
-import os, sys, math
+import os, sys, math, colorsys
 import numpy as np
 
 sys.path.append("../IAD-Generator/iad-generation/")
@@ -22,6 +22,18 @@ rc('text.latex', preamble='\usepackage{color}')
 
 import matplotlib.pyplot as plt
 
+event_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
+
+def e_to_idx(e):
+	# convert aaa to 0
+	return event_labels.index(e)
+
+def itr_to_idx(itr):
+	# convert aaa-eq-aab to 0-eq-1
+	event_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
+	itr_s = itr.split('-')
+	return "{0}-{1}-{2}".format(e_to_idx(itr_s[0]), itr_s[1], e_to_idx(itr_s[2]))
+	
 
 def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png", title=""):
 	# get the top and bottom most features and save them in a plotable figure
@@ -54,38 +66,47 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 	# get the most and least important ITRs and their importance value
 	top, bot = importance[:count], importance[-count:]
-	data = np.concatenate((top, bot))
+	data = top#np.concatenate((top, bot))
 
 	top_n, bot_n = feature_names[:count], feature_names[-count:]
-	names = np.concatenate((top_n, bot_n))
+	names = top_n#np.concatenate((top_n, bot_n))
+
+	names = [itr_to_idx(itr) for itr in names]
 
 
 	#define ITR-coloring scheme
 	itr_colors = {}
+	bar_colors = []
 	for i, itr in enumerate(top_n):
 		itr_colors[itr] = np.linspace(0, 255, num=len(top_n), dtype=np.uint8)[i]
-
-	bar_colors = ['b']*count + ['r']*count
+		bar_colors.append(colorsys.hsv_to_rgb((itr_colors[itr]/360.0), 1.0, 1.0))
 
 	# place into chart
-	names = [ r"\textcolor[rgb]{0,0,1}{"+itr+"}" 
+	'''
+	names = [ r"\textcolor[rgb]{0,0,1}{"+itr_to_idx(itr)+"}" 
 				# "\textcolor[hsv]{"+str(itr_colors[itr])+",1,1}{"+itr+"}" 
-					if itr in itr_colors else itr for itr in names   ]
-
+					if itr in itr_colors else itr_to_idx(itr) for itr in names   ]
+	'''
 	# define plot
-	plt.figure(figsize=(3,3))
-	plt.barh(range(count*2), data, align='center', color=bar_colors)
+	plt.figure(figsize=(2,4))
+	#bar_colors = ['b']*count + ['r']*count
+	#plt.barh(range(count*2), data, align='center', color=bar_colors)
+	plt.barh(range(count), data, align='center', color=bar_colors)
+
 
 	#plt.xticks(np.arange(np.min(bot), np.max(top)))
-	plt.yticks(range(count*2), names)
+	#plt.yticks(range(count*2), names)
+	plt.yticks(range(count), names)
 	plt.gca().invert_yaxis()
 	plt.title(title)
 	plt.tight_layout()
 
 	#plt.show()
 	plt.savefig(out)
+	plt.close()
 
 	return top_n, itr_colors
+
 
 
 def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, out_name='iad.png'):
@@ -138,8 +159,8 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 		#update the size of the IAD
 		if(int(events[i].end) > max_window):
 			max_window = int(events[i].end)
-		if(event_labels.index(events[i].name) > num_features):
-			num_features = event_labels.index(events[i].name)
+		#if(event_labels.index(events[i].name) > num_features):
+		#	num_features = event_labels.index(events[i].name)
 
 		j = i+1
 		while(j < len(events) and events[j].name != events[i].name):
@@ -188,7 +209,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 				colors = event_colors[e.name][timing_pair]
 				for idx in range(int(e.start), int(e.end)):
 					iad[event_labels.index(e.name) , idx, 0] = colors[idx % len(colors)]
-					iad[event_labels.index(e.name) , idx, 1]  = 1
+					iad[event_labels.index(e.name) , idx, 1] = 1
 			#else:
 				#iad[event_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
 		else:
@@ -198,14 +219,14 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
 
 	# trim the front of the IAD
-	#iad = iad[3:]
+	iad = iad[:, 3:]
 
 	# format the IAD as a uint8
 	iad *= 255
 	iad = iad.astype(np.uint8)
 
 	#resize the IAD
-	scale = 4
+	scale = 2
 	iad = cv2.resize(iad, (iad.shape[1]*scale, iad.shape[0]*scale), interpolation=cv2.INTER_NEAREST)
 
 	cv2.imwrite(out_name, iad)
@@ -230,11 +251,11 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 		# pydot HSV goes up to 360 rather than 256
 		c = itr_colors[itr]/360.0
 
-		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(itr_s[0], itr_s[2], itr_s[1], round(c, 3))
+		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1], round(c, 3))
 
 	# add nodes to the dot file
 	for e in events:
-		nodes += 'node [shape=circle,style=filled] {0}\n'.format(e)
+		nodes += 'node [shape=circle,style=filled] {0}\n'.format(e_to_idx( e ))
 	gfile.write(nodes)
 	
 	# add the edges to the dot files
@@ -255,32 +276,65 @@ def combine_images(features="", iad = "", graph="", out_name ="" ):
 	feature_img = cv2.imread(features)
 	graph_img = cv2.imread(graph)
 	iad_img = cv2.imread(iad)
+
 	
 	#resize feature and graph to be the same height
 	if(feature_img.shape[0] > graph_img.shape[0]):
-		scale = feature_img.shape[0]/float(graph_img.shape[0])
-		graph_img = cv2.resize(graph_img, (int(graph_img.shape[1]*scale), feature_img.shape[0]))
+		#scale = feature_img.shape[0]/float(graph_img.shape[0])
+		#graph_img = cv2.resize(graph_img, (int(graph_img.shape[1]*scale), feature_img.shape[0]))
+		graph_img = cv2.copyMakeBorder(
+			graph_img,
+			top=0,
+			bottom=feature_img.shape[0]-graph_img.shape[0],
+			left=0,
+			right=0,
+			borderType=cv2.BORDER_CONSTANT,
+			value=[255,255,255]
+		)
 
 	else:
-		scale = graph_img.shape[0]/float(feature_img.shape[0])
-		feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), graph_img.shape[0]))
-
+		#scale = graph_img.shape[0]/float(feature_img.shape[0])
+		#feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), graph_img.shape[0]))
+		feature_img = cv2.copyMakeBorder(
+			feature_img,
+			top=0,
+			bottom=graph_img.shape[0]-feature_img.shape[0],
+			left=0,
+			right=0,
+			borderType=cv2.BORDER_CONSTANT,
+			value=[255,255,255]
+		)
+	
 	# combine feature and graph together
 	fg_img = np.concatenate((feature_img, graph_img), axis = 1)
-
+	
+	'''
 	# add border to IAD until it is the same length as the feature-graph image
 	iad_img = cv2.copyMakeBorder(
 		iad_img,
 		top=0,
-		bottom=0,
+		bottom=fg_img.shape[0]-iad_img.shape[0],
 		left=0,
-		right=fg_img.shape[1]-iad_img.shape[1],
+		right=0,
 		borderType=cv2.BORDER_CONSTANT,
 		value=[255,255,255]
 	)
+	'''
+
+	# add border to IAD until it is the same length as the feature-graph image
+	
+	if(fg_img.shape[0] > iad_img.shape[0]):
+		scale = fg_img.shape[0]/float(iad_img.shape[0])
+		iad_img = cv2.resize(iad_img, (int(iad_img.shape[1]*scale), fg_img.shape[0]), interpolation=cv2.INTER_NEAREST)
+
+	else:
+		scale = iad_img.shape[0]/float(fg_img.shape[0])
+		fg_img = cv2.resize(fg_img, (int(fg_img.shape[1]*scale), iad_img.shape[0]))
+
+	print("fg_img.shape[0]-iad_img.shape[0]", fg_img.shape, iad_img.shape)
 
 	#combine all images together
-	combined = np.concatenate((fg_img, iad_img), axis = 0)
+	combined = np.concatenate((fg_img, iad_img), axis = 1)
 	cv2.imwrite(out_name, combined)
 
 
@@ -290,7 +344,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	dir_root = os.path.join("pics", save_name)
 	
 
-	for depth in range(4,5):#5):
+	for depth in range(5):
 
 		dir_name = os.path.join(dir_root, str(depth))
 
@@ -342,16 +396,16 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			# lastly we can look at frames in the video corresponding to those IADs
 			#find_video_frames()
 
-
+			
 			combine_images(
 				features=feat_name, 
 				iad=iad_name,
 				graph=graph_name,
 				out_name=combined_name )
-
-			os.remove(feat_name)
-			os.remove(iad_name)
-			os.remove(graph_name)
+			
+			#os.remove(feat_name)
+			#os.remove(iad_name)
+			#os.remove(graph_name)
 
 			print('----------------')
 

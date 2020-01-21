@@ -1,5 +1,5 @@
 from sets import Set
-import os, sys, math
+import os, sys, math, time
 import numpy as np
 from collections import Counter
 
@@ -51,7 +51,11 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 		for ex in train_data:
 			tcg.add_file_to_corpus(ex['txt_path'], ex['label'])
 		print("fitting model...")
+
+		t_s = time.time()
 		tcg.fit()
+
+		print("elapsed:", time.time()-t_s)
 		
 		# CLASSIFY 
 		#print("adding eval data...")
@@ -95,7 +99,8 @@ if __name__ == '__main__':
 	FLAGS = parser.parse_args()
 
 	#i=2
-	for depth in range(4,5):#5):
+	'''
+	for depth in range(5):
 		#print("dataset_type: ", dataset_type)
 		#print("dataset_id: ", dataset_id)
 		print("depth: ", depth)
@@ -110,24 +115,24 @@ if __name__ == '__main__':
 			FLAGS.save_name,
 			FLAGS.repeat
 			)
-
 	'''
-	for dataset_type in ['frames']:#, 'flow', 'both']:
-		for dataset_id in [3]:
-			#depth = 4
-			for depth in range(5):
-				print("dataset_type: ", dataset_type)
-				print("dataset_id: ", dataset_id)
-				print("depth: ", depth)
+	
+	#for dataset_type in ['frames', 'flow']:#, 'both']:
+	for dataset_id in [1,2,3]:
+		#depth = 4
+		for depth in range(5):
+			print("dataset_type: ", dataset_type)
+			print("dataset_id: ", dataset_id)
+			print("depth: ", depth)
 
 
-				main(FLAGS.dataset_dir, 
-					FLAGS.csv_filename,
-					dataset_type,
-					dataset_id,
-					depth,
-					FLAGS.num_classes,
-					FLAGS.save_name,
-					FLAGS.repeat
-					)
-	'''
+			main(FLAGS.dataset_dir, 
+				FLAGS.csv_filename,
+				FLAGS.dataset_type,
+				dataset_id,
+				depth,
+				FLAGS.num_classes,
+				FLAGS.save_name,
+				FLAGS.repeat
+				)
+	
