@@ -364,19 +364,20 @@ def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="fra
 	big_img = cv2.imread(img_files[0])
 
 	radius = 50
-	pos = (big_img.shape[0]/2+30,60)
+	pos = (big_img.shape[1]/2 -35 ,60)
+	txt_pos = (pos[0]-20, pos[1]+15)
 	i = 0
 
 	
 	cv2.circle(big_img, pos, radius, (255,255,255), -1)
 	cv2.circle(big_img, pos, radius, fontColor, lineType)
 	cv2.putText(big_img,str(i), 
-		pos, 
+		txt_pos, 
 		font, 
 		fontScale,
 		fontColor,
 		lineType)
-
+	i+=1
 	
 
 	for file in img_files[1:]:
@@ -384,7 +385,7 @@ def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="fra
 		cv2.circle(img, pos, radius, (255,255,255), -1)
 		cv2.circle(img, pos, radius, fontColor, lineType, )
 		cv2.putText(img,str(i), 
-			pos, 
+			txt_pos, 
 			font, 
 			fontScale,
 			fontColor,
@@ -398,7 +399,7 @@ def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="fra
 			left=10,
 			right=0,
 			borderType=cv2.BORDER_CONSTANT,
-			value=[255,255,255]
+			value=[0,0,0]
 		)
 
 		big_img = np.concatenate((big_img, img), axis=1)
