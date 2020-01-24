@@ -210,6 +210,9 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	# MAKE THE PICTURE
 
+
+	print("max_window:", max_window)
+
 	# an empty numpy array
 	iad = np.ones((num_features, max_window), np.float32)
 
@@ -238,18 +241,18 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	salient_frames = iad[:, :, 1]
 	salient_frames = np.sum(salient_frames, axis=0)
+	salient_frames = np.where(salient_frames == np.max(salient_frames))[0]
 	print(salient_frames)
 
 	cluster_medians = []
 
 	s = 0
-	for i in range(1, salient_frames):
+	for i in range(1, len(salient_frames)):
 		if(salient_frames[i] - salient_frames[i-1] > 1):
-			cluster_medians.append(np.mean(salient_frames[s: i-1]))
+			cluster_medians.append(int(np.mean(salient_frames[s: i-1])))
 			s = i
 
-	cluster_medians.append(np.mean(salient_frames[s: i-1]))
-
+	cluster_medians.append(int(np.mean(salient_frames[s: i-1])))
 	salient_frames = cluster_medians#np.where(salient_frames == np.max(salient_frames))
 
 	#print("salient_frames.shape:", salient_frames.shape)
@@ -296,15 +299,14 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 			lineType)
 
 	# salient points
-	print("salient_frames")
-	print(salient_frames)
-	for e in salient_frames:
-		cv2.putText(iad,str(e), 
-			(e*scale+l, t-10), 
+	for i, e in enumerate(salient_frames):
+		cv2.putText(iad,str(i), 
+			(e*scale+l+5, t-15), 
 			font, 
 			fontScale,
 			fontColor,
 			lineType)
+		cv2.circle(iad, (e*scale+l+scale/2, t-10 -scale/2), int(scale*.75), fontColor, lineType)
 
 	#cv2.imshow("iad", iad)
 	cv2.imwrite(out_name, iad)
@@ -346,8 +348,61 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 	from subprocess import check_call
 	check_call(['dot','-Tpng','mygraph.dot','-o',name])
 
-def find_video_frames(file_ex, salient_frames, out_name="frames.png"):
+def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="frames.png"):
 	# create a figure that highlights the frames in the iad
+
+	max_window_scale = [2, 2, 2, 4, 8]
+	img_files = [os.path.join(dataset_dir, 'frames', file_ex['label_name'], file_ex['example_id'], 'image_'+str(frame_num*max_window_scale[depth]+3).zfill(5)+'.jpg') for frame_num in salient_frames]
+
+	print(img_files)
+
+	font                   = cv2.FONT_HERSHEY_SIMPLEX
+	fontScale              = 2
+	fontColor              = (0,0,0)
+	lineType               = 4
+	
+	radius = 50
+	pos = (60,60)
+	i = 0
+
+	big_img = cv2.imread(img_files[0])
+	cv2.circle(big_img, pos, radius, (255,255,255), -1)
+	cv2.circle(big_img, pos, radius, fontColor, lineType)
+	cv2.putText(big_img,str(i), 
+		pos, 
+		font, 
+		fontScale,
+		fontColor,
+		lineType)
+
+	
+
+	for file in img_files[1:]:
+		img = cv2.imread(file)
+		cv2.circle(img, pos, radius, (255,255,255), -1)
+		cv2.circle(img, pos, radius, fontColor, lineType, )
+		cv2.putText(img,str(i), 
+			pos, 
+			font, 
+			fontScale,
+			fontColor,
+			lineType)
+		i+=1
+
+		img = cv2.copyMakeBorder(
+			img,
+			top=0,
+			bottom=0,
+			left=10,
+			right=0,
+			borderType=cv2.BORDER_CONSTANT,
+			value=[255,255,255]
+		)
+
+		big_img = np.concatenate((big_img, img), axis=1)
+
+	cv2.imwrite(out_name, big_img)
+
 	return 0
 	
 def combine_images(features="", iad = "", graph="", out_name ="" ):
@@ -473,7 +528,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			make_graph(top_features, colors, name=graph_name)
 
 			file_ex, salient_frames = find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name=iad_name)
-			find_video_frames(file_ex, salient_frames, out_name=frames_name)
+			find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name=frames_name)
 
 			# lastly we can look at frames in the video corresponding to those IADs
 			#find_video_frames()
