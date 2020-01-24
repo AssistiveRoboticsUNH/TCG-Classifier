@@ -239,7 +239,18 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	salient_frames = iad[:, :, 1]
 	salient_frames = np.sum(salient_frames, axis=0)
 	print(salient_frames)
-	salient_frames = np.where(salient_frames == np.max(salient_frames))
+
+	cluster_medians = []
+
+	s = 0
+	for i in range(1, salient_frames):
+		if(salient_frames[i] - salient_frames[i-1] > 1):
+			cluster_medians.append(np.mean(salient_frames[s: i-1]))
+			s = i
+
+	cluster_medians.append(np.mean(salient_frames[s: i-1]))
+
+	salient_frames = cluster_medians#np.where(salient_frames == np.max(salient_frames))
 
 	#print("salient_frames.shape:", salient_frames.shape)
 
@@ -287,7 +298,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	# salient points
 	print("salient_frames")
 	print(salient_frames)
-	for e in salient_frames[0]:
+	for e in salient_frames:
 		cv2.putText(iad,str(e), 
 			(e*scale+l, t-10), 
 			font, 
