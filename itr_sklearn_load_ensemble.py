@@ -106,7 +106,7 @@ class ITR_Extractor_Ensemble:
 			filename = save_file.replace('/', '_')+'_'+str(depth)#+".joblib"
 			
 			self.models.append(ITR_Extractor(num_classes, os.path.join(save_file, filename)))
-
+			print(len(self.models[depth].tfidf.get_feature_names()))
 			
 		
 
