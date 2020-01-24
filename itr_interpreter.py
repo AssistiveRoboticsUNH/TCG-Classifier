@@ -96,7 +96,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 	#plt.xticks(np.arange(np.min(bot), np.max(top)))
 	#plt.yticks(range(count*2), names)
-	plt.yticks(range(count), names)
+	plt.yticks(range(count), names, fontsize=15)
 	plt.gca().invert_yaxis()
 	plt.title(title)
 	plt.tight_layout()
@@ -244,16 +244,30 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	salient_frames = np.where(salient_frames == np.max(salient_frames))[0]
 	print(salient_frames)
 
-	cluster_medians = []
+	if(len(salient_frames) > 0):
 
-	s = 0
-	for i in range(1, len(salient_frames)):
-		if(salient_frames[i] - salient_frames[i-1] > 1):
+		cluster_medians = []
+
+		s = 0
+		for i in range(1, len(salient_frames)):
+			if(salient_frames[i] - salient_frames[i-1] > 1):
+				print(s, i-1)
+				print(salient_frames[s: i-1])
+				print(np.mean(salient_frames[s: i-1]))
+
+				if(s < i-1):
+					cluster_medians.append(int(np.mean(salient_frames[s: i-1])))
+				else:
+					cluster_medians.append(salient_frames[s])
+				s = i
+
+		if(s < i-1):
 			cluster_medians.append(int(np.mean(salient_frames[s: i-1])))
-			s = i
-
-	cluster_medians.append(int(np.mean(salient_frames[s: i-1])))
-	salient_frames = cluster_medians#np.where(salient_frames == np.max(salient_frames))
+		else:
+			cluster_medians.append(salient_frames[s])
+		salient_frames = cluster_medians#np.where(salient_frames == np.max(salient_frames))
+	else:
+		salient_frames = []
 
 	#print("salient_frames.shape:", salient_frames.shape)
 
@@ -278,7 +292,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	# add border to IAD until it is the same length as the feature-graph image
 	
-	t, l = 50, 100
+	t, l = 110, 100
 	iad = cv2.copyMakeBorder(
 		iad,
 		top=t,
@@ -301,12 +315,22 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	# salient points
 	for i, e in enumerate(salient_frames):
 		cv2.putText(iad,str(i), 
-			(e*scale+l+5, t-15), 
+			(e*scale+l-5, t-40), 
 			font, 
-			fontScale,
+			2,
 			fontColor,
-			lineType)
-		cv2.circle(iad, (e*scale+l+scale/2, t-10 -scale/2), int(scale*.75), fontColor, lineType)
+			8)
+
+		pos = (e*scale+l+scale/2, t-10 -scale/2)
+		x, y = pos[0], pos[1]+25
+		w, h = 50, 50
+
+		pts = np.array([[x,y],[x-w,y-.5*h],[x-w,y-2*h],[x+w,y-2*h],[x+w,y-.5*h]], np.int32)
+		pts = pts.reshape((-1,1,2))
+
+		#cv2.fillConvexPoly(iad,pts,(255,255,255))
+		cv2.polylines(iad,[pts],True,(0,0,0), 4)
+		#cv2.circle(iad, (e*scale+l+scale/2, t-10 -scale/2), int(scale*.75), fontColor, lineType)
 
 	#cv2.imshow("iad", iad)
 	cv2.imwrite(out_name, iad)
@@ -351,45 +375,60 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="frames.png"):
 	# create a figure that highlights the frames in the iad
 
+	#salient_frames += [34, 12]
+
 	max_window_scale = [2, 2, 2, 4, 8]
 	img_files = [os.path.join(dataset_dir, 'frames', file_ex['label_name'], file_ex['example_id'], 'image_'+str(frame_num*max_window_scale[depth]+3).zfill(5)+'.jpg') for frame_num in salient_frames]
-
-	print(img_files)
 
 	font                   = cv2.FONT_HERSHEY_SIMPLEX
 	fontScale              = 4
 	fontColor              = (0,0,0)
 	lineType               = 8
+
+	tall_img = []
 	
 	big_img = cv2.imread(img_files[0])
 
 	radius = 100
-	pos = (big_img.shape[1]/2 -35 ,60)
-	txt_pos = (pos[0]-20, pos[1]+15)
+	pos = (big_img.shape[1]/2 -35 ,110)
+	txt_pos = (pos[0]-40, pos[1]+30)
 	i = 0
 
 	
-	cv2.circle(big_img, pos, radius, (255,255,255), -1)
-	cv2.circle(big_img, pos, radius, fontColor, lineType)
+	#cv2.square(big_img, pos, radius, (255,255,255), -1)
+	#cv2.square(big_img, pos, radius, fontColor, lineType)
+
+	x, y = pos[0], pos[1]+100
+	w, h = 100, 100
+
+	pts = np.array([[x,y],[x-w,y-.5*h],[x-w,y-2*h],[x+w,y-2*h],[x+w,y-.5*h]], np.int32)
+	pts = pts.reshape((-1,1,2))
+
+	cv2.fillConvexPoly(big_img,pts,(255,255,255))
+	cv2.polylines(big_img,[pts],True,(0,0,0), lineType)
+
 	cv2.putText(big_img,str(i), 
 		txt_pos, 
 		font, 
 		fontScale,
 		fontColor,
-		lineType)
+		16)
 	i+=1
 	
 
 	for file in img_files[1:]:
 		img = cv2.imread(file)
-		cv2.circle(img, pos, radius, (255,255,255), -1)
-		cv2.circle(img, pos, radius, fontColor, lineType, )
+		#cv2.circle(img, pos, radius, (255,255,255), -1)
+		#cv2.circle(img, pos, radius, fontColor, lineType, )
+		cv2.fillConvexPoly(img,pts,(255,255,255))
+		cv2.polylines(img,[pts],True,(0,0,0), lineType)
+
 		cv2.putText(img,str(i), 
 			txt_pos, 
 			font, 
 			fontScale,
 			fontColor,
-			lineType)
+			16)
 		i+=1
 
 		img = cv2.copyMakeBorder(
@@ -482,7 +521,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	dir_root = os.path.join("pics", save_name)
 	
 
-	for depth in range(1):#5):
+	for depth in range(5):
 
 		dir_name = os.path.join(dir_root, str(depth))
 
@@ -505,7 +544,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		filename = save_file.replace('/', '_')+'_'+str(depth)
 		tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
-		for label in range(1):#num_classes):
+		for label in range(num_classes):
 
 			label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
 			title = label_name.upper().replace('_', ' ')+", Depth "+str(depth)
@@ -531,7 +570,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			make_graph(top_features, colors, name=graph_name)
 
 			file_ex, salient_frames = find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name=iad_name)
-			find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name=frames_name)
+			if(len(salient_frames) > 0):
+				find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name=frames_name)
 
 			# lastly we can look at frames in the video corresponding to those IADs
 			#find_video_frames()
