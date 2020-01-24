@@ -147,9 +147,26 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 
 	'''
+
+	num_features = 0
+	event_idx = {}
+	for itr in top_features:
+		itr_s = itr.split('-')
+
+		e1, e2 = itr_s[0], itr_s[2]
+		
+		if(e1 not in event_idx):
+			event_idx[e1] = num_features
+			num_features += 1
+
+		if(e2 not in event_idx):
+			event_idx[e2] = num_features
+			num_features += 1
+
 	event_colors = {}
 
-	num_features, max_window = 128, 0
+
+	max_window = 0
 
 	events = sorted( tcg.read_file(files[top]["txt_path"]) )
 	event_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
@@ -208,28 +225,80 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 				colors = event_colors[e.name][timing_pair]
 				for idx in range(int(e.start), int(e.end)):
-					iad[event_labels.index(e.name) , idx, 0] = colors[idx % len(colors)]
-					iad[event_labels.index(e.name) , idx, 1] = 1
+					iad[event_idx[e.name] , idx, 0] = colors[idx % len(colors)]
+					iad[event_idx[e.name] , idx, 1] = 1
 			#else:
 				#iad[event_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
-		else:
-			iad[event_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
+		#else:
+		#	iad[event_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
+
+	
+	# trim the front of the IAD
+	iad = iad[:, 3:]
+
+	salient_frames = iad[:, :, 1]
+	salient_frames = np.sum(salient_frames, axis=0)
+	print(salient_frames)
+	salient_frames = np.where(salient_frames == np.max(salient_frames))
+
+	#print("salient_frames.shape:", salient_frames.shape)
 
 	# put back into the BGR colorspace for display/save
 	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
 
-	# trim the front of the IAD
-	iad = iad[:, 3:]
 
 	# format the IAD as a uint8
 	iad *= 255
 	iad = iad.astype(np.uint8)
 
 	#resize the IAD
-	scale = 2
+	scale = 30
 	iad = cv2.resize(iad, (iad.shape[1]*scale, iad.shape[0]*scale), interpolation=cv2.INTER_NEAREST)
 
+	#Write some Text
+
+	font                   = cv2.FONT_HERSHEY_SIMPLEX
+	fontScale              = 1
+	fontColor              = (0,0,0)
+	lineType               = 2
+
+	# add border to IAD until it is the same length as the feature-graph image
+	
+	t, l = 50, 100
+	iad = cv2.copyMakeBorder(
+		iad,
+		top=t,
+		bottom=0,
+		left=l,
+		right=0,
+		borderType=cv2.BORDER_CONSTANT,
+		value=[255,255,255]
+	)
+
+	#feature labels
+	for i, e in enumerate(event_idx.keys()):
+		cv2.putText(iad,str(e_to_idx(e)), 
+			(10,i*scale+scale+t-5), 
+			font, 
+			fontScale,
+			fontColor,
+			lineType)
+
+	# salient points
+	print("salient_frames")
+	print(salient_frames)
+	for e in salient_frames[0]:
+		cv2.putText(iad,str(e), 
+			(e*scale+l, t-10), 
+			font, 
+			fontScale,
+			fontColor,
+			lineType)
+
+	#cv2.imshow("iad", iad)
 	cv2.imwrite(out_name, iad)
+
+	return files[top], salient_frames
 
 def make_graph(top_features, itr_colors, name="graph.png"):
 	'''Make a graph from the top features, the edges indicate the ITRs being represented.'''
@@ -266,7 +335,7 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 	from subprocess import check_call
 	check_call(['dot','-Tpng','mygraph.dot','-o',name])
 
-def find_video_frames():
+def find_video_frames(file_ex, salient_frames, out_name="frames.png"):
 	# create a figure that highlights the frames in the iad
 	return 0
 	
@@ -344,7 +413,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	dir_root = os.path.join("pics", save_name)
 	
 
-	for depth in range(5):
+	for depth in range(1):#5):
 
 		dir_name = os.path.join(dir_root, str(depth))
 
@@ -367,7 +436,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		filename = save_file.replace('/', '_')+'_'+str(depth)
 		tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
-		for label in range(num_classes):
+		for label in range(1):#num_classes):
 
 			label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
 			title = label_name.upper().replace('_', ' ')+", Depth "+str(depth)
@@ -376,6 +445,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			feat_name = os.path.join(dir_name, label_name+'_feat_'+str(depth)+'.png')
 			graph_name = os.path.join(dir_name, label_name+'_graph_'+str(depth)+'.png')
 			iad_name = os.path.join(dir_name, label_name+'_iad_'+str(depth)+'.png')
+			frames_name = os.path.join(dir_name, label_name+'_frames_'+str(depth)+'.png')
 
 			combined_name = os.path.join(dir_name, label_name+'_'+str(depth)+'.png')
 
@@ -391,7 +461,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 			make_graph(top_features, colors, name=graph_name)
 
-			find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name=iad_name)
+			file_ex, salient_frames = find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name=iad_name)
+			find_video_frames(file_ex, salient_frames, out_name=frames_name)
 
 			# lastly we can look at frames in the video corresponding to those IADs
 			#find_video_frames()

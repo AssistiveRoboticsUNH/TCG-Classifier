@@ -1,13 +1,14 @@
 digraph A {
 rankdir = LR;
-node [shape=circle,style=filled] 8
-node [shape=circle,style=filled] 22
-node [shape=circle,style=filled] 0
-node [shape=circle,style=filled] 14
-node [shape=circle,style=filled] 31
-0 -> 22 [label="eq" color="0.0 1.0 1.0" ]
-8 -> 0 [label="eq" color="0.175 1.0 1.0" ]
-31 -> 0 [label="eq" color="0.353 1.0 1.0" ]
-22 -> 14 [label="d" color="0.531 1.0 1.0" ]
-8 -> 22 [label="eq" color="0.708 1.0 1.0" ]
+node [shape=circle,style=filled] 36
+node [shape=circle,style=filled] 59
+node [shape=circle,style=filled] 37
+node [shape=circle,style=filled] 39
+node [shape=circle,style=filled] 41
+node [shape=circle,style=filled] 46
+59 -> 36 [label="d" color="0.0 1.0 1.0" ]
+59 -> 46 [label="d" color="0.175 1.0 1.0" ]
+59 -> 41 [label="d" color="0.353 1.0 1.0" ]
+59 -> 39 [label="d" color="0.531 1.0 1.0" ]
+59 -> 37 [label="d" color="0.708 1.0 1.0" ]
 }

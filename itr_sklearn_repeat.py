@@ -118,7 +118,7 @@ if __name__ == '__main__':
 	'''
 	
 	#for dataset_type in ['frames', 'flow']:#, 'both']:
-	for dataset_id in [2,3]:
+	for dataset_id in [1]:#[2,3]:
 		#depth = 4
 		for depth in range(5):
 			print("dataset_type: ", FLAGS.dataset_type)
