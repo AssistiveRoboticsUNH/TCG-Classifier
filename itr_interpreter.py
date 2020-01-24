@@ -357,13 +357,13 @@ def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="fra
 	print(img_files)
 
 	font                   = cv2.FONT_HERSHEY_SIMPLEX
-	fontScale              = 2
+	fontScale              = 4
 	fontColor              = (0,0,0)
-	lineType               = 4
+	lineType               = 8
 	
 	big_img = cv2.imread(img_files[0])
 
-	radius = 50
+	radius = 100
 	pos = (big_img.shape[1]/2 -35 ,60)
 	txt_pos = (pos[0]-20, pos[1]+15)
 	i = 0
