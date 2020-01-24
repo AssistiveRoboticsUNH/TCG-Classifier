@@ -361,11 +361,13 @@ def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="fra
 	fontColor              = (0,0,0)
 	lineType               = 4
 	
+	big_img = cv2.imread(img_files[0])
+
 	radius = 50
-	pos = (60,60)
+	pos = (big_img.shape[0]/2+30,60)
 	i = 0
 
-	big_img = cv2.imread(img_files[0])
+	
 	cv2.circle(big_img, pos, radius, (255,255,255), -1)
 	cv2.circle(big_img, pos, radius, fontColor, lineType)
 	cv2.putText(big_img,str(i), 
