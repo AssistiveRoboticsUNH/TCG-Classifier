@@ -337,10 +337,11 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	return files[top], salient_frames
 
-def make_graph(top_features, itr_colors, name="graph.png"):
+def make_graph(top_features, itr_colors, save_name, name="graph.png"):
 	'''Make a graph from the top features, the edges indicate the ITRs being represented.'''
-	
-	gfile = open('mygraph.dot', 'w')
+	dot_name = save_name+'_mygraph.dot'
+
+	gfile = open(dot_name, 'w')
 
 	header = "digraph A {\nrankdir = LR;\n"
 	gfile.write(header)
@@ -370,7 +371,7 @@ def make_graph(top_features, itr_colors, name="graph.png"):
 
 	# generate image from dot file
 	from subprocess import check_call
-	check_call(['dot','-Tpng','mygraph.dot','-o',name])
+	check_call(['dot','-Tpng',dot_name,'-o',name])
 
 def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="frames.png"):
 	# create a figure that highlights the frames in the iad
@@ -567,7 +568,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			# from there we need to open an IAD and highlight the rows that are described in the table
 			# use the same colorsfor the regions specified
 
-			make_graph(top_features, colors, name=graph_name)
+			make_graph(top_features, colors, save_name, name=graph_name)
 
 			file_ex, salient_frames = find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name=iad_name)
 			if(len(salient_frames) > 0):
