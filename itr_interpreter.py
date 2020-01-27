@@ -448,6 +448,8 @@ def determine_feature_ids(dataset_type, dataset_dir, dataset_id, save_name, top_
 		events.add(e_to_idx(itr_s[0]))
 		events.add(e_to_idx(itr_s[2]))
 
+	print("num events:", len(events))
+
 	# figure out based on pruning how those top events line up with the pruning values
 	#print('pruning_indexes["frames"]:', pruning_indexes["frames"][depth])
 
@@ -482,6 +484,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	print("am.shape:")
 	for ams in important_am:
 		print(ams.shape)
+
+
 	
 		
 
