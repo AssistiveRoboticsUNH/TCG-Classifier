@@ -482,9 +482,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 
 	print("am.shape:")
-	for ams in important_am:
-		print(ams.shape)
-
+	print(important_am[0].shape)
+	
 	num_frames = len(important_am[0][1])
 
 	#max_window_scale = [2, 2, 2, 4, 8]
