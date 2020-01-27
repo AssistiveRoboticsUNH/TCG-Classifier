@@ -493,7 +493,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	src = raw_data[0, 0]
 
 	max_idx = np.argmax(important_am[0])
-	print(max_idx)
+	print("max_idx:", max_idx)
+	print("important_am[0].shape:", important_am[0].shape)
 
 	x, y = 50,50
 	ovl = cv2.rectangle(np.copy(src), (x, y),(x+length, y+length), (255,0,0), -1)
