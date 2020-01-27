@@ -486,7 +486,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	#num_frames = len(important_am[0][:,1])
 
-	max_window_scale = [2, 2, 2, 4, 8]
+	#max_window_scale = [2, 2, 2, 4, 8]
+	max_window_scale = [1, 224/7, 224/7, 224/7, 224/7]
 	length = 10
 
 	print("raw_data.shape:", raw_data.shape)
