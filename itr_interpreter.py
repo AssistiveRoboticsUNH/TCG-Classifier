@@ -487,12 +487,12 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	#num_frames = len(important_am[0][:,1])
 
 	#max_window_scale = [2, 2, 2, 4, 8]
-	radius = 10
+	length = 10
 
 	print("raw_data.shape:", raw_data.shape)
 	src = raw_data[0, 0]
 	x, y = 50,50
-	ovl = cv2.circle(np.copy(src), (x-radius, y-radius), radius, (255,0,0), -1)
+	ovl = cv2.rectangle(np.copy(src), (x, y),(x+length, y+length), (255,0,0), -1)
 
 	alpha=0.5
 	cv2.addWeighted(src, alpha, ovl, 1 - alpha, 0, ovl)
