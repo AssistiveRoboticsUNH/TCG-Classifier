@@ -497,7 +497,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	alpha=0.5
 	cv2.addWeighted(src, alpha, ovl, 1 - alpha, 0, ovl)
 
-	cv2.imwrite("viz_spat.png", ovl)
+	cv2.imwrite("viz_spat.png", cv2.cvtColor(ovl, cv2.COLOR_RGB2BGR))
 	
 		
 
