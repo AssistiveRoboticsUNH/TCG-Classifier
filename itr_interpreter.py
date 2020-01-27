@@ -388,7 +388,9 @@ def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="fra
 
 	tall_img = []
 	
+	
 	big_img = cv2.imread(img_files[0])
+	big_img = cv2.resize(big_img, (1920, 1080))
 
 	radius = 100
 	pos = (big_img.shape[1]/2 -35 ,110)
@@ -418,7 +420,9 @@ def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="fra
 	
 
 	for file in img_files[1:]:
+
 		img = cv2.imread(file)
+		img = cv2.resize(img, (1920, 1080))
 		#cv2.circle(img, pos, radius, (255,255,255), -1)
 		#cv2.circle(img, pos, radius, fontColor, lineType, )
 		cv2.fillConvexPoly(img,pts,(255,255,255))
