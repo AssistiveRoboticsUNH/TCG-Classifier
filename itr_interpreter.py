@@ -493,9 +493,9 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	print("raw_data.shape:", raw_data.shape)
 	src = raw_data[0, 0]
 
-	max_idx = np.unravel_index(np.argmax(important_am[0][0], axis=None), important_am[0][0].shape)
+	max_idx = np.unravel_index(np.argmax(important_am[0][0][0], axis=None), important_am[0][0][0].shape)
 	print("max_idx:", max_idx)
-	print("important_am[0].shape:", important_am[0].shape)
+	print("important_am[0].shape:", important_am[0][0].shape)
 
 	x, y = 50,50
 	scale = max_window_scale[depth]
