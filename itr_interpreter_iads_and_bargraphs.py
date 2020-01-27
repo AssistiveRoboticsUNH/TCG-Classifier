@@ -1,13 +1,9 @@
 from sets import Set
 import os, sys, math, colorsys
 import numpy as np
-import tensorflow as tf
 
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
-import tf_utils
-import rank_i3d as model
-from feature_rank_utils import get_top_n_feature_indexes, get_top_n_feature_indexes_combined
 
 import matplotlib
 matplotlib.use('Agg')
@@ -246,7 +242,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	salient_frames = iad[:, :, 1]
 	salient_frames = np.sum(salient_frames, axis=0)
 	salient_frames = np.where(salient_frames == np.max(salient_frames))[0]
-	#print(salient_frames)
+	print(salient_frames)
 
 	if(len(salient_frames) > 0):
 
@@ -384,108 +380,6 @@ def make_graph(top_features, itr_colors, save_name, name="graph.png"):
 	from subprocess import check_call
 	check_call(['dot','-Tpng',dot_name,'-o',name])
 
-def determine_feature_ids(dataset_type, dataset_dir, dataset_id, save_name, top_features, depth):
-	feature_retain_count = 128
-
-	datatset_type_list = []
-	if(dataset_type=="frames" or dataset_type=="both"):
-		datatset_type_list.append("frames")
-	if(dataset_type=="flow" or dataset_type=="both"):
-		datatset_type_list.append("flow")
-
-	#setup feature_rank_parser
-	frame_ranking_file = os.path.join( dataset_dir, 'iad_frames_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz") 
-	flow_ranking_file = os.path.join( dataset_dir, 'iad_flow_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz") 
-
-	pruning_indexes = {}
-	if(dataset_type=="frames"):
-		assert os.path.exists(frame_ranking_file), "Cannot locate Feature Ranking file: "+ frame_ranking_file
-		pruning_indexes["frames"] = get_top_n_feature_indexes(frame_ranking_file, feature_retain_count)
-	elif(dataset_type=="flow"):
-		assert os.path.exists(flow_ranking_file), "Cannot locate Feature Ranking file: "+ flow_ranking_file
-		pruning_indexes["flow"] = get_top_n_feature_indexes(flow_ranking_file, feature_retain_count)
-	elif(dataset_type=="both"):
-		assert os.path.exists(frame_ranking_file), "Cannot locate Feature Ranking file: "+ frame_ranking_file
-		assert os.path.exists(flow_ranking_file), "Cannot locate Feature Ranking file: "+ flow_ranking_file
-
-		if(save_name == "ucf"):
-			if(dataset_id == 1):
-				# UCF 1 -> waiting to finish training
-				weight_ranking = [[0.177901,0.334655,0.437483,0.801745,0.916997],[0.299762,0.409992,0.519958,0.7917,0.911182]]
-			if(dataset_id == 2):
-				# UCF 2* - > training
-				weight_ranking = [[0.120804,0.24663,0.31483,0.674861,0.842982],[0.208829,0.256675,0.354216,0.557494,0.6894]]
-			if(dataset_id == 3):
-				# UCF 3* - > training
-				weight_ranking = [[0.100449,0.204335,0.270949,0.528152,0.726408],[0.161248,0.187946,0.21438,0.378007,0.473169]]
-		if(save_name == "hmdb"):
-			if(dataset_id == 1):
-				# HMDB 1* - > training
-				weight_ranking = [[0.085621,0.201307,0.21634,0.527451,0.675817],[0.190196,0.233333,0.263399,0.296732,0.332026]]
-			if(dataset_id == 2):
-				# HMDB 2* - > finished
-				weight_ranking = [[0.075163,0.145752,0.169281,0.365359,0.566013],[0.131373,0.184314,0.205882,0.282353,0.443791]]
-			if(dataset_id == 3):
-				# HMDB 3* - > finished
-				weight_ranking = [[0.054248,0.127451,0.14183,0.25098,0.462092],[0.10915,0.145098,0.137255,0.138562,0.231373]]
-		if(save_name == "bm"):
-			if(dataset_id == 1):
-				# BLOCKMOVING 1* - > finished
-				weight_ranking = [[0.921875,0.9296875,0.9296875,0.6171875,0.578125],[0.828125,0.898438,0.945313,0.945313,0.953125]]
-			if(dataset_id == 2):
-				# BLOCKMOVING 2* - > finished
-				weight_ranking = [[0.765625,0.8125,0.859375,0.671875,0.695313],[0.742188,0.835938,0.898438,0.875,0.835938]]
-			if(dataset_id == 3):	
-				# BLOCKMOVING 3* - > finished
-				weight_ranking = [[0.671875,0.679688,0.742188,0.609375,0.539063],[0.703125,0.71875,0.84375,0.75,0.742188]]
-				
-		pruning_indexes = get_top_n_feature_indexes_combined(frame_ranking_file, flow_ranking_file, feature_retain_count, weight_ranking)
-
-	# get the top events in the top ITRs
-	events = Set()
-	for itr in top_features:
-		itr_s = itr.split('-')
-		events.add(e_to_idx(itr_s[0]))
-		events.add(e_to_idx(itr_s[2]))
-
-	# figure out based on pruning how those top events line up with the pruning values
-	#print('pruning_indexes["frames"]:', pruning_indexes["frames"][depth])
-
-	feature_dict = {}
-	for e in events:
-		feature_dict[e] = pruning_indexes["frames"][depth][e]
-
-	return feature_dict
-
-def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict, depth):
-	
-	isRGB=True
-
-	# process files
-	file = ex['raw_path']
-	label = ex['label']
-
-	raw_data, length_ratio = model.read_file(file, input_placeholder, isRGB)
-
-	# generate activation map from model
-	am = sess.run(activation_map, feed_dict={input_placeholder: raw_data})[depth]
-
-	print("am.shape:", am.shape)
-	
-	important_am = []
-	for e in feature_dict:
-		print(e, feature_dict[e])
-		print(feature_dict[e])
-		important_am.append( am[ ..., feature_dict[e] ] )
-
-
-	print("am.shape:")
-	for ams in important_am:
-		print(ams.shape)
-	
-		
-
-
 def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="frames.png"):
 	# create a figure that highlights the frames in the iad
 
@@ -564,88 +458,149 @@ def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="fra
 	cv2.imwrite(out_name, big_img)
 
 	return 0
+	
+def combine_images(features="", iad = "", graph="", out_name ="" ):
+	'''Combine several images together into a single image'''
 
-def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name, model_filename):
+	feature_img = cv2.imread(features)
+	graph_img = cv2.imread(graph)
+	iad_img = cv2.imread(iad)
+
+	
+	#resize feature and graph to be the same height
+	if(feature_img.shape[0] > graph_img.shape[0]):
+		#scale = feature_img.shape[0]/float(graph_img.shape[0])
+		#graph_img = cv2.resize(graph_img, (int(graph_img.shape[1]*scale), feature_img.shape[0]))
+		graph_img = cv2.copyMakeBorder(
+			graph_img,
+			top=0,
+			bottom=feature_img.shape[0]-graph_img.shape[0],
+			left=0,
+			right=0,
+			borderType=cv2.BORDER_CONSTANT,
+			value=[255,255,255]
+		)
+
+	else:
+		#scale = graph_img.shape[0]/float(feature_img.shape[0])
+		#feature_img = cv2.resize(feature_img, (int(feature_img.shape[1]*scale), graph_img.shape[0]))
+		feature_img = cv2.copyMakeBorder(
+			feature_img,
+			top=0,
+			bottom=graph_img.shape[0]-feature_img.shape[0],
+			left=0,
+			right=0,
+			borderType=cv2.BORDER_CONSTANT,
+			value=[255,255,255]
+		)
+	
+	# combine feature and graph together
+	fg_img = np.concatenate((feature_img, graph_img), axis = 1)
+	
+	'''
+	# add border to IAD until it is the same length as the feature-graph image
+	iad_img = cv2.copyMakeBorder(
+		iad_img,
+		top=0,
+		bottom=fg_img.shape[0]-iad_img.shape[0],
+		left=0,
+		right=0,
+		borderType=cv2.BORDER_CONSTANT,
+		value=[255,255,255]
+	)
+	'''
+
+	# add border to IAD until it is the same length as the feature-graph image
+	
+	if(fg_img.shape[0] > iad_img.shape[0]):
+		scale = fg_img.shape[0]/float(iad_img.shape[0])
+		iad_img = cv2.resize(iad_img, (int(iad_img.shape[1]*scale), fg_img.shape[0]), interpolation=cv2.INTER_NEAREST)
+
+	else:
+		scale = iad_img.shape[0]/float(fg_img.shape[0])
+		fg_img = cv2.resize(fg_img, (int(fg_img.shape[1]*scale), iad_img.shape[0]))
+
+	print("fg_img.shape[0]-iad_img.shape[0]", fg_img.shape, iad_img.shape)
+
+	#combine all images together
+	combined = np.concatenate((fg_img, iad_img), axis = 1)
+	cv2.imwrite(out_name, combined)
+
+
+
+def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name):
 
 	dir_root = os.path.join("pics", save_name)
-
-
-	isRGB=True
-	batch_size=1
-	pad_length=256
-
-	# define placeholder
-	input_placeholder = model.get_input_placeholder(isRGB, batch_size, num_frames=pad_length)
-	
-	# define model
-	activation_map, _, saver = model.load_model(input_placeholder, isRGB)
-	#print("rank3", rankings[0].get_shape())
-	
-	#collapse the spatial dimensions of the activation map
-	#for layer in range(len(activation_map)):
-	#	activation_map[layer] = tf.argmax(activation_map[layer], axis = (2,3))
-
-	with tf.Session() as sess:
-
-		# Restore model
-		sess.run(tf.global_variables_initializer())
-		tf_utils.restore_model(sess, saver, model_filename)
-
-		# prevent further modification to the graph
-		sess.graph.finalize()
 	
 
-		for depth in range(4,5):
+	for depth in range(4,5):
 
-			dir_name = os.path.join(dir_root, str(depth))
+		dir_name = os.path.join(dir_root, str(depth))
 
-			if(not os.path.exists(dir_name)):
-				os.makedirs(dir_name)
+		if(not os.path.exists(dir_name)):
+			os.makedirs(dir_name)
 
-			#open files
-			try:
-				csv_contents = read_csv(csv_filename)
-			except:
-				print("ERROR: Cannot open CSV file: "+ csv_filename)
+		#open files
+		try:
+			csv_contents = read_csv(csv_filename)
+		except:
+			print("ERROR: Cannot open CSV file: "+ csv_filename)
 
-			for ex in csv_contents:
-				ex['raw_path'] = os.path.join(dataset_dir, 'frames', ex['label_name'], ex['example_id'])
-				ex['iad_path'] = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id), ex['label_name'], ex['example_id']+"_"+str(depth)+".npz")
-				ex['txt_path'] = os.path.join(dataset_dir, "txt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
-			csv_contents = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
+		for ex in csv_contents:
+			ex['iad_path'] = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id), ex['label_name'], ex['example_id']+"_"+str(depth)+".npz")
+			ex['txt_path'] = os.path.join(dataset_dir, "txt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
+		csv_contents = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 
-			# open saved model
-			save_file = os.path.join(save_name, str(dataset_id), dataset_type)
-			filename = save_file.replace('/', '_')+'_'+str(depth)
-			tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
+		# open saved model
+		save_file = os.path.join(save_name, str(dataset_id), dataset_type)
+		filename = save_file.replace('/', '_')+'_'+str(depth)
+		tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
-			for label in range(num_classes):
+		for label in range(num_classes):
 
-				label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
+			label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
+			title = label_name.upper().replace('_', ' ')+", Depth "+str(depth)
+
+			print(title)
+			feat_name = os.path.join(dir_name, label_name+'_feat_'+str(depth)+'.png')
+			graph_name = os.path.join(dir_name, label_name+'_graph_'+str(depth)+'.png')
+			iad_name = os.path.join(dir_name, label_name+'_iad_'+str(depth)+'.png')
+			frames_name = os.path.join(dir_name, label_name+'_frames_'+str(depth)+'.png')
+
+			combined_name = os.path.join(dir_name, label_name+'_'+str(depth)+'.png')
 
 
-				# generate a plot that shows the top 5 and bottom five features for each label.
-				feat_name = os.path.join(dir_name, label_name+'_feat_'+str(depth)+'.png')
-				title = label_name.upper().replace('_', ' ')+", Depth "+str(depth)
-				top_features, colors = generate_top_bottom_table(tcg, label, count=5, out=feat_name, title=title)
 
-				#graph_name = os.path.join(dir_name, label_name+'_graph_'+str(depth)+'.png')
-				#make_graph(top_features, colors, save_name, name=graph_name)
 
-				feature_dict = determine_feature_ids(dataset_type, dataset_dir, dataset_id, save_name, top_features, depth)
 
-				iad_name = os.path.join(dir_name, label_name+'_iad_'+str(depth)+'.png')
-				file_ex, salient_frames = find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name=iad_name)
-				
-				'''
-				if(len(salient_frames) > 0):
-					frames_name = os.path.join(dir_name, label_name+'_frames_'+str(depth)+'.png')
-					find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name=frames_name)
+			# generate a plot that shows the top 5 and bottom five features for each label.
+			top_features, colors = generate_top_bottom_table(tcg, label, count=5, out=feat_name, title=title)
 
-				print('----------------')
-				'''
+			# from there we need to open an IAD and highlight the rows that are described in the table
+			# use the same colorsfor the regions specified
 
-				visualize_example(file_ex, sess, input_placeholder, activation_map, feature_dict, depth)
+			make_graph(top_features, colors, save_name, name=graph_name)
+
+			file_ex, salient_frames = find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name=iad_name)
+			if(len(salient_frames) > 0):
+				find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name=frames_name)
+
+			# lastly we can look at frames in the video corresponding to those IADs
+			#find_video_frames()
+
+			
+			combine_images(
+				features=feat_name, 
+				iad=iad_name,
+				graph=graph_name,
+				out_name=combined_name )
+			
+			#os.remove(feat_name)
+			#os.remove(iad_name)
+			#os.remove(graph_name)
+
+			print('----------------')
+
 
 if __name__ == '__main__':
 	import argparse
@@ -658,10 +613,7 @@ if __name__ == '__main__':
 	parser.add_argument('num_classes', type=int, help='the number of classes in the dataset')
 	#parser.add_argument('dataset_depth', type=int, help='a csv file denoting the files in the dataset')
 
-	parser.add_argument('save_name', default="", help='what to save the model as')
-
-	parser.add_argument('model_filename', default="", help='I3D model')
-
+	parser.add_argument('--save_name', default="", help='what to save the model as')
 
 	FLAGS = parser.parse_args()
 
@@ -675,6 +627,5 @@ if __name__ == '__main__':
 		FLAGS.dataset_type,
 		FLAGS.dataset_id,
 		FLAGS.num_classes,
-		FLAGS.save_name,
-		FLAGS.model_filename
+		FLAGS.save_name
 		)
