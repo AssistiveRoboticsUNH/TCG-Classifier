@@ -499,6 +499,10 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	x, y = 50,50
 	scale = max_window_scale[depth]
+
+	print("p1:", max_idx[0]*scale, max_idx[1]*scale)
+	print("p2:", max_idx[0]*scale+scale, max_idx[1]*scale+scale)
+
 	ovl = cv2.rectangle(np.copy(src), (max_idx[0]*scale, max_idx[1]*scale),
 		(max_idx[0]*scale+scale, max_idx[1]*scale+scale), (255,0,0), -1)
 
