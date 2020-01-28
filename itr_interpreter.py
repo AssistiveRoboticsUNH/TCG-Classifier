@@ -492,6 +492,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	print("raw_data.shape:", raw_data.shape)
 	src = raw_data[0, 0]
+	src = src.astype(np.uint8)
 
 	feat_map = important_am[0][0][0]
 	feat_map -= np.min(feat_map)
