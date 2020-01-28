@@ -499,7 +499,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			stack.append(overlay)
 
-
+		'''
 		alpha = 0.5
 		print("src.shape:", src.shape)
 		for s in stack[:2]:
@@ -510,7 +510,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			print(src.shape, s.shape, type(src), type(s))
 
 			src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
-
+		'''
 
 	cv2.imwrite("viz_spat.png", src)
 
