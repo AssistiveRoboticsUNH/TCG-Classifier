@@ -458,8 +458,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 		else:
 			am[..., row] = (am[..., row] - min_max_vals["min"][depth][row]) / (min_max_vals["max"][depth][row] - min_max_vals["min"][depth][row])
 	
-	#am *= 255
-	#scaled_am = am.astype(np.uint8)
+	am *= 255
+	scaled_am = am.astype(np.uint8)
 
 	video_length = 1
 
@@ -499,21 +499,21 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			stack.append(overlay)
 
-		'''
-		alpha = 1.0#0.5
+		
+		alpha = 0.5#1.0#0.5
 		print("src.shape:", src.shape)
 		for s in stack[:2]:
 			print("s.shape:", s.shape)
-			src = src.astype(np.uint8)
-			s = s.astype(np.uint8)
+			#src = src.astype(np.uint8)
+			#s = s.astype(np.uint8)
 
-			print(src.shape, s.shape, type(src), type(s))
+			#print(src.shape, s.shape, type(src), type(s))
 
 			#src_c = np.copy(src)*(1-s[..., -1])
 			#s_c = np.copy(s)*(s[..., -1])
 
-			src = cv2.addWeighted(src_c, alpha, s_c, 1 - alpha, 0)
-		'''
+			src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
+		
 	print(src[0, 0])
 	cv2.imwrite("viz_spat.png", src)
 
