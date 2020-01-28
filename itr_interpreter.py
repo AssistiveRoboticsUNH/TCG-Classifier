@@ -475,7 +475,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			# color overlay according to feature
 			overlay = cv2.cvtColor(feature_frame,cv2.COLOR_GRAY2BGR)
 			overlay = cv2.cvtColor(overlay,cv2.COLOR_BGR2HSV)
-			ovl[..., 0] = event_colors[e]
+			overlay[..., 0] = event_colors[e]
 			#ovl[..., 0] = 1
 
 			overlay = cv2.resize( overlay,  (224, 224), interpolation=cv2.INTER_NEAREST)
