@@ -495,6 +495,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	ovl = cv2.resize( important_am[0][0][0],  (224, 224), interpolation=cv2.INTER_NEAREST)
 	ovl = cv2.cvtColor(ovl,cv2.COLOR_GRAY2RGB)
+	print("ovl.shape:", ovl.shape)
 	ovl = ovl[..., 1:3] = 0
 	print("ovl.shape:", ovl.shape)
 	'''
