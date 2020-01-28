@@ -42,8 +42,7 @@ def itr_to_idx(itr):
 def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png", title=""):
 	# get the top and bottom most features and save them in a plotable figure
 
-	# convert Scipy matrix to one dimensional vector
-	feature_names = tcg.tfidf.get_feature_names()
+	
 
 	# determine the importance of each ITR according to each class	
 	n_classes = len(tcg.clf.classes_)
@@ -60,6 +59,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 	# get only the importance ranks for the specific label
 	importance = importance[:, label]
+	feature_names = tcg.tfidf.get_feature_names()
 
 	# place features in descending order
 	importance, feature_names = zip(*sorted(zip(importance,feature_names)))
@@ -75,9 +75,6 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	top_n, bot_n = feature_names[:count], feature_names[-count:]
 	names = top_n#np.concatenate((top_n, bot_n))
 
-	names = [itr_to_idx(itr) for itr in names]
-
-
 	#define ITR-coloring scheme
 	itr_colors = {}
 	bar_colors = []
@@ -85,31 +82,29 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 		itr_colors[itr] = np.linspace(0, 255, num=len(top_n), dtype=np.uint8)[i]
 		bar_colors.append(colorsys.hsv_to_rgb((itr_colors[itr]/360.0), 1.0, 1.0))
 
-	# place into chart
-	'''
-	names = [ r"\textcolor[rgb]{0,0,1}{"+itr_to_idx(itr)+"}" 
-				# "\textcolor[hsv]{"+str(itr_colors[itr])+",1,1}{"+itr+"}" 
-					if itr in itr_colors else itr_to_idx(itr) for itr in names   ]
-	'''
+	event_colors = {}
+	for itr in top_n:
+		itr_s = utr.split('-')
+		if(e_to_idx(itr_s[0]) not in event_colors):
+			event_colors[itr_s[0]] = 0
+		if(e_to_idx(itr_s[2]) not in event_colors):
+			event_colors[itr_s[2]] = 0
+	for i, k in enumerate(event_colors.keys()):
+		event_colors[k] = np.linspace(0, 255, num=len(event_colors), dtype=np.uint8)[i]
+
 	# define plot
 	plt.figure(figsize=(2,4))
-	#bar_colors = ['b']*count + ['r']*count
-	#plt.barh(range(count*2), data, align='center', color=bar_colors)
 	plt.barh(range(count), data, align='center', color=bar_colors)
 
-
-	#plt.xticks(np.arange(np.min(bot), np.max(top)))
-	#plt.yticks(range(count*2), names)
-	plt.yticks(range(count), names, fontsize=15)
+	plt.yticks(range(count), [itr_to_idx(itr) for itr in names], fontsize=15)
 	plt.gca().invert_yaxis()
 	plt.title(title)
 	plt.tight_layout()
 
-	#plt.show()
 	plt.savefig(out)
 	plt.close()
 
-	return top_n, itr_colors
+	return top_n, itr_colors, event_colors
 
 
 
@@ -234,12 +229,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 				for idx in range(int(e.start), int(e.end)):
 					iad[event_idx[e.name] , idx, 0] = colors[idx % len(colors)]
 					iad[event_idx[e.name] , idx, 1] = 1
-			#else:
-				#iad[event_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
-		#else:
-		#	iad[event_labels.index(e.name) , int(e.start):int(e.end), 2]  = 0
-
-	
+			
 	# trim the front of the IAD
 	iad = iad[:, 3:]
 
@@ -257,30 +247,14 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 		for i in range(1, len(salient_frames)):
 			if(salient_frames[i] - salient_frames[i-1] > 1):
 				
-				'''
-				print(s, i-1)
-				print(salient_frames[s: i-1])
-				print(np.mean(salient_frames[s: i-1]))
-
-				if(s < i-1):
-					cluster_medians.append(int(np.mean(salient_frames[s: i-1])))
-				else:
-					cluster_medians.append(salient_frames[s])
-				s = i
-				'''
 				cluster_medians.append(salient_frames[i-1])
 		cluster_medians.append(salient_frames[-1])
-		'''
-		if(s < i-1):
-			cluster_medians.append(int(np.mean(salient_frames[s: i-1])))
-		else:
-			cluster_medians.append(salient_frames[s])
-		'''
-		salient_frames = cluster_medians#np.where(salient_frames == np.max(salient_frames))
+	
+		salient_frames = cluster_medians
 	else:
 		salient_frames = []
 
-	#print("salient_frames.shape:", salient_frames.shape)
+	
 
 	# put back into the BGR colorspace for display/save
 	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
@@ -348,7 +322,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	return files[top], salient_frames
 
-def make_graph(top_features, itr_colors, save_name, name="graph.png"):
+def make_graph(top_features, itr_colors, save_name, event_colors, name="graph.png"):
 	'''Make a graph from the top features, the edges indicate the ITRs being represented.'''
 	dot_name = save_name+'_mygraph.dot'
 
@@ -367,13 +341,15 @@ def make_graph(top_features, itr_colors, save_name, name="graph.png"):
 		events.add(itr_s[2])
 
 		# pydot HSV goes up to 360 rather than 256
-		c = itr_colors[itr]/360.0
+		#c = itr_colors[itr]/360.0
 
-		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1], round(c, 3))
+		#edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1], round(c, 3))
+		edges += '{0} -> {1} [label="{2}" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1])
+
 
 	# add nodes to the dot file
 	for e in events:
-		nodes += 'node [shape=circle,style=filled] {0}\n'.format(e_to_idx( e ))
+		nodes += 'node [shape=circle,style=filled,color="{1} 1.0 1.0"] {0}\n'.format(e_to_idx( e ), round(event_colors[e_to_idx( e )]/360.0, 3))
 	gfile.write(nodes)
 	
 	# add the edges to the dot files
@@ -459,7 +435,7 @@ def determine_feature_ids(dataset_type, dataset_dir, dataset_id, save_name, top_
 
 	return feature_dict
 
-def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict, depth):
+def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors):
 	
 	isRGB=True
 
@@ -472,6 +448,48 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	# generate activation map from model
 	am = sess.run(activation_map, feed_dict={input_placeholder: raw_data})[depth]
 
+	scaled_am = # apply min max scaling
+	scaled_am *= 255
+	scaled_am = scaled_am.astype(np.uint8)
+
+	video_length = 10
+
+	for frame in range(video_length):
+		src = np.copy(raw_data[0, frame])
+		src = src.astype(np.uint8)
+
+		stack = []
+
+		for e in feature_dict:
+			#get spatial info from activation map
+			feature_frame = scaled_am[ ..., feature_dict[e]]
+
+			# color overlay according to feature
+			overlay = cv2.cvtColor(overlay,cv2.COLOR_GRAY2BGR)
+			overlay = cv2.cvtColor(overlay,cv2.COLOR_BGR2HSV)
+			ovl[..., 0] = event_colors[e]
+			#ovl[..., 0] = 1
+
+			overlay = cv2.resize( overlay,  (224, 224), interpolation=cv2.INTER_NEAREST)
+			overlay = (src + overlay)/2
+
+			overlay = cv2.cvtColor(overlay,cv2.COLOR_HSV2BGR)
+			
+			stack.append(overlay)
+
+		#alpha = 
+		#for s in stack:
+		#	cv2.addWeighted(src, alpha, s, 1 - alpha, 0, s)
+
+
+	cv2.imwrite("viz_spat.png", cv2.cvtColor(src, cv2.COLOR_RGB2BGR))
+
+
+
+
+
+
+	'''
 	print("am.shape:", am.shape)
 	
 	important_am = []
@@ -487,7 +505,6 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	#num_frames = len(important_am[0][:,1])
 
 	#max_window_scale = [2, 2, 2, 4, 8]
-	max_window_scale = [1, 224/7, 224/7, 224/7, 224/7]
 	length = 10
 
 	print("raw_data.shape:", raw_data.shape)
@@ -502,27 +519,17 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	ovl = cv2.resize( feat_map,  (224, 224), interpolation=cv2.INTER_NEAREST)
 
-	ovl = cv2.cvtColor(ovl,cv2.COLOR_GRAY2RGB)
+	ovl = cv2.cvtColor(ovl,cv2.COLOR_GRAY2BGR)
+	ovl = cv2.cvtColor(ovl,cv2.COLOR_BGR2HSV)
+	ovl[..., 0] = event_colors[]
+
 	print("ovl:", ovl)
 	ovl[..., 1:3] = 0
 	print("ovl.shape:", ovl.shape)
-	'''
-	max_idx = np.unravel_index(np.argmax(important_am[0][0][0], axis=None), important_am[0][0][0].shape)
-	print("max_idx:", max_idx)
-	print("important_am[0].shape:", important_am[0][0].shape)
-
-	x, y = 50,50
-	scale = max_window_scale[depth]
-
-	print("p1:", max_idx[0]*scale, max_idx[1]*scale)
-	print("p2:", max_idx[0]*scale+scale, max_idx[1]*scale+scale)
 	
-	ovl = cv2.rectangle(np.copy(src), (max_idx[0]*scale, max_idx[1]*scale),
-		(max_idx[0]*scale+scale, max_idx[1]*scale+scale), (255,0,0), -1)
-	'''
 	alpha=0.5
 	cv2.addWeighted(src, alpha, ovl, 1 - alpha, 0, ovl)
-
+	'''
 	cv2.imwrite("viz_spat.png", cv2.cvtColor(ovl, cv2.COLOR_RGB2BGR))
 	
 		
@@ -669,10 +676,10 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 				# generate a plot that shows the top 5 and bottom five features for each label.
 				feat_name = os.path.join(dir_name, label_name+'_feat_'+str(depth)+'.png')
 				title = label_name.upper().replace('_', ' ')+", Depth "+str(depth)
-				top_features, colors = generate_top_bottom_table(tcg, label, count=5, out=feat_name, title=title)
+				top_features, colors, event_colors = generate_top_bottom_table(tcg, label, count=5, out=feat_name, title=title)
 
 				#graph_name = os.path.join(dir_name, label_name+'_graph_'+str(depth)+'.png')
-				#make_graph(top_features, colors, save_name, name=graph_name)
+				make_graph(top_features, colors, save_name, event_colors, name=graph_name)
 
 				feature_dict = determine_feature_ids(dataset_type, dataset_dir, dataset_id, save_name, top_features, depth)
 
@@ -687,7 +694,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 				print('----------------')
 				'''
 
-				visualize_example(file_ex, sess, input_placeholder, activation_map, feature_dict, depth)
+				visualize_example(file_ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors)
 
 if __name__ == '__main__':
 	import argparse
