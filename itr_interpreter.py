@@ -485,6 +485,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			#ovl[..., 0] = 1
 
 			b_channel, g_channel, r_channel = cv2.split(color_base)
+
+			print(b_channel.shape, alpha_channel.shape)
 			img_BGRA = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))
 
 			overlay = cv2.resize( img_BGRA,  (224, 224), interpolation=cv2.INTER_NEAREST)
