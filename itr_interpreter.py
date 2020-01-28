@@ -465,6 +465,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	for frame in range(video_length):
 		src = np.copy(raw_data[0, frame])
 		src = src.astype(np.uint8)
+		src = cv2.cvtColor(src, cv2.COLOR_RGB2BGR)
 
 		stack = []
 
@@ -488,13 +489,12 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 		alpha = 0.5
 		print("src.shape:", src.shape)
-		for s in stack:
+		for s in stack[2:]:
 			print("s.shape:", s.shape)
-		img = cv2.addWeighted(src, alpha, s[0], 1 - alpha, 0)
-		img = cv2.addWeighted(img, alpha, s[1], 1 - alpha, 0)
+		src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
 
 
-	cv2.imwrite("viz_spat.png", cv2.cvtColor(src, cv2.COLOR_RGB2BGR))
+	cv2.imwrite("viz_spat.png", src)
 
 
 
