@@ -479,7 +479,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			#ovl[..., 0] = 1
 
 			overlay = cv2.resize( overlay,  (224, 224), interpolation=cv2.INTER_NEAREST)
-			overlay = (src + overlay)/2
+			#overlay = (src + overlay)/2
 
 			overlay = cv2.cvtColor(overlay,cv2.COLOR_HSV2BGR)
 
