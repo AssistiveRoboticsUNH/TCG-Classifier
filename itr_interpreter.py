@@ -493,9 +493,13 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	print("raw_data.shape:", raw_data.shape)
 	src = raw_data[0, 0]
 
-	print(important_am[0][0][0])
+	feat_map = important_am[0][0][0]
+	feat_map -= np.min(feat_map)
+	feat_map /= np.max(feat_map)
+	feat_map *= 255
+	feat_map = feat_map.astype(np.uint8)
 
-	ovl = cv2.resize( important_am[0][0][0],  (224, 224), interpolation=cv2.INTER_NEAREST)
+	ovl = cv2.resize( feat_map,  (224, 224), interpolation=cv2.INTER_NEAREST)
 
 	ovl = cv2.cvtColor(ovl,cv2.COLOR_GRAY2RGB)
 	print("ovl:", ovl)
