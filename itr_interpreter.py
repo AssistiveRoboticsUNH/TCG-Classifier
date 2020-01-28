@@ -86,9 +86,9 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	for itr in top_n:
 		itr_s = itr.split('-')
 		if(e_to_idx(itr_s[0]) not in event_colors):
-			event_colors[itr_s[0]] = 0
+			event_colors[e_to_idx(itr_s[0])] = 0
 		if(e_to_idx(itr_s[2]) not in event_colors):
-			event_colors[itr_s[2]] = 0
+			event_colors[e_to_idx(itr_s[2])] = 0
 	for i, k in enumerate(event_colors.keys()):
 		event_colors[k] = np.linspace(0, 255, num=len(event_colors), dtype=np.uint8)[i]
 
@@ -350,7 +350,7 @@ def make_graph(top_features, itr_colors, save_name, event_colors, name="graph.pn
 	# add nodes to the dot file
 
 	for e in events:
-		nodes += 'node [shape=circle,style=filled,color="{0} 1.0 1.0"] {1}\n'.format(round(event_colors[ e ]/360.0, 3),e_to_idx( e ))
+		nodes += 'node [shape=circle,style=filled,color="{0} 1.0 1.0"] {1}\n'.format(round(event_colors[ e_to_idx(e) ]/360.0, 3),e_to_idx( e ))
 	gfile.write(nodes)
 	
 	# add the edges to the dot files
