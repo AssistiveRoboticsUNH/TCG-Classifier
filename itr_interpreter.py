@@ -503,6 +503,9 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			print("s.shape:", s.shape)
 			src = src.astype(np.uint8)
 			s = s.astype(np.uint8)
+
+			print(src.shape, s.shape, type(src), type(s))
+
 			src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
 
 
