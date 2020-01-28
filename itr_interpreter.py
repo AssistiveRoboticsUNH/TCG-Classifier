@@ -494,6 +494,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	src = raw_data[0, 0]
 
 	ovl = cv2.resize( important_am[0][0][0],  (224, 224), interpolation=cv2.INTER_NEAREST)
+	ovl = cv2.cvtColor(ovl,cv2.CV_GRAY2RGB)
+	ovl = ovl[..., 1:3] = 0
 	print("ovl.shape:", ovl.shape)
 	'''
 	max_idx = np.unravel_index(np.argmax(important_am[0][0][0], axis=None), important_am[0][0][0].shape)
