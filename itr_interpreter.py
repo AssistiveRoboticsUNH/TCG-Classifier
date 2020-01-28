@@ -457,8 +457,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 		else:
 			am[..., row] = (am[..., row] - min_max_vals["min"][depth][row]) / (min_max_vals["max"][depth][row] - min_max_vals["min"][depth][row])
 
-	scaled_am *= 255
-	scaled_am = scaled_am.astype(np.uint8)
+	am *= 255
+	scaled_am = am.astype(np.uint8)
 
 	video_length = 10
 
