@@ -448,6 +448,16 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	# generate activation map from model
 	am = sess.run(activation_map, feed_dict={input_placeholder: raw_data})[depth]
 
+	print("activation map.shape:", am.shape)
+
+	for row in am:
+		if(min_max_vals["max"][depth][row] - min_max_vals["min"][depth][row] == 0):
+			data[row] = np.zeros_like(data[row])
+		else:
+			data[row] = (data[row] - min_max_vals["min"][depth][row]) / (min_max_vals["max"][depth][row] - min_max_vals["min"][layer][row])
+
+
+
 	scaled_am = # apply min max scaling
 	scaled_am *= 255
 	scaled_am = scaled_am.astype(np.uint8)
@@ -474,7 +484,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			overlay = (src + overlay)/2
 
 			overlay = cv2.cvtColor(overlay,cv2.COLOR_HSV2BGR)
-			
+
 			stack.append(overlay)
 
 		#alpha = 
