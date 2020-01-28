@@ -468,8 +468,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 		src = src.astype(np.uint8)
 		src = cv2.cvtColor(src, cv2.COLOR_RGB2BGR)
 
-		b_channel, g_channel, r_channel = cv2.split(src)
-		src = cv2.merge((b_channel, g_channel, r_channel, np.zeros_like(b_channel)))
+		#b_channel, g_channel, r_channel = cv2.split(src)
+		#src = cv2.merge((b_channel, g_channel, r_channel, np.zeros_like(b_channel)))
 
 		stack = []
 
@@ -499,8 +499,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			stack.append(overlay)
 
-		'''
-		alpha = 0.5
+		
+		alpha = 1.0#0.5
 		print("src.shape:", src.shape)
 		for s in stack[:2]:
 			print("s.shape:", s.shape)
@@ -509,8 +509,11 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			print(src.shape, s.shape, type(src), type(s))
 
-			src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
-		'''
+			src_c = np.copy(src)*(1-s[..., -1])
+			s_c = np.copy(s)*(s[..., -1])
+
+			src = cv2.addWeighted(src_c, alpha, s_c, 1 - alpha, 0)
+		
 
 	cv2.imwrite("viz_spat.png", src)
 
