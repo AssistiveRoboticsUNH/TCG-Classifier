@@ -460,7 +460,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	am *= 255
 	scaled_am = am.astype(np.uint8)
 
-	video_length = 10
+	video_length = 1
 
 	for frame in range(video_length):
 		src = np.copy(raw_data[0, frame])
@@ -485,8 +485,11 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			stack.append(overlay)
 
+
 		#alpha = 
-		#for s in stack:
+		print("src.shape:", src.shape)
+		for s in stack:
+			print("s.shape:", s.shape)
 		#	cv2.addWeighted(src, alpha, s, 1 - alpha, 0, s)
 
 
