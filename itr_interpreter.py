@@ -621,7 +621,7 @@ def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="fra
 
 	return 0
 
-def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name, model_filename, min_max_file):
+def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_name, model_filename):
 
 	dir_root = os.path.join("pics", save_name)
 
@@ -640,7 +640,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 	#collapse the spatial dimensions of the activation map
 	#for layer in range(len(activation_map)):
 	#	activation_map[layer] = tf.argmax(activation_map[layer], axis = (2,3))
-
+	min_max_file = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id), "min_maxes.npz")
 	f = np.load(min_max_file, allow_pickle=True)
 	min_max_vals = {"max": f["max"],"min": f["min"]}
 
@@ -721,7 +721,6 @@ if __name__ == '__main__':
 	parser.add_argument('save_name', default="", help='what to save the model as')
 
 	parser.add_argument('model_filename', default="", help='I3D model')
-	parser.add_argument('min_max_file', nargs='?', default=None, help='a .npz file containing min and max values to normalize by')
 	
 
 
@@ -739,5 +738,4 @@ if __name__ == '__main__':
 		FLAGS.num_classes,
 		FLAGS.save_name,
 		FLAGS.model_filename,
-		FLAGS.min_max_file
 		)
