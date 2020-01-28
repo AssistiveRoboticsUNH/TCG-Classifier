@@ -451,11 +451,11 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	print("activation map.shape:", am.shape)
 
-	for row in range(am.shape[0]):
+	for row in range(am.shape[-1]):
 		if(min_max_vals["max"][depth][row] - min_max_vals["min"][depth][row] == 0):
-			am[row] = np.zeros_like(data[row])
+			am[..., row] = np.zeros_like(am[row])
 		else:
-			am[row] = (data[row] - min_max_vals["min"][depth][row]) / (min_max_vals["max"][depth][row] - min_max_vals["min"][layer][row])
+			am[..., row] = (am[..., row] - min_max_vals["min"][depth][row]) / (min_max_vals["max"][depth][row] - min_max_vals["min"][layer][row])
 
 	scaled_am *= 255
 	scaled_am = scaled_am.astype(np.uint8)
