@@ -451,14 +451,15 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	print("activation map.shape:", am.shape)
 
+	
 	for row in range(am.shape[-1]):
 		if(min_max_vals["max"][depth][row] - min_max_vals["min"][depth][row] == 0):
 			am[..., row] = np.zeros_like(am[row])
 		else:
 			am[..., row] = (am[..., row] - min_max_vals["min"][depth][row]) / (min_max_vals["max"][depth][row] - min_max_vals["min"][depth][row])
-
-	am *= 255
-	scaled_am = am.astype(np.uint8)
+	
+	#am *= 255
+	#scaled_am = am.astype(np.uint8)
 
 	video_length = 1
 
@@ -471,25 +472,32 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 		for e in feature_dict:
 			#get spatial info from activation map
-			feature_frame = scaled_am[ ..., feature_dict[e]]
+			alpha_channel = scaled_am[ ..., feature_dict[e]]
 
-			# color overlay according to feature
-			overlay = cv2.cvtColor(feature_frame,cv2.COLOR_GRAY2BGR)
-			overlay = cv2.cvtColor(overlay,cv2.COLOR_BGR2HSV)
-			overlay[..., 0] = event_colors[e]
+
+			color_base = np.ones_like(alpha_channel)
+			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
+
+
+			color_base = cv2.cvtColor(overlay,cv2.COLOR_BGR2HSV)
+			color_base[..., 0] = event_colors[e]
+			color_base = cv2.cvtColor(color_base,cv2.COLOR_HSV2BGR)
 			#ovl[..., 0] = 1
 
-			overlay = cv2.resize( overlay,  (224, 224), interpolation=cv2.INTER_NEAREST)
+			b_channel, g_channel, r_channel = cv2.split(img)
+			img_BGRA = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))
+
+			overlay = cv2.resize( img_BGRA,  (224, 224), interpolation=cv2.INTER_NEAREST)
 			#overlay = (src + overlay)/2
 
-			overlay = cv2.cvtColor(overlay,cv2.COLOR_HSV2BGR)
+			
 
 			stack.append(overlay)
 
 
 		alpha = 0.5
 		print("src.shape:", src.shape)
-		for s in stack[:1]:
+		for s in stack[:2]:
 			print("s.shape:", s.shape)
 			src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
 
