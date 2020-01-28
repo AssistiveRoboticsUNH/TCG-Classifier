@@ -486,7 +486,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			stack.append(overlay)
 
 
-		#alpha = 
+		alpha = 0.5
 		print("src.shape:", src.shape)
 		for s in stack:
 			print("s.shape:", s.shape)
