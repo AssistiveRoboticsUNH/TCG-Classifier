@@ -472,7 +472,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 		for e in feature_dict:
 			#get spatial info from activation map
-			alpha_channel = am[ ..., feature_dict[e]]
+			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
 
 
 			color_base = np.ones_like(alpha_channel)
