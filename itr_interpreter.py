@@ -450,15 +450,12 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	print("activation map.shape:", am.shape)
 
-	for row in am:
+	for row in range(am.shape[0]):
 		if(min_max_vals["max"][depth][row] - min_max_vals["min"][depth][row] == 0):
-			data[row] = np.zeros_like(data[row])
+			am[row] = np.zeros_like(data[row])
 		else:
-			data[row] = (data[row] - min_max_vals["min"][depth][row]) / (min_max_vals["max"][depth][row] - min_max_vals["min"][layer][row])
+			am[row] = (data[row] - min_max_vals["min"][depth][row]) / (min_max_vals["max"][depth][row] - min_max_vals["min"][layer][row])
 
-
-
-	scaled_am = # apply min max scaling
 	scaled_am *= 255
 	scaled_am = scaled_am.astype(np.uint8)
 
