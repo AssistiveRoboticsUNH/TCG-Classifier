@@ -468,6 +468,9 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 		src = src.astype(np.uint8)
 		src = cv2.cvtColor(src, cv2.COLOR_RGB2BGR)
 
+		b_channel, g_channel, r_channel = cv2.split(src)
+		src = cv2.merge((b_channel, g_channel, r_channel, np.ones_like(b_channel)))
+
 		stack = []
 
 		for e in feature_dict:
