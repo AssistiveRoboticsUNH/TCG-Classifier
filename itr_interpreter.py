@@ -84,7 +84,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 
 	event_colors = {}
 	for itr in top_n:
-		itr_s = utr.split('-')
+		itr_s = itr.split('-')
 		if(e_to_idx(itr_s[0]) not in event_colors):
 			event_colors[itr_s[0]] = 0
 		if(e_to_idx(itr_s[2]) not in event_colors):
