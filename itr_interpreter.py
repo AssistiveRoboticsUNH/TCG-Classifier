@@ -477,10 +477,9 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			color_base = np.ones_like(alpha_channel)
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
-
-
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_BGR2HSV)
 			color_base[..., 0] = event_colors[e]
+			color_base[..., 1] = 1
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_HSV2BGR)
 			#ovl[..., 0] = 1
 
@@ -490,6 +489,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			img_BGRA = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))
 
 			overlay = cv2.resize( img_BGRA,  (224, 224), interpolation=cv2.INTER_NEAREST)
+			overlay = overlay.astype(np.uint8)
 			#overlay = (src + overlay)/2
 
 			
