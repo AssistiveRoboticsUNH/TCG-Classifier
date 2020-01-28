@@ -349,7 +349,7 @@ def make_graph(top_features, itr_colors, save_name, event_colors, name="graph.pn
 
 	# add nodes to the dot file
 	for e in events:
-		nodes += 'node [shape=circle,style=filled,color="{1} 1.0 1.0"] {0}\n'.format(e_to_idx( e ), round(event_colors[e_to_idx( e )]/360.0, 3))
+		nodes += 'node [shape=circle,style=filled,color="{0} 1.0 1.0"] {1}\n'.format(round(event_colors[e_to_idx( e )]/360.0, 3),e_to_idx( e ))
 	gfile.write(nodes)
 	
 	# add the edges to the dot files
