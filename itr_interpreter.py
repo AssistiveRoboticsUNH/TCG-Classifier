@@ -493,6 +493,9 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	print("raw_data.shape:", raw_data.shape)
 	src = raw_data[0, 0]
 
+	ovl = cv2.resize( important_am[0][0][0],  (224, 224), interpolation=cv2.INTER_NEAREST)
+	print("ovl.shape:", ovl.shape)
+	'''
 	max_idx = np.unravel_index(np.argmax(important_am[0][0][0], axis=None), important_am[0][0][0].shape)
 	print("max_idx:", max_idx)
 	print("important_am[0].shape:", important_am[0][0].shape)
@@ -502,12 +505,12 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	print("p1:", max_idx[0]*scale, max_idx[1]*scale)
 	print("p2:", max_idx[0]*scale+scale, max_idx[1]*scale+scale)
-
+	
 	ovl = cv2.rectangle(np.copy(src), (max_idx[0]*scale, max_idx[1]*scale),
 		(max_idx[0]*scale+scale, max_idx[1]*scale+scale), (255,0,0), -1)
-
+	'''
 	alpha=0.5
-	#cv2.addWeighted(src, alpha, ovl, 1 - alpha, 0, ovl)
+	cv2.addWeighted(src, alpha, ovl, 1 - alpha, 0, ovl)
 
 	cv2.imwrite("viz_spat.png", cv2.cvtColor(ovl, cv2.COLOR_RGB2BGR))
 	
