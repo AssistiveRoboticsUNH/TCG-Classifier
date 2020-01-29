@@ -464,8 +464,13 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	am *= 255
 	scaled_am = am.astype(np.uint8)
 
-	video_length = 1
 
+	video_length = am.shape[1]
+	img_w, img_h = image.size
+    background = Image.new('RGBA',(img_w, img_h*video_length), (255, 255, 255, 255))
+    bg_w, bg_h = background.size
+
+	
 	for frame in range(video_length):
 		src = np.copy(raw_data[0, frame])
 		src = src.astype(np.uint8)
@@ -478,118 +483,32 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 		for e in feature_dict:
 			#get spatial info from activation map
-			'''
-			color_base = am[ 0, frame, ..., feature_dict[e]]
-			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
-			color_base = cv2.cvtColor(color_base,cv2.COLOR_BGR2HSV)
-			color_base[..., 0] = event_colors[e]
-			color_base[..., 1] = 1
-			overlay = cv2.cvtColor(color_base,cv2.COLOR_HSV2BGR)
-
-			'''
+			
 			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
-			#alpha_channel[0,0] = 255
 
-			print("alpha_channel:", alpha_channel[1,1])
-			print('')
 			color_base = np.ones_like(alpha_channel) * 255
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
-			print("color_base1:", color_base[1,1])
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_BGR2HSV)
 			color_base[..., 0] = event_colors[e]
 			color_base[..., 1] = 1
-			print("color_base2:", color_base[1,1])
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_HSV2BGR)
-			print("color_base3:", color_base[1,1])
-			#ovl[..., 0] = 1
-
 			
 			b_channel, g_channel, r_channel = cv2.split(color_base)
-
 			overlay = cv2.merge((r_channel, g_channel, b_channel, alpha_channel))
 			
 			overlay = cv2.resize( overlay,  (224, 224), interpolation=cv2.INTER_NEAREST)
 			overlay = Image.fromarray(overlay.astype(np.uint8))
-			#overlay = (src + overlay)/2
-
-			
 
 			stack.append(overlay)
 
-		
-		alpha = 0.0#1.0#0.5
-		#print("src.shape:", src.shape)
 		for i, s in enumerate(stack):
-			#print("s.shape:", s.shape)
-			#src = src.astype(np.uint8)
-			#s = s.astype(np.uint8)
-
-			#print(src.shape, s.shape, type(src), type(s))
-
-			#src_c = np.copy(src)*(1-s[..., -1])
-			#s_c = np.copy(s)*(s[..., -1])
-
-			#src = src + s
-			#src[src > 255] = 255
-
-			#src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
-
+			
 			src = Image.alpha_composite(src, s)
 			#Image.alpha_composite(src, s).save("viz_spat_"+str(i)+".png", "PNG")
 		
-	#print(src[0, 0])
-	src.save("viz_spat.png", "PNG")
-	#cv2.imwrite("viz_spat.png", src)
-
-
-
-
-
-
-	'''
-	print("am.shape:", am.shape)
-	
-	important_am = []
-	for e in feature_dict:
-		print(e, feature_dict[e])
-		print(feature_dict[e])
-		important_am.append( am[ ..., feature_dict[e] ] )
-
-
-	print("am.shape:")
-	print(important_am[0].shape)
-
-	#num_frames = len(important_am[0][:,1])
-
-	#max_window_scale = [2, 2, 2, 4, 8]
-	length = 10
-
-	print("raw_data.shape:", raw_data.shape)
-	src = raw_data[0, 0]
-	src = src.astype(np.uint8)
-
-	feat_map = important_am[0][0][0]
-	feat_map -= np.min(feat_map)
-	feat_map /= np.max(feat_map)
-	feat_map *= 255
-	feat_map = feat_map.astype(np.uint8)
-
-	ovl = cv2.resize( feat_map,  (224, 224), interpolation=cv2.INTER_NEAREST)
-
-	ovl = cv2.cvtColor(ovl,cv2.COLOR_GRAY2BGR)
-	ovl = cv2.cvtColor(ovl,cv2.COLOR_BGR2HSV)
-	ovl[..., 0] = event_colors[]
-
-	print("ovl:", ovl)
-	ovl[..., 1:3] = 0
-	print("ovl.shape:", ovl.shape)
-	
-	alpha=0.5
-	cv2.addWeighted(src, alpha, ovl, 1 - alpha, 0, ovl)
-	'''
-	#cv2.imwrite("viz_spat.png", cv2.cvtColor(ovl, cv2.COLOR_RGB2BGR))
-	
-		
+		#src.save("viz_spat.png", "PNG")
+    	background.paste(src,(0, frame * img_h))
+	background.save("viz_spat.png", "PNG")
 
 
 def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="frames.png"):
