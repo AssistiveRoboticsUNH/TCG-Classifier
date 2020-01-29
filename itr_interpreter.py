@@ -68,6 +68,10 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	importance, feature_names = np.array(importance), np.array(feature_names)
 	importance, feature_names = importance[::-1], feature_names[::-1]
 
+	idx = [i for i in range(len(feature_names)) if feature_names[i].find('-d-') == -1]
+	importance, feature_names = importance[idx], feature_names[idx]
+	#importance = importance[np.where(feature_names.find('-d-') == -1)]
+
 	assert count > 0, "Count value must be greater than 0"
 
 	# get the most and least important ITRs and their importance value
@@ -118,6 +122,41 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	# find the IAD that best matches the given IADs and color it and save fig
 	files = [ex for ex in csv_contents if ex["label"] == label]
 	
+
+	top = -1
+	itr_count = 0
+
+	# find the most ITRs
+	for f in range(len(files)):
+		print(f, len(files))
+		eg_count = 0
+
+		events = sorted( tcg.read_file(files[f]["txt_path"]) )
+		event_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
+
+		for i in range(len(events)):
+
+			j = i+1
+			while(j < len(events) and events[j].name != events[i].name):
+				e1 = events[i]
+				e2 = events[j]
+
+				#get the ITRs in the IAD
+				itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
+				itr = "{0}-{1}-{2}".format(e1.name, itr_name, e2.name)
+
+				if(itr in itr_colors):	
+					eg_count+=1
+				j+=1
+
+		if(eg_count > itr_count):
+			top = f 
+			itr_count = eg_count
+
+	print(files[f]["txt_path"])
+	'''
+	# find best performing examples
+
 	# files list of files with the same label
 	tcg.evalcorpus = []
 	for i, ex in enumerate(files):
@@ -130,11 +169,12 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	# select the greatest decision function in favor of the class
 	top = np.argmax(prob[:, label], axis =0)
-
+	'''
 
 
 	#SETUP WHICH EVENTS ARE COLORED
-	'''This entire section is used to define the "event_colors" dictionary.
+	'''
+	This entire section is used to define the "event_colors" dictionary.
 	The dictionary is structured as follows. Since each feature can express multiple events
 	we want to separate those events by their start and stop times (the tuples). The individual
 	events can be related to one or more ITRs hence the list of colors. Each color represents 
@@ -166,6 +206,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	event_colors = {}
 
+	event_list = Set()
 
 	max_window = 0
 
@@ -190,7 +231,10 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 			itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
 			itr = "{0}-{1}-{2}".format(e1.name, itr_name, e2.name)
 
-			if(itr in itr_colors):				
+			if(itr in itr_colors):	
+
+				event_list.add(e1.name) 
+				event_list.add(e2.name) 		
 
 				if e1.name not in event_colors:
 					event_colors[ e1.name ] = {}
@@ -221,6 +265,8 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	iad = cv2.cvtColor(iad,cv2.COLOR_GRAY2BGR)
 	iad = cv2.cvtColor(iad,cv2.COLOR_BGR2HSV)
 
+	event_list = sorted(list(event_list))
+
 	for i, e in enumerate(events):
 
 		if e.name in event_colors:
@@ -229,11 +275,16 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 				colors = event_colors[e.name][timing_pair]
 				for idx in range(int(e.start), int(e.end)):
-					iad[event_idx[e.name] , idx, 0] = colors[idx % len(colors)]
-					iad[event_idx[e.name] , idx, 1] = 1
+
+					iad_idx = event_list.index(e.name)
+
+					iad[ iad_idx , idx, 0] = colors[idx % len(colors)]
+					iad[ iad_idx , idx, 1] = 1
 			
 	# trim the front of the IAD
 	iad = iad[:, 3:]
+
+	'''
 
 	salient_frames = iad[:, :, 1]
 	salient_frames = np.sum(salient_frames, axis=0)
@@ -255,7 +306,64 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 		salient_frames = cluster_medians
 	else:
 		salient_frames = []
+	'''
 
+	from sklearn.cluster import MeanShift, estimate_bandwidth
+
+	salient_frames = Set()
+	events = sorted( tcg.read_file(ex["txt_path"]) )
+
+	for i in range(len(events)):
+
+		j = i+1
+		while(j < len(events) and events[j].name != events[i].name):
+
+			e1 = events[i]
+			e2 = events[j]
+
+			#get the ITRs in the IAD
+			itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
+			itr = "{0}-{1}-{2}".format(e1.name, itr_name, e2.name)
+
+			if(itr in itr_colors):				
+
+				salient_frames.add(e1.start)
+				salient_frames.add(e1.start+(e1.end-1-e1.start)/2)
+				salient_frames.add(e1.end-1)
+
+				salient_frames.add(e2.start)
+				salient_frames.add(e2.start+(e2.end-1-e2.start)/2)
+				salient_frames.add(e2.end-1)
+
+				print("f1:", e_to_idx(e1.name), e1.start, e1.end)
+				print("f2:", e_to_idx(e2.name), e2.start, e2.end)
+
+			j+=1
+
+	salient_frames = sorted(list(salient_frames))
+	salient_frames = [int(x-3) for x in salient_frames]
+
+	if (len(salient_frames) > 6):
+		#clustering
+		X = np.array(zip(np.array(salient_frames),np.zeros(len(np.array(salient_frames)))), dtype=np.int)
+		bandwidth = estimate_bandwidth(X, quantile=0.15)
+		ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
+		ms.fit(X)
+		labels = ms.labels_
+		cluster_centers = ms.cluster_centers_
+
+		labels_unique = np.unique(labels)
+		n_clusters_ = len(labels_unique)
+
+		print("Clusters")
+		for k in range(n_clusters_):
+			my_members = labels == k
+			print "cluster {0}: {1}, {2}, {3}".format(k, X[my_members, 0]#
+				, np.mean(X[my_members, 0]), int(np.mean(X[my_members, 0])))
+
+		salient_frames = [int(np.mean(X[labels == k, 0])) for k in range(n_clusters_)]
+
+		salient_frames = sorted(list(salient_frames))
 	
 
 	# put back into the BGR colorspace for display/save
@@ -343,10 +451,10 @@ def make_graph(top_features, itr_colors, save_name, event_colors, name="graph.pn
 		events.add(itr_s[2])
 
 		# pydot HSV goes up to 360 rather than 256
-		#c = itr_colors[itr]/360.0
+		c = itr_colors[itr]/360.0
 
-		#edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1], round(c, 3))
-		edges += '{0} -> {1} [label="{2}" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1])
+		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1], round(c, 3))
+		#edges += '{0} -> {1} [label="{2}" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1])
 
 
 	# add nodes to the dot file
@@ -438,7 +546,14 @@ def determine_feature_ids(dataset_type, dataset_dir, dataset_id, save_name, top_
 
 	return feature_dict
 
-def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors, min_max_vals):
+def adjust_gamma(image, gamma=1.0):
+   invGamma = 1.0 / gamma
+   table = np.array([
+      ((i / 255.0) ** invGamma) * 255
+      for i in np.arange(0, 256)])
+   return cv2.LUT(image.astype(np.uint8), table.astype(np.uint8))
+
+def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors, min_max_vals, salient_frames, itr_colors):
 	
 	isRGB=True
 
@@ -450,6 +565,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	# generate activation map from model
 	am = sess.run(activation_map, feed_dict={input_placeholder: raw_data})[depth]
+
+	print(ex['label_name'], "depth:", depth)
 
 	print("activation map.shape:", am.shape)
 
@@ -465,23 +582,31 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 	scaled_am = am.astype(np.uint8)
 
 
-	video_length = am.shape[1]
+
+	video_length = len(salient_frames)#am.shape[1]
 	img_w, img_h = raw_data.shape[2], raw_data.shape[3]
 
 	#separate
-	background = Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255))
+	background = Image.new('RGBA',(img_w*video_length, img_h*len(feature_dict)), (255, 255, 255, 255))
 
 	#combined
-	#background = Image.new('RGBA',(img_w*video_length, img_h*len(feature_dict)), (255, 255, 255, 255))
+	#background = Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255))
 	bg_w, bg_h = background.size
 
-	
-	for frame in range(video_length):
+
+	for f_idx, frame in enumerate(salient_frames):#range(video_length):
+		print("f_idx:", f_idx, frame)
+
 		max_window_scale = [2, 2, 2, 4, 8]
 
 		src = np.copy(raw_data[0, frame*max_window_scale[depth]])
 		src = src.astype(np.uint8)
 		src = cv2.cvtColor(src, cv2.COLOR_RGB2BGR)
+		#src = cv2.cvtColor(src,cv2.COLOR_BGR2HSV)
+		#src[..., 2] = 125
+		#src = cv2.cvtColor(src,cv2.COLOR_HSV2BGR)
+
+		src = adjust_gamma(src, gamma=0.5)
 
 		b_channel, g_channel, r_channel = cv2.split(src)
 		src = Image.fromarray(cv2.merge((r_channel, g_channel, b_channel, np.ones_like(b_channel)*255 )))
@@ -511,12 +636,14 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 		for i, s in enumerate(stack):
 			
 			#combined
-			src = Image.alpha_composite(src, s)
-			background.paste(src,(frame * img_w, 0))
+			#src = Image.alpha_composite(src, s)
+			#background.paste(src,(frame * img_w, 0))
+			#background.paste(src,(f_idx * img_w, 0))
 
 			#separate
-			#out = Image.alpha_composite(src, s)
+			out = Image.alpha_composite(src, s)
 			#background.paste(out,(frame * img_w, i * img_h))
+			background.paste(out,(f_idx * img_w, i * img_h))
 
 		#src.save("viz_spat.png", "PNG")
 		
@@ -686,7 +813,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 				print('----------------')
 				'''
 
-				visualize_example(file_ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors, min_max_vals)
+				visualize_example(tcg, file_ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors, min_max_vals, salient_frames, colors)
 
 if __name__ == '__main__':
 	import argparse
