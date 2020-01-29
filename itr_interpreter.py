@@ -20,6 +20,8 @@ from itr_sklearn import ITR_Extractor
 from itertools import product
 from string import ascii_lowercase
 
+from PIL import Image
+
 from matplotlib import rc
 rc('text', usetex=True)
 rc('text.latex', preamble='\usepackage{color}')
@@ -468,13 +470,14 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 		src = src.astype(np.uint8)
 		src = cv2.cvtColor(src, cv2.COLOR_RGB2BGR)
 
-		#b_channel, g_channel, r_channel = cv2.split(src)
-		#src = cv2.merge((b_channel, g_channel, r_channel, np.ones_like(b_channel)*255 ))
+		b_channel, g_channel, r_channel = cv2.split(src)
+		src = Image.fromarray(cv2.merge((b_channel, g_channel, r_channel, np.ones_like(b_channel)*255 )))
 
 		stack = []
 
 		for e in feature_dict:
 			#get spatial info from activation map
+			'''
 			color_base = am[ 0, frame, ..., feature_dict[e]]
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_BGR2HSV)
@@ -496,11 +499,10 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			
 			b_channel, g_channel, r_channel = cv2.split(color_base)
 
-			print(b_channel.shape, alpha_channel.shape)
 			overlay = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))
-			'''
+			
 			overlay = cv2.resize( overlay,  (224, 224), interpolation=cv2.INTER_NEAREST)
-			overlay = overlay.astype(np.uint8)
+			overlay = Image.fromarray(overlay.astype(np.uint8))
 			#overlay = (src + overlay)/2
 
 			
@@ -525,10 +527,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			#src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
 
-			for i in range(s.shape[0]):
-				for j in range(s.shape[1]):
-					
-					src[i, j] = np.max(src[i, j]*0.5  +s[i, j] * 0.5, 255)
+			Image.alpha_composite(background, foreground)
 		
 	print(src[0, 0])
 	cv2.imwrite("viz_spat.png", src)
