@@ -520,10 +520,16 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			#src_c = np.copy(src)*(1-s[..., -1])
 			#s_c = np.copy(s)*(s[..., -1])
 
-			src = src + s
-			src[src > 255] = 255
+			#src = src + s
+			#src[src > 255] = 255
 
 			#src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
+
+			for i in range(s.shape[0]):
+				for j in range(s.shape[1]):
+					opac = np.sum(s[i, j])/3
+
+					src[i, j] = src[i, j] * (1-opac) + s[i, j] * (opac)
 		
 	print(src[0, 0])
 	cv2.imwrite("viz_spat.png", src)
