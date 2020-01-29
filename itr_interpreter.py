@@ -512,7 +512,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			#src_c = np.copy(src)*(1-s[..., -1])
 			#s_c = np.copy(s)*(s[..., -1])
 
-			src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
+			src = cv2.addWeighted(src, 1.0, s, 1 - alpha, 0)
 		
 	print(src[0, 0])
 	cv2.imwrite("viz_spat.png", src)
