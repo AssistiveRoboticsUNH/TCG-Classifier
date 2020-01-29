@@ -487,7 +487,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			'''
 			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
-			alpha_channel[0,0] = 1
+			alpha_channel[0,0] = 255
 
 			print("alpha_channel:", alpha_channel)
 
