@@ -527,7 +527,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			#src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
 
-			src = Image.alpha_composite(src, s)
+			src = s#Image.alpha_composite(src, s)
 		
 	#print(src[0, 0])
 	src.save("viz_spat.png", "PNG")
