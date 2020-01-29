@@ -487,9 +487,9 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			'''
 			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
-			alpha_channel[0,0] = 255
+			#alpha_channel[0,0] = 255
 
-			print("alpha_channel:", alpha_channel)
+			#print("alpha_channel:", alpha_channel)
 
 			color_base = np.ones_like(alpha_channel)
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
