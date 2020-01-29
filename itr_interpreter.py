@@ -517,7 +517,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 		
 		alpha = 0.0#1.0#0.5
 		#print("src.shape:", src.shape)
-		for s in stack:
+		for i, s in enumerate(stack):
 			#print("s.shape:", s.shape)
 			#src = src.astype(np.uint8)
 			#s = s.astype(np.uint8)
@@ -532,10 +532,11 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			#src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
 
-			src = Image.alpha_composite(src, s)
+			#src = Image.alpha_composite(src, s)
+			Image.alpha_composite(src, s).save("viz_spat_"+str(i)+".png", "PNG")
 		
 	#print(src[0, 0])
-	src.save("viz_spat.png", "PNG")
+	#src.save("viz_spat.png", "PNG")
 	#cv2.imwrite("viz_spat.png", src)
 
 
