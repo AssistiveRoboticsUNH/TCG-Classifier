@@ -472,7 +472,9 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	
 	for frame in range(video_length):
-		src = np.copy(raw_data[0, frame])
+		max_window_scale = [2, 2, 2, 4, 8]
+
+		src = np.copy(raw_data[0, frame*max_window_scale[depth]])
 		src = src.astype(np.uint8)
 		src = cv2.cvtColor(src, cv2.COLOR_RGB2BGR)
 
