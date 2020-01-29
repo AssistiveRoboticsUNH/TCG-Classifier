@@ -528,7 +528,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			for i in range(s.shape[0]):
 				for j in range(s.shape[1]):
 					
-					src[i, j] = np.max(src[i, j]*0.5  s[i, j] * 0.5, 255)
+					src[i, j] = np.max(src[i, j]*0.5  +s[i, j] * 0.5, 255)
 		
 	print(src[0, 0])
 	cv2.imwrite("viz_spat.png", src)
