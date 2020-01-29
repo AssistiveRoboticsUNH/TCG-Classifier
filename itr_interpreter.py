@@ -466,7 +466,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 
 	video_length = am.shape[1]
-	img_w, img_h = image.size
+	img_w, img_h = Image.fromarray(raw_data[0, frame]).size
 	background = Image.new('RGBA',(img_w, img_h*video_length), (255, 255, 255, 255))
 	bg_w, bg_h = background.size
 
