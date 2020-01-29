@@ -459,7 +459,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			am[..., row] = np.zeros_like(am[row])
 		else:
 			am[..., row] = (am[..., row] - min_max_vals["min"][depth][row]) / (min_max_vals["max"][depth][row] - min_max_vals["min"][depth][row])
-	
+	am[< 0] = 0  
+
 	am *= 255
 	scaled_am = am.astype(np.uint8)
 
