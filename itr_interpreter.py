@@ -534,11 +534,11 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			#src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
 
-			#src = Image.alpha_composite(src, s)
-			Image.alpha_composite(src, s).save("viz_spat_"+str(i)+".png", "PNG")
+			src = Image.alpha_composite(src, s)
+			#Image.alpha_composite(src, s).save("viz_spat_"+str(i)+".png", "PNG")
 		
 	#print(src[0, 0])
-	#src.save("viz_spat.png", "PNG")
+	src.save("viz_spat.png", "PNG")
 	#cv2.imwrite("viz_spat.png", src)
 
 
