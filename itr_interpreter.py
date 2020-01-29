@@ -520,7 +520,8 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			#src_c = np.copy(src)*(1-s[..., -1])
 			#s_c = np.copy(s)*(s[..., -1])
 
-			src = (src + s) /2
+			src = src + s
+			src[src > 255] = 255
 
 			#src = cv2.addWeighted(src, alpha, s, 1 - alpha, 0)
 		
