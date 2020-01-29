@@ -511,9 +511,9 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 		
 		alpha = 0.0#1.0#0.5
-		print("src.shape:", src.shape)
+		#print("src.shape:", src.shape)
 		for s in stack[:1]:
-			print("s.shape:", s.shape)
+			#print("s.shape:", s.shape)
 			#src = src.astype(np.uint8)
 			#s = s.astype(np.uint8)
 
