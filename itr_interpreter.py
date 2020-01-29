@@ -468,13 +468,21 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 		src = src.astype(np.uint8)
 		src = cv2.cvtColor(src, cv2.COLOR_RGB2BGR)
 
-		b_channel, g_channel, r_channel = cv2.split(src)
-		src = cv2.merge((b_channel, g_channel, r_channel, np.ones_like(b_channel)*255 ))
+		#b_channel, g_channel, r_channel = cv2.split(src)
+		#src = cv2.merge((b_channel, g_channel, r_channel, np.ones_like(b_channel)*255 ))
 
 		stack = []
 
 		for e in feature_dict:
 			#get spatial info from activation map
+			color_base = am[ 0, frame, ..., feature_dict[e]]
+			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
+			color_base = cv2.cvtColor(color_base,cv2.COLOR_BGR2HSV)
+			color_base[..., 0] = event_colors[e]
+			#color_base[..., 1] = 1
+			color_base = cv2.cvtColor(color_base,cv2.COLOR_HSV2BGR)
+
+			'''
 			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
 
 
@@ -485,13 +493,13 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			color_base[..., 1] = 1
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_HSV2BGR)
 			#ovl[..., 0] = 1
-
+			
 			b_channel, g_channel, r_channel = cv2.split(color_base)
 
 			print(b_channel.shape, alpha_channel.shape)
-			img_BGRA = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))
-
-			overlay = cv2.resize( img_BGRA,  (224, 224), interpolation=cv2.INTER_NEAREST)
+			overlay = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))
+			'''
+			overlay = cv2.resize( overlay,  (224, 224), interpolation=cv2.INTER_NEAREST)
 			overlay = overlay.astype(np.uint8)
 			#overlay = (src + overlay)/2
 
