@@ -512,7 +512,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			
 			#combined
 			src = Image.alpha_composite(src, s)
-			background.paste(out,(frame * img_w, 0))
+			background.paste(src,(frame * img_w, 0))
 
 			#separate
 			#out = Image.alpha_composite(src, s)
