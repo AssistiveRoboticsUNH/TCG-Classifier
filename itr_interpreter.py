@@ -467,7 +467,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 	video_length = am.shape[1]
 	img_w, img_h = raw_data.shape[2], raw_data.shape[3]
-	background = Image.new('RGBA',(img_w, img_h*video_length), (255, 255, 255, 255))
+	background = Image.new('RGBA',(img_w*video_length, img_h*len(feature_dict)), (255, 255, 255, 255))
 	bg_w, bg_h = background.size
 
 	
@@ -505,11 +505,14 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 		for i, s in enumerate(stack):
 			
-			src = Image.alpha_composite(src, s)
+			#src = Image.alpha_composite(src, s)
+
+
+			out = Image.alpha_composite(src, s)
 			#Image.alpha_composite(src, s).save("viz_spat_"+str(i)+".png", "PNG")
-		
+			background.paste(out,(frame * img_w, i * img_h))
 		#src.save("viz_spat.png", "PNG")
-		background.paste(src,(0, frame * img_h))
+		
 	background.save("viz_spat.png", "PNG")
 
 
