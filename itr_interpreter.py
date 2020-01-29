@@ -491,7 +491,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			#print("alpha_channel:", alpha_channel)
 
-			color_base = np.ones_like(alpha_channel)
+			color_base = np.ones_like(alpha_channel) * 255
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_BGR2HSV)
 			color_base[..., 0] = event_colors[e]
