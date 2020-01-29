@@ -493,7 +493,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_BGR2HSV)
 			color_base[..., 0] = event_colors[e]
-			color_base[..., 1] = 1
+			#color_base[..., 1] = 1
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_HSV2BGR)
 			#ovl[..., 0] = 1
 			
