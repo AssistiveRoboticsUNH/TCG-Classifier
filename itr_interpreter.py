@@ -504,7 +504,7 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 			
 			b_channel, g_channel, r_channel = cv2.split(color_base)
 
-			overlay = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))
+			overlay = cv2.merge((r_channel, g_channel, b_channel, alpha_channel))
 			
 			overlay = cv2.resize( overlay,  (224, 224), interpolation=cv2.INTER_NEAREST)
 			overlay = Image.fromarray(overlay.astype(np.uint8))
