@@ -527,9 +527,9 @@ def visualize_example(ex, sess, input_placeholder, activation_map, feature_dict,
 
 			for i in range(s.shape[0]):
 				for j in range(s.shape[1]):
-					opac = np.sum(s[i, j])/3
+					opac = np.sum(s[i, j])/3/255
 
-					src[i, j] = src[i, j] * (1-opac) + s[i, j] * (opac)
+					src[i, j] = src[i, j] * (1-opac) + s[i, j] * opac
 		
 	print(src[0, 0])
 	cv2.imwrite("viz_spat.png", src)
