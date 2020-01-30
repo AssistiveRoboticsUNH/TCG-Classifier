@@ -662,7 +662,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			max_point = np.unravel_index(np.argmax(alpha_channel, axis=None), alpha_channel.shape)
 			print("max_point:", max_point, alpha_channel.shape)
 
-			scale = src.height/alpha_channel.shape[0]
+			scale = src.shape[0]/alpha_channel.shape[0]
 			max_point = np.array(list(max_point)) * scale
 			print("max_point:", max_point)
 

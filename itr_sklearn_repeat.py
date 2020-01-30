@@ -52,8 +52,10 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 			tcg.add_file_to_corpus(ex['txt_path'], ex['label'])
 		print("fitting model...")
 
+
 		t_s = time.time()
 		tcg.fit()
+		tcg.save_model(os.path.join(save_file, filename))
 
 		print("elapsed:", time.time()-t_s)
 		
@@ -76,7 +78,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 
 			print(os.path.join(save_file, filename))
 
-			tcg.save_model(os.path.join(save_file, filename))
+			
 			max_accuracy = cur_accuracy
 
 		print("Training depth: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(depth, iteration, repeat, cur_accuracy, max_accuracy))
