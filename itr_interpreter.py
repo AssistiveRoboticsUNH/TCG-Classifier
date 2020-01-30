@@ -632,7 +632,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 		#b_channel, g_channel, r_channel = cv2.split(src)
 		#src = Image.fromarray(cv2.merge((r_channel, g_channel, b_channel, np.ones_like(b_channel)*255 )))
-
+		src = Image.fromarray(src)
 		stack = []
 
 		for e in feature_dict:
@@ -662,7 +662,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			max_point = np.unravel_index(np.argmax(alpha_channel, axis=None), alpha_channel.shape)
 			print("max_point:", max_point, alpha_channel.shape)
 
-			scale = 255/alpha_channel.shape[0]
+			scale = src.height/alpha_channel.shape[0]
 			max_point = np.array(list(max_point)) * scale
 			print("max_point:", max_point)
 
