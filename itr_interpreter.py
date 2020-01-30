@@ -663,23 +663,23 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
 			max_point = np.unravel_index(np.argmax(alpha_channel, axis=None), alpha_channel.shape)
-			print("max_point:", max_point, alpha_channel.shape)
+			#print("max_point:", max_point, alpha_channel.shape)
 
 			scale = src.shape[0]/alpha_channel.shape[0]
 			max_point = np.array(list(max_point)) * scale
-			print("max_point:", max_point)
+			#print("max_point:", max_point)
 
 			r=10
 			c = colorsys.hsv_to_rgb((event_colors[e]/360.0), 1.0, 1.0)
 			c = tuple([int(255*x) for x in list(c)])
 
 			#print("src:", src.shape)
-			print("max_point:", max_point)
-			print("radius:", r)
-			print("color:", c)
+			#print("max_point:", max_point)
+			#print("radius:", r)
+			#print("color:", c)
 
-			print(e)
-			print([e_n.name for e_n in event_times])
+			#print(e)
+			#print([e_n.name for e_n in event_times])
 
 			for e_n in event_times:
 				if(e_to_idx( e_n.name ) == e):
@@ -703,7 +703,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 			#background.paste(src,((f_idx+1) * img_w, 0))
 
-		print("src:", src[0,0])
+		#print("src:", src[0,0])
 		src = Image.fromarray(src)
 
 		#src.save(out_name, "PNG")
@@ -829,7 +829,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		sess.graph.finalize()
 	
 
-		for depth in range(2,3):#5):
+		for depth in range(5):
 
 			dir_name = os.path.join(dir_root, str(depth))
 
