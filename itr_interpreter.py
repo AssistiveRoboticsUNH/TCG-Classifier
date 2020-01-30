@@ -632,7 +632,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 		#b_channel, g_channel, r_channel = cv2.split(src)
 		#src = Image.fromarray(cv2.merge((r_channel, g_channel, b_channel, np.ones_like(b_channel)*255 )))
-		src = Image.fromarray(src)
+		
 		stack = []
 
 		for e in feature_dict:
@@ -693,7 +693,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			#background.paste(out,((f_idx+1) * img_w, i * img_h))
 
 			#background.paste(src,((f_idx+1) * img_w, 0))
-
+		src = Image.fromarray(src)
 		background.paste(src,((f_idx+1) * img_w, 0))
 
 
