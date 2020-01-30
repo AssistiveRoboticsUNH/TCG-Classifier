@@ -354,7 +354,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	if (len(X) > 0):
 		bandwidth = estimate_bandwidth(X, quantile=0.15)
 	else:
-		return
+		return files[top], []
 
 	if (bandwidth > 0):
 		#clustering
