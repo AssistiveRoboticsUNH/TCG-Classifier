@@ -630,8 +630,8 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 		src = adjust_gamma(src, gamma=1.5)
 
-		b_channel, g_channel, r_channel = cv2.split(src)
-		src = Image.fromarray(cv2.merge((r_channel, g_channel, b_channel, np.ones_like(b_channel)*255 )))
+		#b_channel, g_channel, r_channel = cv2.split(src)
+		#src = Image.fromarray(cv2.merge((r_channel, g_channel, b_channel, np.ones_like(b_channel)*255 )))
 
 		stack = []
 
