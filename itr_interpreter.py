@@ -674,7 +674,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			print("radius:", r)
 			print("color:", c)
 
-			cv2.circle(src, max_point, r, c, 3)
+			src = cv2.circle(src, max_point, r, c, 3)
 
 
 
