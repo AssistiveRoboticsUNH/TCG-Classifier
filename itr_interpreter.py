@@ -660,12 +660,13 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
 			max_point = np.unravel_index(np.argmax(alpha_channel, axis=None), alpha_channel.shape)
+			print("max_point:", max_point, max_point.shape)
 
 			scale = 255/alpha_channel.shape[0]
 			max_point *= scale
 			print("max_point:", max_point)
 
-			cv2.circle(src, max_point, 10, colorsys.hsv_to_rgb((event_colors[e]/360.0), 1.0, 1.0), 3)
+			cv2.circle(src, (max_point), 10, colorsys.hsv_to_rgb((event_colors[e]/360.0), 1.0, 1.0), 3)
 
 
 
