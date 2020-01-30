@@ -613,6 +613,9 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 	background = Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255))
 	bg_w, bg_h = background.size
 
+	event_times = [e for e in sorted( tcg.read_file(files[top]["txt_path"]) ) if e.name in feature_dict]
+
+
 
 	for f_idx, frame in enumerate(salient_frames):
 	#for frame in range(video_length):
@@ -675,7 +678,13 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			print("radius:", r)
 			print("color:", c)
 
-			src = cv2.circle(src, tuple(max_point), r, c, 3)
+			print(e.name)
+			print([e_n.name for e_n in event_times])
+
+			for e_n in event_times:
+				if(e_n.name == e.name):
+					if(e_n.start < frame and e_n.end > frame):
+						src = cv2.circle(src, tuple(max_point), r, c, 3)
 
 
 
