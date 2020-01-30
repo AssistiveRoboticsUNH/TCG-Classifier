@@ -327,6 +327,8 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 			itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
 			itr = "{0}-{1}-{2}".format(e1.name, itr_name, e2.name)
 
+			print(itr)
+
 			if(itr in itr_colors):				
 
 				salient_frames.add(e1.start)
