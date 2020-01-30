@@ -591,7 +591,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 
 
-	video_length = am.shape[1]#len(salient_frames)#am.shape[1]
+	video_length = len(salient_frames)#am.shape[1]
 	img_w, img_h = raw_data.shape[2], raw_data.shape[3]
 
 	#separate
@@ -614,8 +614,8 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 	bg_w, bg_h = background.size
 
 
-	#for f_idx, frame in enumerate(salient_frames):
-	for frame in range(video_length):
+	for f_idx, frame in enumerate(salient_frames):
+	#for frame in range(video_length):
 		f_idx = frame	
 		#print("f_idx:", f_idx, frame)
 
