@@ -678,11 +678,11 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			print("radius:", r)
 			print("color:", c)
 
-			print(e.name)
+			print(e)
 			print([e_n.name for e_n in event_times])
 
 			for e_n in event_times:
-				if(e_n.name == e.name):
+				if(e_to_idx( e_n.name ) == e):
 					if(e_n.start < frame and e_n.end > frame):
 						src = cv2.circle(src, tuple(max_point), r, c, 3)
 
