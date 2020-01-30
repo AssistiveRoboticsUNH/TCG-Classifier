@@ -342,6 +342,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 			j+=1
 
+	print("len(salient_frames):", len(salient_frames))
 
 	salient_frames = sorted(list(salient_frames))
 	salient_frames = [int(x-3) for x in salient_frames]
