@@ -604,7 +604,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 	#font = ImageFont.truetype("sans-serif.ttf", 16)
 
 	for i, e in enumerate(feature_dict.keys()):
-		label = cv
+		
 		draw.text((0, i * img_h),"0",(255,255,255))#,font=font)
 
 
