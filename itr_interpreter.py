@@ -153,7 +153,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 			top = f 
 			itr_count = eg_count
 
-	print(files[f]["txt_path"])
+	print(files[top]["txt_path"])
 	'''
 	# find best performing examples
 
