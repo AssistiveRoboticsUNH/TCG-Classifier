@@ -693,7 +693,10 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			#background.paste(out,((f_idx+1) * img_w, i * img_h))
 
 			#background.paste(src,((f_idx+1) * img_w, 0))
+
+		print("src:", src[0,0])
 		src = Image.fromarray(src)
+
 		background.paste(src,((f_idx+1) * img_w, 0))
 
 
