@@ -807,7 +807,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		sess.graph.finalize()
 	
 
-		for depth in range(5):
+		for depth in range(2,3):#5):
 
 			dir_name = os.path.join(dir_root, str(depth))
 
@@ -831,7 +831,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			filename = save_file.replace('/', '_')+'_'+str(depth)
 			tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
-			for label in range(num_classes):
+			for label in range(1):#num_classes):
 
 				label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
 
