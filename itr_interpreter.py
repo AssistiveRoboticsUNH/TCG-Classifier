@@ -697,7 +697,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		print("src:", src[0,0])
 		src = Image.fromarray(src)
 
-		background.paste(src,((f_idx+1) * img_w, 0))
+		background.paste(src,((f_idx+1) * img_w, img_h))
 
 
 		#src.save("viz_spat.png", "PNG")
