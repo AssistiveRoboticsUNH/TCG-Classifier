@@ -697,14 +697,14 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		print("src:", src[0,0])
 		src = Image.fromarray(src)
 
-		src.save(out_name, "PNG")
-		#background.paste(src,((f_idx+1) * img_w, img_h))
+		#src.save(out_name, "PNG")
+		background.paste(src,((f_idx+1) * img_w, img_h))
 
 
 		#src.save("viz_spat.png", "PNG")
 		
 	background.resize((background.width/2,background.height/2))
-	#background.save(out_name, "PNG")
+	background.save(out_name, "PNG")
 
 
 def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="frames.png"):
