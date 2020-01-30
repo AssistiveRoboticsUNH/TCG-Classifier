@@ -616,7 +616,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 	for f_idx, frame in enumerate(salient_frames):
 	#for frame in range(video_length):
-		f_idx = frame	
+		#f_idx = frame	
 		#print("f_idx:", f_idx, frame)
 
 		max_window_scale = [2, 2, 2, 4, 8]
@@ -698,7 +698,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		src = Image.fromarray(src)
 
 		#src.save(out_name, "PNG")
-		background.paste(src,((f_idx+1) * img_w, img_h))
+		background.paste(src,((f_idx+1) * img_w, img_h/2))
 
 
 		#src.save("viz_spat.png", "PNG")
