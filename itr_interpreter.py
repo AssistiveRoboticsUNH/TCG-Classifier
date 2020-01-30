@@ -601,11 +601,11 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 
 	draw = ImageDraw.Draw(background)
-	font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSansBold.ttf', 16)
+	font = ImageFont.truetype("arial.ttf", 40)
 
 	for i, e in enumerate(feature_dict.keys()):
 		
-		draw.text((0, i * img_h),str(e),(0,0,0),font=font)
+		draw.text((img_w/2, i * img_h+img_h/2),str(e),(0,0,0),font=font)
 
 
 
