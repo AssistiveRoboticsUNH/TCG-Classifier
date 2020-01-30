@@ -567,6 +567,9 @@ def adjust_gamma(image, gamma=1.0):
 
 def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors, min_max_vals, salient_frames, itr_colors, out_name="frames.png"):
 	
+	if(len(salient_frames) == 0):
+		return
+
 	isRGB=True
 
 	# process files
