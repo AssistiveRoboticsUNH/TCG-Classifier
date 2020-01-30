@@ -21,6 +21,8 @@ from itertools import product
 from string import ascii_lowercase
 
 from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw 
 
 from matplotlib import rc
 rc('text', usetex=True)
@@ -596,8 +598,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 	background = Image.new('RGBA',(img_w*(video_length+1), img_h*len(feature_dict)), (255, 255, 255, 255))
 
 
-	from PIL import ImageFont
-	from PIL import ImageDraw 
+
 
 	draw = ImageDraw.Draw(background)
 	font = ImageFont.truetype("sans-serif.ttf", 16)
