@@ -675,7 +675,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			print("radius:", r)
 			print("color:", c)
 
-			#cv2.circle(src, tuple(max_point), r, c, 3)
+			src = cv2.circle(src, tuple(max_point), r, c, 3)
 
 
 
@@ -698,7 +698,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		src = Image.fromarray(src)
 
 		#src.save(out_name, "PNG")
-		background.paste(src,((f_idx+1) * img_w, img_h/2))
+		background.paste(src,((f_idx) * img_w, 0))
 
 
 		#src.save("viz_spat.png", "PNG")
