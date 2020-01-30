@@ -668,6 +668,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 			r=10
 			c = colorsys.hsv_to_rgb((event_colors[e]/360.0), 1.0, 1.0)
+			c = tuple([int(255*x) for x in list(c)])
 
 			print("src:", src.shape)
 			print("max_point:", max_point)
