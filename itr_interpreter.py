@@ -825,9 +825,10 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 				iad_name = os.path.join(dir_name, label_name+'_iad_'+str(depth)+'.png')
 				file_ex, salient_frames = find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name=iad_name)
 				
+				frames_name = os.path.join(dir_name, label_name+'_frames_'+str(depth)+'.png')
+				
 				'''
 				if(len(salient_frames) > 0):
-					frames_name = os.path.join(dir_name, label_name+'_frames_'+str(depth)+'.png')
 					find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name=frames_name)
 
 				print('----------------')
