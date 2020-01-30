@@ -605,7 +605,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 	for i, e in enumerate(feature_dict.keys()):
 		
-		draw.text((0, i * img_h),"0",(255,255,255))#,font=font)
+		draw.text((0, i * img_h),str(e),(255,255,255))#,font=font)
 
 
 
