@@ -614,7 +614,8 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 	bg_w, bg_h = background.size
 
 
-	for f_idx, frame in enumerate(range(video_length)):#salient_frames):#
+	#for f_idx, frame in enumerate(salient_frames):
+	for frame in range(video_length):	
 		print("f_idx:", f_idx, frame)
 
 		max_window_scale = [2, 2, 2, 4, 8]
