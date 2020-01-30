@@ -561,7 +561,7 @@ def adjust_gamma(image, gamma=1.0):
       for i in np.arange(0, 256)])
    return cv2.LUT(image.astype(np.uint8), table.astype(np.uint8))
 
-def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors, min_max_vals, salient_frames, itr_colors):
+def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors, min_max_vals, salient_frames, itr_colors, out_name="frames.png"):
 	
 	isRGB=True
 
@@ -667,7 +667,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 		#src.save("viz_spat.png", "PNG")
 		
-	background.save("viz_spat_d"+str(depth)+".png", "PNG")
+	background.save(out_name, "PNG")
 
 
 def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="frames.png"):
@@ -807,7 +807,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			filename = save_file.replace('/', '_')+'_'+str(depth)
 			tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
-			for label in range(1):#num_classes):
+			for label in range(num_classes):
 
 				label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
 
@@ -833,7 +833,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 				print('----------------')
 				'''
 
-				visualize_example(tcg, file_ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors, min_max_vals, salient_frames, colors)
+				visualize_example(tcg, file_ex, sess, input_placeholder, activation_map, feature_dict, depth, event_colors, min_max_vals, salient_frames, colors, out_name=frames_name)
 
 if __name__ == '__main__':
 	import argparse
