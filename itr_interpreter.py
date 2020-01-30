@@ -638,7 +638,9 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		for e in feature_dict:
 			#get spatial info from activation map
 			
+			'''
 			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
+
 
 			color_base = np.ones_like(alpha_channel) * 255
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
@@ -654,8 +656,21 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			overlay = Image.fromarray(overlay.astype(np.uint8))
 
 			stack.append(overlay)
+			'''
 
-		for i, s in enumerate(stack):
+			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
+			max_point = np.unravel_index(np.argmax(alpha_channel, axis=None), alpha_channel.shape)
+
+			scale = 255/alpha_channel.shape[0]
+			max_point *= scale
+			print("max_point:", max_point)
+
+			cv2.circle(src, max_point, 10, colorsys.hsv_to_rgb((event_colors[e]/360.0), 1.0, 1.0), 3)
+
+
+
+
+		#for i, s in enumerate(stack):
 			
 			#combined
 			#src = Image.alpha_composite(src, s)
@@ -663,9 +678,14 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			#background.paste(src,((f_idx+1) * img_w, 0))
 
 			#separate
-			out = Image.alpha_composite(src, s)
+			#out = Image.alpha_composite(src, s)
 			#background.paste(out,(frame * img_w, i * img_h))
-			background.paste(out,((f_idx+1) * img_w, i * img_h))
+			#background.paste(out,((f_idx+1) * img_w, i * img_h))
+
+			#background.paste(src,((f_idx+1) * img_w, 0))
+
+		background.paste(src,((f_idx+1) * img_w, 0))
+
 
 		#src.save("viz_spat.png", "PNG")
 		
@@ -818,7 +838,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 				# generate a plot that shows the top 5 and bottom five features for each label.
 				feat_name = os.path.join(dir_name, label_name+'_feat_'+str(depth)+'.png')
 				title = label_name.upper().replace('_', ' ')+", Depth "+str(depth)
-				top_features, colors, event_colors = generate_top_bottom_table(tcg, label, count=10, out=feat_name, title=title)
+				top_features, colors, event_colors = generate_top_bottom_table(tcg, label, count=5, out=feat_name, title=title)
 
 				graph_name = os.path.join(dir_name, label_name+'_graph_'+str(depth)+'.png')
 				make_graph(top_features, colors, save_name, event_colors, name=graph_name)
