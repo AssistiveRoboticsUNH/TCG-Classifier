@@ -71,7 +71,7 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	importance, feature_names = importance[::-1], feature_names[::-1]
 
 	idx = [i for i in range(len(feature_names)) if feature_names[i].find('-d-') == -1]
-	#importance, feature_names = importance[idx], feature_names[idx]
+	importance, feature_names = importance[idx], feature_names[idx]
 
 	assert count > 0, "Count value must be greater than 0"
 
@@ -461,8 +461,8 @@ def make_graph(top_features, itr_colors, save_name, event_colors, name="graph.pn
 		# pydot HSV goes up to 360 rather than 256
 		c = itr_colors[itr]/360.0
 
-		edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1], round(c, 3))
-		#edges += '{0} -> {1} [label="{2}" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1])
+		#edges += '{0} -> {1} [label="{2}" color="{3} 1.0 1.0" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1], round(c, 3))
+		edges += '{0} -> {1} [label="{2}" ]\n'.format(e_to_idx(itr_s[0]), e_to_idx(itr_s[2]), itr_s[1])
 
 
 	# add nodes to the dot file
