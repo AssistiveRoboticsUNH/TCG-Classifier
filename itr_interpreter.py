@@ -311,7 +311,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	from sklearn.cluster import MeanShift, estimate_bandwidth
 
 	salient_frames = Set()
-	events = sorted( tcg.read_file(ex["txt_path"]) )
+	events = sorted( tcg.read_file(files[top]["txt_path"]) )
 
 	print("len(events):", len(events))
 	print("itr_colors:", itr_colors.keys())
@@ -327,8 +327,6 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 			#get the ITRs in the IAD
 			itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
 			itr = "{0}-{1}-{2}".format(e1.name, itr_name, e2.name)
-
-			print(itr)
 
 			if(itr in itr_colors):				
 
