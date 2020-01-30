@@ -663,7 +663,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			print("max_point:", max_point, alpha_channel.shape)
 
 			scale = 255/alpha_channel.shape[0]
-			max_point *= scale
+			max_point = np.array(list(max_point)) * scale
 			print("max_point:", max_point)
 
 			cv2.circle(src, (max_point), 10, colorsys.hsv_to_rgb((event_colors[e]/360.0), 1.0, 1.0), 3)
