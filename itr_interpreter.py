@@ -369,7 +369,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 			print "cluster {0}: {1}, {2}".format(k, X[my_members, 0]#
 				, np.mean(X[my_members, 0]))
 
-		salient_frames = [int(np.mean(X[labels == k, 0])) for k in range(n_clusters_)]
+		salient_frames = [int(np.mean(X[labels == k, 0])) for k in range(n_clusters_) if len(X[labels == k, 0]) != 0]
 
 		salient_frames = sorted(list(salient_frames))
 	
