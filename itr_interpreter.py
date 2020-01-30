@@ -652,7 +652,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 		#src.save("viz_spat.png", "PNG")
 		
-	background.save("viz_spat.png", "PNG")
+	background.save("viz_spat_d"+str(depth)+".png", "PNG")
 
 
 def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="frames.png"):
@@ -768,7 +768,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		sess.graph.finalize()
 	
 
-		for depth in range(2,3):#4,5):
+		for depth in range(5):
 
 			dir_name = os.path.join(dir_root, str(depth))
 
