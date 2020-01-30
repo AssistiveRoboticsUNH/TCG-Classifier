@@ -611,7 +611,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		#src[..., 2] = 125
 		#src = cv2.cvtColor(src,cv2.COLOR_HSV2BGR)
 
-		src = adjust_gamma(src, gamma=0.5)
+		#src = adjust_gamma(src, gamma=0.5)
 
 		b_channel, g_channel, r_channel = cv2.split(src)
 		src = Image.fromarray(cv2.merge((r_channel, g_channel, b_channel, np.ones_like(b_channel)*255 )))
