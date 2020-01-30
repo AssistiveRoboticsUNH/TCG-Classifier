@@ -591,7 +591,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 
 
-	video_length = len(salient_frames)#am.shape[1]
+	video_length = len(am.shape[1])#salient_frames)#am.shape[1]
 	img_w, img_h = raw_data.shape[2], raw_data.shape[3]
 
 	#separate
