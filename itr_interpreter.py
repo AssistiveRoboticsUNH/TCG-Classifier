@@ -593,7 +593,20 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 	img_w, img_h = raw_data.shape[2], raw_data.shape[3]
 
 	#separate
-	background = Image.new('RGBA',(img_w*video_length, img_h*len(feature_dict)), (255, 255, 255, 255))
+	background = Image.new('RGBA',(img_w*(video_length+1), img_h*len(feature_dict)), (255, 255, 255, 255))
+
+
+	from PIL import ImageFont
+	from PIL import ImageDraw 
+
+	draw = ImageDraw.Draw(background)
+	font = ImageFont.truetype("sans-serif.ttf", 16)
+
+	for i, e in enumerate(feature_dict.keys()):
+		label = cv
+		draw.text((0, i * img_h),"0",(255,255,255),font=font)
+
+
 
 	#combined
 	#background = Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255))
@@ -644,12 +657,12 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			#combined
 			#src = Image.alpha_composite(src, s)
 			#background.paste(src,(frame * img_w, 0))
-			#background.paste(src,(f_idx * img_w, 0))
+			#background.paste(src,((f_idx+1) * img_w, 0))
 
 			#separate
 			out = Image.alpha_composite(src, s)
 			#background.paste(out,(frame * img_w, i * img_h))
-			background.paste(out,(f_idx * img_w, i * img_h))
+			background.paste(out,((f_idx+1) * img_w, i * img_h))
 
 		#src.save("viz_spat.png", "PNG")
 		
