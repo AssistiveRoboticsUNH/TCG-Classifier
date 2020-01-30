@@ -669,6 +669,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 		#src.save("viz_spat.png", "PNG")
 		
+	background.resize((background.width/2,background.height/2))
 	background.save(out_name, "PNG")
 
 
