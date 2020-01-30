@@ -595,9 +595,9 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 	img_w, img_h = raw_data.shape[2], raw_data.shape[3]
 
 	#separate
-	background = Image.new('RGBA',(img_w*(video_length+1), img_h*len(feature_dict)), (255, 255, 255, 255))
+	#background = Image.new('RGBA',(img_w*(video_length+1), img_h*len(feature_dict)), (255, 255, 255, 255))
 
-
+	'''
 
 
 	draw = ImageDraw.Draw(background)
@@ -606,11 +606,11 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 	for i, e in enumerate(feature_dict.keys()):
 		
 		draw.text((img_w/2, (i * img_h)+(img_h/2)- 20),str(e),(0,0,0),font=font)
-
+	'''
 
 
 	#combined
-	#background = Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255))
+	background = Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255))
 	bg_w, bg_h = background.size
 
 
