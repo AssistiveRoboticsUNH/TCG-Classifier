@@ -313,7 +313,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	salient_frames = Set()
 	events = sorted( tcg.read_file(ex["txt_path"]) )
 
-	print(len(events))
+	print("len(events):", len(events))
 
 	for i in range(len(events)):
 
@@ -341,6 +341,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 				print("f2:", e_to_idx(e2.name), e2.start, e2.end)
 
 			j+=1
+
 
 	salient_frames = sorted(list(salient_frames))
 	salient_frames = [int(x-3) for x in salient_frames]
