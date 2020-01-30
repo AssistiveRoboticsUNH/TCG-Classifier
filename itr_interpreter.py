@@ -615,8 +615,9 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 
 	#for f_idx, frame in enumerate(salient_frames):
-	for frame in range(video_length):	
-		print("f_idx:", f_idx, frame)
+	for frame in range(video_length):
+		f_idx = frame	
+		#print("f_idx:", f_idx, frame)
 
 		max_window_scale = [2, 2, 2, 4, 8]
 
