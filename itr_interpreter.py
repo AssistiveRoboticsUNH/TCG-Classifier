@@ -347,10 +347,12 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	salient_frames = sorted(list(salient_frames))
 	salient_frames = [int(x-3) for x in salient_frames]
 
-	if (len(salient_frames) > 6):
+	X = np.array(zip(np.array(salient_frames),np.zeros(len(np.array(salient_frames)))), dtype=np.int)
+	bandwidth = estimate_bandwidth(X, quantile=0.15)
+
+	if (bandwidth > 0):
 		#clustering
-		X = np.array(zip(np.array(salient_frames),np.zeros(len(np.array(salient_frames)))), dtype=np.int)
-		bandwidth = estimate_bandwidth(X, quantile=0.15)
+		
 		ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
 		ms.fit(X)
 		labels = ms.labels_
