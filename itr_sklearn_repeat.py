@@ -46,12 +46,16 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
 		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		
+		save_file = os.path.join(save_name, str(dataset_id), dataset_type)
+		print(save_file)
+		
 		# TRAIN
 		#print("adding data...")
 		for ex in train_data:
 			tcg.add_file_to_corpus(ex['txt_path'], ex['label'])
 		print("fitting model...")
 
+		
 
 		t_s = time.time()
 		tcg.fit()
@@ -70,8 +74,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 
 		if(cur_accuracy > max_accuracy and save_name != ""):
 
-			save_file = os.path.join(save_name, str(dataset_id), dataset_type)
-			print(save_file)
+			
 			filename = save_file.replace('/', '_')+'_'+str(depth)#+".joblib"
 			if (not os.path.exists(save_file)):
 				os.makedirs(save_file)
