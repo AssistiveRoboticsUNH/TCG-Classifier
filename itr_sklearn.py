@@ -188,7 +188,7 @@ class ITR_Extractor:
 
 		print(train_mat.shape)
 		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
-		self.clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr').fit(train_mat, np.array(self.labels))
+		self.clf.fit(train_mat, np.array(self.labels))
 		#self.clf = OneVsRestClassifier(svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear')).fit(train_mat, np.array(self.labels))
 
 		#self.clf = RandomForestClassifier(n_estimators=100).fit(train_mat, np.array(self.labels))
@@ -243,6 +243,7 @@ class ITR_Extractor:
 		self.evallabels = []
 
 		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
+		self.clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		
 		if(save_name != ""):
 			print("load model:", save_name)
