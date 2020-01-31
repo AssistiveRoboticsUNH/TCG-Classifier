@@ -890,7 +890,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 			filename = save_file.replace('/', '_')+'_'+str(depth)
 			tcg = ITR_Extractor(num_classes, os.path.join(save_file, filename))
 
-			label_targets = ["Basketball", "FloorGymnastics"]
+			label_targets = ["SwingBaseball", "FallFloor"]
 			label_ids = [ex['label'] for ex in csv_contents if ex['label_name'] in label_targets]
 
 			label_ids = list(Set(label_ids))
