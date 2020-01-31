@@ -659,7 +659,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			color_base = np.ones_like(alpha_channel) * 255
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_GRAY2BGR)
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_BGR2HSV)
-			color_base[..., 0] = event_colors[e]
+			color_base[..., 0] = event_colors[e]/360.0
 			color_base[..., 1] = 1
 			color_base = cv2.cvtColor(color_base,cv2.COLOR_HSV2BGR)
 			
@@ -688,8 +688,8 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			#print("max_point:", max_point)
 
 			r = 10
-			c = colorsys.hsv_to_rgb((event_colors[e]/255.0), 1.0, 1.0)
-			c = tuple([int(255*x) for x in list(c)])
+			c = colorsys.hsv_to_rgb((event_colors[e]/360.0), 1.0, 1.0)
+			#c = tuple([int(255*x) for x in list(c)])
 
 			#print("src:", src.shape)
 			#print("max_point:", max_point)
