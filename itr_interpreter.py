@@ -700,7 +700,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		src = Image.fromarray(cv2.merge((r_channel, g_channel, b_channel, np.ones_like(b_channel)*255 )))
 		
 		#print("src:", src[0,0])
-		src = Image.fromarray(src)
+		#src = Image.fromarray(src)
 
 		
 
