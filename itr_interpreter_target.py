@@ -599,7 +599,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 
 
-	video_length = len(salient_frames)#am.shape[1]
+	video_length = am.shape[1]#len(salient_frames)#am.shape[1]
 	img_w, img_h = raw_data.shape[2], raw_data.shape[3]
 
 	#separate
@@ -618,16 +618,20 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 
 	#combined
-	background = Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255))
+	#background = Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255))
+	background = []
+	for n in range(len(feature_dict)+1):
+		background.append(Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255)))
+
 	bg_w, bg_h = background.size
 
 	event_times = [e for e in sorted( tcg.read_file(ex["txt_path"]) ) if e_to_idx( e.name ) in feature_dict]
 
 
 
-	for f_idx, frame in enumerate(salient_frames):
-	#for frame in range(video_length):
-		#f_idx = frame	
+	#for f_idx, frame in enumerate(salient_frames):
+	for frame in range(video_length):
+		f_idx = frame	
 		#print("f_idx:", f_idx, frame)
 
 		max_window_scale = [2, 2, 2, 4, 8]
@@ -703,7 +707,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			for e_n in event_times:
 				if(e_to_idx( e_n.name ) == e):
 					if(e_n.start < frame and e_n.end > frame):
-						src = cv2.circle(src, tuple(max_point), r, c, 3)
+						#src = cv2.circle(src, tuple(max_point), r, c, 3)
 						include_features = True
 			if(include_features):
 				stack.append(Image.fromarray(overlay.astype(np.uint8)))
@@ -721,7 +725,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		for i, s in enumerate(stack):
 			
 			#combined
-			src = Image.alpha_composite(src, s)
+			#src = Image.alpha_composite(src, s)
 			#background.paste(src,(frame * img_w, 0))
 			#background.paste(src,((f_idx) * img_w, 0))
 
@@ -731,15 +735,20 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			#background.paste(out,((f_idx+1) * img_w, i * img_h))
 
 			#background.paste(src,((f_idx+1) * img_w, 0))
+			background[i+1].paste(s,((f_idx) * img_w, 0))
 
 		#src.save(out_name, "PNG")
-		background.paste(src,((f_idx) * img_w, 0))
+		background[0].paste(src,((f_idx) * img_w, 0))
 
 
 		#src.save("viz_spat.png", "PNG")
 		
 	background.resize((background.width/2,background.height/2))
 	background.save(out_name, "PNG")
+
+	for n in range(len(background)):
+		background[n].resize((background[n].width/2,background[n].height/2))
+		background[n].save(out_name+'_'+str(n)+".png", "PNG")
 
 
 def find_video_frames(dataset_dir, file_ex, salient_frames, depth, out_name="frames.png"):
@@ -906,7 +915,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 				iad_name = os.path.join(dir_name, label_name+'_iad_'+str(depth)+'.png')
 				file_ex, salient_frames = find_best_matching_IAD(tcg, label, top_features, colors, csv_contents, out_name=iad_name)
 				
-				frames_name = os.path.join(dir_name, label_name+'_frames_'+str(depth)+'.png')
+				frames_name = os.path.join(dir_name, label_name+'_frames_'+str(depth))
 
 				'''
 				if(len(salient_frames) > 0):
