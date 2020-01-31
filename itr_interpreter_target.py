@@ -646,10 +646,10 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		
 		stack = []
 
-		if(54 not in feature_dict):
-			return
+		#if(54 not in feature_dict):
+		#	return
 
-		for e in [54]:#feature_dict:
+		for e in feature_dict:
 			#get spatial info from activation map
 			
 			
