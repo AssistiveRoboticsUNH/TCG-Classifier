@@ -124,7 +124,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 	# find the IAD that best matches the given IADs and color it and save fig
 	files = [ex for ex in csv_contents if ex["label"] == label]
 	
-	'''
+	
 	top = -1
 	itr_count = 0
 
@@ -171,7 +171,7 @@ def find_best_matching_IAD(tcg, label, top_features, itr_colors, csv_contents, o
 
 	# select the greatest decision function in favor of the class
 	top = np.argmax(prob[:, label], axis =0)
-	
+	'''
 
 
 	#SETUP WHICH EVENTS ARE COLORED
@@ -858,8 +858,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 				ex['raw_path'] = os.path.join(dataset_dir, 'frames', ex['label_name'], ex['example_id'])
 				ex['iad_path'] = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id), ex['label_name'], ex['example_id']+"_"+str(depth)+".npz")
 				ex['txt_path'] = os.path.join(dataset_dir, "txt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
-			#csv_contents = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
-			csv_contents = [ex for ex in csv_contents if ex['dataset_id'] == 0]
+			csv_contents = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
+			#csv_contents = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 
 
 			# open saved model
