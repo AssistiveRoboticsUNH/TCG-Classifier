@@ -700,15 +700,14 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		#print("src:", src[0,0])
 		src = Image.fromarray(src)
 
-		#src.save(out_name, "PNG")
-		background.paste(src,((f_idx) * img_w, 0))
+		
 
 		for i, s in enumerate(stack):
 			
 			#combined
-			#src = Image.alpha_composite(src, s)
+			src = Image.alpha_composite(src, s)
 			#background.paste(src,(frame * img_w, 0))
-			background.paste(s,((f_idx) * img_w, 0))
+			#background.paste(src,((f_idx) * img_w, 0))
 
 			#separate
 			#out = Image.alpha_composite(src, s)
@@ -717,7 +716,8 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 			#background.paste(src,((f_idx+1) * img_w, 0))
 
-		
+		#src.save(out_name, "PNG")
+		background.paste(src,((f_idx) * img_w, 0))
 
 
 		#src.save("viz_spat.png", "PNG")
