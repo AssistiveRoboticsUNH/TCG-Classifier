@@ -841,7 +841,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 		sess.graph.finalize()
 	
 
-		for depth in range(5):
+		for depth in range(4, 5):
 
 			dir_name = os.path.join(dir_root, str(depth))
 
