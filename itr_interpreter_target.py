@@ -646,7 +646,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		
 		stack = []
 
-		for e in feature_dict:
+		for e in [54]:#feature_dict:
 			#get spatial info from activation map
 			
 			
