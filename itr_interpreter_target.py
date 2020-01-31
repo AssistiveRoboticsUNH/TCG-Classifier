@@ -623,7 +623,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 	for n in range(len(feature_dict)+1):
 		background.append(Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255)))
 
-	bg_w, bg_h = background.size
+	bg_w, bg_h = background[0].size
 
 	event_times = [e for e in sorted( tcg.read_file(ex["txt_path"]) ) if e_to_idx( e.name ) in feature_dict]
 
