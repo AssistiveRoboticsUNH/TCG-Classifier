@@ -53,6 +53,9 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 			os.makedirs(save_file)
 		print(os.path.join(save_file, filename))
 
+		tcg.save_model(os.path.join(save_file, filename))
+
+
 		# TRAIN
 		#print("adding data...")
 		for ex in train_data:
