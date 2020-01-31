@@ -649,7 +649,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 		for e in feature_dict:
 			#get spatial info from activation map
 			
-			'''
+			
 			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
 
 
@@ -667,7 +667,9 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			overlay = Image.fromarray(overlay.astype(np.uint8))
 
 			stack.append(overlay)
-			'''
+			
+
+
 
 			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
 			max_point = np.unravel_index(np.argmax(alpha_channel, axis=None), alpha_channel.shape)
@@ -695,14 +697,18 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 						src = cv2.circle(src, tuple(max_point), r, c, 3)
 
 
+		#print("src:", src[0,0])
+		src = Image.fromarray(src)
 
+		#src.save(out_name, "PNG")
+		background.paste(src,((f_idx) * img_w, 0))
 
-		#for i, s in enumerate(stack):
+		for i, s in enumerate(stack):
 			
 			#combined
 			#src = Image.alpha_composite(src, s)
 			#background.paste(src,(frame * img_w, 0))
-			#background.paste(src,((f_idx+1) * img_w, 0))
+			background.paste(s,((f_idx) * img_w, 0))
 
 			#separate
 			#out = Image.alpha_composite(src, s)
@@ -711,11 +717,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 			#background.paste(src,((f_idx+1) * img_w, 0))
 
-		#print("src:", src[0,0])
-		src = Image.fromarray(src)
-
-		#src.save(out_name, "PNG")
-		background.paste(src,((f_idx) * img_w, 0))
+		
 
 
 		#src.save("viz_spat.png", "PNG")
