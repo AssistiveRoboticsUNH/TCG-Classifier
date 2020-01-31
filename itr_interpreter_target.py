@@ -671,7 +671,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 			max_point = np.unravel_index(np.argmax(alpha_channel, axis=None), alpha_channel.shape)
 
-			if(f_idx == 5):
+			if(f_idx == 5 and e == 54):
 				print(alpha_channel)
 				print(np.max(alpha_channel))
 				print(max_point)
