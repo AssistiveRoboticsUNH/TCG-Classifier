@@ -872,6 +872,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, num_classes, save_
 
 			label_ids = list(Set(label_ids))
 
+			print(label_ids)
+
 			for label in label_ids:#num_classes):
 
 				label_name = [ex for ex in csv_contents if ex['label'] == label][0]['label_name']
