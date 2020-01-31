@@ -706,9 +706,9 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 						src = cv2.circle(src, tuple(max_point), r, c, 3)
 						include_features = True
 			if(include_features):
-				stack.append(overlay)
+				stack.append(Image.fromarray(overlay.astype(np.uint8)))
 			else:
-				stack.append(np.zeros_like(overlay))
+				stack.append(Image.fromarray(np.zeros_like(overlay).astype(np.uint8)))
 
 		b_channel, g_channel, r_channel = cv2.split(src)
 		src = Image.fromarray(cv2.merge((b_channel, g_channel, r_channel, np.ones_like(b_channel)*255 )))
