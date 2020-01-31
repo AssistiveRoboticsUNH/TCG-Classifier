@@ -621,7 +621,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 	#background = Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255))
 	background = []
 	for n in range(len(feature_dict)+1):
-		background.append(Image.new('RGBA',(img_w*video_length, img_h), (255, 255, 255, 255)))
+		background.append(Image.new('RGBA',(img_w*video_length/2, img_h), (255, 255, 255, 255)))
 
 	bg_w, bg_h = background[0].size
 
