@@ -270,7 +270,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes
 	for ex in train_data:
 		tcg.add_file_to_corpus(ex['txt_path'], ex['label'])
 	print("fitting model...")
-	tcg.fit()
+	#tcg.fit()
 	
 	# CLASSIFY 
 	print("adding eval data...")
