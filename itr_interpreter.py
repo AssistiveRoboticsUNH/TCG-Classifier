@@ -70,7 +70,8 @@ def generate_top_bottom_table(tcg, label, count=10, out="feature_importance.png"
 	importance, feature_names = np.array(importance), np.array(feature_names)
 	importance, feature_names = importance[::-1], feature_names[::-1]
 
-	idx = [i for i in range(len(feature_names)) if feature_names[i].find('-d-') == -1]
+	idx = [i for i in range(len(feature_names)) if feature_names[i].find('-d-') == -1 and 
+	feature_names[i].find('-eq-') == -1 and feature_names[i].find('-b-') == -1]
 	#importance, feature_names = importance[idx], feature_names[idx]
 
 	assert count > 0, "Count value must be greater than 0"
