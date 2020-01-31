@@ -669,7 +669,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			overlay = cv2.resize( overlay,  (224, 224), interpolation=cv2.INTER_NEAREST)
 			overlay = Image.fromarray(overlay.astype(np.uint8))
 
-			stack.append(overlay)
+			
 			
 
 			max_point = np.unravel_index(np.argmax(alpha_channel, axis=None), alpha_channel.shape)
@@ -699,10 +699,16 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			#print(e)
 			#print([e_n.name for e_n in event_times])
 
+			include_features = False
 			for e_n in event_times:
 				if(e_to_idx( e_n.name ) == e):
 					if(e_n.start < frame and e_n.end > frame):
 						src = cv2.circle(src, tuple(max_point), r, c, 3)
+						include_features = True
+			if(include_features):
+				stack.append(overlay)
+			else:
+				stack.append(np.zeros_like(overlay))
 
 		b_channel, g_channel, r_channel = cv2.split(src)
 		src = Image.fromarray(cv2.merge((b_channel, g_channel, r_channel, np.ones_like(b_channel)*255 )))
