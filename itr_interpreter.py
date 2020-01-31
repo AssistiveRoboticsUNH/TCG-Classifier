@@ -671,7 +671,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 
 
 
-			alpha_channel = am[ 0, frame, ..., feature_dict[e]]
+			#alpha_channel = am[ 0, frame, ..., feature_dict[e]]
 			max_point = np.unravel_index(np.argmax(alpha_channel, axis=None), alpha_channel.shape)
 			#print("max_point:", max_point, alpha_channel.shape)
 
@@ -679,7 +679,7 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 			max_point = np.array(list(max_point)) * scale
 			#print("max_point:", max_point)
 
-			r=10
+			r = 10
 			c = colorsys.hsv_to_rgb((event_colors[e]/360.0), 1.0, 1.0)
 			c = tuple([int(255*x) for x in list(c)])
 
@@ -696,7 +696,9 @@ def visualize_example(tcg, ex, sess, input_placeholder, activation_map, feature_
 					if(e_n.start < frame and e_n.end > frame):
 						src = cv2.circle(src, tuple(max_point), r, c, 3)
 
-
+		b_channel, g_channel, r_channel = cv2.split(src)
+		src = Image.fromarray(cv2.merge((r_channel, g_channel, b_channel, np.ones_like(b_channel)*255 )))
+		
 		#print("src:", src[0,0])
 		src = Image.fromarray(src)
 
