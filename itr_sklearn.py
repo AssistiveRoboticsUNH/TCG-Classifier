@@ -27,6 +27,13 @@ import matplotlib.pyplot as plt
 from joblib import dump, load
 import cPickle as pickle
 
+from sklearn.preprocessing import StandardScaler
+x = StandardScaler().fit_transform(x)
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+principalComponents = pca.fit_transform(x)
+#principalDf = pd.DataFrame(data = principalComponents, columns = ['principal component 1', 'principal component 2'])
+
 
 class ITR_Extractor:
 
