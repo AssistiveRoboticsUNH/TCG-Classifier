@@ -6,6 +6,8 @@ from collections import Counter
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
+sys.path.append("../IAD-Parser/TCG/")
+from parser_utils import read_sparse_matrix
 
 
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
@@ -97,12 +99,17 @@ class ITR_Extractor:
 			if (b2 < a1):
 				return 'bi'
 
-
-
-
-
 	def read_file(self, txt_file):
 		
+		sparse_matrix = read_sparse_matrix(txt_file)
+		
+		events = []
+		for i, feature in enumerate(sparse_matrix):
+			for j, pair in enumerate(feature):
+				events.append(self.AtomicEvent(i, j, start=pair[0], end=pair[1]))
+			
+
+		'''
 		events = {}
 		for line in list(open(txt_file, 'r')):
 			line = line.split()
@@ -122,8 +129,8 @@ class ITR_Extractor:
 				events[event_id].start = time
 			else:
 				events[event_id].end = time
-
-		return events.values()
+		'''
+		return events#events.values()
 
 	def all_itrs(self, e1, e2, bound):
 
@@ -186,16 +193,8 @@ class ITR_Extractor:
 	def fit(self):
 		train_mat = self.tfidf.fit_transform(self.corpus)
 
-		print(train_mat.shape)
-		#self.clf = MultinomialNB().fit(train_mat, np.array(self.labels))
 		self.clf.fit(train_mat, np.array(self.labels))
-		#self.clf = OneVsRestClassifier(svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear')).fit(train_mat, np.array(self.labels))
-
-		#self.clf = RandomForestClassifier(n_estimators=100).fit(train_mat, np.array(self.labels))
-
-		#self.clf = SGDClassifier(loss='modified_huber', penalty='l2',alpha=1e-3, random_state=42,max_iter=5, tol=None).fit(train_mat, np.array(self.labels))
-		#self.clf = SGDClassifier(loss='modified_huber', penalty='l2',alpha=1e-4, max_iter=1000, tol=1e-4, verbose=0, n_jobs=-1).fit(train_mat, np.array(self.labels))
-
+	
 	def pred(self, txt_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
 		txt = self.parse_txt_file(txt_file)
@@ -205,13 +204,6 @@ class ITR_Extractor:
 	def eval(self):
 		data = self.tfidf.transform(self.evalcorpus)
 		pred = self.clf.predict(data)
-
-		print( self.clf.predict_proba(data)[0] )
-		print( np.argmax(self.clf.predict_proba(data)[0]), self.evallabels[0] )
-
-		#print(metrics.classification_report(self.evallabels, pred, target_names=self.label_names))
-		#print(metrics.accuracy_score(self.evallabels, pred))
-
 		return metrics.accuracy_score(self.evallabels, pred)
 
 	def save_model(self, name='model'):
@@ -323,16 +315,10 @@ if __name__ == '__main__':
 	parser.add_argument('num_classes', type=int, help='the number of classes in the dataset')
 
 	parser.add_argument('--save_name', default="", help='what to save the model as')
-	#parser.add_argument('dataset_depth', type=int, help='a csv file denoting the files in the dataset')
 
 	FLAGS = parser.parse_args()
 
-	#i=2
-
 	for depth in range(5):
-		print("depth: ", depth)
-
-
 		main(FLAGS.dataset_dir, 
 			FLAGS.csv_filename,
 			FLAGS.dataset_type,

@@ -18,126 +18,97 @@ from sklearn.linear_model import SGDClassifier
 import matplotlib
 import matplotlib.pyplot as plt
 
-
-from joblib import dump, load
-
-
 from itr_sklearn import ITR_Extractor
 
-def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes, save_name="", repeat=1):
+def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, save_name="", repeat=1):
 
 	max_accuracy = 0
 
 	for iteration in range(repeat):
-		print("Processing depth: {:d}, iter: {:d}/{:d}".format(depth, iteration, repeat))
+		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-
-		tcg = ITR_Extractor(num_classes)
+		tcg = ITR_Extractor(num_classes)		
 		
+		#open files
 		try:
 			csv_contents = read_csv(csv_filename)
 		except:
 			print("ERROR: Cannot open CSV file: "+ csv_filename)
 
+		path = 'b_path_{0}'.format(layer)
 		for ex in csv_contents:
+			ex[path] = os.path.join(bin_dir, '{0}_{1}.b'.format(ex['example_id'], layer))
 
-			ex['txt_path'] = os.path.join(dataset_dir, "txt_"+dataset_type+"_"+str(dataset_id), str(depth), ex['label_name'], ex['example_id']+'_'+str(depth)+'.txt')
-
-		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id and ex['dataset_id'] != 0]
+		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		
-		save_file = os.path.join(save_name, str(dataset_id), dataset_type)
-		print("save_file:", save_file)
-		filename = save_file.replace('/', '_')+'_'+str(depth)#+".joblib"
-		if (not os.path.exists(save_file)):
-			os.makedirs(save_file)
-		print(os.path.join(save_file, filename))
-
-		tcg.save_model(os.path.join(save_file, filename))
-
+		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
+		if (not os.path.exists(save_dir)):
+			os.makedirs(save_dir)
 
 		# TRAIN
-		#print("adding data...")
 		for ex in train_data:
-			tcg.add_file_to_corpus(ex['txt_path'], ex['label'])
+			tcg.add_file_to_corpus(ex[path], ex['label'])
 		print("fitting model...")
-
-		
 
 		t_s = time.time()
 		tcg.fit()
-		tcg.save_model(os.path.join(save_file, filename))
 
 		print("elapsed:", time.time()-t_s)
 		
+		'''
 		# CLASSIFY 
-		#print("adding eval data...")
 		for ex in test_data:
-			tcg.add_file_to_eval_corpus(ex['txt_path'], ex['label'], ex['label_name'])
+			tcg.add_file_to_eval_corpus(ex[path], ex['label'], ex['label_name'])
 		print("evaluating model...")
 		cur_accuracy = tcg.eval()
 
 
-
+		# if model accuracy is good then replace the old model with new save data
 		if(cur_accuracy > max_accuracy and save_name != ""):
-			tcg.save_model(os.path.join(save_file, filename))
-			
+			tcg.save_model(os.path.join(save_dir, "model"))
 			max_accuracy = cur_accuracy
 
-		print("Training depth: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(depth, iteration, repeat, cur_accuracy, max_accuracy))
-	
+		print("Training layer: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(layer, iteration, repeat, cur_accuracy, max_accuracy))
+		'''
 
 if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description='Generate IADs from input files')
 	#required command line args
+	parser.add_argument('model_type', help='the type of model to use', choices=['i3d', 'trn', 'tsm'])
+
 	parser.add_argument('dataset_dir', help='the directory where the dataset is located')
 	parser.add_argument('csv_filename', help='a csv file denoting the files in the dataset')
 	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow', 'both'])
 	parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
 	parser.add_argument('num_classes', type=int, help='the number of classes in the dataset')
 
+	parser.add_argument('--num_procs', type=int, default=1, help='number of process to split IAD generation over')
 	parser.add_argument('--save_name', default="", help='what to save the model as')
 	parser.add_argument('--repeat', type=int, default=1, help='number of times to repeat training the model')
-	#parser.add_argument('dataset_depth', type=int, help='a csv file denoting the files in the dataset')
+
 
 	FLAGS = parser.parse_args()
 
-	#i=2
-	
-	for depth in range(4,5):
-		#print("dataset_type: ", dataset_type)
-		#print("dataset_id: ", dataset_id)
-		print("depth: ", depth)
+	if(FLAGS.model_type == 'i3d'):
+		from gi3d_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
+	if(FLAGS.model_type == 'trn'):
+		from trn_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
+	if(FLAGS.model_type == 'tsm'):
+		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
 
-		main(FLAGS.dataset_dir, 
+	for layer in range(1):#DEPTH_SIZE):
+		main(FLAGS.model_type,
+			FLAGS.dataset_dir, 
 			FLAGS.csv_filename,
 			FLAGS.dataset_type,
 			FLAGS.dataset_id,
-			depth,
+			layer,
 			FLAGS.num_classes,
 			FLAGS.save_name,
 			FLAGS.repeat
 			)
 	
-	'''
-	#for dataset_type in ['frames', 'flow']:#, 'both']:
-	for dataset_id in [2,3]:#[2,3]:
-		#depth = 4
-		for depth in range(5):
-			print("dataset_type: ", FLAGS.dataset_type)
-			print("dataset_id: ", dataset_id)
-			print("depth: ", depth)
-
-
-			main(FLAGS.dataset_dir, 
-				FLAGS.csv_filename,
-				FLAGS.dataset_type,
-				dataset_id,
-				depth,
-				FLAGS.num_classes,
-				FLAGS.save_name,
-				FLAGS.repeat
-				)
-	'''
+	
