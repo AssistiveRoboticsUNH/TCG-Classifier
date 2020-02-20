@@ -39,7 +39,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		for ex in csv_contents:
 			ex[path] = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.b'.format(ex['example_id'], layer))
 
-		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
+		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id][:5000]
 		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
@@ -47,7 +47,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			os.makedirs(save_dir)
 
 		# TRAIN
-		for i, ex in enumerate(train_data[:5000]):
+		for i, ex in enumerate(train_data):
 			if(i%1000 == 0):
 				print("adding data...{0}/{1}".format(i, len(train_data)))
 			tcg.add_file_to_corpus(ex[path], ex['label'])
