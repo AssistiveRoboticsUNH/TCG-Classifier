@@ -107,7 +107,9 @@ venv.bak/
 *.pk
 *.out
 *.png
+.DS_Store
 
 /bm
 /hmdb*
 /ucf
+/models
