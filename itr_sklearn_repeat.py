@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
-def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, save_name="", repeat=1):
+def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1):
 
 	max_accuracy = 0
 
@@ -85,7 +85,6 @@ if __name__ == '__main__':
 	parser.add_argument('num_classes', type=int, help='the number of classes in the dataset')
 
 	parser.add_argument('--num_procs', type=int, default=1, help='number of process to split IAD generation over')
-	parser.add_argument('--save_name', default="", help='what to save the model as')
 	parser.add_argument('--repeat', type=int, default=1, help='number of times to repeat training the model')
 
 
@@ -107,7 +106,6 @@ if __name__ == '__main__':
 			FLAGS.dataset_id,
 			layer,
 			FLAGS.num_classes,
-			FLAGS.save_name,
 			FLAGS.repeat
 			)
 	
