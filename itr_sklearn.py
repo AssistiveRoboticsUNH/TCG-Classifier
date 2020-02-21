@@ -215,10 +215,10 @@ class ITR_Extractor:
 		train_mat = self.scaler.fit_transform(train_mat)
 		train_mat = self.svd.fit_transform(train_mat)
 		print("TruncatedSVD: ", time.time()-t_s)
-		print(train_mat_svd.shape)
+		print(train_mat.shape)
 
 		t_s = time.time()
-		self.clf.fit(train_mat_svd, np.array(self.labels))
+		self.clf.fit(train_mat, np.array(self.labels))
 		print("Train Time: ", time.time()-t_s)
 	
 	def pred(self, txt_file):
