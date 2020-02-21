@@ -40,7 +40,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			ex[path] = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.b'.format(ex['example_id'], layer))
 
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id][:5000]
-		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
+		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0][:5000]
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
@@ -58,7 +58,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		print("elapsed:", time.time()-t_s)
 		
-		'''
+		
 		# CLASSIFY 
 		for ex in test_data:
 			tcg.add_file_to_eval_corpus(ex[path], ex['label'], ex['label_name'])
@@ -72,7 +72,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			max_accuracy = cur_accuracy
 
 		print("Training layer: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(layer, iteration, repeat, cur_accuracy, max_accuracy))
-		'''
+		
 
 if __name__ == '__main__':
 	import argparse
