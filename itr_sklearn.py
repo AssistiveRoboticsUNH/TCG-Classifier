@@ -196,7 +196,7 @@ class ITR_Extractor:
 		self.label_names[label] = label_name
 
 	def pca(self, x):
-		x = StandardScaler().fit_transform(x)
+		x = StandardScaler(with_mean=False).fit_transform(x)
 		pca = PCA(n_components=10)
 		principalComponents = pca.fit_transform(x)
 		#principalDf = pd.DataFrame(data = principalComponents, columns = ['principal component 1', 'principal component 2'])
