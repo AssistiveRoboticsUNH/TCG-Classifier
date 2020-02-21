@@ -67,7 +67,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 		# if model accuracy is good then replace the old model with new save data
-		if(cur_accuracy > max_accuracy and save_name != ""):
+		if(cur_accuracy > max_accuracy):
 			tcg.save_model(os.path.join(save_dir, "model"))
 			max_accuracy = cur_accuracy
 
