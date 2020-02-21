@@ -266,7 +266,7 @@ class ITR_Extractor:
 
 		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
 		self.scaler = StandardScaler(with_mean=False)
-		self.svd = TruncatedSVD(n_components=10)
+		self.svd = TruncatedSVD(n_components=1000)
 		self.clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		
 		if(save_name != ""):
