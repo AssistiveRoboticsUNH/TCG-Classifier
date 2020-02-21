@@ -27,12 +27,10 @@ import matplotlib.pyplot as plt
 from joblib import dump, load
 import cPickle as pickle
 
+import time
+
 from sklearn.preprocessing import StandardScaler
-x = StandardScaler().fit_transform(x)
 from sklearn.decomposition import PCA
-pca = PCA(n_components=2)
-principalComponents = pca.fit_transform(x)
-#principalDf = pd.DataFrame(data = principalComponents, columns = ['principal component 1', 'principal component 2'])
 
 
 class ITR_Extractor:
@@ -197,10 +195,25 @@ class ITR_Extractor:
 
 		self.label_names[label] = label_name
 
-	def fit(self):
-		train_mat = self.tfidf.fit_transform(self.corpus)
+	def pca(self, x):
+		x = StandardScaler().fit_transform(x)
+		pca = PCA(n_components=10)
+		principalComponents = pca.fit_transform(x)
+		#principalDf = pd.DataFrame(data = principalComponents, columns = ['principal component 1', 'principal component 2'])
 
-		self.clf.fit(train_mat, np.array(self.labels))
+
+	def fit(self):
+
+
+		t_s = time.time()
+		train_mat = self.tfidf.fit_transform(self.corpus)
+		print("TF-IDF: ", time.time()-t_s)
+
+		t_s = time.time()
+		self.pca(train_mat)
+		print("PCA: ", time.time()-t_s)
+
+		#self.clf.fit(train_mat, np.array(self.labels))
 	
 	def pred(self, txt_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
