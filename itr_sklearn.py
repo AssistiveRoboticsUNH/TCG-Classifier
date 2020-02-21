@@ -198,7 +198,9 @@ class ITR_Extractor:
 	def pca(self, x):
 		x = StandardScaler(with_mean=False).fit_transform(x)
 		pca = TruncatedSVD(n_components=100)
-		principalComponents = pca.fit_transform(x)
+		return pca.fit_transform(x)
+
+
 		#principalDf = pd.DataFrame(data = principalComponents, columns = ['principal component 1', 'principal component 2'])
 
 
