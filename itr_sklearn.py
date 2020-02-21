@@ -30,7 +30,7 @@ import cPickle as pickle
 import time
 
 from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
+from sklearn.decomposition import TruncatedSVD
 
 
 class ITR_Extractor:
@@ -197,7 +197,7 @@ class ITR_Extractor:
 
 	def pca(self, x):
 		x = StandardScaler(with_mean=False).fit_transform(x)
-		pca = PCA(n_components=10)
+		pca = TruncatedSVD(n_components=10)
 		principalComponents = pca.fit_transform(x)
 		#principalDf = pd.DataFrame(data = principalComponents, columns = ['principal component 1', 'principal component 2'])
 
