@@ -208,12 +208,16 @@ class ITR_Extractor:
 		t_s = time.time()
 		train_mat = self.tfidf.fit_transform(self.corpus)
 		print("TF-IDF: ", time.time()-t_s)
+		print(train_mat.shape)
 
 		t_s = time.time()
-		self.pca(train_mat)
+		train_mat_svd = self.pca(train_mat)
 		print("TruncatedSVD: ", time.time()-t_s)
+		print(train_mat_svd.shape)
 
-		#self.clf.fit(train_mat, np.array(self.labels))
+		t_s = time.time()
+		self.clf.fit(train_mat_svd, np.array(self.labels))
+		print("Train Time: ", time.time()-t_s)
 	
 	def pred(self, txt_file):
 		#https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
