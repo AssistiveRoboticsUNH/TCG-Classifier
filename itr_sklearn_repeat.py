@@ -27,6 +27,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
+		num_classes = 10
+
+
 		tcg = ITR_Extractor(num_classes)		
 		
 		#open files
@@ -39,8 +42,12 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		for ex in csv_contents:
 			ex[path] = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.b'.format(ex['example_id'], layer))
 
-		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id][:5000]
-		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0][:5000]
+		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
+		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
+
+		train_data = [ex for ex in train_data if ex['label'] < num_classes]
+		test_data = [ex for ex in train_data if ex['label'] < num_classes]
+
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
