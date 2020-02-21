@@ -197,7 +197,7 @@ class ITR_Extractor:
 
 	def pca(self, x):
 		x = StandardScaler(with_mean=False).fit_transform(x)
-		pca = TruncatedSVD(n_components=10)
+		pca = TruncatedSVD(n_components=100)
 		principalComponents = pca.fit_transform(x)
 		#principalDf = pd.DataFrame(data = principalComponents, columns = ['principal component 1', 'principal component 2'])
 
@@ -211,7 +211,7 @@ class ITR_Extractor:
 
 		t_s = time.time()
 		self.pca(train_mat)
-		print("PCA: ", time.time()-t_s)
+		print("TruncatedSVD: ", time.time()-t_s)
 
 		#self.clf.fit(train_mat, np.array(self.labels))
 	
