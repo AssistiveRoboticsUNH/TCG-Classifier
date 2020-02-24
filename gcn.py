@@ -66,9 +66,12 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			tcg.add_file_to_corpus(ex[path], ex['label'])
 		print("fitting model...")
 		print("len(tcg.corpus):", len(tcg.corpus))
-		print(tcg.corpus[0])
 
-		data_in = tcg.tfidf.fit_transform(tcg.corpus)
+		from sklearn.feature_extraction.text import TfidfVectorizer
+
+		tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
+
+		data_in = tfidf.fit_transform(tcg.corpus)
 		data_label = np.array(tcg.labels)
 
 		data_in = np.array(data_in)
