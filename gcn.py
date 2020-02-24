@@ -94,8 +94,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			sess.run(tf.initialize_all_variables())
 
 			t_s = time.time()
-			for i in range(1000):
-				print(i)
+			for i in range(10):
+				#if(i % 100 == 0):
+				#	print(i)
 				sess.run(train_op, feed_dict={x_ph: data_in, y_ph: data_label})
 			print("elapsed:", time.time()-t_s)
 		
