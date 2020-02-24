@@ -65,8 +65,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				print("adding data...{0}/{1}".format(i, len(train_data)))
 			tcg.add_file_to_corpus(ex[path], ex['label'])
 		print("fitting model...")
-		data_in = tcg.tfidf.fit_transform(tcg.corpus)
-		data_label = tcg.labels
+		data_in = np.array(tcg.tfidf.fit_transform(tcg.corpus))
+		data_label = np.array(tcg.labels)
 
 		
 
@@ -101,8 +101,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			for ex in test_data:
 				tcg.add_file_to_eval_corpus(ex[path], ex['label'], ex['label_name'])
 
-			eval_in = tcg.tfidf.transform(tcg.evalcorpus)
-			eval_label = tcg.evallabels
+			eval_in = np.array(tcg.tfidf.transform(tcg.evalcorpus))
+			eval_label = np.array(tcg.evallabels)
 
 			print("evaluating model...")
 			pred_val = sess.run(pred, feed_dict={x_ph: eval_in})
