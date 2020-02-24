@@ -112,7 +112,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 		t_s = time.time()
-		for epoch in range(2):  # loop over the dataset multiple times
+		for epoch in range(30):  # loop over the dataset multiple times
 
 			running_loss = 0.0
 			for i, data in enumerate(trainloader, 0):
