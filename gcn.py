@@ -67,11 +67,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print("fitting model...")
 		print("len(tcg.corpus):", len(tcg.corpus))
 
-		data_in = tcg.tfidf.fit_transform(tcg.corpus).toarray()
-		print(type(data_in))
+		data_in = np.array(tcg.tfidf.fit_transform(tcg.corpus).toarray())
 		data_label = np.array(tcg.labels)
 
-		data_in = np.array(data_in)
 
 		
 		print("data_in.shape", data_in.shape)
@@ -93,6 +91,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		
 
 		with tf.Session() as sess:
+			sess.run(tf.initialize_all_variables())
+
 			t_s = time.time()
 			for i in range(1000):
 				print(i)
@@ -106,7 +106,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			for ex in test_data:
 				tcg.add_file_to_eval_corpus(ex[path], ex['label'], ex['label_name'])
 
-			eval_in = np.array(tcg.tfidf.transform(tcg.evalcorpus))
+			eval_in = np.array(tcg.tfidf.transform(tcg.evalcorpus).toarray())
 			eval_label = np.array(tcg.evallabels)
 
 			print("evaluating model...")
