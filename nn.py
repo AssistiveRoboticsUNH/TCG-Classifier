@@ -51,7 +51,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		# TRAIN
 		in_files = [ex[path] for ex in train_data]
-		in_labels = [ex['labels'] for ex in train_data]
+		in_labels = [ex['label'] for ex in train_data]
 		print("adding data...{0}".format(len(train_data)))
 		t_s = time.time()
 		tcg.add_files_to_corpus(in_files, in_labels)
@@ -72,7 +72,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		# CLASSIFY 
 		in_files = [ex[path] for ex in test_data]
-		in_labels = [ex['labels'] for ex in test_data]
+		in_labels = [ex['label'] for ex in test_data]
 		in_label_names = [ex['label_name'] for ex in test_data]
 		tcg.add_files_to_eval_corpus(in_files, in_labels, in_label_names)
 
