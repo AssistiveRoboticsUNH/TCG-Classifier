@@ -16,7 +16,7 @@ from itr_sklearn import ITR_Extractor
 #import torch
 
 
-def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1):
+def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True):
 
 	max_accuracy = 0
 
@@ -49,43 +49,61 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		if (not os.path.exists(save_dir)):
 			os.makedirs(save_dir)
 
-		# TRAIN
-		in_files = [ex[path] for ex in train_data]
-		in_labels = [ex['label'] for ex in train_data]
-		print("adding data...{0}".format(len(train_data)))
-		t_s = time.time()
-		tcg.add_files_to_corpus(in_files, in_labels)
-		print("data added. time: {0}".format(time.time() - t_s))
+		train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.npz'.format(ex['example_id'], layer))
+		test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test{0}_{1}.npz'.format(ex['example_id'], layer))
 
-		'''
+		parse_data = not os.path.exists(train_filename)
+
+		if(parse_data):
+			# TRAIN
+			in_files = [ex[path] for ex in train_data]
+			in_labels = [ex['label'] for ex in train_data]
+
+			print("adding train data...{0}".format(len(train_data)))
+			t_s = time.time()
+			tcg.add_files_to_corpus(in_files, in_labels)
+			print("data added. time: {0}".format(time.time() - t_s))
+
+
+			data_in = np.array(tcg.tfidf.fit_transform(tcg.corpus).toarray())
+			data_label = np.array(tcg.labels)
+
+			np.savez_compressed(train_filename, data=data_in, label=data_label)
+
+
+			in_files = [ex[path] for ex in test_data]
+			in_labels = [ex['label'] for ex in test_data]
+			print("adding eval data...{0}".format(len(train_data)))
+			t_s = time.time()
+			tcg.add_files_to_eval_corpus(in_files, in_labels)
+			print("data added. time: {0}".format(time.time() - t_s))
+
+			eval_in = np.array(tcg.tfidf.transform(tcg.evalcorpus).toarray())
+			eval_label = np.array(tcg.evallabels)
+
+			np.savez_compressed(test_filename, data=eval_in, label=eval_label)
+
+		else:
+			f = np.load(train_filename)
+			data_in, data_label = f["data"], f["label"]
+			f = np.load(test_filename)
+			eval_in, eval_label = f["data"], f["label"]
+
+
+		
 		print("fitting model...")
-		print("len(tcg.corpus):", len(tcg.corpus))
+		print("data_in.shape", data_in.shape)
+		print("data_label.shape", data_label.shape)
+
 
 		batch_size = 32
-
-		data_in = np.array(tcg.tfidf.fit_transform(tcg.corpus).toarray())
-		data_label = np.array(tcg.labels)
 
 		trainloader = torch.utils.data.DataLoader(zip(data_in, data_label), batch_size=batch_size,
 										  shuffle=True, num_workers=2)
 
-
-		# CLASSIFY 
-		in_files = [ex[path] for ex in test_data]
-		in_labels = [ex['label'] for ex in test_data]
-		in_label_names = [ex['label_name'] for ex in test_data]
-		tcg.add_files_to_eval_corpus(in_files, in_labels, in_label_names)
-
-		eval_in = np.array(tcg.tfidf.transform(tcg.evalcorpus).toarray())
-		eval_label = np.array(tcg.evallabels)
-
 		testloader = torch.utils.data.DataLoader(zip(eval_in, eval_label), batch_size=batch_size,
 										 shuffle=False, num_workers=2)
 
-
-		
-		print("data_in.shape", data_in.shape)
-		print("data_label.shape", data_label.shape)
 
 		#model
 		import torch.nn as nn
@@ -170,7 +188,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		#	max_accuracy = cur_accuracy
 
 		#print("Training layer: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(layer, iteration, repeat, cur_accuracy, max_accuracy))
-		'''
+		
 
 if __name__ == '__main__':
 	import argparse
@@ -186,6 +204,7 @@ if __name__ == '__main__':
 
 	parser.add_argument('--num_procs', type=int, default=1, help='number of process to split IAD generation over')
 	parser.add_argument('--repeat', type=int, default=1, help='number of times to repeat training the model')
+	parser.add_argument('--parse_data', type=bool, default=True, help='whether to parse the data again or load from file')
 
 
 	FLAGS = parser.parse_args()

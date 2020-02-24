@@ -186,12 +186,9 @@ class ITR_Extractor:
 		self.corpus = self.pool.map(parse_txt_file, file_list)
 		self.labels += label_list
 
-	def add_files_to_eval_corpus(self, file_list, label_list, label_names):
+	def add_files_to_eval_corpus(self, file_list, label_list):
 		self.evalcorpus = self.pool.map(parse_txt_file, file_list)
 		self.evallabels += label_list
-
-		for l, lname in zip(label_list, label_names):
-			self.label_names[l] = lname
 
 	def add_file_to_eval_corpus(self, txt_file, label, label_name):
 
