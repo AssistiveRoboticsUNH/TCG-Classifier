@@ -73,7 +73,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		#model
 		x_ph = tf.compat.v1.placeholder(np.float32, [None, data_in.shape[1]])
-		y_ph = tf.compat.v1.placeholder(np.float32, [None])
+		y_ph = tf.compat.v1.placeholder(np.int32, [None])
 
 		dense = tf.compat.v1.layers.dense(x_ph, num_classes)
 		pred  = tf.argmax(dense, axis=1)
