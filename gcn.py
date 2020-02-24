@@ -26,6 +26,7 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
+
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1):
 
 	max_accuracy = 0
@@ -98,7 +99,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				#if(i % 100 == 0):
 				#	print(i)
 				sess.run(train_op, feed_dict={x_ph: data_in, y_ph: data_label})
-			print("elapsed:", time.time()-t_s)
+			print("train elapsed:", time.time()-t_s)
 		
 		
 
@@ -113,7 +114,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			print("evaluating model...")
 			pred_val = sess.run(pred, feed_dict={x_ph: eval_in})
 
-			cur_accuracy = sklearn.metrics.accuracy_score(eval_label, pred_val)
+			cur_accuracy = metrics.accuracy_score(eval_label, pred_val)
 
 		# if model accuracy is good then replace the old model with new save data
 		#if(cur_accuracy > max_accuracy):
