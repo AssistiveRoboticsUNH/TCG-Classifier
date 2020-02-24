@@ -13,7 +13,7 @@ from csv_utils import read_csv
 
 from itr_sklearn import ITR_Extractor
 
-#import torch
+import torch
 
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True):
@@ -23,7 +23,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 3#10
+		num_classes = 10
 
 
 		tcg = ITR_Extractor(num_classes, num_procs=4)		
@@ -52,7 +52,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.npz'.format(ex['example_id'], layer))
 		test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test{0}_{1}.npz'.format(ex['example_id'], layer))
 
-		parse_data = not os.path.exists(train_filename)
+		#parse_data = not os.path.exists(train_filename)
 
 		if(parse_data):
 			# TRAIN
@@ -105,6 +105,16 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 										 shuffle=False, num_workers=2)
 
 
+		
+
+		if torch.cuda.is_available():
+		    device = torch.device("cuda:0")  # you can continue going on here, like cuda:1 cuda:2....etc. 
+		    print("Running on the GPU")
+		else:
+		    device = torch.device("cpu")
+		    print("Running on the CPU")
+
+
 		#model
 		import torch.nn as nn
 		class Net(nn.Module):
@@ -119,18 +129,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-		if torch.cuda.is_available():
-		    device = torch.device("cuda:0")  # you can continue going on here, like cuda:1 cuda:2....etc. 
-		    print("Running on the GPU")
-		else:
-		    device = torch.device("cpu")
-		    print("Running on the CPU")
-
 
 		import torch.optim as optim
 
 		criterion = nn.CrossEntropyLoss()
-		optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+		optimizer = optim.SGD(net.parameters(), lr=0.00001, momentum=0.9)
 
 		t_s = time.time()
 		for epoch in range(30):  # loop over the dataset multiple times
@@ -140,27 +143,22 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				# get the inputs; data is a list of [inputs, labels]
 				inputs, labels = data
 
-
-				#print(inputs.shape, labels.shape)
-				#print(inputs.dtype, labels.dtype)
-
-
+				inputs = inputs.to(device).float()
+				labels = labels.to(device)
 
 				# zero the parameter gradients
 				optimizer.zero_grad()
 
 				# forward + backward + optimize
-				outputs = net(inputs.to(device).float())
-				loss = criterion(outputs, labels.to(device))
+				outputs = net(inputs)
+				loss = criterion(outputs, labels)
 				loss.backward()
 				optimizer.step()
 
 				# print statistics
 				running_loss += loss.item()
-				if i % 2000 == 1999:    # print every 2000 mini-batches
-					print('[%d, %5d] loss: %.3f' %
-						  (epoch + 1, i + 1, running_loss / 2000))
-					running_loss = 0.0
+			print('[%d, %5d] loss: %.3f' % (epoch + 1, i + 1, running_loss / 2000))
+			running_loss = 0.0
 
 
 		print("train elapsed:", time.time()-t_s)
@@ -172,8 +170,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		total = 0
 		with torch.no_grad():
 			for data in testloader:
-				images, labels = data
-				outputs = net(images.float())
+				inputs, labels = data
+
+				inputs = inputs.to(device).float()
+				labels = labels.to(device)
+
+				outputs = net(inputs)
+
 				_, predicted = torch.max(outputs.data, 1)
 				total += labels.size(0)
 				correct += (predicted == labels).sum().item()
@@ -217,7 +220,7 @@ if __name__ == '__main__':
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
 
-	for layer in range(2):#DEPTH_SIZE):
+	for layer in range(1):#DEPTH_SIZE):
 		main(FLAGS.model_type,
 			FLAGS.dataset_dir, 
 			FLAGS.csv_filename,
