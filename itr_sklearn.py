@@ -213,7 +213,7 @@ class ITR_Extractor:
 
 		#t_s = time.time()
 		#train_mat = self.scaler.fit_transform(train_mat)
-		#train_mat = self.svd.fit_transform(train_mat)
+		train_mat = self.svd.fit_transform(train_mat)
 		#print("TruncatedSVD: ", time.time()-t_s)
 		#print(train_mat.shape)
 
@@ -226,13 +226,13 @@ class ITR_Extractor:
 		txt = self.parse_txt_file(txt_file)
 		data = self.tfidf.transform([txt])
 		#data = self.scaler.transform(data)
-		#data = self.svd.transform(data)
+		data = self.svd.transform(data)
 		return self.clf.predict(data)
 
 	def eval(self):
 		data = self.tfidf.transform(self.evalcorpus)
 		#data = self.scaler.transform(data)
-		#data = self.svd.transform(data)
+		data = self.svd.transform(data)
 		pred = self.clf.predict(data)
 		return metrics.accuracy_score(self.evallabels, pred)
 
@@ -267,7 +267,7 @@ class ITR_Extractor:
 		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
 		#self.scaler = StandardScaler(with_mean=False)
 		#self.svd = TruncatedSVD(n_components=1000)
-		self.clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
+		self.clf = svm.SVC(max_iter=10000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		
 		if(save_name != ""):
 			print("load model:", save_name)
