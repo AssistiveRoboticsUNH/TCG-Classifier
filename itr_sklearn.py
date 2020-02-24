@@ -32,7 +32,7 @@ import time
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import TruncatedSVD
 
-import svm_gpu.svm as svm_gpu 
+#import svm_gpu.svm as svm_gpu 
 
 
 class ITR_Extractor:
@@ -269,8 +269,8 @@ class ITR_Extractor:
 		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
 		#self.scaler = StandardScaler(with_mean=False)
 		self.svd = TruncatedSVD(n_components=10000)
-		#self.clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		self.clf = svm_gpu.SVM(max_iter=1000, tol=1e-4, probability=True, kernel='linear', classification_strategy='ovr')
+		self.clf = svm.SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
+		#self.clf = svm_gpu.SVM(max_iter=1000, tol=1e-4, probability=True, kernel='linear', classification_strategy='ovr')
 		
 		if(save_name != ""):
 			print("load model:", save_name)
