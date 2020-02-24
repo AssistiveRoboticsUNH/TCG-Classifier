@@ -84,6 +84,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		train_op = opt.minimize(loss)
 
+		print("data_in.shape", data_in.shape)
+		print("data_label.shape", data_label.shape)
+
 		with tf.Session() as sess:
 			t_s = time.time()
 			for i in range(1000):
