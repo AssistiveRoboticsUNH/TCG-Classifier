@@ -146,6 +146,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		print("evaluating model...")
 		t_s = time.time()
+		correct = 0
 		total = 0
 		with torch.no_grad():
 			for data in testloader:
