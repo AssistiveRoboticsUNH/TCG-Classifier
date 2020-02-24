@@ -51,13 +51,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		# TRAIN
 		in_files = [ex[path] for ex in train_data]
-		in_labels = [ex[path] for ex in train_data]
+		in_labels = [ex['labels'] for ex in train_data]
 		print("adding data...{0}".format(len(train_data)))
 		t_s = time.time()
 		tcg.add_files_to_corpus(in_files, in_labels)
 		print("data added. time: {0}".format(time.time() - t_s))
 
-		'''
+		
 		print("fitting model...")
 		print("len(tcg.corpus):", len(tcg.corpus))
 
@@ -71,8 +71,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 		# CLASSIFY 
-		for ex in test_data:
-			tcg.add_file_to_eval_corpus(ex[path], ex['label'], ex['label_name'])
+		in_files = [ex[path] for ex in test_data]
+		in_labels = [ex['labels'] for ex in test_data]
+		in_label_names = [ex['label_name'] for ex in test_data]
+		tcg.add_files_to_eval_corpus(in_files, in_labels, in_label_names)
 
 		eval_in = np.array(tcg.tfidf.transform(tcg.evalcorpus).toarray())
 		eval_label = np.array(tcg.evallabels)
