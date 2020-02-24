@@ -72,8 +72,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 		#model
-		x_ph = tf.compat.v1.placeholder(np.float32, [-1, data_in.shape[1]])
-		y_ph = tf.compat.v1.placeholder(np.float32, [-1, num_classes])
+		x_ph = tf.compat.v1.placeholder(np.float32, [None, data_in.shape[1]])
+		y_ph = tf.compat.v1.placeholder(np.float32, [None, num_classes])
 
 		dense = tf.layer.Dense(x_ph, num_classes)
 		pred  = tf.argmax(dense, axis=1)
@@ -86,6 +86,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		with tf.Session() as sess:
 			t_s = time.time()
 			for i in range(1000):
+				print(i)
 				sess.run(train_op, feed_dict={x_ph: data_in, y_ph: data_label})
 			print("elapsed:", time.time()-t_s)
 		
