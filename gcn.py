@@ -33,7 +33,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 10
+		num_classes = 3#10
 
 
 		tcg = ITR_Extractor(num_classes)		
@@ -69,7 +69,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		data_label = np.array(tcg.labels)
 
 		
-
+		print("data_in.shape", data_in.shape)
+		print("data_label.shape", data_label.shape)
 
 		#model
 		x_ph = tf.compat.v1.placeholder(np.float32, [None, data_in.shape[1]])
@@ -84,8 +85,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		train_op = opt.minimize(loss)
 
-		print("data_in.shape", data_in.shape)
-		print("data_label.shape", data_label.shape)
+		
 
 		with tf.Session() as sess:
 			t_s = time.time()
