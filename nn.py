@@ -70,7 +70,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print("fitting model...")
 		print("len(tcg.corpus):", len(tcg.corpus))
 
-		batch_size = 4
+		batch_size = 32
 
 		data_in = np.array(tcg.tfidf.fit_transform(tcg.corpus).toarray())
 		data_label = np.array(tcg.labels)
