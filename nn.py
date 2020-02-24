@@ -104,7 +104,17 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			def forward(self, x):
 				return self.dense(x).double()
 
-		net = Net(data_in.shape[1], num_classes)
+		net = Net(data_in.shape[1], num_classes).to(device)
+		
+
+
+		if torch.cuda.is_available():
+		    device = torch.device("cuda:0")  # you can continue going on here, like cuda:1 cuda:2....etc. 
+		    print("Running on the GPU")
+		else:
+		    device = torch.device("cpu")
+		    print("Running on the CPU")
+
 
 		import torch.optim as optim
 
@@ -119,6 +129,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				# get the inputs; data is a list of [inputs, labels]
 				inputs, labels = data
 
+
 				#print(inputs.shape, labels.shape)
 				#print(inputs.dtype, labels.dtype)
 
@@ -128,8 +139,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				optimizer.zero_grad()
 
 				# forward + backward + optimize
-				outputs = net(inputs.float())
-				loss = criterion(outputs, labels)
+				outputs = net(inputs.to(device).float())
+				loss = criterion(outputs, labels.to(device))
 				loss.backward()
 				optimizer.step()
 
