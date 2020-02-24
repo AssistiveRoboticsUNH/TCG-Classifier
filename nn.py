@@ -23,7 +23,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 10
+		num_classes = 3#10
 
 
 		tcg = ITR_Extractor(num_classes, num_procs=4)		
@@ -53,8 +53,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		in_files = [ex[path] for ex in train_data]
 		in_labels = [ex[path] for ex in train_data]
 		print("adding data...{0}".format(len(train_data)))
+		t_s = time.time()
 		tcg.add_files_to_corpus(in_files, in_labels)
-		print("data added")
+		print("data added. time: {0}".format(time.time() - t_s))
 
 		'''
 		print("fitting model...")
