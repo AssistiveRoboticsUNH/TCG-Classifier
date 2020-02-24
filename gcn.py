@@ -34,7 +34,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 1#10
+		num_classes = 10
 
 
 		tcg = ITR_Extractor(num_classes)		
