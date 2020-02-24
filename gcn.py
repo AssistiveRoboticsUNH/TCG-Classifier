@@ -1,26 +1,4 @@
-import numpy as np 
 import tensorflow as tf 
-
-
-
-
-
-
-#file io
-
-
-
-
-
-with tf.Session() as sess:
-
-
-	out = sess.run(train_op, feed_dict = {x_ph: data_in})
-
-
-
-
-
 
 
 
