@@ -1,7 +1,7 @@
+import os, sys, math, time
+
 from sets import Set
-import os, sys, math
 import numpy as np
-from collections import Counter
 
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
@@ -9,28 +9,20 @@ from csv_utils import read_csv
 sys.path.append("../IAD-Parser/TCG/")
 from parser_utils import read_sparse_matrix
 
-
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
 from sklearn import svm
 from sklearn import metrics
 
-from sklearn.linear_model import SGDClassifier
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_extraction.text import TfidfVectorizer
 
-from sklearn.multiclass import OneVsRestClassifier
-
-import matplotlib
-import matplotlib.pyplot as plt
-
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import TruncatedSVD
 
 from joblib import dump, load
 import cPickle as pickle
 
-import time
+import matplotlib
+import matplotlib.pyplot as plt
 
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import TruncatedSVD
 
 #import svm_gpu.svm as svm_gpu 
 
@@ -115,7 +107,7 @@ class ITR_Extractor:
 			for j, pair in enumerate(feature):
 				events.append(self.AtomicEvent(i, j, start=pair[0], end=pair[1]))
 			
-
+		print("Events:", len(events))
 		'''
 		events = {}
 		for line in list(open(txt_file, 'r')):

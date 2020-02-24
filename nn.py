@@ -67,6 +67,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			if(i%1 == 0):
 				print("adding data...{0}/{1}".format(i, len(train_data)))
 			tcg.add_file_to_corpus(ex[path], ex['label'])
+
+		'''
 		print("fitting model...")
 		print("len(tcg.corpus):", len(tcg.corpus))
 
@@ -177,7 +179,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		#	max_accuracy = cur_accuracy
 
 		#print("Training layer: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(layer, iteration, repeat, cur_accuracy, max_accuracy))
-		
+		'''
 
 if __name__ == '__main__':
 	import argparse
