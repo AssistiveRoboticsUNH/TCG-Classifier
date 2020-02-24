@@ -65,6 +65,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				print("adding data...{0}/{1}".format(i, len(train_data)))
 			tcg.add_file_to_corpus(ex[path], ex['label'])
 		print("fitting model...")
+		print("len(tcg.corpus):", len(tcg.corpus))
 		data_in = np.array(tcg.tfidf.fit_transform(tcg.corpus))
 		data_label = np.array(tcg.labels)
 
