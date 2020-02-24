@@ -1,4 +1,4 @@
-python gcn.py \
+python nn.py \
 	trn \
 	~/datasets/Something-Something \
 	~/datasets/Something-Something/ss.csv \
