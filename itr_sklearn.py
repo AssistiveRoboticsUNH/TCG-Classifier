@@ -273,6 +273,7 @@ class ITR_Extractor:
 
 		self.num_procs = num_procs
 		from multiprocessing import Pool
+		#from multiprocessing.pool import ThreadPool as Pool
 		self.pool = Pool(num_procs)
 
 		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
