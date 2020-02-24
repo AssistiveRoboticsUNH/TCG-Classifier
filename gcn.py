@@ -96,8 +96,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			t_s = time.time()
 			for i in range(1000):
-				#if(i % 100 == 0):
-				#	print(i)
+				if(i % 100 == 0):
+					print(i)
 				sess.run(train_op, feed_dict={x_ph: data_in, y_ph: data_label})
 			print("train elapsed:", time.time()-t_s)
 		
