@@ -26,6 +26,8 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
+import torch
+
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1):
 
