@@ -73,10 +73,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		#model
 		x_ph = tf.compat.v1.placeholder(np.float32, [None, data_in.shape[1]])
-		y_ph = tf.compat.v1.placeholder(np.float32, [None, num_classes])
+		y_ph = tf.compat.v1.placeholder(np.float32, [None])
 
 		dense = tf.compat.v1.layers.dense(x_ph, num_classes)
 		pred  = tf.argmax(dense, axis=1)
+
 
 		loss  = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_ph, logits=dense)
 		opt   = tf.compat.v1.train.AdamOptimizer(learning_rate=0.001)
