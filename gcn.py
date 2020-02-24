@@ -102,7 +102,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				self.dense = nn.Linear(input_size, num_classes)				
 
 			def forward(self, x):
-				return self.dense(x)
+				return self.dense(x).double()
 
 		net = Net(data_in.shape[1], num_classes)
 
@@ -118,8 +118,6 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			for i, data in enumerate(trainloader, 0):
 				# get the inputs; data is a list of [inputs, labels]
 				inputs, labels = data
-
-				inputs = inputs.double()
 
 				print(inputs.shape, labels.shape)
 				print(inputs.dtype, labels.dtype)
