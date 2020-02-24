@@ -78,7 +78,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		dense = tf.compat.v1.layers.dense(x_ph, num_classes)
 		pred  = tf.argmax(dense, axis=1)
 
-		loss  = tf.nn.sparse_softmax_cross_entropy_with_logits(y_ph, dense)
+		loss  = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_ph, logits=dense)
 		opt   = tf.compat.v1.train.AdamOptimizer(learning_rate=0.001)
 
 		train_op = opt.minimize(loss)
