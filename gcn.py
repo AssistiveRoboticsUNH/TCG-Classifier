@@ -33,7 +33,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 3#10
+		num_classes = 1#10
 
 
 		tcg = ITR_Extractor(num_classes)		
@@ -66,6 +66,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			tcg.add_file_to_corpus(ex[path], ex['label'])
 		print("fitting model...")
 		print("len(tcg.corpus):", len(tcg.corpus))
+		print(tcg.corpus[0])
+
 		data_in = tcg.tfidf.fit_transform(tcg.corpus)
 		data_label = np.array(tcg.labels)
 
