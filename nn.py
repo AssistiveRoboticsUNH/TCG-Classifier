@@ -7,26 +7,13 @@ import tensorflow as tf
 from sets import Set
 import os, sys, math, time
 import numpy as np
-from collections import Counter
 
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
-
-
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn import svm
-from sklearn import metrics
-
-from sklearn.linear_model import SGDClassifier
-
-import matplotlib
-import matplotlib.pyplot as plt
-
 from itr_sklearn import ITR_Extractor
 
-import torch
+#import torch
 
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1):
@@ -39,7 +26,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		num_classes = 10
 
 
-		tcg = ITR_Extractor(num_classes)		
+		tcg = ITR_Extractor(num_classes, num_procs=4)		
 		
 		#open files
 		try:
@@ -63,10 +50,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			os.makedirs(save_dir)
 
 		# TRAIN
-		for i, ex in enumerate(train_data):
-			if(i%1 == 0):
-				print("adding data...{0}/{1}".format(i, len(train_data)))
-			tcg.add_file_to_corpus(ex[path], ex['label'])
+		in_files = [ex[path] for ex in train_data]
+		in_labels = [ex[path] for ex in train_data]
+		print("adding data...{0}".format(len(train_data)))
+		tcg.add_files_to_corpus(in_files, in_labels)
+		print("data added")
 
 		'''
 		print("fitting model...")
