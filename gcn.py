@@ -119,6 +119,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				# get the inputs; data is a list of [inputs, labels]
 				inputs, labels = data
 
+				print(inputs.shape, labels.shape)
+				print(inputs.dtype, labels.dtype)
+
 				# zero the parameter gradients
 				optimizer.zero_grad()
 
