@@ -119,8 +119,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				# get the inputs; data is a list of [inputs, labels]
 				inputs, labels = data
 
-				print(inputs.shape, labels.shape)
-				print(inputs.dtype, labels.dtype)
+				#print(inputs.shape, labels.shape)
+				#print(inputs.dtype, labels.dtype)
 
 
 
@@ -150,7 +150,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		with torch.no_grad():
 			for data in testloader:
 				images, labels = data
-				outputs = net(images)
+				outputs = net(images.float())
 				_, predicted = torch.max(outputs.data, 1)
 				total += labels.size(0)
 				correct += (predicted == labels).sum().item()
