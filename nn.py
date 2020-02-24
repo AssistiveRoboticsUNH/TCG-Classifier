@@ -64,7 +64,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		# TRAIN
 		for i, ex in enumerate(train_data):
-			if(i%1000 == 0):
+			if(i%1 == 0):
 				print("adding data...{0}/{1}".format(i, len(train_data)))
 			tcg.add_file_to_corpus(ex[path], ex['label'])
 		print("fitting model...")
@@ -105,7 +105,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				return self.dense(x).double()
 
 		net = Net(data_in.shape[1], num_classes).to(device)
-		
+
 
 
 		if torch.cuda.is_available():
