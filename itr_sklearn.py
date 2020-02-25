@@ -3,7 +3,7 @@
 
 import os, sys, math, time
 
-if (sys.version()[0] == '2'):
+if (sys.version[0] == '2'):
 	from sets import Set
 
 
