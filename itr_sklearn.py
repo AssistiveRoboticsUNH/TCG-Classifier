@@ -141,7 +141,7 @@ def read_file(txt_file):
 
 def all_itrs(e1, e2, bound=0):
 
-	itrs = Set()
+	itrs = set()
 	for i in range(-bound, bound):
 
 		itr_name = e1.get_itr_from_time(e1.start, e1.end+i, e2.start, e2.end)
