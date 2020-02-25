@@ -7,6 +7,7 @@ from csv_utils import read_csv
 
 from sklearn import metrics
 
+import scipy
 import matplotlib
 import matplotlib.pyplot as plt
 
