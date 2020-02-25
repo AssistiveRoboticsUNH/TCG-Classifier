@@ -5,14 +5,7 @@ from collections import Counter
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
-
-
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn import svm
 from sklearn import metrics
-
-from sklearn.linear_model import SGDClassifier
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -55,6 +48,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.npz'.format(ex['example_id'], layer))
 		test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test{0}_{1}.npz'.format(ex['example_id'], layer))
+		train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.npz'.format(ex['example_id'], layer))
+		test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label{0}_{1}.npz'.format(ex['example_id'], layer))
 
 		#parse_data = not os.path.exists(train_filename)
 
@@ -69,10 +64,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			print("data added. time: {0}".format(time.time() - t_s))
 
 
-			data_in = np.array(tcg.tfidf.fit_transform(tcg.corpus).toarray())
+			data_in = tcg.tfidf.fit_transform(tcg.corpus)
 			data_label = np.array(tcg.labels)
 
-			np.savez_compressed(train_filename, data=data_in, label=data_label)
+			scipy.sparse.save_npz(train_filename, data_in)
+			np.save(train_label_filename, data_label)
 
 
 			in_files = [ex[path] for ex in test_data]
@@ -82,27 +78,33 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			tcg.add_files_to_eval_corpus(in_files, in_labels)
 			print("data added. time: {0}".format(time.time() - t_s))
 
-			eval_in = np.array(tcg.tfidf.transform(tcg.evalcorpus).toarray())
+			eval_in = tcg.tfidf.transform(tcg.evalcorpus)
 			eval_label = np.array(tcg.evallabels)
 
-			np.savez_compressed(test_filename, data=eval_in, label=eval_label)
+			scipy.sparse.save_npz(test_filename, eval_in)
+			np.save(test_label_filename, eval_label)
+
 
 		else:
-			f = np.load(train_filename)
-			data_in, data_label = f["data"], f["label"]
-			f = np.load(test_filename)
-			eval_in, eval_label = f["data"], f["label"]
+			data_in = scipy.sparse.load_npz(train_filename)
+			data_label = np.load(train_label_filename)
 
+			eval_in = scipy.sparse.load_npz(test_filename)
+			eval_label = np.load(test_label_filename)
+
+		from thundersvm import SVC
+		clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 
 		# TRAIN
 		print("fitting model...")
 		t_s = time.time()
-		tcg.fit()
+		clf.fit(data_in, data_label)
 		print("elapsed:", time.time()-t_s)
 		
 		print("evaluating model...")
 		t_s = time.time()
-		cur_accuracy = tcg.eval()
+		pred = clf.predict(eval_in)
+		cur_accuracy = metrics.accuracy_score(eval_label, pred)
 		print("elapsed:", time.time()-t_s)
 
 
