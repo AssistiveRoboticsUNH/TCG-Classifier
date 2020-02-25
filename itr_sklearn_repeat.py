@@ -26,7 +26,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 10
+		#num_classes = 10
 
 
 		tcg = ITR_Extractor(num_classes)		
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
 
-	for layer in range(2):#DEPTH_SIZE):
+	for layer in range(DEPTH_SIZE):
 		main(FLAGS.model_type,
 			FLAGS.dataset_dir, 
 			FLAGS.csv_filename,
