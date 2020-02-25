@@ -1,4 +1,3 @@
-from sets import Set
 import os, sys, math, time
 import numpy as np
 from collections import Counter
