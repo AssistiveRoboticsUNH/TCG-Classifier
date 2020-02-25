@@ -5,6 +5,8 @@ import os, sys, math, time
 
 if (sys.version[0] == '2'):
 	from sets import Set
+	import cPickle as pickle
+
 
 
 import numpy as np
@@ -25,7 +27,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import TruncatedSVD
 
 from joblib import dump, load
-import cPickle as pickle
 
 import matplotlib
 import matplotlib.pyplot as plt
