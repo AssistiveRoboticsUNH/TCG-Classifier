@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
-def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1):
+def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True):
 
 	max_accuracy = 0
 
@@ -128,6 +128,7 @@ if __name__ == '__main__':
 
 	parser.add_argument('--num_procs', type=int, default=1, help='number of process to split IAD generation over')
 	parser.add_argument('--repeat', type=int, default=1, help='number of times to repeat training the model')
+	parser.add_argument('--parse_data', type=bool, default=True, help='whether to parse the data again or load from file')
 
 
 	FLAGS = parser.parse_args()
@@ -148,7 +149,8 @@ if __name__ == '__main__':
 			FLAGS.dataset_id,
 			layer,
 			FLAGS.num_classes,
-			FLAGS.repeat
+			FLAGS.repeat,
+			FLAGS.parse_data
 			)
 	
 	
