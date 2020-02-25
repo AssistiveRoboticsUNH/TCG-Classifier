@@ -1,6 +1,12 @@
+
+
+
 import os, sys, math, time
 
-from sets import Set
+if (sys.version()[0] == '2'):
+	from sets import Set
+
+
 import numpy as np
 
 sys.path.append("../IAD-Generator/iad-generation/")
