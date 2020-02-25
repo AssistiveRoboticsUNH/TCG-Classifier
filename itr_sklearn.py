@@ -24,6 +24,9 @@ import cPickle as pickle
 import matplotlib
 import matplotlib.pyplot as plt
 
+from multiprocessing import Pool
+
+
 
 #import svm_gpu.svm as svm_gpu 
 
@@ -270,8 +273,6 @@ class ITR_Extractor:
 		self.evallabels = []
 
 		self.num_procs = num_procs
-		from multiprocessing import Pool
-		#from multiprocessing.pool import ThreadPool as Pool
 		self.pool = Pool(num_procs)
 
 		self.tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)

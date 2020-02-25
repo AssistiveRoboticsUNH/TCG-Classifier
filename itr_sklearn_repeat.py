@@ -53,24 +53,58 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		if (not os.path.exists(save_dir)):
 			os.makedirs(save_dir)
 
-		# TRAIN
-		for i, ex in enumerate(train_data):
-			if(i%1000 == 0):
-				print("adding data...{0}/{1}".format(i, len(train_data)))
-			tcg.add_file_to_corpus(ex[path], ex['label'])
-		print("fitting model...")
 
+		train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.npz'.format(ex['example_id'], layer))
+		test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test{0}_{1}.npz'.format(ex['example_id'], layer))
+
+		#parse_data = not os.path.exists(train_filename)
+
+		if(parse_data):
+			# TRAIN
+			in_files = [ex[path] for ex in train_data]
+			in_labels = [ex['label'] for ex in train_data]
+
+			print("adding train data...{0}".format(len(train_data)))
+			t_s = time.time()
+			tcg.add_files_to_corpus(in_files, in_labels)
+			print("data added. time: {0}".format(time.time() - t_s))
+
+
+			data_in = np.array(tcg.tfidf.fit_transform(tcg.corpus).toarray())
+			data_label = np.array(tcg.labels)
+
+			np.savez_compressed(train_filename, data=data_in, label=data_label)
+
+
+			in_files = [ex[path] for ex in test_data]
+			in_labels = [ex['label'] for ex in test_data]
+			print("adding eval data...{0}".format(len(train_data)))
+			t_s = time.time()
+			tcg.add_files_to_eval_corpus(in_files, in_labels)
+			print("data added. time: {0}".format(time.time() - t_s))
+
+			eval_in = np.array(tcg.tfidf.transform(tcg.evalcorpus).toarray())
+			eval_label = np.array(tcg.evallabels)
+
+			np.savez_compressed(test_filename, data=eval_in, label=eval_label)
+
+		else:
+			f = np.load(train_filename)
+			data_in, data_label = f["data"], f["label"]
+			f = np.load(test_filename)
+			eval_in, eval_label = f["data"], f["label"]
+
+
+		# TRAIN
+		print("fitting model...")
 		t_s = time.time()
 		tcg.fit()
-
 		print("elapsed:", time.time()-t_s)
 		
-		
-		# CLASSIFY 
-		for ex in test_data:
-			tcg.add_file_to_eval_corpus(ex[path], ex['label'], ex['label_name'])
 		print("evaluating model...")
+		t_s = time.time()
 		cur_accuracy = tcg.eval()
+		print("elapsed:", time.time()-t_s)
 
 
 		# if model accuracy is good then replace the old model with new save data
