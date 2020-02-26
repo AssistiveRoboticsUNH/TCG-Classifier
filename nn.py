@@ -99,11 +99,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		batch_size = 10
 
 
-		cnt = Counter(data_label)
-		print("cnt:", cnt)
-
-		class_sample_count = []#[10, 5, 2, 1] 
+		class_sample_count = [Counter(data_label)[x] for x in range(num_classes)]#[10, 5, 2, 1] 
 		weights = (1 / torch.Tensor(class_sample_count))
+		print("weights:", weights)
+		
 		sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, batch_size)
 
 		trainloader = torch.utils.data.DataLoader(zip(data_in, data_label), batch_size=batch_size,
