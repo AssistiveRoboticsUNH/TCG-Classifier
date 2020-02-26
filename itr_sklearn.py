@@ -175,16 +175,18 @@ def extract_itr_seq(txt_file):
 
 			itr = (e1, itr_name, e2)
 			itr_seq.append(itr)
-			
+
 			j+=1
 	
 	return itr_seq
 
 def parse_txt_file(txt_file):
+	t_s = time.time()
 	txt = ''
 	for itr in extract_itr_seq(txt_file):
 		s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
 		txt += s
+	print("done parse: ", time.time() -t_s)
 	return txt
 
 
