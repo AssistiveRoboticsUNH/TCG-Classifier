@@ -23,7 +23,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		#num_classes = 10
+		num_classes = 10
 
 
 		tcg = ITR_Extractor(num_classes)		
@@ -42,7 +42,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
-		test_data = [ex for ex in train_data if ex['label'] < num_classes]
+		test_data = [ex for ex in test_data if ex['label'] < num_classes]
 
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
@@ -55,8 +55,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.spz.npy'.format(dataset_id, layer))
 		test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label{0}_{1}.spz.npy'.format(dataset_id, layer))
 
-		print(train_filename)
-		parse_data = not os.path.exists(train_filename)
+		parse_data = True#not os.path.exists(train_filename)
 
 		if(parse_data):
 			# TRAIN
@@ -99,7 +98,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		clf = SGDClassifier(max_iter=1000, tol=1e-4)
+		clf = SGDClassifier(max_iter=1000, tol=1e-4, verbose=1)
 
 		# TRAIN
 		print("fitting model...")
@@ -149,7 +148,7 @@ if __name__ == '__main__':
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
 
-	for layer in range(2,DEPTH_SIZE):
+	for layer in range(2):#2,DEPTH_SIZE):
 		main(FLAGS.model_type,
 			FLAGS.dataset_dir, 
 			FLAGS.csv_filename,
