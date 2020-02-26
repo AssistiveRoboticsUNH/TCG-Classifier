@@ -1,5 +1,5 @@
 python itr_process.py \
-	i3d \
+	trn \
 	~/datasets/Something-Something \
 	~/datasets/Something-Something/ss.csv \
 	frames \
