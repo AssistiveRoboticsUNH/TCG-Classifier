@@ -8,7 +8,7 @@ if (sys.version[0] == '2'):
 	import cPickle as pickle
 	from sklearn.svm import SVC
 else:
-	from thundersvm import SVC
+	#from thundersvm import SVC
 
 
 
