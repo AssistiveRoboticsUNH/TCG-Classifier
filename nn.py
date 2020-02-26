@@ -130,16 +130,16 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				super(Net, self).__init__()
 				n_hidden= 1024
 
-				#self.dense1 = nn.Linear(input_size, n_hidden)
-				#self.dense2 = nn.Linear(n_hidden, num_classes)	
+				self.dense1 = nn.Linear(input_size, n_hidden)
+				self.dense2 = nn.Linear(n_hidden, num_classes)	
 
-				self.dense = nn.Linear(input_size, num_classes)				
+				#self.dense = nn.Linear(input_size, num_classes)				
 
 			def forward(self, x):
-				return self.dense(x)
+				#return self.dense(x)
 
-				#x = self.dense1(x)#.double()
-				#return self.dense2(x)#.double()
+				x = self.dense1(x)#.double()
+				return self.dense2(x)#.double()
 
 		net = Net(data_in.shape[1], num_classes).to(device)
 
