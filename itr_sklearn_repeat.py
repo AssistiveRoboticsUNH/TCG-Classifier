@@ -50,12 +50,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			os.makedirs(save_dir)
 
 
-		train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.spz'.format(ex['example_id'], layer))
-		test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test{0}_{1}.spz'.format(ex['example_id'], layer))
-		train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.spz'.format(ex['example_id'], layer))
-		test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label{0}_{1}.spz'.format(ex['example_id'], layer))
+		train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.spz'.format(dataset_id, layer))
+		test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test{0}_{1}.spz'.format(dataset_id, layer))
+		train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.spz'.format(dataset_id, layer))
+		test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label{0}_{1}.spz'.format(dataset_id, layer))
 
-		print(train_filename)
 		parse_data = not os.path.exists(train_filename)
 
 		if(parse_data):
