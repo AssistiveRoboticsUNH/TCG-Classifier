@@ -256,7 +256,7 @@ class ITR_Extractor:
 		#data = self.svd.transform(data)
 		pred = self.clf.predict(data)
 		return metrics.accuracy_score(self.evallabels, pred)
-
+	'''
 	def save_model(self, name='model'):
 		# save model
 		dump(self.clf, name+'.joblib') 
@@ -271,7 +271,7 @@ class ITR_Extractor:
 
 		#load vectorizer
 		self.tfidf = pickle.load(open(name+'.pk', "rb"))
-
+	'''
 	def __init__(self, num_classes, save_name="", num_procs=1):
 		self.num_classes = num_classes
 
