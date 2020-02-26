@@ -25,7 +25,7 @@ def save(clf, name):
 def load(name):
 	self.clf = load(name+'.joblib') 
 
-def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True):
+def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
 
 	max_accuracy = 0
 
@@ -41,7 +41,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		parse_data = True
 		if(parse_data):
-			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes)
+			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs)
 		data_in, data_label, eval_in, eval_label = retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer)
 
 
@@ -106,7 +106,8 @@ if __name__ == '__main__':
 			layer,
 			FLAGS.num_classes,
 			FLAGS.repeat,
-			FLAGS.parse_data
+			FLAGS.parse_data,
+			FLAGS.num_procs
 			)
 	
 	
