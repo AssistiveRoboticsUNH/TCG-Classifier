@@ -14,6 +14,7 @@ from csv_utils import read_csv
 from itr_sklearn import ITR_Extractor
 
 import torch
+from sklearn.preprocessing import StandardScaler
 
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True):
@@ -54,8 +55,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		parse_data = not os.path.exists(train_filename)
 
+
 		if(parse_data):
 			# TRAIN
+			scaler = StandardScaler(with_mean=False)
 			in_files = [ex[path] for ex in train_data]
 			in_labels = [ex['label'] for ex in train_data]
 
@@ -65,7 +68,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			print("data added. time: {0}".format(time.time() - t_s))
 
 
-			data_in = np.array(tcg.tfidf.fit_transform(tcg.corpus).toarray())
+			data_in = tcg.tfidf.fit_transform(tcg.corpus)
+			data_in = scaler.fit_transform(data_in)
+
+			data_in = np.array(data_in.toarray())
 			data_label = np.array(tcg.labels)
 
 			np.savez_compressed(train_filename, data=data_in, label=data_label)
@@ -78,7 +84,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			tcg.add_files_to_eval_corpus(in_files, in_labels)
 			print("data added. time: {0}".format(time.time() - t_s))
 
-			eval_in = np.array(tcg.tfidf.transform(tcg.evalcorpus).toarray())
+			eval_in = tcg.tfidf.transform(tcg.evalcorpus)
+			eval_in = scaler.fit_transform(eval_in)
+
+			eval_in = np.array(eval_in.toarray())
 			eval_label = np.array(tcg.evallabels)
 
 			np.savez_compressed(test_filename, data=eval_in, label=eval_label)
@@ -128,7 +137,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		class Net(nn.Module):
 			def __init__(self, input_size, num_classes):
 				super(Net, self).__init__()
-				n_hidden= 10240
+				n_hidden= 1024
 
 				self.dense1 = nn.Linear(input_size, n_hidden)
 				self.dense2 = nn.Linear(n_hidden, num_classes)	
