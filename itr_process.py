@@ -32,6 +32,8 @@ def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	eval_in = scipy.sparse.load_npz(test_filename)
 	eval_label = np.load(test_label_filename)
 
+	return data_in, data_label, eval_in, eval_label
+
 
 def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes):
 	print("Generating new files!")
