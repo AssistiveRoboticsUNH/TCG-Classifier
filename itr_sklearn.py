@@ -294,10 +294,11 @@ class ITR_Extractor:
 		self.clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		#self.clf = svm_gpu.SVM(max_iter=1000, tol=1e-4, probability=True, kernel='linear', classification_strategy='ovr')
 		
+		'''
 		if(save_name != ""):
 			print("load model:", save_name)
 			self.load_model(save_name)
-		
+		'''
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes, save_name=""):
 
