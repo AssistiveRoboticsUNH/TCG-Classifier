@@ -35,9 +35,9 @@ def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	return data_in, data_label, eval_in, eval_label
 
 
-def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes):
+def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs):
 	print("Generating new files!")
-	tcg = ITR_Extractor(num_classes)		
+	tcg = ITR_Extractor(num_classes, num_procs)		
 		
 	#open files
 	try:
@@ -136,6 +136,7 @@ if __name__ == '__main__':
 			FLAGS.dataset_id, 
 			layer, 
 			FLAGS.csv_filename, 
-			FLAGS.num_classes)
+			FLAGS.num_classes,
+			FLAGS.num_procs)
 
 	

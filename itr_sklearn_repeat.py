@@ -19,20 +19,20 @@ from itr_process import process_data, retrieve_data
 
 
 from joblib import dump, load
-def save(clf, name):
+def save_model(clf, name):
 	dump(clf, name+'.joblib') 
 
-def load(name):
-	self.clf = load(name+'.joblib') 
+def load_model(name):
+	return load(name+'.joblib') 
 
-def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True):
+def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
 
 	max_accuracy = 0
 
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 3#10
+		#num_classes = 3#10
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
@@ -41,11 +41,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		parse_data = True
 		if(parse_data):
-			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes)
+			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs)
 		data_in, data_label, eval_in, eval_label = retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer)
 
 
-		from thundersvm import SVC
+		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		clf = SGDClassifier(max_iter=1000, tol=1e-4, verbose=1)
 
@@ -64,7 +64,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		# if model accuracy is good then replace the old model with new save data
 		if(cur_accuracy > max_accuracy):
-			save(clf, os.path.join(save_dir, "model"))
+			save_model(clf, os.path.join(save_dir, "model"))
 			max_accuracy = cur_accuracy
 
 		print("Training layer: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(layer, iteration, repeat, cur_accuracy, max_accuracy))
@@ -106,7 +106,8 @@ if __name__ == '__main__':
 			layer,
 			FLAGS.num_classes,
 			FLAGS.repeat,
-			FLAGS.parse_data
+			FLAGS.parse_data,
+			FLAGS.num_procs
 			)
 	
 	

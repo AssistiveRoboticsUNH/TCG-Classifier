@@ -7,8 +7,8 @@ if (sys.version[0] == '2'):
 	from sets import Set
 	import cPickle as pickle
 	from sklearn.svm import SVC
-else:
-	from thundersvm import SVC
+#else:
+	#from thundersvm import SVC
 
 
 
@@ -84,30 +84,6 @@ class AtomicEvent():
 		if (a1 == b1 and a2 == b2):
 			return 'eq'
 
-		#startedBy
-		if (a1 == b1 and b2 < a2):
-			return 'si'
-
-		#contains
-		if (b1 < a1 and a2 < b2):
-			return 'di'
-
-		#finishedBy
-		if (a1 < b1 and a2 == b2):
-			return 'fi'
-
-		#overlappedBy
-		if (b1 < a1 and b2 < a2 and a1 < b2):
-			return 'oi'
-
-		#metBy
-		if (b2 == a1):
-			return 'mi'
-
-		#after
-		if (b2 < a1):
-			return 'bi'
-
 def read_file(txt_file):
 	
 	sparse_matrix = read_sparse_matrix(txt_file)
@@ -116,73 +92,48 @@ def read_file(txt_file):
 	for i, feature in enumerate(sparse_matrix):
 		for j, pair in enumerate(feature):
 			events.append(AtomicEvent(i, j, start=pair[0], end=pair[1]))
-		
-	#print("Events:", len(events))
-	'''
-	events = {}
-	for line in list(open(txt_file, 'r')):
-		line = line.split()
+	
+	return events
 
-		event_tokens = line[0].split('_')
-		time = float(line[1])
-		
-		event_name = event_tokens[0]
-		event_occur = int(event_tokens[1])
-		event_bound = event_tokens[2]
-
-		event_id = event_name+'_'+str(event_occur)
-		if (event_id not in events):
-			events[event_id] = self.AtomicEvent(event_name, event_occur)
-
-		if(event_bound == 's'):
-			events[event_id].start = time
-		else:
-			events[event_id].end = time
-	'''
-	return events#events.values()
-
-def all_itrs(e1, e2, bound=0):
-
-	itrs = set()
-	for i in range(-bound, bound):
-
-		itr_name = e1.get_itr_from_time(e1.start, e1.end+i, e2.start, e2.end)
-		itrs.add(itr_name)
-	itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
-	itrs.add(itr_name)
-
-	return itrs
-
+def get_itrs(e1, e2):
+	return e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
+	
 def extract_itr_seq(txt_file):
 
 	# get events from file
+	t_s = time.time()
 	events = sorted(read_file(txt_file)) 
+	print("sort: ", time.time() - t_s)
 
 	# get a list of all of the ITRs in the txt_file
 	itr_seq = []
-
+	t_s = time.time()
 	for i in range(len(events)):
 
 		j = i+1
 		while(j < len(events) and events[j].name != events[i].name):
 
-			for itr_name in all_itrs(events[i], events[j]):
+			itr_name = get_itrs(events[i], events[j])
 
-				if('i' not in itr_name):
-					e1 = events[i].name
-					e2 = events[j].name
+			e1 = events[i].name
+			e2 = events[j].name
 
-					itr = (e1, itr_name, e2)
-					itr_seq.append(itr)
+			itr = (e1, itr_name, e2)
+			itr_seq.append(itr)
+
 			j+=1
+
+	print("itrs: ", time.time() - t_s)
 	
 	return itr_seq
 
 def parse_txt_file(txt_file):
+	t_s = time.time()
 	txt = ''
 	for itr in extract_itr_seq(txt_file):
 		s = "{0}-{1}-{2} ".format(itr[0], itr[1], itr[2])
 		txt += s
+	print("done parse: ", time.time() -t_s)
 	return txt
 
 
@@ -252,7 +203,7 @@ class ITR_Extractor:
 		#data = self.svd.transform(data)
 		pred = self.clf.predict(data)
 		return metrics.accuracy_score(self.evallabels, pred)
-
+	'''
 	def save_model(self, name='model'):
 		# save model
 		dump(self.clf, name+'.joblib') 
@@ -267,7 +218,7 @@ class ITR_Extractor:
 
 		#load vectorizer
 		self.tfidf = pickle.load(open(name+'.pk', "rb"))
-
+	'''
 	def __init__(self, num_classes, save_name="", num_procs=1):
 		self.num_classes = num_classes
 
@@ -290,10 +241,11 @@ class ITR_Extractor:
 		self.clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		#self.clf = svm_gpu.SVM(max_iter=1000, tol=1e-4, probability=True, kernel='linear', classification_strategy='ovr')
 		
+		'''
 		if(save_name != ""):
 			print("load model:", save_name)
 			self.load_model(save_name)
-		
+		'''
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, depth, num_classes, save_name=""):
 
