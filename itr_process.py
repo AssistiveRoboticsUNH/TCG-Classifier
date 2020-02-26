@@ -55,7 +55,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.spz.npy'.format(dataset_id, layer))
 		test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label{0}_{1}.spz.npy'.format(dataset_id, layer))
 
-		parse_data = not os.path.exists(train_filename)
+		parse_data = True#not os.path.exists(train_filename)
 
 		if(parse_data):
 			# TRAIN
@@ -151,7 +151,7 @@ if __name__ == '__main__':
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
 
-	for layer in range(DEPTH_SIZE):
+	for layer in range(2, DEPTH_SIZE):
 		main(FLAGS.model_type,
 			FLAGS.dataset_dir, 
 			FLAGS.csv_filename,
