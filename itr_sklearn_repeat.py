@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
-
+from itr_process import process_data, retrieve_data
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True):
 
