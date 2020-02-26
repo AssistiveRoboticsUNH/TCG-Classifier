@@ -6,6 +6,9 @@ import os, sys, math, time
 if (sys.version[0] == '2'):
 	from sets import Set
 	import cPickle as pickle
+	from sklearn.svm import SVC
+else:
+	from thundersvm import SVC
 
 
 
@@ -17,8 +20,7 @@ from csv_utils import read_csv
 sys.path.append("../IAD-Parser/TCG/")
 from parser_utils import read_sparse_matrix
 
-from sklearn.svm import SVC
-#from thundersvm import SVC
+
 from sklearn import metrics
 
 from sklearn.feature_extraction.text import TfidfVectorizer
