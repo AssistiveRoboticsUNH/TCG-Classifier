@@ -32,8 +32,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		parse_data = True
 		if(parse_data):
-			process_data(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes)
-		data_in, data_label, eval_in, eval_label = retrieve_data(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes)
+			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes)
+		data_in, data_label, eval_in, eval_label = retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer)
 
 
 		from thundersvm import SVC
