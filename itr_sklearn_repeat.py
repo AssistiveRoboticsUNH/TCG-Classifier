@@ -55,7 +55,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.spz'.format(ex['example_id'], layer))
 		test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label{0}_{1}.spz'.format(ex['example_id'], layer))
 
-		#parse_data = not os.path.exists(train_filename)
+		parse_data = not os.path.exists(train_filename)
 
 		if(parse_data):
 			# TRAIN
@@ -97,8 +97,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			eval_label = np.load(test_label_filename)
 
 		from thundersvm import SVC
-		clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		#clf = SGDClassifier(max_iter=1000, tol=1e-4)
+		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
+		clf = SGDClassifier(max_iter=1000, tol=1e-4)
 
 		# TRAIN
 		print("fitting model...")
