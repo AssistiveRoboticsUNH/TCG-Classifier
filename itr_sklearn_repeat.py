@@ -23,7 +23,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 10
+		#num_classes = 10
 
 
 		tcg = ITR_Extractor(num_classes)		
@@ -55,7 +55,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.spz'.format(dataset_id, layer))
 		test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label{0}_{1}.spz'.format(dataset_id, layer))
 
-		parse_data = not os.path.exists(train_filename)
+		parse_data = True#not os.path.exists(train_filename)
 
 		if(parse_data):
 			# TRAIN
