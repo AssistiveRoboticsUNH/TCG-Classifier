@@ -43,6 +43,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	except:
 		print("ERROR: Cannot open CSV file: "+ csv_filename)
 
+	print("Organizing csv_contents")
 	path = 'b_path_{0}'.format(layer)
 	for ex in csv_contents:
 		ex[path] = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.b'.format(ex['example_id'], layer))
@@ -53,6 +54,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 	test_data = [ex for ex in test_data if ex['label'] < num_classes]
 
+	print("Generating file names")
 	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
 	
 	# TRAIN
