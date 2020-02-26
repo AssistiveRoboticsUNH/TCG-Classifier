@@ -193,9 +193,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				total += labels.size(0)
 				correct += (predicted == labels).sum().item()
 
-				for p, l in zip(predicted, labels):
-					print(p, l)
-				print(correct, total)
+				#for p, l in zip(predicted, labels):
+				#	print(p, l)
+				#print(correct, total)
 		print("test elapsed:", time.time()-t_s)
 
 		print('Accuracy of the network on the 10000 test images: %d %%' % (
