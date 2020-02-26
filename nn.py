@@ -172,6 +172,28 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			print('[%d, %5d] loss: %.3f' % (epoch + 1, len(trainloader), running_loss / 2000))
 			running_loss = 0.0
 
+			correct = 0
+			total = 0
+			with torch.no_grad():
+				for data in testloader:
+					inputs, labels = data
+
+					inputs = inputs.to(device).float()
+					labels = labels.to(device)
+
+					outputs = net(inputs)
+
+					_, predicted = torch.max(outputs.data, 1)
+					total += labels.size(0)
+					correct += (predicted == labels).sum().item()
+
+					#for p, l in zip(predicted, labels):
+					#	print(p, l)
+					#print(correct, total)
+
+			print('eval: %d %%' % (
+				100 * correct / total))
+
 
 		print("train elapsed:", time.time()-t_s)
 			
