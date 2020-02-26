@@ -43,7 +43,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
-		test_data = [ex for ex in train_data if ex['label'] < num_classes]
+		test_data = [ex for ex in test_data if ex['label'] < num_classes]
 
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))

@@ -23,78 +23,18 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 10
-
-
-		tcg = ITR_Extractor(num_classes)		
-		
-		#open files
-		try:
-			csv_contents = read_csv(csv_filename)
-		except:
-			print("ERROR: Cannot open CSV file: "+ csv_filename)
-
-		path = 'b_path_{0}'.format(layer)
-		for ex in csv_contents:
-			ex[path] = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.b'.format(ex['example_id'], layer))
-
-		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
-		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
-
-		train_data = [ex for ex in train_data if ex['label'] < num_classes]
-		test_data = [ex for ex in test_data if ex['label'] < num_classes]
-
+		num_classes = 3#10
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
 			os.makedirs(save_dir)
 
 
-		train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.spz.npz'.format(dataset_id, layer))
-		test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test{0}_{1}.spz.npz'.format(dataset_id, layer))
-		train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.spz.npy'.format(dataset_id, layer))
-		test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label{0}_{1}.spz.npy'.format(dataset_id, layer))
-
-		parse_data = True#not os.path.exists(train_filename)
-
+		parse_data = True
 		if(parse_data):
-			# TRAIN
-			in_files = [ex[path] for ex in train_data]
-			in_labels = [ex['label'] for ex in train_data]
+			process_data(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes)
+		data_in, data_label, eval_in, eval_label = retrieve_data(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes)
 
-			print("adding train data...{0}".format(len(train_data)))
-			t_s = time.time()
-			tcg.add_files_to_corpus(in_files, in_labels)
-			print("data added. time: {0}".format(time.time() - t_s))
-
-
-			data_in = tcg.tfidf.fit_transform(tcg.corpus)
-			data_label = np.array(tcg.labels)
-
-			scipy.sparse.save_npz(train_filename, data_in)
-			np.save(train_label_filename, data_label)
-
-
-			in_files = [ex[path] for ex in test_data]
-			in_labels = [ex['label'] for ex in test_data]
-			print("adding eval data...{0}".format(len(train_data)))
-			t_s = time.time()
-			tcg.add_files_to_eval_corpus(in_files, in_labels)
-			print("data added. time: {0}".format(time.time() - t_s))
-
-			eval_in = tcg.tfidf.transform(tcg.evalcorpus)
-			eval_label = np.array(tcg.evallabels)
-
-			scipy.sparse.save_npz(test_filename, eval_in)
-			np.save(test_label_filename, eval_label)
-
-
-		else:
-			data_in = scipy.sparse.load_npz(train_filename)
-			data_label = np.load(train_label_filename)
-
-			eval_in = scipy.sparse.load_npz(test_filename)
-			eval_label = np.load(test_label_filename)
 
 		from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')

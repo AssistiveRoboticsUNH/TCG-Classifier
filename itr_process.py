@@ -14,113 +14,86 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
-
-
-def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True):
-
-	max_accuracy = 0
-
-	for iteration in range(repeat):
-		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
+def get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer):
+	train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.npz'.format(dataset_id, layer))
+	test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_{0}_{1}.npz'.format(dataset_id, layer))
+	train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.npy'.format(dataset_id, layer))
+	test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label_{0}_{1}.npy'.format(dataset_id, layer))
 	
-		#num_classes = 10
+	return train_filename, test_filename, train_label_filename, test_label_filename
+
+def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
+
+	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
+
+	data_in = scipy.sparse.load_npz(train_filename)
+	data_label = np.load(train_label_filename)
+
+	eval_in = scipy.sparse.load_npz(test_filename)
+	eval_label = np.load(test_label_filename)
 
 
-		tcg = ITR_Extractor(num_classes)		
+def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes):
+	tcg = ITR_Extractor(num_classes)		
 		
-		#open files
-		try:
-			csv_contents = read_csv(csv_filename)
-		except:
-			print("ERROR: Cannot open CSV file: "+ csv_filename)
+	#open files
+	try:
+		csv_contents = read_csv(csv_filename)
+	except:
+		print("ERROR: Cannot open CSV file: "+ csv_filename)
 
-		path = 'b_path_{0}'.format(layer)
-		for ex in csv_contents:
-			ex[path] = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.b'.format(ex['example_id'], layer))
+	path = 'b_path_{0}'.format(layer)
+	for ex in csv_contents:
+		ex[path] = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.b'.format(ex['example_id'], layer))
 
-		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
-		test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
+	train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
+	train_data = [ex for ex in train_data if ex['label'] < num_classes]
 
-		train_data = [ex for ex in train_data if ex['label'] < num_classes]
-		test_data = [ex for ex in train_data if ex['label'] < num_classes]
+	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
+	test_data = [ex for ex in test_data if ex['label'] < num_classes]
 
-		
-		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
-		if (not os.path.exists(save_dir)):
-			os.makedirs(save_dir)
+	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
+	
+	# TRAIN
+	in_files = [ex[path] for ex in train_data]
+	in_labels = [ex['label'] for ex in train_data]
 
+	print("adding train data...{0}".format(len(train_data)))
+	t_s = time.time()
+	tcg.add_files_to_corpus(in_files, in_labels)
+	print("data added - time: {0}".format(time.time() - t_s))
 
-		train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.spz.npz'.format(dataset_id, layer))
-		test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test{0}_{1}.spz.npz'.format(dataset_id, layer))
-		train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.spz.npy'.format(dataset_id, layer))
-		test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label{0}_{1}.spz.npy'.format(dataset_id, layer))
+	print("fit train data...")
+	t_s = time.time()
+	data_in = tcg.tfidf.fit_transform(tcg.corpus)
+	data_label = np.array(tcg.labels)
+	print("data fit - time: {0}".format(time.time() - t_s))
 
-		parse_data = True#not os.path.exists(train_filename)
-
-		if(parse_data):
-			# TRAIN
-			in_files = [ex[path] for ex in train_data]
-			in_labels = [ex['label'] for ex in train_data]
-
-			print("adding train data...{0}".format(len(train_data)))
-			t_s = time.time()
-			tcg.add_files_to_corpus(in_files, in_labels)
-			print("data added. time: {0}".format(time.time() - t_s))
+	scipy.sparse.save_npz(train_filename, data_in)
+	np.save(train_label_filename, data_label)
 
 
-			data_in = tcg.tfidf.fit_transform(tcg.corpus)
-			data_label = np.array(tcg.labels)
+	in_files = [ex[path] for ex in test_data]
+	in_labels = [ex['label'] for ex in test_data]
 
-			scipy.sparse.save_npz(train_filename, data_in)
-			np.save(train_label_filename, data_label)
-
-
-			in_files = [ex[path] for ex in test_data]
-			in_labels = [ex['label'] for ex in test_data]
-			print("adding eval data...{0}".format(len(train_data)))
-			t_s = time.time()
-			tcg.add_files_to_eval_corpus(in_files, in_labels)
-			print("data added. time: {0}".format(time.time() - t_s))
-
-			eval_in = tcg.tfidf.transform(tcg.evalcorpus)
-			eval_label = np.array(tcg.evallabels)
-
-			scipy.sparse.save_npz(test_filename, eval_in)
-			np.save(test_label_filename, eval_label)
+	print("adding eval data...{0}".format(len(train_data)))
+	t_s = time.time()
+	tcg.add_files_to_eval_corpus(in_files, in_labels)
+	print("eval data added - time: {0}".format(time.time() - t_s))
 
 
-		else:
-			data_in = scipy.sparse.load_npz(train_filename)
-			data_label = np.load(train_label_filename)
+	print("fit eval data...")
+	t_s = time.time()
+	eval_in = tcg.tfidf.transform(tcg.evalcorpus)
+	eval_label = np.array(tcg.evallabels)
+	print("eval data fit - time: {0}".format(time.time() - t_s))
 
-			eval_in = scipy.sparse.load_npz(test_filename)
-			eval_label = np.load(test_label_filename)
-
-		'''
-		from thundersvm import SVC
-		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		clf = SGDClassifier(max_iter=1000, tol=1e-4)
-
-		# TRAIN
-		print("fitting model...")
-		t_s = time.time()
-		clf.fit(data_in, data_label)
-		print("elapsed:", time.time()-t_s)
-		
-		print("evaluating model...")
-		t_s = time.time()
-		pred = clf.predict(eval_in)
-		cur_accuracy = metrics.accuracy_score(eval_label, pred)
-		print("elapsed:", time.time()-t_s)
+	scipy.sparse.save_npz(test_filename, eval_in)
+	np.save(test_label_filename, eval_label)
 
 
-		# if model accuracy is good then replace the old model with new save data
-		if(cur_accuracy > max_accuracy):
-			#tcg.save_model(os.path.join(save_dir, "model"))
-			max_accuracy = cur_accuracy
 
-		print("Training layer: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(layer, iteration, repeat, cur_accuracy, max_accuracy))
-		'''
+
 
 if __name__ == '__main__':
 	import argparse
@@ -151,16 +124,13 @@ if __name__ == '__main__':
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
 
-	for layer in range(4, DEPTH_SIZE):
-		main(FLAGS.model_type,
-			FLAGS.dataset_dir, 
-			FLAGS.csv_filename,
-			FLAGS.dataset_type,
-			FLAGS.dataset_id,
-			layer,
-			FLAGS.num_classes,
-			FLAGS.repeat,
-			FLAGS.parse_data
-			)
-	
+	for layer in range(DEPTH_SIZE):
+		process_data(FLAGS.dataset_dir, 
+			FLAGS.model_type, 
+			FLAGS.dataset_type, 
+			FLAGS.dataset_id, 
+			layer, 
+			FLAGS.csv_filename, 
+			FLAGS.num_classes)
+
 	
