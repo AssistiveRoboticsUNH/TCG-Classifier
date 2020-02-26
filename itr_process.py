@@ -23,7 +23,7 @@ def get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	return train_filename, test_filename, train_label_filename, test_label_filename
 
 def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
-
+	print("Rretrieving file data!")
 	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
 
 	data_in = scipy.sparse.load_npz(train_filename)
@@ -34,6 +34,7 @@ def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
 
 
 def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes):
+	print("Generating new files!")
 	tcg = ITR_Extractor(num_classes)		
 		
 	#open files
