@@ -81,7 +81,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	in_files = [ex[path] for ex in test_data]
 	in_labels = [ex['label'] for ex in test_data]
 
-	print("adding eval data...{0}".format(len(train_data)))
+	print("adding eval data...{0}".format(len(test_data)))
 	t_s = time.time()
 	tcg.add_files_to_eval_corpus(in_files, in_labels)
 	print("eval data added - time: {0}".format(time.time() - t_s))
