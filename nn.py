@@ -52,7 +52,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.npz'.format(ex['example_id'], layer))
 		test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test{0}_{1}.npz'.format(ex['example_id'], layer))
 
-		#parse_data = not os.path.exists(train_filename)
+		parse_data = not os.path.exists(train_filename)
 
 		if(parse_data):
 			# TRAIN
@@ -120,10 +120,14 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		class Net(nn.Module):
 			def __init__(self, input_size, num_classes):
 				super(Net, self).__init__()
-				self.dense = nn.Linear(input_size, num_classes)				
+				n_hidden= 1024
+
+				self.dense1 = nn.Linear(input_size, n_hidden)
+				self.dense2 = nn.Linear(n_hidden, num_classes)				
 
 			def forward(self, x):
-				return self.dense(x).double()
+				x = self.dense1(x)#.double()
+				return self.dense2(x)#.double()
 
 		net = Net(data_in.shape[1], num_classes).to(device)
 
