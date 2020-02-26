@@ -5,3 +5,4 @@ python3.6 itr_sklearn_repeat.py \
 	frames \
 	1 \
 	174 \
+	--num_procs 4\
