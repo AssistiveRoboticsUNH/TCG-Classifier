@@ -96,7 +96,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print("data_label.shape", data_label.shape)
 
 
-		batch_size = 32
+		batch_size = 10
 
 		trainloader = torch.utils.data.DataLoader(zip(data_in, data_label), batch_size=batch_size,
 										  shuffle=True, num_workers=2)
@@ -140,7 +140,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		optimizer = optim.SGD(net.parameters(), lr=0.00001, momentum=0.9)
 
 		t_s = time.time()
-		for epoch in range(30):  # loop over the dataset multiple times
+		for epoch in range(5):  # loop over the dataset multiple times
 
 			running_loss = 0.0
 			for i, data in enumerate(trainloader, 0):
@@ -161,7 +161,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				# print statistics
 				running_loss += loss.item()
-			print('[%d, %5d] loss: %.3f' % (epoch + 1, i + 1, running_loss / 2000))
+			print('[%d, %5d] loss: %.3f' % (epoch + 1, len(trainloader), running_loss / 2000))
 			running_loss = 0.0
 
 
@@ -184,6 +184,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				_, predicted = torch.max(outputs.data, 1)
 				total += labels.size(0)
 				correct += (predicted == labels).sum().item()
+
+				for p, l in zip(predicted, labels):
+					print(p, l)
+				print(correct, total)
 		print("test elapsed:", time.time()-t_s)
 
 		print('Accuracy of the network on the 10000 test images: %d %%' % (
