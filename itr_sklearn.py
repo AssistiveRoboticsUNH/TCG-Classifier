@@ -84,6 +84,7 @@ class AtomicEvent():
 		if (a1 == b1 and a2 == b2):
 			return 'eq'
 
+		'''
 		#startedBy
 		if (a1 == b1 and b2 < a2):
 			return 'si'
@@ -107,7 +108,7 @@ class AtomicEvent():
 		#after
 		if (b2 < a1):
 			return 'bi'
-
+		'''
 def read_file(txt_file):
 	
 	sparse_matrix = read_sparse_matrix(txt_file)
@@ -141,18 +142,18 @@ def read_file(txt_file):
 	'''
 	return events#events.values()
 
-def all_itrs(e1, e2, bound=0):
+def get_itrs(e1, e2):
 
+	return e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
+	'''
 	itrs = set()
-	for i in range(-bound, bound):
-
-		itr_name = e1.get_itr_from_time(e1.start, e1.end+i, e2.start, e2.end)
-		itrs.add(itr_name)
 	itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
 	itrs.add(itr_name)
+	#itr_name = e1.get_itr_from_time(e1.start, e1.end, e2.start, e2.end)
+	#itrs.add(itr_name)
 
 	return itrs
-
+	'''
 def extract_itr_seq(txt_file):
 
 	# get events from file
@@ -166,14 +167,15 @@ def extract_itr_seq(txt_file):
 		j = i+1
 		while(j < len(events) and events[j].name != events[i].name):
 
-			for itr_name in all_itrs(events[i], events[j]):
+			itr_name = get_itrs(events[i], events[j])
 
-				if('i' not in itr_name):
-					e1 = events[i].name
-					e2 = events[j].name
+			#if('i' not in itr_name):
+			e1 = events[i].name
+			e2 = events[j].name
 
-					itr = (e1, itr_name, e2)
-					itr_seq.append(itr)
+			itr = (e1, itr_name, e2)
+			itr_seq.append(itr)
+			
 			j+=1
 	
 	return itr_seq
