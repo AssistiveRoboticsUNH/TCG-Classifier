@@ -45,7 +45,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		data_in, data_label, eval_in, eval_label = retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer)
 
 
-		from thundersvm import SVC
+		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		clf = SGDClassifier(max_iter=1000, tol=1e-4, verbose=1)
 
