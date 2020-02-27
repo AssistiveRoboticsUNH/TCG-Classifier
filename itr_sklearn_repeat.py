@@ -104,7 +104,7 @@ if __name__ == '__main__':
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
 
-	for layer in range(DEPTH_SIZE):
+	for layer in range(DEPTH_SIZE-1, -1, -1):
 		main(FLAGS.model_type,
 			FLAGS.dataset_dir, 
 			FLAGS.csv_filename,
