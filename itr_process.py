@@ -23,18 +23,11 @@ from multiprocessing import Pool
 from sklearn.pipeline import Pipeline
 
 def extract_wrapper(file):
-	try:
-		return extract_itr_seq(file)
-	except:
-		print("error with c++ conversion")
+	return extract_itr_seq(file)
 
 def parse_files(file_list, num_procs=1):
 	pool = Pool(num_procs)
-	try:
-		return pool.map(extract_wrapper, file_list)
-	except:
-		print("system broke")
-		sys.exit(-1)
+	return pool.map(extract_wrapper, file_list)
 
 def get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	file_path = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
