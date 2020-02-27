@@ -52,7 +52,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		clf = SGDClassifier(max_iter=1000, tol=1e-4)#, verbose=1, n_jobs=num_procs)
+		clf = SGDClassifier(max_iter=1000, tol=1e-4, n_jobs=num_procs)
 
 		# TRAIN
 		print("fitting model...")
@@ -96,13 +96,15 @@ if __name__ == '__main__':
 
 	if(FLAGS.model_type == 'i3d'):
 		from gi3d_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
+	if(FLAGS.model_type == 'rn50'):
+		from rn50_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 	if(FLAGS.model_type == 'trn'):
 		from trn_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 	if(FLAGS.model_type == 'tsm'):
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
 
-	for layer in range(2):#2,DEPTH_SIZE):
+	for layer in range(DEPTH_SIZE):
 		main(FLAGS.model_type,
 			FLAGS.dataset_dir, 
 			FLAGS.csv_filename,
