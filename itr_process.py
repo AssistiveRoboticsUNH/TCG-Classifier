@@ -40,7 +40,7 @@ def parse_files(file_list, num_procs=1, empty_locs=[]):
 	t_s = time.time()
 
 	pool = Pool(num_procs)
-	corpus = pool.map( extract_wrapper, zip(file_list, range(len(file_list))) )
+	corpus = pool.imap( extract_wrapper, zip(file_list, range(len(file_list))) )
 	pool.close()
 	pool.join()
 
