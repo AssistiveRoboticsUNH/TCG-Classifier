@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from itr_sklearn import ITR_Extractor
 
 from itr_parser import extract_itr_seq
-from sklearn.feature_extraction.text import TfidfVectorizer, HashingVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, HashingVectorizer, CountVectorizer
 from sklearn.preprocessing import StandardScaler
 
 from multiprocessing import Pool
@@ -77,7 +77,8 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
 	
 	pipe = Pipeline([
-		('hash', HashingVectorizer(n_features=2**17, token_pattern=r"\b\w+-\w+-\w+\b")),
+		('count', CountVectorizer(token_pattern=r"\b\w+-\w+-\w+\b")),
+		#('hash', HashingVectorizer(n_features=2**17, token_pattern=r"\b\w+-\w+-\w+\b")),
 		('tfidf', TfidfVectorizer(sublinear_tf=True)),
 		('scale', StandardScaler(with_mean=False)),
 	])
