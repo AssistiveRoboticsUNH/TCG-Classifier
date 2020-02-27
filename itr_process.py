@@ -37,6 +37,8 @@ def extract_wrapper(inp):
 def parse_files(file_list, num_procs=1, empty_locs=[]):
 	#file_list= file_list[:10]
 
+	t_s = time.time()
+
 	pool = Pool(num_procs)
 	corpus = pool.map( extract_wrapper, zip(file_list, range(len(file_list))) )
 
@@ -47,10 +49,12 @@ def parse_files(file_list, num_procs=1, empty_locs=[]):
 	if(len(empty_locs) == 0):
 		empty_locs = np.where(corpus.any(axis=0))[0]
 
-	print(empty_locs)
 	corpus = corpus[:, empty_locs]
+	corpus = scipy.sparse.csr_matrix(corpus)
 
-	return  scipy.sparse.csr_matrix(corpus), empty_locs
+	print("parsing data: {0}s".format(time.time() - t_s))
+
+	return  corpus, empty_locs
 
 
 
@@ -117,42 +121,40 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	in_files = [ex[path] for ex in train_data]
 
 	print("adding train data...{0}".format(len(train_data)))
-	t_s = time.time()
 	data_in, empty_locs = parse_files(in_files, num_procs=num_procs)
-	print("data added - time: {0}".format(time.time() - t_s))
+	
 
 
 	print("fit train data...")
 	t_s = time.time()
 	data_in = pipe.fit_transform(data_in)
-	print("pipe fit - time: {0}".format(time.time() - t_s))
+	print("fit data: {0}".format(time.time() - t_s))
 
 	data_label = [ex['label'] for ex in train_data]
 
 	print("data_in shape:", data_in.shape)
 	scipy.sparse.save_npz(train_filename, data_in)
 	np.save(train_label_filename, data_label)
-
+	print('')
 
 	# EVALUATE
 	in_files = [ex[path] for ex in test_data]
 
-	print("adding eval data...{0}".format(len(test_data)))
-	t_s = time.time()
+	print("adding test data...{0}".format(len(test_data)))
 	data_in, _ = parse_files(in_files, num_procs=num_procs, empty_locs=empty_locs)
-	print("eval data added - time: {0}".format(time.time() - t_s))
 
 	print("fit eval data...")
 	t_s = time.time()
-
 	eval_in = pipe.transform(data_in)
-	print("pipe eval fit - time: {0}".format(time.time() - t_s))
+	print("fit data: {0}".format(time.time() - t_s))
+
 
 	eval_label = [ex['label'] for ex in test_data]
 
 	print("eval_in shape:", eval_in.shape)
 	scipy.sparse.save_npz(test_filename, eval_in)
 	np.save(test_label_filename, eval_label)
+	print('--------')
 
 
 
