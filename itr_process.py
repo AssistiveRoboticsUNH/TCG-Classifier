@@ -35,6 +35,8 @@ def extract_wrapper(inp):
 	return out
 
 def parse_files(file_list, num_procs=1, empty_locs=None):
+	file_list[:10]
+
 	pool = Pool(num_procs)
 	corpus = pool.map( extract_wrapper, zip(file_list, range(len(file_list))) )
 
@@ -46,7 +48,7 @@ def parse_files(file_list, num_procs=1, empty_locs=None):
 		empty_locs = np.where(corpus.any(axis=1))
 
 	print(empty_locs)
-	corpus = corpus[empty_locs]
+	corpus = corpus[:, empty_locs]
 
 	return  scipy.sparse.csr_matrix(corpus), empty_locs
 
