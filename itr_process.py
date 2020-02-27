@@ -51,6 +51,8 @@ def parse_files(file_list, num_procs=1, empty_locs=[]):
 	print(empty_locs)
 	corpus = corpus[:, empty_locs]
 
+	print("corpus_shape2:", corpus.shape)
+
 	return  scipy.sparse.csr_matrix(corpus), empty_locs
 
 
