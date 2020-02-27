@@ -127,24 +127,8 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("fit train data...")
 	t_s = time.time()
-	#data_in = hashvect.fit_transform(corpus)
-	#print("hashvect fit - time: {0}".format(time.time() - t_s))
-	print("data-in shape: ", data_in.shape)
-	t_s = time.time()
-	data_in = tfidf.fit_transform(data_in)
-	print("tfidf fit - time: {0}".format(time.time() - t_s))
-	t_s = time.time()
-	data_in = scale.fit_transform(data_in)
-	print("scale fit - time: {0}".format(time.time() - t_s))
-
-
-
-
-
-
-	#data_in = pipe.fit_transform(corpus)
-	print("data shape: ",  data_in.shape)
-	print("data fit - time: {0}".format(time.time() - t_s))
+	data_in = pipe.fit_transform(data_in)
+	print("pipe fit - time: {0}".format(time.time() - t_s))
 
 	data_label = [ex['label'] for ex in train_data]
 
@@ -163,8 +147,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	print("fit eval data...")
 	t_s = time.time()
 	eval_in = pipe.transform(data_in)
-	print("data shape: ",  eval_in.shape)
-	print("eval data fit - time: {0}".format(time.time() - t_s))
+	print("pipe eval fit - time: {0}".format(time.time() - t_s))
 
 	eval_label = [ex['label'] for ex in test_data]
 
