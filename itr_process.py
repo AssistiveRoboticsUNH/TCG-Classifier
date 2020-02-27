@@ -14,6 +14,13 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
+import itr_parser
+
+
+def parse_files(file_list, num_procs=1):
+	pool = Pool(num_procs)
+	return pool.map(itr_parser.extract_itr_seq, file_list)
+
 def get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.npz'.format(dataset_id, layer))
 	test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_{0}_{1}.npz'.format(dataset_id, layer))
@@ -37,7 +44,7 @@ def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
 
 def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs):
 	print("Generating new files!")
-	tcg = ITR_Extractor(num_classes, num_procs)		
+	#tcg = ITR_Extractor(num_classes, num_procs)		
 		
 	#open files
 	try:
@@ -59,39 +66,46 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	print("Generating file names")
 	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
 	
+
+	tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
+	scaler = StandardScaler(with_mean=False)
+
+
 	# TRAIN
 	in_files = [ex[path] for ex in train_data]
-	in_labels = [ex['label'] for ex in train_data]
 
 	print("adding train data...{0}".format(len(train_data)))
 	t_s = time.time()
-	tcg.add_files_to_corpus(in_files, in_labels)
+	corpus = parse_files(in_files)
 	print("data added - time: {0}".format(time.time() - t_s))
 
 	print("fit train data...")
 	t_s = time.time()
-	data_in = tcg.tfidf.fit_transform(tcg.corpus)
-	data_label = np.array(tcg.labels)
+	data_in = tfidf.fit_transform(corpus)
+	data_in = scaler.fit_transform(data_in)
 	print("data fit - time: {0}".format(time.time() - t_s))
+
+	data_label = [ex['label'] for ex in train_data]
 
 	scipy.sparse.save_npz(train_filename, data_in)
 	np.save(train_label_filename, data_label)
 
 
+	# EVALUATE
 	in_files = [ex[path] for ex in test_data]
-	in_labels = [ex['label'] for ex in test_data]
 
 	print("adding eval data...{0}".format(len(test_data)))
 	t_s = time.time()
-	tcg.add_files_to_eval_corpus(in_files, in_labels)
+	corpus = parse_files(in_files)
 	print("eval data added - time: {0}".format(time.time() - t_s))
-
 
 	print("fit eval data...")
 	t_s = time.time()
-	eval_in = tcg.tfidf.transform(tcg.evalcorpus)
-	eval_label = np.array(tcg.evallabels)
+	eval_in = tfidf.transform(corpus)
+	eval_in = scaler.transform(eval_in)
 	print("eval data fit - time: {0}".format(time.time() - t_s))
+
+	eval_label = [ex['label'] for ex in test_data]
 
 	scipy.sparse.save_npz(test_filename, eval_in)
 	np.save(test_label_filename, eval_label)
