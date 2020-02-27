@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from itr_sklearn import ITR_Extractor
 
 from itr_parser import extract_itr_seq
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, HashingVectorizer
 from sklearn.preprocessing import StandardScaler
 
 from multiprocessing import Pool
