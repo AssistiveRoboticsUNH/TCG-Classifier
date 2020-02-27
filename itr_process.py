@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
-from itr_parser import extract_itr_seq
+from itr_parser import extract_itr_seq_into_counts
 from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer, HashingVectorizer, CountVectorizer
 from sklearn.preprocessing import StandardScaler
 
@@ -23,7 +23,7 @@ from multiprocessing import Pool
 from sklearn.pipeline import Pipeline
 
 def extract_wrapper(file):
-	return extract_itr_seq(file)
+	return extract_itr_seq_into_counts(file)
 
 def parse_files(file_list, num_procs=1):
 	pool = Pool(num_procs)
