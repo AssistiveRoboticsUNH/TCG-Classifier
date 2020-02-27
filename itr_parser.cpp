@@ -112,7 +112,7 @@ string extract_itr_seq(string txt_file){
 			int e1 = events[i].name;
 			int e2 = events[j].name;
 
-			itr_list += to_string(e1)+"-"+itr_name+"-"+to_string(e2)+" ";
+			itr_list += to_string(e1)+itr_name+to_string(e2)+" ";
 			j += 1;
 		}
 	}
