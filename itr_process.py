@@ -34,7 +34,7 @@ def extract_wrapper(inp):
 
 	return out
 
-def parse_files(file_list, num_procs=1, empty_locs=None):
+def parse_files(file_list, num_procs=1, empty_locs=[]):
 	file_list= file_list[:10]
 
 	pool = Pool(num_procs)
@@ -44,7 +44,7 @@ def parse_files(file_list, num_procs=1, empty_locs=None):
 	corpus = np.array(corpus)
 	corpus = corpus.reshape(corpus.shape[0], -1)
 
-	if(empty_locs == None):
+	if(len(empty_locs) == 0):
 		empty_locs = np.where(corpus.any(axis=1))[0]
 
 	print(empty_locs)
