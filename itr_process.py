@@ -28,7 +28,7 @@ def extract_wrapper(inp):
 	if (idx % 1000 == 0):
 		t_s = time.time()
 		out = itr_parser.extract_itr_seq_into_counts(file)
-		print("process_time: ", time.time()-t_s)
+		print("process_time {0}: {1}".format(idx,  time.time()-t_s))
 	else:
 		out = itr_parser.extract_itr_seq_into_counts(file)
 
