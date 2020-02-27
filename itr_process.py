@@ -95,7 +95,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	pipe = Pipeline([
 		#('count', CountVectorizer(token_pattern=r"\b\w+-\w+-\w+\b")),
-		('hash', hashvect),
+		#('hash', hashvect),
 		#('hash', HashingVectorizer(n_features=2**18, token_pattern=r"\b\w+-\w+-\w+\b")),
 		('tfidf', tfidf),#, token_pattern=r"\b\w+-\w+-\w+\b")),
 		#('tfidf', TfidfVectorizer(sublinear_tf=True, token_pattern=r"\b\d+\w\d+\b")),#, token_pattern=r"\b\w+-\w+-\w+\b")),
@@ -107,15 +107,13 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("adding train data...{0}".format(len(train_data)))
 	t_s = time.time()
-	corpus = parse_files(in_files, num_procs=num_procs)
+	data_in = parse_files(in_files, num_procs=num_procs)
 	print("data added - time: {0}".format(time.time() - t_s))
 
 
-	print(corpus[0])
-
 	print("fit train data...")
 	t_s = time.time()
-	data_in = hashvect.fit_transform(corpus)
+	#data_in = hashvect.fit_transform(corpus)
 	print("hashvect fit - time: {0}".format(time.time() - t_s))
 	print("data-in shape: ", data_in.shape)
 	t_s = time.time()
@@ -145,12 +143,12 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("adding eval data...{0}".format(len(test_data)))
 	t_s = time.time()
-	corpus = parse_files(in_files, num_procs=num_procs)
+	data_in = parse_files(in_files, num_procs=num_procs)
 	print("eval data added - time: {0}".format(time.time() - t_s))
 
 	print("fit eval data...")
 	t_s = time.time()
-	eval_in = pipe.transform(corpus)
+	eval_in = pipe.transform(data_in)
 	print("data shape: ",  eval_in.shape)
 	print("eval data fit - time: {0}".format(time.time() - t_s))
 
