@@ -136,8 +136,11 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 	// get a list of all of the ITRs in the txt_file
 	//int array[num_features][num_features][7] itr_list = {};
 	p::tuple shape = p::make_tuple(num_features, num_features, 7);
+	cout << "t2" << endl;
 	np::dtype dt = np::dtype::get_builtin<int>();
+	cout << "t3" << endl;
 	np::ndarray itr_list = np::zeros(shape, dt);
+	cout << "t4" << endl;
     //std::copy(v.begin(), v.end(), reinterpret_cast<double*>(result.get_data()));
 
 	cout << "num_features: " << num_features << endl;
