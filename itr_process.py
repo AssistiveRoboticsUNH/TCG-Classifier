@@ -83,12 +83,14 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	])
 
 	# TRAIN
-	in_files = [ex[path] for ex in train_data]
+	in_files = [ex[path] for ex in train_data][:2]
 
 	print("adding train data...{0}".format(len(train_data)))
 	t_s = time.time()
 	corpus = parse_files(in_files, num_procs=num_procs)
 	print("data added - time: {0}".format(time.time() - t_s))
+
+	print(corpus)
 
 	print("fit train data...")
 	t_s = time.time()
