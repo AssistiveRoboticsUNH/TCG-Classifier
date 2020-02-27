@@ -30,11 +30,12 @@ def parse_files(file_list, num_procs=1):
 	#corpus = pool.map(extract_wrapper, file_list)
 
 	corpus = [extract_wrapper(file_list[0]), extract_wrapper(file_list[1])]
+	corpus = np.array(corpus)
 
-	print(type(corpus[0]))
+	#print(type(corpus[0]))
 
 
-	return corpus
+	return  scipy.sparse.csr_matrix(corpus.reshape(corpus.shape[0], -1))
 
 
 
