@@ -20,6 +20,8 @@ from sklearn.preprocessing import StandardScaler
 
 from multiprocessing import Pool
 
+from sklearn.pipeline import Pipeline
+
 def extract_wrapper(file):
 	return extract_itr_seq(file)
 
@@ -50,6 +52,15 @@ def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	return data_in, data_label, eval_in, eval_label
 
 
+from gensim.models import TfidfModel
+from gensim.corpora import Dictionary
+
+def train_tfidf(corpus):
+	tokens = [tokenize (doc) for doc in texts]
+	id2word = Dictionary(tokens)
+	tfidf = TfidfModel([id2word.doc2bow(doc) for doc in tokens], id2word)
+	return tfidf
+
 def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs):
 	print("Generating new files!")
 	#tcg = ITR_Extractor(num_classes, num_procs)		
@@ -74,10 +85,11 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	print("Generating file names")
 	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
 	
-
-	tfidf = TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)
-	scaler = StandardScaler(with_mean=False)
-
+	pipe = Pipeline([
+		('hash', HashingVectorizer(n_features=2**17))
+		('tfidf', TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True))
+		('scale', StandardScaler(with_mean=False))
+	])
 
 	# TRAIN
 	in_files = [ex[path] for ex in train_data]
@@ -89,8 +101,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("fit train data...")
 	t_s = time.time()
-	data_in = tfidf.fit_transform(corpus)
-	data_in = scaler.fit_transform(data_in)
+	data_in = pipe.fit_transform(corpus)
 	print("data fit - time: {0}".format(time.time() - t_s))
 
 	data_label = [ex['label'] for ex in train_data]
@@ -109,8 +120,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("fit eval data...")
 	t_s = time.time()
-	eval_in = tfidf.transform(corpus)
-	eval_in = scaler.transform(eval_in)
+	eval_in = pipe.transform(corpus)
 	print("eval data fit - time: {0}".format(time.time() - t_s))
 
 	eval_label = [ex['label'] for ex in test_data]
