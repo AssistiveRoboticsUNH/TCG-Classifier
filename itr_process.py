@@ -149,7 +149,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("type(data_in)", type(data_in))
 
-	eval_in = pipe.transform(data_in)
+	eval_in, _ = pipe.transform(data_in)
 	print(type(data_in))
 	print("pipe eval fit - time: {0}".format(time.time() - t_s))
 
