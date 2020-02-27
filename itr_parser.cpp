@@ -76,7 +76,7 @@ vector<Event> read_sparse_matrix(string filename, int& num_features){
 
 	//get number of features
 	if (file.is_open())
-	    file.read ((char*)&num_features, sizeof(num_features));
+	    file.read ((int*)&num_features, sizeof(num_features));
 
 	//parse the rest of teh file
 	int current_feature = -1;
