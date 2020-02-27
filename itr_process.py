@@ -79,7 +79,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	pipe = Pipeline([
 		#('count', CountVectorizer(token_pattern=r"\b\w+-\w+-\w+\b")),
 		('hash', HashingVectorizer(n_features=2**18, token_pattern=r"\b\w+-\w+-\w+\b")),
-		('tfidf', TfidfTransformer(sublinear_tf=True)),#, token_pattern=r"\b\w+-\w+-\w+\b")),
+		#('tfidf', TfidfTransformer(sublinear_tf=True)),#, token_pattern=r"\b\w+-\w+-\w+\b")),
 		('scale', StandardScaler(with_mean=False)),
 	])
 
