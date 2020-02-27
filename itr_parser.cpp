@@ -1,6 +1,8 @@
 
 #include <boost/python.hpp>
 #include <boost/python/numpy.hpp>
+
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -8,7 +10,12 @@
 
 using namespace std;
 namespace p = boost::python;
-namespace np = boost::python::numpy;
+
+//use on compute machines
+//namespace np = boost::python::numpy;
+
+//use on ubuntu machines
+namespace np = boost::numpy;
 
 class Event{
 public:
