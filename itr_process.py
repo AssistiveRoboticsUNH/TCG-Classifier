@@ -43,6 +43,7 @@ def parse_files(file_list, num_procs=1, empty_locs=[]):
 	corpus = pool.imap( extract_wrapper, zip(file_list, range(len(file_list))), chunksize=10 )
 	#pool.close()
 	#pool.join()
+	print(corpus)
 
 	#corpus = [extract_wrapper(file_list[0]), extract_wrapper(file_list[1])]
 	corpus = np.array(corpus)
