@@ -32,7 +32,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		#num_classes = 5
+		num_classes = 5
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
@@ -112,7 +112,7 @@ if __name__ == '__main__':
 			FLAGS.num_classes,
 			FLAGS.repeat,
 			FLAGS.parse_data,
-			FLAGS.num_procs
+			1,#FLAGS.num_procs
 			)
 	
 	
