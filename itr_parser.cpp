@@ -1,6 +1,6 @@
 
 #include <boost/python.hpp>
-#include <boost/python/numpy.hpp>
+//#include <boost/python/numpy.hpp>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -124,7 +124,7 @@ int main(){
 }
 */
 using namespace boost::python;
-using namespace boost::python::numpy;
+//using namespace boost::python::numpy;
 
 BOOST_PYTHON_MODULE(itr_parser)
 {
