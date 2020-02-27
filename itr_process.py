@@ -77,13 +77,19 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	print("Generating file names")
 	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
 	
+
+	hashvect = HashingVectorizer(n_features=2**18, token_pattern=r"\b\d+\w\d+\b")
+	tfidf = TfidfTransformer(sublinear_tf=True)
+	scale = StandardScaler(with_mean=False)
+
+
 	pipe = Pipeline([
 		#('count', CountVectorizer(token_pattern=r"\b\w+-\w+-\w+\b")),
-		('hash', HashingVectorizer(n_features=2**18, token_pattern=r"\b\d+\w\d+\b")),
+		('hash', hashvect),
 		#('hash', HashingVectorizer(n_features=2**18, token_pattern=r"\b\w+-\w+-\w+\b")),
-		('tfidf', TfidfTransformer(sublinear_tf=True)),#, token_pattern=r"\b\w+-\w+-\w+\b")),
+		('tfidf', tfidf),#, token_pattern=r"\b\w+-\w+-\w+\b")),
 		#('tfidf', TfidfVectorizer(sublinear_tf=True, token_pattern=r"\b\d+\w\d+\b")),#, token_pattern=r"\b\w+-\w+-\w+\b")),
-		('scale', StandardScaler(with_mean=False)),
+		('scale', scale),
 	])
 
 	# TRAIN
@@ -97,7 +103,21 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("fit train data...")
 	t_s = time.time()
-	data_in = pipe.fit_transform(corpus)
+	data_in = hashvect.fit_transform(corpus)
+	print("hashvect fit - time: {0}".format(time.time() - t_s))
+	t_s = time.time()
+	data_in = tfidf.fit_transform(data_in)
+	print("tfidf fit - time: {0}".format(time.time() - t_s))
+	t_s = time.time()
+	data_in = scale.fit_transform(data_in)
+	print("scale fit - time: {0}".format(time.time() - t_s))
+
+
+
+
+
+
+	#data_in = pipe.fit_transform(corpus)
 	print("data shape: ",  data_in.shape)
 	print("data fit - time: {0}".format(time.time() - t_s))
 
