@@ -112,7 +112,7 @@ if __name__ == '__main__':
 			FLAGS.num_classes,
 			FLAGS.repeat,
 			FLAGS.parse_data,
-			1,#FLAGS.num_procs
+			FLAGS.num_procs
 			)
 	
 	
