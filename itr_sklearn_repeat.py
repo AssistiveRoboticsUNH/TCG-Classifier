@@ -44,6 +44,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs)
 		data_in, data_label, eval_in, eval_label = retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer)
 
+		print("data_in.shape:", data_in.shape)
+		print("data_label.shape:", data_label.shape)
+		print("eval_in.shape:", eval_in.shape)
+		print("eval_label.shape:", eval_label.shape)
+
 
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
