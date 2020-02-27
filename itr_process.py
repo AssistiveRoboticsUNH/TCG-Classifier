@@ -52,15 +52,6 @@ def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	return data_in, data_label, eval_in, eval_label
 
 
-from gensim.models import TfidfModel
-from gensim.corpora import Dictionary
-
-def train_tfidf(corpus):
-	tokens = [tokenize (doc) for doc in texts]
-	id2word = Dictionary(tokens)
-	tfidf = TfidfModel([id2word.doc2bow(doc) for doc in tokens], id2word)
-	return tfidf
-
 def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs):
 	print("Generating new files!")
 	#tcg = ITR_Extractor(num_classes, num_procs)		
