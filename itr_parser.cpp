@@ -143,6 +143,9 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 			int e1 = events[i].name;
 			int e2 = events[j].name;
 
+			if(e1 > num_features or e2 > num_features)
+				cout << e1 << " or " << e2<< " greater than " << num_features << endl;
+
 			itr_list[e1][e2][itr_name] += 1;
 
 			j += 1;
