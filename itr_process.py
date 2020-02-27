@@ -14,12 +14,13 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
-import itr_parser
+from itr_parser import extract_itr_seq
+
 
 
 def parse_files(file_list, num_procs=1):
 	pool = Pool(num_procs)
-	return pool.map(itr_parser.extract_itr_seq, file_list)
+	return pool.map(extract_itr_seq, file_list)
 
 def get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.npz'.format(dataset_id, layer))
