@@ -72,8 +72,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			save_model(clf, os.path.join(save_dir, "model"))
 			max_accuracy = cur_accuracy
 
-		print("Training layer: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(layer, iteration, repeat, cur_accuracy, max_accuracy))
-		
+		print("ACCURACY: layer: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(layer, iteration, repeat, cur_accuracy, max_accuracy))
+		print('------------')
 
 if __name__ == '__main__':
 	import argparse
