@@ -8,7 +8,7 @@
 
 using namespace std;
 using namespace boost::python;
-namespace bn = boost::python::numpy;
+namespace np = boost::python::numpy;
 
 class Event{
 public:
@@ -121,7 +121,7 @@ string extract_itr_seq(string txt_file, int& num_features){
 }
 */
 
-bn::ndarray extract_itr_seq_into_counts(string txt_file){
+np::ndarray extract_itr_seq_into_counts(string txt_file){
 
 	// get events from file
 	int num_features;
@@ -129,8 +129,9 @@ bn::ndarray extract_itr_seq_into_counts(string txt_file){
 	sort(events.begin(), events.end(), compareEvents);
 
 	// get a list of all of the ITRs in the txt_file
-	int array[num_features][num_features][7] itr_list = {};
-	bn::ndarray itr_list = bn::zeros(1, (num_features, num_features, 7), bn::dtype::get_builtin<int>());
+	//int array[num_features][num_features][7] itr_list = {};
+	np::dtype dt = np::dtype::get_builtin<int>();
+	np::ndarray itr_list = np::zeros(1, (num_features, num_features, 7), dt);
     //std::copy(v.begin(), v.end(), reinterpret_cast<double*>(result.get_data()));
 
 	for (int i = 0; i < events.size(); i++){
