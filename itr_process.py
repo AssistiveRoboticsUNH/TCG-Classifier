@@ -77,9 +77,9 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
 	
 	pipe = Pipeline([
-		('hash', HashingVectorizer(n_features=2**17))
-		('tfidf', TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True))
-		('scale', StandardScaler(with_mean=False))
+		('hash', HashingVectorizer(n_features=2**17)),
+		('tfidf', TfidfVectorizer(token_pattern=r"\b\w+-\w+-\w+\b", sublinear_tf=True)),
+		('scale', StandardScaler(with_mean=False)),
 	])
 
 	# TRAIN
