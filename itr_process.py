@@ -15,7 +15,8 @@ import matplotlib.pyplot as plt
 from itr_sklearn import ITR_Extractor
 
 from itr_parser import extract_itr_seq
-
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import StandardScaler
 
 
 def parse_files(file_list, num_procs=1):
