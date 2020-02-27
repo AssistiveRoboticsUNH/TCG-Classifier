@@ -141,16 +141,13 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("adding eval data...{0}".format(len(test_data)))
 	t_s = time.time()
-	data_in = parse_files(in_files, num_procs=num_procs, empty_locs=empty_locs)
+	data_in, _ = parse_files(in_files, num_procs=num_procs, empty_locs=empty_locs)
 	print("eval data added - time: {0}".format(time.time() - t_s))
 
 	print("fit eval data...")
 	t_s = time.time()
 
-	print("type(data_in)", type(data_in))
-
-	eval_in, _ = pipe.transform(data_in)
-	print(type(data_in))
+	eval_in = pipe.transform(data_in)
 	print("pipe eval fit - time: {0}".format(time.time() - t_s))
 
 	eval_label = [ex['label'] for ex in test_data]
