@@ -146,7 +146,11 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("fit eval data...")
 	t_s = time.time()
+
+	print(type(data_in))
+
 	eval_in = pipe.transform(data_in)
+	print(type(data_in))
 	print("pipe eval fit - time: {0}".format(time.time() - t_s))
 
 	eval_label = [ex['label'] for ex in test_data]
