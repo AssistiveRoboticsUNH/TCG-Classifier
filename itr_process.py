@@ -46,7 +46,7 @@ def parse_files(file_list, num_procs=1, empty_locs=[]):
 
 	print("corpus_shape:", corpus.shape)
 	if(len(empty_locs) == 0):
-		empty_locs = np.where(corpus.any(axis=1))[0]
+		empty_locs = np.where(corpus.any(axis=0))[0]
 
 	print(empty_locs)
 	corpus = corpus[:, empty_locs]
