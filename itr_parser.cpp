@@ -74,9 +74,11 @@ vector<Event> read_sparse_matrix(string filename, int& num_features){
 	//open file
 	ifstream file (filename, ios::in | ios::binary);
 
+	int num_f;
 	//get number of features
 	if (file.is_open())
-	    file.read ((int*)&num_features, sizeof(num_features));
+	    file.read ((char*)&num_f, sizeof(num_f));
+	num_features = num_f;
 
 	//parse the rest of teh file
 	int current_feature = -1;
