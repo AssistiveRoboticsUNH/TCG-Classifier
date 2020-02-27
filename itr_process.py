@@ -44,14 +44,11 @@ def parse_files(file_list, num_procs=1, empty_locs=[]):
 	corpus = np.array(corpus)
 	corpus = corpus.reshape(corpus.shape[0], -1)
 
-	print("corpus_shape:", corpus.shape)
 	if(len(empty_locs) == 0):
 		empty_locs = np.where(corpus.any(axis=0))[0]
 
 	print(empty_locs)
 	corpus = corpus[:, empty_locs]
-
-	print("corpus_shape2:", corpus.shape)
 
 	return  scipy.sparse.csr_matrix(corpus), empty_locs
 
@@ -132,6 +129,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	data_label = [ex['label'] for ex in train_data]
 
+	print("data_in shape:", data_in.shape)
 	scipy.sparse.save_npz(train_filename, data_in)
 	np.save(train_label_filename, data_label)
 
@@ -152,6 +150,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	eval_label = [ex['label'] for ex in test_data]
 
+	print("eval_in shape:", eval_in.shape)
 	scipy.sparse.save_npz(test_filename, eval_in)
 	np.save(test_label_filename, eval_label)
 
