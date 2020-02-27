@@ -18,6 +18,8 @@ from itr_parser import extract_itr_seq
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import StandardScaler
 
+from multiprocessing import Pool
+
 
 def parse_files(file_list, num_procs=1):
 	pool = Pool(num_procs)
