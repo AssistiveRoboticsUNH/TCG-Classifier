@@ -44,6 +44,7 @@ def parse_files(file_list, num_procs=1, empty_locs=None):
 	if(empty_locs == None):
 		empty_locs = np.where(corpus.any(axis=1))
 
+	print(empty_locs)
 	corpus = corpus[empty_locs]
 
 	return  scipy.sparse.csr_matrix(corpus.reshape(corpus.shape[0], -1)), empty_locs
