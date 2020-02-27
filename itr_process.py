@@ -35,7 +35,7 @@ def extract_wrapper(inp):
 	return out
 
 def parse_files(file_list, num_procs=1, empty_locs=None):
-	file_list[:10]
+	file_list= file_list[:10]
 
 	pool = Pool(num_procs)
 	corpus = pool.map( extract_wrapper, zip(file_list, range(len(file_list))) )
