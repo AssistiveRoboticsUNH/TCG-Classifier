@@ -78,10 +78,7 @@ vector<Event> read_sparse_matrix(string filename, int& num_features){
 	//get number of features
 	if (file.is_open())
 	    file.read ((char*)&num_f, sizeof(num_f));
-	cout << "num_features " << num_f << endl;
 	num_features = num_f;
-	cout << "num_features2 " << num_features << endl;
-
 
 	//parse the rest of teh file
 	int current_feature = -1;
@@ -134,7 +131,7 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 	int num_features;
 	vector<Event> events = read_sparse_matrix(txt_file, num_features);
 	sort(events.begin(), events.end(), compareEvents);
-	cout << "t1" << endl;
+	cout << "t1 " <<  num_features<< endl;
 
 	// get a list of all of the ITRs in the txt_file
 	//int array[num_features][num_features][7] itr_list = {};
