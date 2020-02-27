@@ -105,6 +105,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	t_s = time.time()
 	data_in = hashvect.fit_transform(corpus)
 	print("hashvect fit - time: {0}".format(time.time() - t_s))
+	print("data-in shape: ", data_in.shape)
 	t_s = time.time()
 	data_in = tfidf.fit_transform(data_in)
 	print("tfidf fit - time: {0}".format(time.time() - t_s))
