@@ -21,17 +21,22 @@ from sklearn.preprocessing import StandardScaler
 from multiprocessing import Pool
 
 def extract_wrapper(file):
-	return extract_itr_seq(file)
+	t_s = time.time()
+	txt =  extract_itr_seq(file)
+	print("extract itrs ", time.time()-t_s)
+	return txt
 
 def parse_files(file_list, num_procs=1):
 	pool = Pool(num_procs)
 	return pool.map(extract_wrapper, file_list)
 
 def get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer):
-	train_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_{0}_{1}.npz'.format(dataset_id, layer))
-	test_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_{0}_{1}.npz'.format(dataset_id, layer))
-	train_label_filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'train_label_{0}_{1}.npy'.format(dataset_id, layer))
-	test_label_filename  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'test_label_{0}_{1}.npy'.format(dataset_id, layer))
+	file_path = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
+	
+	train_filename = os.path.join(file_path, 'train_{0}_{1}.npz'.format(dataset_id, layer))
+	test_filename  = os.path.join(file_path, 'test_{0}_{1}.npz'.format(dataset_id, layer))
+	train_label_filename = os.path.join(file_path, 'train_label_{0}_{1}.npy'.format(dataset_id, layer))
+	test_label_filename  = os.path.join(file_path, 'test_label_{0}_{1}.npy'.format(dataset_id, layer))
 	
 	return train_filename, test_filename, train_label_filename, test_label_filename
 
@@ -82,7 +87,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("adding train data...{0}".format(len(train_data)))
 	t_s = time.time()
-	corpus = parse_files(in_files)
+	corpus = parse_files(in_files, num_procs=num_procs)
 	print("data added - time: {0}".format(time.time() - t_s))
 
 	print("fit train data...")
@@ -102,7 +107,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("adding eval data...{0}".format(len(test_data)))
 	t_s = time.time()
-	corpus = parse_files(in_files)
+	corpus = parse_files(in_files, num_procs=num_procs)
 	print("eval data added - time: {0}".format(time.time() - t_s))
 
 	print("fit eval data...")
