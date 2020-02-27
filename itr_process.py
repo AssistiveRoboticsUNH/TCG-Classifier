@@ -49,7 +49,6 @@ def parse_files(file_list, num_procs=1, empty_locs=[]):
 		mylist.append(g)
 	corpus = mylist
 
-	#corpus = [extract_wrapper(file_list[0]), extract_wrapper(file_list[1])]
 	corpus = np.array(corpus)
 	corpus = corpus.reshape(corpus.shape[0], -1)
 
