@@ -8,7 +8,7 @@ PYTHON_INCLUDE = /usr/include/python$(PYTHON_VERSION)
 BOOST_INC = /usr/include
 BOOST_LIB = /usr/lib
 
-TARGET = itr_matcher
+TARGET = itr_parser
 
 CFLAGS = --std=c++11
 
