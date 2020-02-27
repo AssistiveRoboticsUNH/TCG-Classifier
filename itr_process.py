@@ -26,8 +26,10 @@ def extract_wrapper(file):
 	return itr_parser.extract_itr_seq_into_counts(file)
 
 def parse_files(file_list, num_procs=1):
-	pool = Pool(num_procs)
-	corpus = pool.map(extract_wrapper, file_list)
+	#pool = Pool(num_procs)
+	#corpus = pool.map(extract_wrapper, file_list)
+
+	corpus = [extract_wrapper(file_list[0]), extract_wrapper(file_list[1])]
 
 	print(type(corpus[0]))
 
