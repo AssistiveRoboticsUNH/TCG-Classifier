@@ -40,7 +40,7 @@ def parse_files(file_list, num_procs=1, empty_locs=None):
 
 	#corpus = [extract_wrapper(file_list[0]), extract_wrapper(file_list[1])]
 	corpus = np.array(corpus)
-	corpus.reshape(corpus.shape[0], -1)corpus
+	corpus = corpus.reshape(corpus.shape[0], -1)
 
 	if(empty_locs == None):
 		empty_locs = np.where(corpus.any(axis=1))
