@@ -22,20 +22,31 @@ from multiprocessing import Pool
 
 from sklearn.pipeline import Pipeline
 
-def extract_wrapper(file):
-	return itr_parser.extract_itr_seq_into_counts(file)
+def extract_wrapper(inp):
+	file, idx = inp
 
-def parse_files(file_list, num_procs=1):
+	if (idx % 1000 == 0):
+		t_s = time.time()
+		out = itr_parser.extract_itr_seq_into_counts(file)
+		print("process_time: ", time.time()-t_s)
+	else:
+		out = itr_parser.extract_itr_seq_into_counts(file)
+
+	return out
+
+def parse_files(file_list, num_procs=1, empty_locs=None):
 	pool = Pool(num_procs)
-	corpus = pool.map(extract_wrapper, file_list)
+	corpus = pool.map( extract_wrapper, zip(file_list, range(len(file_list))) )
 
 	#corpus = [extract_wrapper(file_list[0]), extract_wrapper(file_list[1])]
 	corpus = np.array(corpus)
 
-	#print(type(corpus[0]))
+	if(empty_locs == None):
+		empty_locs = np.where(corpus.any(axis=1))
 
+	corpus = corpus[empty_locs]
 
-	return  scipy.sparse.csr_matrix(corpus.reshape(corpus.shape[0], -1))
+	return  scipy.sparse.csr_matrix(corpus.reshape(corpus.shape[0], -1)), empty_locs
 
 
 
@@ -103,7 +114,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("adding train data...{0}".format(len(train_data)))
 	t_s = time.time()
-	data_in = parse_files(in_files, num_procs=num_procs)
+	data_in, empty_locs = parse_files(in_files, num_procs=num_procs)
 	print("data added - time: {0}".format(time.time() - t_s))
 
 
@@ -139,7 +150,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	print("adding eval data...{0}".format(len(test_data)))
 	t_s = time.time()
-	data_in = parse_files(in_files, num_procs=num_procs)
+	data_in = parse_files(in_files, num_procs=num_procs, empty_locs=empty_locs)
 	print("eval data added - time: {0}".format(time.time() - t_s))
 
 	print("fit eval data...")
