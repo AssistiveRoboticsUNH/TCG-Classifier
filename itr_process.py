@@ -21,10 +21,7 @@ from sklearn.preprocessing import StandardScaler
 from multiprocessing import Pool
 
 def extract_wrapper(file):
-	t_s = time.time()
-	txt =  extract_itr_seq(file)
-	print("extract itrs ", time.time()-t_s)
-	return txt
+	return extract_itr_seq(file)
 
 def parse_files(file_list, num_procs=1):
 	pool = Pool(num_procs)
@@ -41,7 +38,7 @@ def get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	return train_filename, test_filename, train_label_filename, test_label_filename
 
 def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
-	print("Rretrieving file data!")
+	print("Retrieving file data!")
 	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
 
 	data_in = scipy.sparse.load_npz(train_filename)
