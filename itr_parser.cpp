@@ -2,6 +2,11 @@
 #include <boost/python.hpp>
 #include <boost/numpy.hpp>
 
+//make sure to run this command:
+
+//install: https://stackoverflow.com/questions/51037886/trouble-with-linking-boostpythonnumpy
+// add libarary: export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
+
 
 #include <iostream>
 #include <fstream>
