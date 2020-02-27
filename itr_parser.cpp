@@ -1,12 +1,14 @@
 
 #include <boost/python.hpp>
-//#include <boost/python/numpy.hpp>
+#include <boost/python/numpy.hpp>
 #include <iostream>
 #include <fstream>
 #include <vector>
 
 
 using namespace std;
+using namespace boost::python;
+using namespace boost::python::numpy;
 
 class Event{
 public:
@@ -29,30 +31,30 @@ public:
 
 		//before
 		if (a2 < b1)
-			return 'b';
+			return 0;//'b';
 
 		//meets
 		if (a2 == b1)
-			return 'm';
+			return 1;//'m';
 
 		//overlaps
 		if (a1 < b1 and a2 < b2 and b1 < a2)
-			return 'o';
+			return 2;//'o';
 
 		//during
 		if (a1 < b1 and b2 < a2)
-			return 'd';
+			return 3;//'d';
 
 		//finishes
 		if (b1 < a1 and a2 == b2)
-			return 'f';
+			return 4;//'f';
 
 		//starts
 		if (a1 == b1 and a2 < b2)
-			return 's';
+			return 5;//'s';
 
 		//equals
-		return 'e';
+		return 6;//'e';
 	}
 };
 
@@ -65,7 +67,7 @@ bool compareEvents(Event e1, Event e2)
 
 
 
-vector<Event> read_sparse_matrix(string filename){
+vector<Event> read_sparse_matrix(string filename, int& num_features){
 
 	vector<Event> event_list;
 	
@@ -73,7 +75,6 @@ vector<Event> read_sparse_matrix(string filename){
 	ifstream file (filename, ios::in | ios::binary);
 
 	//get number of features
-	int num_features;
 	if (file.is_open())
 	    file.read ((char*)&num_features, sizeof(num_features));
 
@@ -95,11 +96,11 @@ vector<Event> read_sparse_matrix(string filename){
 	}
 	return event_list;
 }
-
-string extract_itr_seq(string txt_file){
+/*
+string extract_itr_seq(string txt_file, int& num_features){
 
 	// get events from file
-	vector<Event> events = read_sparse_matrix(txt_file);
+	vector<Event> events = read_sparse_matrix(txt_file, num_features);
 	sort(events.begin(), events.end(), compareEvents);
 
 	// get a list of all of the ITRs in the txt_file
@@ -118,16 +119,45 @@ string extract_itr_seq(string txt_file){
 	}
 	return itr_list;
 }
+*/
+
+ndarray extract_itr_seq_into_counts(string txt_file){
+
+	// get events from file
+	int num_features;
+	vector<Event> events = read_sparse_matrix(txt_file, num_features);
+	sort(events.begin(), events.end(), compareEvents);
+
+	// get a list of all of the ITRs in the txt_file
+	int array[num_features][num_features][7] itr_list = {};
+	ndarray itr_list = bn::zeros(1, (num_features, num_features, 7), bn::dtype::get_builtin<int>());
+    //std::copy(v.begin(), v.end(), reinterpret_cast<double*>(result.get_data()));
+
+	for (int i = 0; i < events.size(); i++){
+		int j = i+1;
+		while (j < events.size() and events[i].name != events[j].name){
+			int itr_name = events[i].get_itr(events[j]);
+
+			int e1 = events[i].name;
+			int e2 = events[j].name;
+
+			itr_list[e1][e2][itr_name] += 1;
+
+			j += 1;
+		}
+	}
+	return itr_list;
+}
 /*
 int main(){
 	read_sparse_matrix("test.b");
 }
 */
-using namespace boost::python;
-//using namespace boost::python::numpy;
+
 
 BOOST_PYTHON_MODULE(itr_parser)
 {
     using namespace boost::python;
-    def("extract_itr_seq", extract_itr_seq);
+    //def("extract_itr_seq", extract_itr_seq);
+    def("extract_itr_seq_into_counts", extract_itr_seq_into_counts);
 }
