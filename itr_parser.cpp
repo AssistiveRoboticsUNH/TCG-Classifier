@@ -123,10 +123,13 @@ string extract_itr_seq(string txt_file, int& num_features){
 
 np::ndarray extract_itr_seq_into_counts(string txt_file){
 
+	cout << "t0" << endl;
+
 	// get events from file
 	int num_features;
 	vector<Event> events = read_sparse_matrix(txt_file, num_features);
 	sort(events.begin(), events.end(), compareEvents);
+	cout << "t1" << endl;
 
 	// get a list of all of the ITRs in the txt_file
 	//int array[num_features][num_features][7] itr_list = {};
@@ -134,6 +137,8 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 	np::dtype dt = np::dtype::get_builtin<int>();
 	np::ndarray itr_list = np::zeros(shape, dt);
     //std::copy(v.begin(), v.end(), reinterpret_cast<double*>(result.get_data()));
+
+	cout << "num_features: " << num_features << endl;
 
 	for (int i = 0; i < events.size(); i++){
 		int j = i+1;
