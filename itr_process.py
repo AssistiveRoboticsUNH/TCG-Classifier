@@ -95,6 +95,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	print("fit train data...")
 	t_s = time.time()
 	data_in = pipe.fit_transform(corpus)
+	print("data shape: ",  data_in.shape)
 	print("data fit - time: {0}".format(time.time() - t_s))
 
 	data_label = [ex['label'] for ex in train_data]
@@ -114,6 +115,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	print("fit eval data...")
 	t_s = time.time()
 	eval_in = pipe.transform(corpus)
+	print("data shape: ",  eval_in.shape)
 	print("eval data fit - time: {0}".format(time.time() - t_s))
 
 	eval_label = [ex['label'] for ex in test_data]
