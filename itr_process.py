@@ -27,7 +27,14 @@ def extract_wrapper(file):
 
 def parse_files(file_list, num_procs=1):
 	pool = Pool(num_procs)
-	return pool.map(extract_wrapper, file_list)
+	corpus = pool.map(extract_wrapper, file_list)
+
+	print(type(corpus[0]))
+
+
+	return corpus
+
+
 
 def get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	file_path = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
