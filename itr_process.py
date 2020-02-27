@@ -83,7 +83,6 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 		('scale', StandardScaler(with_mean=False)),
 	])
 
-	train_data = train_data[:2]
 	# TRAIN
 	in_files = [ex[path] for ex in train_data]
 
