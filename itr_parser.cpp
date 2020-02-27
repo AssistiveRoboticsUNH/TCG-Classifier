@@ -78,7 +78,10 @@ vector<Event> read_sparse_matrix(string filename, int& num_features){
 	//get number of features
 	if (file.is_open())
 	    file.read ((char*)&num_f, sizeof(num_f));
+	cout << "num_features " << num_f << endl;
 	num_features = num_f;
+	cout << "num_features2 " << num_features << endl;
+
 
 	//parse the rest of teh file
 	int current_feature = -1;
