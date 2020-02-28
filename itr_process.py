@@ -25,9 +25,10 @@ from sklearn.pipeline import Pipeline
 def extract_wrapper(ex):
 
 	out = itr_parser.extract_itr_seq_into_counts(ex['b_path'])
-	out = out.reshape(out.shape[0], -1).astype(np.uint8)
 
 	print(out.shape)
+	out = out.reshape(out.shape[0], -1).astype(np.uint8)
+	
 	#out = scipy.sparse.csr_matrix(out)
 	np.save(ex['sp_path'], out)
 
