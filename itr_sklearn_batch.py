@@ -53,7 +53,7 @@ class BatchParser:
 
 		else:
 			batch = self.dataset[self.i:end]
-			self.i = end
+		self.i = end
 
 		return self.parse_batch(batch)
 
@@ -127,7 +127,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		clf = SGDClassifier(n_jobs=num_procs)
+		clf = SGDClassifier(n_jobs=num_procs, verbose=1)
 
 
 
@@ -150,7 +150,6 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 			batch_data, batch_label = train_batcher.get_batch()
-			print(batch_data.shape, batch_label.shape)
 			clf.partial_fit(batch_data, batch_label, classes=np.arange(num_classes))
 
 
