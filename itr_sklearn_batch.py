@@ -134,9 +134,15 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		dataset_size = len(train_data)
 
-		n_iter = 1000
+		n_iter = 100
+		cur_epoch = -1
 		while train_batcher.epoch < n_iter:
+			if(train_batcher.epoch != cur_epoch):
+				print("TRAIN {0}/{1}".format(train_batcher.epoch, n_iter))
+				cur_epoch = train_batcher.epoch
+
 			batch_data, batch_label = train_batcher.get_batch()
+			print(batch_data.shape, batch_label.shape)
 			clf.partial_fit(batch_data, batch_label, classes=np.arange(num_classes))
 
 
