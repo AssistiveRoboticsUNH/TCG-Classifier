@@ -163,7 +163,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		clf = SGDClassifier(verbose=1, tol=1e-4)#n_jobs=num_procs, 
+		clf = SGDClassifier()#verbose=1, tol=1e-4)#n_jobs=num_procs, 
 
 
 
