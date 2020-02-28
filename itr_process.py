@@ -107,7 +107,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	b_dir_name  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 	sp_dir_name = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 	if(not os.path.exists(sp_dir_name)):
-		os.makedirs()
+		os.makedirs(sp_dir_name)
 
 	print("Organizing csv_contents")
 	for ex in csv_contents:
