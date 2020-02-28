@@ -174,7 +174,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		dataset_size = len(train_data)
 
-		n_iter = 100
+		n_iter = 5
 		cur_epoch = -1
 		t_i = time.time()
 
@@ -203,6 +203,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 					pred += clf.predict(batch_data).tolist()
 					eval_label += batch_label.tolist()
+				test_batcher.epoch = 0
+				test_batcher.i = 0
 
 				cur_accuracy = metrics.accuracy_score(eval_label, pred)
 				print("elapsed:", time.time()-t_s)
