@@ -60,7 +60,7 @@ class BatchParser:
 			data.append( np.load(file['sp_path']) )
 			label.append( file['label'] )
 
-		print(np.array(data).shape)
+		#print(np.array(data).shape)
 
 		data = scipy.sparse.csr_matrix( np.array(data) )
 		label = np.array(label)
@@ -138,10 +138,14 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		n_iter = 100
 		cur_epoch = -1
+		t_i = time.time()
+
 		while train_batcher.epoch < n_iter:
 			if(train_batcher.epoch != cur_epoch):
-				print("TRAIN {0}/{1}".format(train_batcher.epoch, n_iter))
+				print("TRAIN {0}/{1}: ".format(train_batcher.epoch, n_iter, time.time() - t_i))
 				cur_epoch = train_batcher.epoch
+				t_i = time.time()
+
 
 			batch_data, batch_label = train_batcher.get_batch()
 			print(batch_data.shape, batch_label.shape)
