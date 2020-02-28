@@ -16,6 +16,10 @@ from itr_sklearn import ITR_Extractor
 
 from itr_process import process_data, retrieve_data
 
+from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer, HashingVectorizer, CountVectorizer
+from sklearn.preprocessing import StandardScaler
+
+
 import random
 
 from joblib import dump, load
@@ -125,7 +129,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-		hashvect = CountVectorizer(token_pattern=r"\d+\w\d+")#HashingVectorizer(n_features=2**17, token_pattern=r"\d+\w\d+")
+		#hashvect = CountVectorizer(token_pattern=r"\d+\w\d+")#HashingVectorizer(n_features=2**17, token_pattern=r"\d+\w\d+")
 		tfidf = TfidfTransformer(sublinear_tf=True)
 		scale = StandardScaler(with_mean=False)
 
