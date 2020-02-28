@@ -64,6 +64,16 @@ class BatchParser:
 
 		return self.parse_batch(batch)
 
+	def get_sized_batch(self, batch_size):
+		data, label = [], []
+		for file in self.dataset[:batch_size]:
+			data.append( np.load(file['sp_path']) )
+			label.append( file['label'] )
+
+		print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
+
+		return scipy.sparse.csr_matrix( np.array(data) )
+
 	def parse_batch(self, batch):
 		data, label = [], []
 		for file in batch:
@@ -79,6 +89,8 @@ class BatchParser:
 
 		label = np.array(label)
 		return data, label
+
+
 
 	def assign_pip(self, pipeline):
 		self.pipe = pipeline
@@ -142,10 +154,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 		#apply processing
-		data_standard = []
-		for i in range(5):
-			batch_data, _ = train_batcher.get_batch()
-			data_standard += batch_data
+		data_standard = train_batcher.get_sized_batch(batch_size*5)
 		pipe.fit(data_standard)
 
 
