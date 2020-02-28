@@ -35,6 +35,7 @@ class BatchParser:
 		self.i = 0
 		self.epoch = 0
 		self.pool = Pool(num_procs)
+		self.pipe = None
 
 		if(self.shuffle):
 			random.shuffle(self.dataset)
@@ -68,8 +69,15 @@ class BatchParser:
 		print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
 
 		data = scipy.sparse.csr_matrix( np.array(data) )
+
+		if(self.pipe != None):
+			data = self.pipe.transform(data)
+
 		label = np.array(label)
 		return data, label
+
+	def assign_pip(self, pipeline)
+		self.pipe = pipeline
 
 
 
@@ -114,18 +122,31 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
+
+
+
+		hashvect = CountVectorizer(token_pattern=r"\d+\w\d+")#HashingVectorizer(n_features=2**17, token_pattern=r"\d+\w\d+")
+		tfidf = TfidfTransformer(sublinear_tf=True)
+		scale = StandardScaler(with_mean=False)
+
+
+		pipe = Pipeline([
+			('tfidf', tfidf),
+			('scale', scale),
+		])
+
+
+
 		#apply processing
+		data_standard = []
+		for i in range(5):
+			batch_data, _ = train_batcher.get_batch()
+			data_standard += batch_data
+		pipe.fit(data_standard)
 
 
-
-
-
-
-
-
-
-
-
+		train_batcher.assign_pipe(pipe)
+		test_batcher.assign_pipe(pipe)
 
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
