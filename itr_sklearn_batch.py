@@ -167,7 +167,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					p = clf.predict(batch_data)
 					print(type(p.tolist()))
 
-					pred += clf.predict(batch_data).toarray()
+					pred += clf.predict(batch_data).tolist()
 					eval_label += batch_label
 
 				cur_accuracy = metrics.accuracy_score(eval_label, pred)
