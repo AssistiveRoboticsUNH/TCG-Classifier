@@ -153,7 +153,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		])
 
 
-
+		'''#enabled for TRN/I3D not for TSm
 		#apply processing
 		data_standard = train_batcher.get_sized_batch(batch_size*5)
 		pipe.fit(data_standard)
@@ -161,7 +161,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		train_batcher.assign_pipe(pipe)
 		test_batcher.assign_pipe(pipe)
-
+		'''
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		clf = SGDClassifier()#verbose=1, tol=1e-4)#n_jobs=num_procs, 
