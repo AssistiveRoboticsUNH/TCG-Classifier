@@ -90,7 +90,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs)
 		
 
-		batch_size = 100
+		batch_size = 1000
 
 		try:
 			csv_contents = read_csv(csv_filename)
@@ -127,7 +127,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		clf = SGDClassifier(n_jobs=num_procs, verbose=1)
+		clf = SGDClassifier(verbose=1)#n_jobs=num_procs, 
 
 
 
