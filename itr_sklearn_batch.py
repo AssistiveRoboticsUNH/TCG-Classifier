@@ -92,7 +92,7 @@ class BatchParser:
 
 
 
-	def assign_pip(self, pipeline):
+	def assign_pipe(self, pipeline):
 		self.pipe = pipeline
 
 
