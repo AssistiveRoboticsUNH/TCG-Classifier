@@ -129,7 +129,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		clf = SGDClassifier(verbose=1)#n_jobs=num_procs, 
+		clf = SGDClassifier(verbose=1, tol=1e-4)#n_jobs=num_procs, 
 
 
 
@@ -144,17 +144,42 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		cur_epoch = -1
 		t_i = time.time()
 
+
 		while train_batcher.epoch < n_iter:
+
+			batch_data, batch_label = train_batcher.get_batch()
+			clf.partial_fit(batch_data, batch_label, classes=np.arange(num_classes))
+
 			if(train_batcher.epoch != cur_epoch):
 				print("TRAIN {0}/{1}: ".format(train_batcher.epoch, n_iter, time.time() - t_i))
 				cur_epoch = train_batcher.epoch
 				t_i = time.time()
 
+				print("elapsed:", time.time()-t_s)
+		
+				print("evaluating model...")
+				t_s = time.time()
+				pred, eval_label = [], []
 
-			batch_data, batch_label = train_batcher.get_batch()
-			clf.partial_fit(batch_data, batch_label, classes=np.arange(num_classes))
+				while test_batcher.epoch < 1:
+					batch_data, batch_label = test_batcher.get_batch()
+					pred += clf.predict(batch_data, batch_label, classes=np.arange(num_classes))
+					eval_label += batch_label
+
+				cur_accuracy = metrics.accuracy_score(eval_label, pred)
+				print("elapsed:", time.time()-t_s)
 
 
+				# if model accuracy is good then replace the old model with new save data
+				if(cur_accuracy > max_accuracy):
+					save_model(clf, os.path.join(save_dir, "model"))
+					max_accuracy = cur_accuracy
+
+				print("ACCURACY: layer: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(layer, iteration, repeat, cur_accuracy, max_accuracy))
+				print('------------')
+
+
+'''
 
 		print("elapsed:", time.time()-t_s)
 		
@@ -178,7 +203,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		print("ACCURACY: layer: {:d}, iter: {:d}/{:d}, acc:{:0.4f}, max_acc: {:0.4f}".format(layer, iteration, repeat, cur_accuracy, max_accuracy))
 		print('------------')
-
+'''
 if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description='Generate IADs from input files')
