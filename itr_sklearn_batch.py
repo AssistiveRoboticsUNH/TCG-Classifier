@@ -153,7 +153,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		])
 
 
-		'''
+
 		#apply processing
 		data_standard = train_batcher.get_sized_batch(batch_size*5)
 		pipe.fit(data_standard)
@@ -161,7 +161,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		train_batcher.assign_pipe(pipe)
 		test_batcher.assign_pipe(pipe)
-		'''
+
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		clf = SGDClassifier()#verbose=1, tol=1e-4)#n_jobs=num_procs, 
@@ -184,7 +184,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			batch_data, batch_label = train_batcher.get_batch()
 			clf.partial_fit(batch_data, batch_label, classes=np.arange(num_classes))
-
+			print(train_batcher.epoch, epoch)
 			if(train_batcher.epoch != cur_epoch):
 				print("TRAIN {0}/{1}: ".format(train_batcher.epoch, n_iter, time.time() - t_i))
 				cur_epoch = train_batcher.epoch
