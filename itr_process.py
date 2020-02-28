@@ -35,6 +35,7 @@ def extract_wrapper(inp):
 	
 	print("max:", out.max())
 	out = out.astype(np.uint8)
+	print("saving file:", ex['sp_path'])
 	np.savez_compressed(ex['sp_path'], out)
 
 	
