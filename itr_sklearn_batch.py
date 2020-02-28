@@ -48,12 +48,14 @@ class BatchParser:
 			batch = self.dataset[self.i: len(self.dataset)] + self.dataset[0: diff]
 			self.epoch += 1
 
+
 			if(self.shuffle):
 				random.shuffle(self.dataset)
+			self.i = 0
 
 		else:
 			batch = self.dataset[self.i:end]
-		self.i = end
+			self.i = end
 
 		return self.parse_batch(batch)
 
@@ -63,7 +65,6 @@ class BatchParser:
 			data.append( np.load(file['sp_path']) )
 			label.append( file['label'] )
 
-		print(np.array(data).shape)
 		print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
 
 		data = scipy.sparse.csr_matrix( np.array(data) )
