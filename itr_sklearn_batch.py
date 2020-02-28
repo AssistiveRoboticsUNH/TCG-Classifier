@@ -163,7 +163,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				while test_batcher.epoch < 1:
 					batch_data, batch_label = test_batcher.get_batch()
-					pred += clf.predict(batch_data, batch_label, classes=np.arange(num_classes))
+					pred += clf.predict(batch_data)
 					eval_label += batch_label
 
 				cur_accuracy = metrics.accuracy_score(eval_label, pred)
