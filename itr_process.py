@@ -28,7 +28,6 @@ def extract_wrapper(ex):
 	out = out.reshape(out.shape[0], -1)
 	out = scipy.sparse.csr_matrix(out)
 
-	print("max:", out.max())
 	out = out.astype(np.uint8)
 	np.savez_compressed(ex['sp_path'], out)
 
@@ -43,7 +42,6 @@ def parse_files(csv_contents, num_procs=1, empty_locs=[]):
 
 	pool = Pool(num_procs)
 	for i, c in enumerate(pool.imap_unordered( extract_wrapper, csv_contents, chunksize=10 )):
-		print(c)
 		if(i % 1000 == 0):
 			print("elapsed time {0}: {1}".format(i,  time.time()-t_s))
 	pool.close()
