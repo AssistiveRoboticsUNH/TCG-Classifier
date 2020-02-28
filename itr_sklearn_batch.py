@@ -60,6 +60,8 @@ class BatchParser:
 			data.append( np.load(file['sp_path']) )
 			label.append( file['label'] )
 
+		print(np.array(data).shape)
+
 		data = scipy.sparse.csr_matrix( np.array(data) )
 		label = np.array(label)
 		return data, label
