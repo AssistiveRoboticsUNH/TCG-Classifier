@@ -60,8 +60,12 @@ class BatchParser:
 	def parse_batch(self, batch):
 		data, label = [], []
 		for file in batch:
-			data.append( np.load(file['sp_path']) )
+			d = np.load(file['sp_path'])
+			print(d.shape)
+
+			data.append( d )
 			label.append( file['label'] )
+
 
 		print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
 
