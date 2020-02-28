@@ -165,7 +165,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					batch_data, batch_label = test_batcher.get_batch()
 
 					p = clf.predict(batch_data)
-					print(type(p.toarray()))
+					print(type(p.tolist()))
 
 					pred += clf.predict(batch_data).toarray()
 					eval_label += batch_label
