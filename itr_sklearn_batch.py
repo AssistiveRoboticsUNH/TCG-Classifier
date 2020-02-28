@@ -198,6 +198,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				pred, eval_label = [], []
 
 				while test_batcher.epoch < 1:
+					print(test_batcher.i)
 					batch_data, batch_label = test_batcher.get_batch()
 
 					#p = clf.predict(batch_data)
