@@ -182,6 +182,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		while train_batcher.epoch < n_iter:
 
+			print(train_batcher.i)
 			batch_data, batch_label = train_batcher.get_batch()
 			clf.partial_fit(batch_data, batch_label, classes=np.arange(num_classes))
 
