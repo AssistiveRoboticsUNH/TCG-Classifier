@@ -25,13 +25,16 @@ def save_model(clf, name):
 def load_model(name):
 	return load(name+'.joblib') 
 
+from multiprocessing import Pool
+
 class BatchParser:
-	def __init__(self, dataset, batch_size=1, shuffle=False):
+	def __init__(self, dataset, batch_size=1, shuffle=False, num_procs=1):
 		self.dataset = dataset
 		self.batch_size = batch_size
 		self.shuffle = shuffle
 		self.i = 0
 		self.epoch = 0
+		self.pool = Pool(num_procs)
 
 		if(self.shuffle):
 			random.shuffle(self.dataset)
@@ -76,7 +79,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 3
+		#num_classes = 3
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
