@@ -111,7 +111,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	print("Organizing csv_contents")
 	for ex in csv_contents:
 		ex['b_path'] = os.path.join(b_dir_name, '{0}_{1}.b'.format(ex['example_id'], layer))
-		ex['sp_path'] = os.path.join(sp_dir_name, '{0}_{1}.npz'.format(ex['example_id'], layer))
+		ex['sp_path'] = os.path.join(sp_dir_name, '{0}_{1}.npy'.format(ex['example_id'], layer))
 
 	dataset = [ex for ex in csv_contents if ex['label'] < num_classes]
 	print("dataset_length:", len(dataset))

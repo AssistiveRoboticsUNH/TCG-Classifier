@@ -86,7 +86,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs)
 		
 
-		batch_size = 1000
+		batch_size = 100
 
 		try:
 			csv_contents = read_csv(csv_filename)
@@ -100,7 +100,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
 		train_batcher = BatchParser(train_data, batch_size=batch_size, shuffle=True)
 
-		test_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
+		test_data = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		test_data = [ex for ex in test_data if ex['label'] < num_classes]
 		test_batcher = BatchParser(test_data, batch_size=batch_size, shuffle=False)
 
