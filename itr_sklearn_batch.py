@@ -80,7 +80,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		if (not os.path.exists(save_dir)):
 			os.makedirs(save_dir)
 
-
+		print("process_data")
 		parse_data = True
 		if(parse_data):
 			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs)
