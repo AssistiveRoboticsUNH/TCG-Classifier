@@ -76,7 +76,7 @@ class BatchParser:
 		label = np.array(label)
 		return data, label
 
-	def assign_pip(self, pipeline)
+	def assign_pip(self, pipeline):
 		self.pipe = pipeline
 
 
