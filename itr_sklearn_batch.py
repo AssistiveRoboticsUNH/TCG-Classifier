@@ -71,6 +71,7 @@ class BatchParser:
 			label.append( file['label'] )
 
 		#print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
+		print(np.array(data).shape)
 
 		return scipy.sparse.csr_matrix( np.array(data) )
 
