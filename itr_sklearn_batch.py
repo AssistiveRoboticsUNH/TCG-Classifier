@@ -60,13 +60,10 @@ class BatchParser:
 	def parse_batch(self, batch):
 		data, label = [], []
 		for file in batch:
-			d = np.load(file['sp_path'])
-			print(d.shape)
-
-			data.append( d )
+			data.append( np.load(file['sp_path']) )
 			label.append( file['label'] )
 
-
+		print(np.array(data).shape)
 		print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
 
 		data = scipy.sparse.csr_matrix( np.array(data) )
