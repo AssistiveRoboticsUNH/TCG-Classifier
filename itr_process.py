@@ -116,7 +116,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 		ex['sp_path'] = os.path.join(sp_dir_name, '{0}_{1}.npz'.format(ex['example_id'], layer))
 
 	dataset = [ex for ex in csv_contents if ex['label'] < num_classes]
-
+	print("dataset_length:", len(dataset))
 	'''
 	hashvect = CountVectorizer(token_pattern=r"\d+\w\d+")#HashingVectorizer(n_features=2**17, token_pattern=r"\d+\w\d+")
 	tfidf = TfidfTransformer(sublinear_tf=True)
