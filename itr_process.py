@@ -23,26 +23,31 @@ from multiprocessing import Pool
 from sklearn.pipeline import Pipeline
 
 def extract_wrapper(inp):
-	file, idx = inp
+	idx, ex = inp
+
+	t_s = time.time()
+	out = itr_parser.extract_itr_seq_into_counts(ex['b_path'])
+	out = out.reshape(out.shape[0], -1)
+	out = scipy.sparse.csr_matrix(out)
 
 	if (idx % 1000 == 0):
-		t_s = time.time()
-		out = itr_parser.extract_itr_seq_into_counts(file)
 		print("process_time {0}: {1}".format(idx,  time.time()-t_s))
-	else:
-		out = itr_parser.extract_itr_seq_into_counts(file)
+	
+	scipy.sparse.save_npz(ex['sp_path'], out)
 
-	return out
+	
 
-def parse_files(file_list, num_procs=1, empty_locs=[]):
+def parse_files(csv_contents, num_procs=1, empty_locs=[]):
 	#file_list= file_list[:10]
 
 	t_s = time.time()
 
 	pool = Pool(num_procs)
-	corpus = pool.imap( extract_wrapper, zip(file_list, range(len(file_list))), chunksize=10 )
+	corpus = pool.imap( extract_wrapper, zip(csv_contents, range(len(csv_contents))), chunksize=10 )
 	pool.close()
 	pool.join()
+
+	'''
 
 	mylist = []
 	for g in corpus:
@@ -62,7 +67,7 @@ def parse_files(file_list, num_procs=1, empty_locs=[]):
 
 	return  corpus, empty_locs
 
-
+	'''
 
 def get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	file_path = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
@@ -97,22 +102,19 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	except:
 		print("ERROR: Cannot open CSV file: "+ csv_filename)
 
+	b_dir_name  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
+	sp_dir_name = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
+	if(not os.path.exists(sp_dir_name)):
+		os.makedirs()
+
 	print("Organizing csv_contents")
-	path = 'b_path_{0}'.format(layer)
 	for ex in csv_contents:
-		ex[path] = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.b'.format(ex['example_id'], layer))
+		ex['b_path'] = os.path.join(b_dir_name, '{0}_{1}.b'.format(ex['example_id'], layer))
+		ex['sp_path'] = os.path.join(sp_dir_name, '{0}_{1}.b'.format(ex['example_id'], layer))
 
-	train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
-	train_data = [ex for ex in train_data if ex['label'] < num_classes]
+	dataset = [ex for ex in csv_contents if ex['label'] < num_classes]
 
-	test_data  = [ex for ex in csv_contents if ex['dataset_id'] == 0]
-	test_data = [ex for ex in test_data if ex['label'] < num_classes]
-
-
-	print("Generating file names")
-	train_filename, test_filename, train_label_filename, test_label_filename = get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer)
-	
-
+	'''
 	hashvect = CountVectorizer(token_pattern=r"\d+\w\d+")#HashingVectorizer(n_features=2**17, token_pattern=r"\d+\w\d+")
 	tfidf = TfidfTransformer(sublinear_tf=True)
 	scale = StandardScaler(with_mean=False)
@@ -122,15 +124,16 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 		('tfidf', tfidf),
 		('scale', scale),
 	])
+	'''
 
 	# TRAIN
-	in_files = [ex[path] for ex in train_data]
-
-	print("adding train data...{0}".format(len(train_data)))
-	data_in, empty_locs = parse_files(in_files, num_procs=num_procs)
+	parse_files(dataset, num_procs=num_procs)
 	
 
 
+
+
+	'''
 	print("fit train data...")
 	t_s = time.time()
 	data_in = pipe.fit_transform(data_in)
@@ -161,7 +164,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	scipy.sparse.save_npz(test_filename, eval_in)
 	np.save(test_label_filename, eval_label)
 	print('--------')
-
+	'''
 
 
 
