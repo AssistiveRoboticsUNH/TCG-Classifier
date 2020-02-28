@@ -70,7 +70,7 @@ class BatchParser:
 			data.append( np.load(file['sp_path']) )
 			label.append( file['label'] )
 
-		print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
+		#print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
 
 		return scipy.sparse.csr_matrix( np.array(data) )
 
@@ -80,7 +80,7 @@ class BatchParser:
 			data.append( np.load(file['sp_path']) )
 			label.append( file['label'] )
 
-		print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
+		#print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
 
 		data = scipy.sparse.csr_matrix( np.array(data) )
 
