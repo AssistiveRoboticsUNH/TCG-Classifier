@@ -22,21 +22,17 @@ from multiprocessing import Pool
 
 from sklearn.pipeline import Pipeline
 
-def extract_wrapper(inp):
-	idx, ex = inp
+def extract_wrapper(ex):
 
-	t_s = time.time()
 	out = itr_parser.extract_itr_seq_into_counts(ex['b_path'])
 	out = out.reshape(out.shape[0], -1)
 	out = scipy.sparse.csr_matrix(out)
 
-	if (idx % 1000 == 0):
-		print("process_time {0}: {1}".format(idx,  time.time()-t_s))
-	
 	print("max:", out.max())
 	out = out.astype(np.uint8)
-	print("saving file:", ex['sp_path'])
 	np.savez_compressed(ex['sp_path'], out)
+
+	return ex['sp_path']
 
 	
 
@@ -46,9 +42,14 @@ def parse_files(csv_contents, num_procs=1, empty_locs=[]):
 	t_s = time.time()
 
 	pool = Pool(num_procs)
-	corpus = pool.imap( extract_wrapper, zip(csv_contents, range(len(csv_contents))), chunksize=10 )
+	for i, c in enumerate(pool.imap_unordered( extract_wrapper, csv_contents, chunksize=10 )):
+		if(i % 1000 == 0):
+			print("elapsed time {0}: {1}".format(i,  time.time()-t_s))
 	pool.close()
 	pool.join()
+
+
+
 
 	'''
 
