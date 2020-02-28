@@ -164,11 +164,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				while test_batcher.epoch < 1:
 					batch_data, batch_label = test_batcher.get_batch()
 
-					p = clf.predict(batch_data)
-					print(type(p.tolist()))
+					#p = clf.predict(batch_data)
+					#print(type(p.tolist()))
 
 					pred += clf.predict(batch_data).tolist()
-					eval_label += batch_label
+					eval_label += batch_label.tolist()
 
 				cur_accuracy = metrics.accuracy_score(eval_label, pred)
 				print("elapsed:", time.time()-t_s)
