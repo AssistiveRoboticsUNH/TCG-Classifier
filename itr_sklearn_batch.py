@@ -156,7 +156,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		#enabled for TRN/I3D not for TSm
 		#apply processing
-		data_standard = train_batcher.get_sized_batch(batch_size*5)
+		data_standard = train_batcher.get_sized_batch(batch_size*15)
 		pipe.fit(data_standard)
 
 
