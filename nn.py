@@ -59,9 +59,12 @@ class MyDataset(Dataset):
 		if torch.is_tensor(idx):
 			idx = idx.tolist()
 
-		t_s  =time.time()
+		t_s = time.time()
 		data, label = [], []
+
+		print("idx:", idx)
 		for file in self.dataset[idx]:
+			print(file)
 			data.append( np.load(file['sp_path']) )
 			label.append( file['label'] )
 
