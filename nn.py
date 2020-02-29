@@ -225,6 +225,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				inputs = inputs.to(device).float()
 				labels = labels.to(device)
 				print("inp: ", inputs.shape)
+				print("labels: ", labels.shape)
 
 				# zero the parameter gradients
 				optimizer.zero_grad()
