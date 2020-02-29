@@ -39,7 +39,7 @@ def load_model(name):
 class MyDataset(Dataset):
 	"""Face Landmarks dataset."""
 
-	def __init__(self, dataset, root_dir, transform=None):
+	def __init__(self, dataset, transform=None):
 		"""
 		Args:
 			csv_file (string): Path to the csv file with annotations.
