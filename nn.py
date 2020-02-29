@@ -25,6 +25,7 @@ import random
 from joblib import dump, load
 import torch
 
+from torch.utils.data import Dataset, DataLoader
 
 
 def save_model(clf, name):
