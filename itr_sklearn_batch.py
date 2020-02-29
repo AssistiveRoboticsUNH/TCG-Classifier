@@ -106,7 +106,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		#num_classes = 3
+		num_classes = 20
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
@@ -184,10 +184,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			print(train_batcher.i)
 			batch_data, batch_label = train_batcher.get_batch()
-			#clf.partial_fit(batch_data, batch_label, classes=np.arange(num_classes))
 
-			print(batch_data.dtype)
+			print(type(batch_data))
 			print(batch_label.dtype)
+
+			clf.partial_fit(batch_data, batch_label, classes=np.arange(num_classes))
 
 
 			if(train_batcher.epoch != cur_epoch):
