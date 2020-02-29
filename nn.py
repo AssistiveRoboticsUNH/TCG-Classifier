@@ -33,63 +33,7 @@ def save_model(clf, name):
 def load_model(name):
 	return load(name+'.joblib') 
 
-from multiprocessing import Pool
 
-class BatchParser:
-	def __init__(self, dataset, batch_size=1, shuffle=False, num_procs=1):
-		self.dataset = dataset
-		self.batch_size = batch_size
-		self.shuffle = shuffle
-		self.i = 0
-		self.epoch = 0
-		self.pool = Pool(num_procs)
-		self.pipe = None
-
-		if(self.shuffle):
-			random.shuffle(self.dataset)
-
-	def get_batch(self):
-
-		end = self.i+self.batch_size 
-		if(end > len(self.dataset)):
-			print("resample")
-			diff = len(self.dataset) - end
-
-			batch = self.dataset[self.i: len(self.dataset)] + self.dataset[0: diff]
-			self.epoch += 1
-
-
-			if(self.shuffle):
-				random.shuffle(self.dataset)
-			self.i = 0
-
-		else:
-			print("no resample")
-			t_s = time.time()
-			batch = self.dataset[self.i:end]
-			self.i = end
-			print("get files: ", time.time()-t_s)
-
-		return self.parse_batch(batch)
-
-	def get_sized_batch(self, batch_size):
-		data, label = [], []
-		for file in self.dataset[:batch_size]:
-			data.append( np.load(file['sp_path']) )
-			label.append( file['label'] )
-
-		#print("min: {0}, max: {1}".format(np.array(data).min(), np.array(data).max()))
-		print(np.array(data).shape)
-
-		return scipy.sparse.csr_matrix( np.array(data) )
-
-	def parse_batch(self, batch):
-		
-
-
-
-	def assign_pipe(self, pipeline):
-		self.pipe = pipeline
 
 class MyDataset(Dataset):
     """Face Landmarks dataset."""
