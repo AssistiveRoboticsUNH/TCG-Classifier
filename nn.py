@@ -153,7 +153,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		batch_size = 10
 
-
+		'''
 		class_sample_count = [Counter(data_label)[x] for x in range(num_classes)]#[10, 5, 2, 1] 
 		weights = (1 / torch.Tensor(class_sample_count))
 		print("weights:", weights)
@@ -166,7 +166,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		testloader = torch.utils.data.DataLoader(zip(eval_in, eval_label), batch_size=batch_size,
 										 shuffle=False, num_workers=2)
-
+		'''
 
 		
 
