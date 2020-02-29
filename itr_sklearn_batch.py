@@ -183,7 +183,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		while train_batcher.epoch < n_iter:
 
-			t_n = tim.time()
+			t_n = time.time()
 			batch_data, batch_label = train_batcher.get_batch()
 
 			#print(type(batch_data))
