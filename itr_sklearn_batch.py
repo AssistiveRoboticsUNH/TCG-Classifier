@@ -137,7 +137,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-
+		print("Training Dataset Size: {0}".format(len(train_data)))
+		print("Evaluation Dataset Size: {0}".format(len(test_data)))
 
 
 
@@ -185,8 +186,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			print(train_batcher.i)
 			batch_data, batch_label = train_batcher.get_batch()
 
-			print(type(batch_data))
-			print(batch_label.dtype)
+			#print(type(batch_data))
+			#print(batch_label.dtype)
 
 			clf.partial_fit(batch_data, batch_label, classes=np.arange(num_classes))
 
