@@ -48,6 +48,7 @@ class BatchParser:
 
 		end = self.i+self.batch_size 
 		if(end > len(self.dataset)):
+			print("resample")
 			diff = len(self.dataset) - end
 
 			batch = self.dataset[self.i: len(self.dataset)] + self.dataset[0: diff]
@@ -59,8 +60,11 @@ class BatchParser:
 			self.i = 0
 
 		else:
+			print("no resample")
+			t_s = time.time()
 			batch = self.dataset[self.i:end]
 			self.i = end
+			print("get files: ", time.time()-t_s)
 
 		return self.parse_batch(batch)
 
@@ -76,6 +80,7 @@ class BatchParser:
 		return scipy.sparse.csr_matrix( np.array(data) )
 
 	def parse_batch(self, batch):
+		t_s  =time.time()
 		data, label = [], []
 		for file in batch:
 			data.append( np.load(file['sp_path']) )
@@ -89,6 +94,8 @@ class BatchParser:
 			data = self.pipe.transform(data)
 
 		label = np.array(label)
+
+		print("parse files: ", time.time()-t_s)
 		return data, label
 
 
@@ -153,7 +160,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			('scale', scale),
 		])
 
-
+		'''
 		#enabled for TRN/I3D not for TSm
 		#apply processing
 		data_standard = train_batcher.get_sized_batch(batch_size*15)
@@ -162,7 +169,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		train_batcher.assign_pipe(pipe)
 		test_batcher.assign_pipe(pipe)
-		
+		'''
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		clf = SGDClassifier()#verbose=1, tol=1e-4)#n_jobs=num_procs, 
