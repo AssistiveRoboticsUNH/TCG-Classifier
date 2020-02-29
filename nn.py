@@ -72,8 +72,8 @@ class MyDataset(Dataset):
 
 
 		sample = {'data': np.array(data), 'label': np.array(label)}
-		print(type(np.array(data)), np.array(data).dtype)
-		print(type(np.array(label)), np.array(label).dtype)
+		#print(type(np.array(data)), np.array(data).dtype)
+		#print(type(np.array(label)), np.array(label).dtype)
 
 		#if self.transform:
 		#    sample = self.transform(sample)
@@ -221,8 +221,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				# get the inputs; data is a list of [inputs, labels]
 				inputs, labels = data
 
-				inputs = inputs.to(device).float()
-				labels = labels.to(device)
+				#inputs = inputs.to(device).float()
+				#labels = labels.to(device)
+				print("inp: ", inputs.shape)
 
 				# zero the parameter gradients
 				optimizer.zero_grad()
