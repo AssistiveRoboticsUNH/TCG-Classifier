@@ -36,29 +36,29 @@ def load_model(name):
 
 
 class MyDataset(Dataset):
-    """Face Landmarks dataset."""
+	"""Face Landmarks dataset."""
 
-    def __init__(self, dataset, root_dir, transform=None):
-        """
-        Args:
-            csv_file (string): Path to the csv file with annotations.
-            root_dir (string): Directory with all the images.
-            transform (callable, optional): Optional transform to be applied
-                on a sample.
-        """
+	def __init__(self, dataset, root_dir, transform=None):
+		"""
+		Args:
+			csv_file (string): Path to the csv file with annotations.
+			root_dir (string): Directory with all the images.
+			transform (callable, optional): Optional transform to be applied
+				on a sample.
+		"""
 		self.dataset = dataset
 		self.pipe = None
 
-    def __len__(self):
-        return len(self.dataset)
+	def __len__(self):
+		return len(self.dataset)
 
-    def __getitem__(self, idx):
+	def __getitem__(self, idx):
 
 
-        if torch.is_tensor(idx):
-            idx = idx.tolist()
+		if torch.is_tensor(idx):
+			idx = idx.tolist()
 
-        t_s  =time.time()
+		t_s  =time.time()
 		data, label = [], []
 		for file in self.dataset[idx]:
 			data.append( np.load(file['sp_path']) )
@@ -69,12 +69,12 @@ class MyDataset(Dataset):
 			data = self.pipe.transform(data)
 
 
-        sample = {'data': np.array(data), 'label': np.array(label)}
+		sample = {'data': np.array(data), 'label': np.array(label)}
 
-        #if self.transform:
-        #    sample = self.transform(sample)
+		#if self.transform:
+		#    sample = self.transform(sample)
 
-        return sample
+		return sample
 
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
@@ -114,10 +114,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		test_batcher = MyDataset(test_data)
 
 		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=10,
-                                          shuffle=True, num_workers=2)
+										  shuffle=True, num_workers=2)
 
 		testloader = torch.utils.data.DataLoader(test_batcher, batch_size=10,
-                                          shuffle=False, num_workers=2)
+										  shuffle=False, num_workers=2)
 
 
 		print("Training Dataset Size: {0}".format(len(train_data)))
@@ -170,11 +170,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		
 
 		if torch.cuda.is_available():
-		    device = torch.device("cuda:0")  # you can continue going on here, like cuda:1 cuda:2....etc. 
-		    print("Running on the GPU")
+			device = torch.device("cuda:0")  # you can continue going on here, like cuda:1 cuda:2....etc. 
+			print("Running on the GPU")
 		else:
-		    device = torch.device("cpu")
-		    print("Running on the CPU")
+			device = torch.device("cpu")
+			print("Running on the CPU")
 
 
 		#model
