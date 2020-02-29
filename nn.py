@@ -62,9 +62,7 @@ class MyDataset(Dataset):
 		t_s = time.time()
 		data, label = [], []
 
-		print("idx:", idx)
 		file = self.dataset[idx]
-		print(file)
 		data.append( np.load(file['sp_path']) )
 		label.append( file['label'] )
 
@@ -74,6 +72,8 @@ class MyDataset(Dataset):
 
 
 		sample = {'data': np.array(data), 'label': np.array(label)}
+		print(type(np.array(data)), np.array(data).dtype)
+		print(type(np.array(label)), np.array(label).dtype)
 
 		#if self.transform:
 		#    sample = self.transform(sample)
