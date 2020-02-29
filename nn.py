@@ -220,7 +220,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			for i, data in enumerate(trainloader, 0):
 				# get the inputs; data is a list of [inputs, labels]
 				batch = data
-				inputs, labels = batch['data'], batch['labels']
+				inputs, labels = batch['data'], batch['label']
 
 				#inputs = inputs.to(device).float()
 				#labels = labels.to(device)
