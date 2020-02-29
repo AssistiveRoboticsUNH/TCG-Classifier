@@ -222,8 +222,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				batch = data
 				inputs, labels = batch['data'], batch['label']
 
-				#inputs = inputs.to(device).float()
-				#labels = labels.to(device)
+				inputs = inputs.to(device).float()
+				labels = labels.to(device)
 				print("inp: ", inputs.shape)
 
 				# zero the parameter gradients
