@@ -63,10 +63,10 @@ class MyDataset(Dataset):
 		data, label = [], []
 
 		print("idx:", idx)
-		for file in self.dataset[idx]:
-			print(file)
-			data.append( np.load(file['sp_path']) )
-			label.append( file['label'] )
+		file = self.dataset[idx]
+		print(file)
+		data.append( np.load(file['sp_path']) )
+		label.append( file['label'] )
 
 
 		if(self.pipe != None):
