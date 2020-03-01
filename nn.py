@@ -57,7 +57,7 @@ class MyDataset(Dataset):
 
 		
 		if (scaler == None):
-			self.scaler= StandardScaler(with_mean=False) #MinMaxScaler()
+			self.scaler=  MinMaxScaler()#StandardScaler(with_mean=False)
 
 			num = 1000
 			for i in range(0, len(self.dataset), num):
