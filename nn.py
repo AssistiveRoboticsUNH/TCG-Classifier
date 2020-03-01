@@ -133,6 +133,8 @@ class MyDataset(Dataset):
 		return self.scaler
 
 	def condense(self, d):
+		return d
+
 		d = d.reshape(128,128,7)
 		d[..., 1] += d[..., 2] # meet and overlap
 		d[..., 3] += d[..., 6] # meet and overlap
