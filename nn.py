@@ -332,13 +332,15 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				l1_lambda = l1_norm_g
 				l2_lambda = l2_norm_g
+				l2_regularization = torch.tensor(0, dtype=torch.float32, device=device)
 				l1_regularization = torch.tensor(0, dtype=torch.float32, device=device)
 				for param in net.parameters():
 					#print("l1_regularization:", l1_regularization, "param:", torch.norm(param, 1))
 					#print("l1_regularization:", l1_regularization.dtype, "param:", torch.norm(param, 1).dtype)
-					l1_regularization += torch.norm(param, 2)#.type_as(output)
+					l2_regularization += torch.norm(param, 2)#.type_as(output)
+					l1_regularization += torch.norm(param, 1)
 
-				loss = criterion(outputs, labels) + l1_regularization * l2_lambda#+ l1_regularization * l1_lambda
+				loss = criterion(outputs, labels) + l1_regularization * l1_lambda + l2_regularization * l2_lambda#+ l1_regularization * l1_lambda
 				loss.backward()
 				optimizer.step()
 
