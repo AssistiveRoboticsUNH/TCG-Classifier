@@ -193,7 +193,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
 
 		count_limit = train_limit_g#500
-		train_data = [ex for ex in train_data if ex['class_count'] > count_limit]
+		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
 
 
 		print("Training Dataset Size: {0}".format(len(train_data)))
@@ -338,7 +338,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					counts[l] += 1
 
 				#print(inputs[0].min(), inputs[0].max())
-
+				train_labels = labels
 
 				inputs = inputs.to(device).float()
 				labels = labels.to(device)
@@ -355,6 +355,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				# forward + backward + optimize
 				outputs = net(inputs)
+				train_predicted = outputs.cpu()
+
+
 				outputs = outputs.reshape(-1, outputs.shape[-1])
 				#outputs = np.squeeze(outputs)
 				#print("outputs: ", outputs.shape)
@@ -402,7 +405,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			_, predicted = torch.max(outputs.data, 1)
 
-			print("accuracy: ", (predicted == labels).sum().item() / float(len(labels)))
+			print("train accuracy: ", (train_predicted == train_labels).sum().item() / float(len(labels)), "val accuracy: ", (predicted == labels).sum().item() / float(len(labels)))
 			#print("predicted:", predicted)
 			#print("labels:", labels.shape)
 
