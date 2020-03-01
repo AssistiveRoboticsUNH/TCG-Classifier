@@ -39,7 +39,7 @@ def load_model(name):
 class MyDataset(Dataset):
 	"""Face Landmarks dataset."""
 
-	def __init__(self, dataset, transform=None):
+	def __init__(self, dataset, transform=None, scaler=None):
 		"""
 		Args:
 			csv_file (string): Path to the csv file with annotations.
@@ -50,21 +50,26 @@ class MyDataset(Dataset):
 		self.dataset = dataset
 		self.pipe = None
 
-		self.scaler= StandardScaler()
 		print("fit scaler")
 
-		num = 1000
-		for i in range(0, len(self.dataset), num):
-			print(i)
-			data = []
-			for j in range(num):
-				if (i+j < len(self.dataset)):
-					file = self.dataset[i + j]
-					data.append(np.load(file['sp_path']))
-			data = np.array(data)
+		if (scaler == None):
+			self.scaler= StandardScaler()
 
-			self.scaler.partial_fit(data)
-		print("scaler fit")
+			num = 1000
+			for i in range(0, len(self.dataset)/2, num):
+				print(i)
+				data = []
+				for j in range(num):
+					if (i+j < len(self.dataset)):
+						file = self.dataset[i + j]
+						data.append(np.load(file['sp_path']))
+				data = np.array(data)
+
+				self.scaler.partial_fit(data)
+			print("scaler fit")
+		else:
+			self.scaler= scaler
+
 
 	def __len__(self):
 		return len(self.dataset)
@@ -96,6 +101,9 @@ class MyDataset(Dataset):
 		#    sample = self.transform(sample)
 
 		return sample
+
+	def get_scaler(self):
+		return self.scaler
 
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
@@ -134,7 +142,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		test_data = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		test_data = [ex for ex in test_data if ex['label'] < num_classes]
 		print("Evaluation Dataset Size: {0}".format(len(test_data)))
-		test_batcher = MyDataset(test_data)
+		test_batcher = MyDataset(test_data, scaler = train_batcher.get_scaler())
 
 		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=10,
 										  shuffle=True, num_workers=2)
