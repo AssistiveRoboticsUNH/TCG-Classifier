@@ -127,10 +127,12 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
+		print("Training Dataset Size: {0}".format(len(train_data)))
 		train_batcher = MyDataset(train_data)
 
 		test_data = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		test_data = [ex for ex in test_data if ex['label'] < num_classes]
+		print("Evaluation Dataset Size: {0}".format(len(test_data)))
 		test_batcher = MyDataset(test_data)
 
 		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=10,
@@ -140,8 +142,6 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 										  shuffle=False, num_workers=2)
 
 
-		print("Training Dataset Size: {0}".format(len(train_data)))
-		print("Evaluation Dataset Size: {0}".format(len(test_data)))
 
 
 
@@ -205,18 +205,18 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				super(Net, self).__init__()
 				n_hidden = 10
 
-				self.dense1 = nn.Linear(input_size, n_hidden)
-				self.dense2 = nn.Linear(n_hidden, num_classes)	
+				#self.dense1 = nn.Linear(input_size, n_hidden)
+				#self.dense2 = nn.Linear(n_hidden, num_classes)	
 
-				#self.dense = nn.Linear(input_size, num_classes)				
+				self.dense = nn.Linear(input_size, num_classes)				
 
 			def forward(self, x):
-				#return self.dense(x)
-				
+				return self.dense(x)
+				'''
 				x = self.dense1(x)#.double()
 				x = F.relu(self.dense2(x))
 				return x#.double()
-				
+				'''
 
 		data_in = np.load(train_data[0]['sp_path'])
 		print(data_in.shape)
