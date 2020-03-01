@@ -283,7 +283,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				# forward + backward + optimize
 				outputs = net(inputs)
-				outputs = np.squeeze(outputs)
+				outputs = outputs.reshape(-1, outputs.shape[-1])
+				#outputs = np.squeeze(outputs)
 				#print("outputs: ", outputs.shape)
 
 				l1_regularization = torch.tensor(0, dtype=torch.float32, device=device)
@@ -316,8 +317,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					labels = labels.to(device)
 
 					outputs = net(inputs)
-					outputs = np.squeeze(outputs)
-
+					#outputs = np.squeeze(outputs)
+					outputs = outputs.reshape(-1, outputs.shape[-1])
 
 					_, predicted = torch.max(outputs.data, 1)
 					total += labels.size(0)
@@ -361,10 +362,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				labels = labels.to(device)
 
 				outputs = net(inputs)
-				print("outputs.shape1", outputs.shape)
-				outputs = np.squeeze(outputs)
+				#print("outputs.shape1", outputs.shape)
+				outputs = outputs.reshape(-1, outputs.shape[-1])
+				#outputs = np.squeeze(outputs)
 
-				print("outputs.shape2", outputs.data)
+				#print("outputs.shape2", outputs.shape)
 
 				_, predicted = torch.max(outputs.data, 1)
 				total += labels.size(0)
