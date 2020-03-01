@@ -233,7 +233,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				self.dense = nn.Linear(input_size, num_classes)				
 
 			def forward(self, x):
-				return self.dense(x)
+				#return self.dense(x)
 				
 				x = self.dense1(x)#.double()
 				x = F.relu(self.dense2(x))
