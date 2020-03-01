@@ -128,18 +128,31 @@ class MyDataset(Dataset):
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
 
+
+	batch_size_g = 1000
+	train_limit_g = 400
+	num_classes_g = 5#174
+	alpha_g = 0.0001
+	l2_norm_g = 0.5
+	l1_norm_g = 0.001
+	n_hidden_g = 128
+	epoch_g = 10
+
+	parse_data = False
+
+
+
 	max_accuracy = 0
 
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		#num_classes = 20
+		num_classes = num_classes_g
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
 			os.makedirs(save_dir)
 
-		parse_data = False
 		if(parse_data):
 			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs=8)
 		
@@ -162,7 +175,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
 
-		count_limit = 400#500
+		count_limit = train_limit#500
 		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
 
 
@@ -178,7 +191,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-		batch_size = 1000
+		batch_size = batch_size_g
 
 		data_label = [ex['label'] for ex in train_data]
 		class_sample_count = [Counter(data_label)[x] for x in range(num_classes)]#[10, 5, 2, 1] 
@@ -251,7 +264,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		class Net(nn.Module):
 			def __init__(self, input_size, num_classes):
 				super(Net, self).__init__()
-				n_hidden = 128#32
+				n_hidden = n_hidden_g#32
 
 				self.dense1 = nn.Linear(input_size, n_hidden)
 				self.dense2 = nn.Linear(n_hidden, num_classes)	
@@ -279,10 +292,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		criterion = nn.CrossEntropyLoss()
 		#optimizer = optim.SGD(net.parameters(), lr=0.0005, momentum=0.9)
-		optimizer = optim.Adam(net.parameters(), lr=0.0001)
+		optimizer = optim.Adam(net.parameters(), lr=alpha_g)
 
 		t_s = time.time()
-		for epoch in range(10):  # loop over the dataset multiple times
+		for epoch in range(epoch_g):  # loop over the dataset multiple times
 
 			running_loss = 0.0
 			for i, data in enumerate(trainloader, 0):
@@ -317,8 +330,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				#print("outputs: ", outputs.shape)
 
 
-				l1_lambda = 0.001
-				l2_lambda = 0.5
+				l1_lambda = l1_norm_g
+				l2_lambda = l2_norm_g
 				l1_regularization = torch.tensor(0, dtype=torch.float32, device=device)
 				for param in net.parameters():
 					#print("l1_regularization:", l1_regularization, "param:", torch.norm(param, 1))
