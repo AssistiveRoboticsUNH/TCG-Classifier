@@ -90,8 +90,21 @@ class MyDataset(Dataset):
 		data, label = [], []
 
 		file = self.dataset[idx]
-		data.append( np.load(file['sp_path']) )
+
+		d = np.load(file['sp_path']) 
+		d = d.reshape(128,128,7)
+		d[..., 1] += d[..., 2] # meet and overlap
+		d[..., 3] += d[..., 6] # meet and overlap
+		d[..., 4] += d[..., 5] # meet and overlap
+		d = d[..., :5].reshape(-1)
+
+
+
+
+		data.append( d )
 		label.append( file['label'] )
+
+
 
 		
 		if(self.scaler != None):
