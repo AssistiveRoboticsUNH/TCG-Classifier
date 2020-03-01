@@ -42,7 +42,7 @@ def load_model(name):
 class MyDataset(Dataset):
 	"""Face Landmarks dataset."""
 
-	def __init__(self, dataset, transform=None, scaler=None):
+	def __init__(self, dataset, transform=None, scaler=None, prune=None):
 		"""
 		Args:
 			csv_file (string): Path to the csv file with annotations.
@@ -53,6 +53,7 @@ class MyDataset(Dataset):
 		self.dataset = dataset
 		self.pipe = None
 		self.dataset_shape = None
+		self.prune = prune
 
 		print("fit scaler")
 
@@ -130,6 +131,8 @@ class MyDataset(Dataset):
 		if(self.scaler != None):
 			#data = self.pipe.transform(data)
 			data = self.scaler.transform(data)
+		if(self.prune != None):
+			data = data[..., self.prune]
 		
 
 		sample = {'data': np.array(data), 'label': np.array(label)}
@@ -238,17 +241,19 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			else:
 				train_idx += np.load(ex['sp_path'])
 
+		train_prune = np.where(train_idx == 0)
+
 
 
 		print("Training Dataset Size: {0}".format(len(train_data)))
-		train_batcher = MyDataset(train_data)
+		train_batcher = MyDataset(train_data, prune=train_prune)
 
 
 
 		test_data = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		test_data = [ex for ex in test_data if ex['label'] < num_classes]
 		print("Evaluation Dataset Size: {0}".format(len(test_data)))
-		test_batcher = MyDataset(test_data, scaler = train_batcher.get_scaler())
+		test_batcher = MyDataset(test_data, scaler = train_batcher.get_scaler(), prune=train_prune)
 
 		test_idx = []
 		for ex in test_data:
