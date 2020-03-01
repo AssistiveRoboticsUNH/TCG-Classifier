@@ -280,7 +280,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				for l in labels:
 					counts[l] += 1
 
-				print(np.min(inputs[0]), np.max(inputs[0]))
+				print(inputs[0].min(), inputs[0].max())
 
 
 				inputs = inputs.to(device).float()
@@ -332,7 +332,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			inputs, labels = batch['data'], batch['label']
 			labels = labels.reshape(-1)
 
-			print(np.min(inputs[0]), np.max(inputs[0]))
+			print(inputs[0].min(), inputs[0].max())
 
 			inputs = inputs.to(device).float()
 			labels = labels.to(device)
