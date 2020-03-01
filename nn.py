@@ -2,6 +2,9 @@ import os, sys, math, time
 import numpy as np
 from collections import Counter
 
+import matplotlib
+matplotlib.use('Agg')
+
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
@@ -366,8 +369,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			100 * correct / total))
 
 
-		import matplotlib
-		matplotlib.use('Agg')
+		
 		import matplotlib.pyplot as plt
 
 		target_names = range(num_classes)
