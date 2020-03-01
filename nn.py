@@ -264,8 +264,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		import torch.optim as optim
 
 		criterion = nn.CrossEntropyLoss()
-		#optimizer = optim.SGD(net.parameters(), lr=0.0005, momentum=0.9)
-		optimizer = optim.Adam(net.parameters(), lr=0.0001)
+		optimizer = optim.SGD(net.parameters(), lr=0.0005, momentum=0.9)
+		#optimizer = optim.Adam(net.parameters(), lr=0.0001)
 
 		t_s = time.time()
 		for epoch in range(30):  # loop over the dataset multiple times
