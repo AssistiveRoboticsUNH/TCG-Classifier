@@ -353,11 +353,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				predicted = predicted.cpu().data.numpy().tolist()
 
-				print("pred:", type(predicted))
-				print(predicted)
-
 				pred_list += predicted
-				label_list += label_list
+				label_list += labels
 
 				#for p, l in zip(predicted, labels):
 				#	print(p, l)
