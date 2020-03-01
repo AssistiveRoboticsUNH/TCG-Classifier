@@ -162,8 +162,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
 
-		count_limit = 200#500
-		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
+		#count_limit = 200#500
+		#train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
 
 
 		print("Training Dataset Size: {0}".format(len(train_data)))
@@ -487,7 +487,7 @@ if __name__ == '__main__':
 	if(FLAGS.model_type == 'tsm'):
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
-	layer = DEPTH_SIZE-2#1
+	layer = DEPTH_SIZE-1
 	main(FLAGS.model_type,
 		FLAGS.dataset_dir, 
 		FLAGS.csv_filename,
