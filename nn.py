@@ -355,7 +355,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				# forward + backward + optimize
 				outputs = net(inputs)
-				train_predicted = outputs.cpu()
+
+
+				_, train_predicted = torch.max(outputs.data, 1)
 
 
 				outputs = outputs.reshape(-1, outputs.shape[-1])
