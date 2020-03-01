@@ -260,6 +260,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					labels = labels.to(device)
 
 					outputs = net(inputs)
+					outputs = np.squeeze(outputs)
 
 
 					_, predicted = torch.max(outputs.data, 1)
@@ -295,6 +296,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				labels = labels.to(device)
 
 				outputs = net(inputs)
+				outputs = np.squeeze(outputs)
 
 				_, predicted = torch.max(outputs.data, 1)
 				total += labels.size(0)
