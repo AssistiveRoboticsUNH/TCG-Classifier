@@ -183,22 +183,24 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		#model
 		import torch.nn as nn
+		import torch.nn.functional as F
 		class Net(nn.Module):
 			def __init__(self, input_size, num_classes):
 				super(Net, self).__init__()
-				n_hidden= 1024
+				n_hidden = 10
 
-				#self.dense1 = nn.Linear(input_size, n_hidden)
-				#self.dense2 = nn.Linear(n_hidden, num_classes)	
+				self.dense1 = nn.Linear(input_size, n_hidden)
+				self.dense2 = nn.Linear(n_hidden, num_classes)	
 
-				self.dense = nn.Linear(input_size, num_classes)				
+				#self.dense = nn.Linear(input_size, num_classes)				
 
 			def forward(self, x):
-				return self.dense(x)
-				'''
+				#return self.dense(x)
+				
 				x = self.dense1(x)#.double()
-				return self.dense2(x)#.double()
-				'''
+				x = F.relu(self.dense2(x))
+				return x#.double()
+				
 
 		data_in = np.load(train_data[0]['sp_path'])
 		print(data_in.shape)
@@ -214,7 +216,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 		t_s = time.time()
-		for epoch in range(10):  # loop over the dataset multiple times
+		for epoch in range(20):  # loop over the dataset multiple times
 
 			running_loss = 0.0
 			for i, data in enumerate(trainloader, 0):
