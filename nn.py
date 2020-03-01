@@ -57,7 +57,7 @@ class MyDataset(Dataset):
 		print("fit scaler")
 
 		
-		if(self.dataset_shape):
+		if(self.dataset_shape == None):
 			d = np.load(self.dataset[0]['sp_path'])
 			d = self.condense(d)
 			self.dataset_shape = d.shape
