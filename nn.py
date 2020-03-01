@@ -71,7 +71,7 @@ class MyDataset(Dataset):
 			data = self.pipe.transform(data)
 
 
-		sample = {'data': np.array(data).reshape(-1), 'label': np.array(label)}
+		sample = {'data': np.array(data), 'label': np.array(label)}
 		#print(type(np.array(data)), np.array(data).dtype)
 		#print(type(np.array(label)), np.array(label).dtype)
 
