@@ -137,13 +137,25 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		except:
 			print("ERROR: Cannot open CSV file: "+ csv_filename)
 
+		count = [0]*num_classes
+
 		for ex in csv_contents:
 			ex['sp_path'] = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.npy'.format(ex['example_id'], layer))
+			ex['class_count'] = count[ex['label']] 
+			count[ex['label']] += 1
+
 
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
+
+		count_limit = 50
+		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
+
+
 		print("Training Dataset Size: {0}".format(len(train_data)))
 		train_batcher = MyDataset(train_data)
+
+
 
 		test_data = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		test_data = [ex for ex in test_data if ex['label'] < num_classes]
@@ -152,7 +164,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-		batch_size = 10
+		batch_size = 1000
 
 		data_label = [ex['label'] for ex in train_data]
 		class_sample_count = [Counter(data_label)[x] for x in range(num_classes)]#[10, 5, 2, 1] 
@@ -256,7 +268,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 		t_s = time.time()
-		for epoch in range(20):  # loop over the dataset multiple times
+		for epoch in range(10):  # loop over the dataset multiple times
 
 			running_loss = 0.0
 			for i, data in enumerate(trainloader, 0):
