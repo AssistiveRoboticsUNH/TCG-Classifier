@@ -221,10 +221,12 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				# get the inputs; data is a list of [inputs, labels]
 				batch = data
 				inputs, labels = batch['data'], batch['label']
-				#labels = labels.reshape(-1)
+				labels = labels.reshape(-1)
 
 				inputs = inputs.to(device).float()
 				labels = labels.to(device)
+
+
 				print("inp: ", inputs.shape)
 				print("labels: ", labels.shape)
 
