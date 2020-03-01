@@ -219,6 +219,18 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			count[ex['label']] += 1
 
 
+		prune_idx = None
+		for ex in csv_contents:
+			if (prune_idx ==  None):
+				prune_idx = np.load(ex['sp_path'])
+			else:
+				prune_idx += np.load(ex['sp_path'])
+
+		print("prune_idx:", prune_idx[:10])
+
+
+
+
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
 
@@ -320,7 +332,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				#self.dense2a = nn.Linear(n_hidden, n_hidden2)	
 				#self.dense3a = nn.Linear(n_hidden2, num_classes)	
 
-				self.dense = nn.Linear(input_size, num_classes)				
+				#self.dense = nn.Linear(input_size, num_classes)				
 
 			def forward(self, x):
 				#return self.dense(x)
