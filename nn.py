@@ -338,7 +338,6 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					counts[l] += 1
 
 				#print(inputs[0].min(), inputs[0].max())
-				train_labels = labels
 
 				inputs = inputs.to(device).float()
 				labels = labels.to(device)
@@ -346,6 +345,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				#print(inputs[0].min(), inputs[0].max())
 
 
+				train_labels = labels
 
 				#print("inp: ", inputs.shape)
 				#print("labels: ", labels.shape)
