@@ -282,9 +282,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			def __init__(self, input_size, num_classes):
 				super(Net, self).__init__()
 				n_hidden = n_hidden_g#32
+				n_hidden2 = 16
 
 				self.dense1 = nn.Linear(input_size, n_hidden)
 				self.dense2 = nn.Linear(n_hidden, num_classes)	
+
+				self.dense2a = nn.Linear(n_hidden, n_hidden2)	
+				self.dense3a = nn.Linear(n_hidden2, num_classes)	
 
 				self.dense = nn.Linear(input_size, num_classes)				
 
@@ -293,7 +297,16 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				
 				x = F.leaky_relu(self.dense1(x))#.double()
 				x = self.dense2(x)
+				
+				x = F.leaky_relu(self.dense1(x))
+				x = F.leaky_relu(self.dense2a(x))
+				x = self.dense3a(x)
+
+
+
 				return x#.double()
+
+
 				
 
 		data_in = np.load(train_data[0]['sp_path'])
