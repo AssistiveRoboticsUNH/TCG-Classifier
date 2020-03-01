@@ -277,7 +277,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				for param in net.parameters():
 					#print("l1_regularization:", l1_regularization, "param:", torch.norm(param, 1))
 					#print("l1_regularization:", l1_regularization.dtype, "param:", torch.norm(param, 1).dtype)
-   					l1_regularization += torch.norm(param, 1)#.type_as(output)
+					l1_regularization += torch.norm(param, 1)#.type_as(output)
 
 				loss = criterion(outputs, labels)# + l1_regularization
 				loss.backward()
@@ -371,18 +371,18 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		target_names = range(num_classes)
 
 		def plot_confusion_matrix(cm, title='Confusion matrix', cmap=plt.cm.Blues):
-		    plt.imshow(cm, interpolation='nearest', cmap=cmap)
-		    plt.title(title)
-		    plt.colorbar()
-		    tick_marks = np.arange(len(target_names))
-		    plt.xticks(tick_marks, target_names, rotation=45)
-		    plt.yticks(tick_marks, target_names)
-		    plt.tight_layout()
-		    plt.ylabel('True label')
-		    plt.xlabel('Predicted label')
+			plt.imshow(cm, interpolation='nearest', cmap=cmap)
+			plt.title(title)
+			plt.colorbar()
+			tick_marks = np.arange(len(target_names))
+			plt.xticks(tick_marks, target_names, rotation=45)
+			plt.yticks(tick_marks, target_names)
+			plt.tight_layout()
+			plt.ylabel('True label')
+			plt.xlabel('Predicted label')
 
 
-	   print(label_list, pred_list)
+		print(label_list, pred_list)
 
 		print(np.array(label_list).shape, np.array(pred_list).shape)
 
