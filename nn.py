@@ -76,6 +76,8 @@ class MyDataset(Dataset):
 
 			self.scaler= pipe #MinMaxScaler()#StandardScaler(with_mean=False)
 
+			n = []
+
 			num = 1000
 			for i in range(0, len(self.dataset), num):
 				print(i)
@@ -88,10 +90,19 @@ class MyDataset(Dataset):
 						d = self.condense(d)
 
 						data.append(d)
+						n.append(d)
 				data = np.array(data)
 
-				self.scaler.partial_fit(data)
+				#self.scaler.partial_fit(data)
+
+			self.scaler.fit(np.array(n))
+
+
 			print("scaler fit")
+
+
+
+
 		else:
 			self.scaler = scaler
 		
