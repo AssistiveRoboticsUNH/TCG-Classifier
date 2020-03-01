@@ -270,7 +270,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				outputs = np.squeeze(outputs)
 				#print("outputs: ", outputs.shape)
 
-				l1_regularization = torch.tensor(0)
+				l1_regularization = torch.tensor(0, dtype=torch.float64, device=cuda0)
 				for param in net.parameters():
 					print("l1_regularization:", l1_regularization, "param:", torch.norm(param, 1))
 					print("l1_regularization:", l1_regularization.dtype, "param:", torch.norm(param, 1).dtype)
