@@ -363,6 +363,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				outputs = net(inputs)
 				outputs = np.squeeze(outputs)
 
+				print(outputs.data)
 				_, predicted = torch.max(outputs.data, 1)
 				total += labels.size(0)
 				correct += (predicted == labels).sum().item()
