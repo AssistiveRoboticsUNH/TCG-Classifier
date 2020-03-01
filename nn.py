@@ -60,7 +60,7 @@ class MyDataset(Dataset):
 			self.scaler= MinMaxScaler()
 
 			num = 1000
-			for i in range(0, len(self.dataset)/8, num):
+			for i in range(0, len(self.dataset), num):
 				print(i)
 				data = []
 				for j in range(num):
@@ -133,7 +133,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 20
+		#num_classes = 20
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
@@ -300,7 +300,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				inputs = inputs.to(device).float()
 				labels = labels.to(device)
 
-				print(inputs[0].min(), inputs[0].max())
+				#print(inputs[0].min(), inputs[0].max())
 
 
 
