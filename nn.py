@@ -119,7 +119,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 20
+		#num_classes = 20
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
@@ -386,7 +386,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			plt.xlabel('Predicted label')
 
 
-		print(label_list, pred_list)
+		#print(label_list, pred_list)
 
 		print(np.array(label_list).shape, np.array(pred_list).shape)
 
