@@ -272,7 +272,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				l1_regularization = torch.tensor(0)
 				for param in net.parameters():
-   					l1_regularization += torch.norm(param, 1)
+					print("param:", param, "l1:", torch.norm(param, 1))
+   					l1_regularization += torch.norm(param, 1)#.type_as(output)
 
 				loss = criterion(outputs, labels) + l1_regularization
 				loss.backward()
