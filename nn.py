@@ -351,6 +351,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				total += labels.size(0)
 				correct += (predicted == labels).sum().item()
 
+				print("pred:", type(predicted))
+				print(predicted)
+
 				pred_list += predicted
 				label_list += label_list
 
