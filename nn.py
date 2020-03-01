@@ -247,7 +247,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 		t_s = time.time()
-		for epoch in range(20):  # loop over the dataset multiple times
+		for epoch in range(1):#20):  # loop over the dataset multiple times
 
 			running_loss = 0.0
 			for i, data in enumerate(trainloader, 0):
