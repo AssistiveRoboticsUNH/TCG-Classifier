@@ -58,8 +58,9 @@ class MyDataset(Dataset):
 			print(i)
 			data = []
 			for j in range(num):
-				file = self.dataset[i + j]
-				data.append(np.load(file['sp_path']))
+				if (i+j < len(self.dataset)):
+					file = self.dataset[i + j]
+					data.append(np.load(file['sp_path']))
 			data = np.array(data)
 
 			self.scaler.partial_fit(data)
