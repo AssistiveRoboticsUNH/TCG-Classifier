@@ -156,8 +156,8 @@ class MyDataset(Dataset):
 		5 - start
 		6 - equals
 		'''
-		
-		e = np.copy(d.reshape(128,128,7).astype(np.float64))
+		d = d.astype(np.float64)
+		e = np.copy(d.reshape(128,128,7))
 
 		dist_factor = 0.15
 
