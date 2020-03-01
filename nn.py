@@ -233,9 +233,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				# forward + backward + optimize
 				outputs = net(inputs)
+				outputs = np.squeeze(outputs)
 				print("outputs: ", outputs.shape)
-				
-				
+
+
 				loss = criterion(outputs, labels)
 				loss.backward()
 				optimizer.step()
@@ -255,7 +256,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					labels = labels.to(device)
 
 					outputs = net(inputs)
-					
+
 
 					_, predicted = torch.max(outputs.data, 1)
 					total += labels.size(0)
