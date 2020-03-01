@@ -352,6 +352,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				correct += (predicted == labels).sum().item()
 
 				predicted = predicted.cpu().data.numpy().tolist()
+				labels = labels.cpu().data.numpy().tolist()
 
 				pred_list += predicted
 				label_list += labels
