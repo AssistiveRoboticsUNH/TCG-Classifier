@@ -157,6 +157,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, len(train_data))
 
 		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=batch_size,
+										  shuffle=True, 
 										  sampler=weighted_sampler, num_workers=2)
 										  #shuffle=True, num_workers=2)
 
@@ -240,6 +241,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		criterion = nn.CrossEntropyLoss()
 		optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
 
+
 		t_s = time.time()
 		for epoch in range(20):  # loop over the dataset multiple times
 
@@ -254,6 +256,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				labels = labels.to(device)
 
 
+
+
 				#print("inp: ", inputs.shape)
 				#print("labels: ", labels.shape)
 
@@ -265,8 +269,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				outputs = np.squeeze(outputs)
 				#print("outputs: ", outputs.shape)
 
+				l1_regularization = torch.tensor(0)
+				for param in net.parameters():
+   					l1_regularization += torch.norm(param, 1)
 
-				loss = criterion(outputs, labels)
+				loss = criterion(outputs, labels) + l1_regularization
 				loss.backward()
 				optimizer.step()
 
