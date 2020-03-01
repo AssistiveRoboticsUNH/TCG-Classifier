@@ -160,8 +160,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, len(train_data))
 
 		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=batch_size,
-										  #shuffle=True, 
-										  sampler=weighted_sampler, 
+										  shuffle=True, 
+										  #sampler=weighted_sampler, 
 										  num_workers=2)
 										  #shuffle=True, num_workers=2)
 
@@ -279,7 +279,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					#print("l1_regularization:", l1_regularization.dtype, "param:", torch.norm(param, 1).dtype)
    					l1_regularization += torch.norm(param, 1)#.type_as(output)
 
-				loss = criterion(outputs, labels)# + l1_regularization
+				loss = criterion(outputs, labels) + l1_regularization
 				loss.backward()
 				optimizer.step()
 
