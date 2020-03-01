@@ -354,7 +354,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				print("pred:", type(predicted.cpu().data.numpy()))
 				print(predicted.cpu().data.numpy())
 
-				pred_list += predicted.data
+				pred_list += predicted.cpu().data.numpy()
 				label_list += label_list
 
 				#for p, l in zip(predicted, labels):
