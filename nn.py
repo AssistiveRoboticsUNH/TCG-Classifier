@@ -162,7 +162,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		sample_weights = [0]*len(train_data)
 		for i, ex in enumerate(train_data):
-			sample_weights[i] = ex['label']
+			sample_weights[i] = weights[ex['label']]
 
 
 		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=sample_weights, num_samples=len(train_data))
