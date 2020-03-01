@@ -58,6 +58,7 @@ class MyDataset(Dataset):
 			print(i)
 			data = []
 			for j in range(num):
+				file = self.dataset[i + j]
 				data.append(np.load(file['sp_path']))
 			data = np.array(data)
 
