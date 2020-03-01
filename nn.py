@@ -82,7 +82,6 @@ class MyDataset(Dataset):
 						d = self.condense(d)
 
 						data.append(d)
-						n.append(d)
 				data = np.array(data)
 
 				self.scaler.partial_fit(data)
@@ -146,15 +145,32 @@ class MyDataset(Dataset):
 		return self.scaler
 
 	def condense(self, d):
-		return d
+		#return d
+
 		'''
-		d = d.reshape(128,128,7)
-		d[..., 1] += d[..., 2] # meet and overlap
-		d[..., 3] += d[..., 6] # meet and overlap
-		d[..., 4] += d[..., 5] # meet and overlap
-		d = d[..., :5].reshape(-1)
-		return d
+		0 - before
+		1 - meets
+		2 - overlap
+		3 - during
+		4 - finish
+		5 - start
+		6 - equals
 		'''
+		
+		e = np.copy(d.reshape(128,128,7))
+
+		dist_factor = 0.15
+
+		d[..., 1] += d[..., 2] *dist_factor
+		d[..., 2] += d[..., 1] *dist_factor
+
+		d[..., 3] += d[..., 4] *dist_factor + d[..., 5] *dist_factor
+		d[..., 4] += d[..., 3] *dist_factor + d[..., 6] *dist_factor
+		d[..., 5] += d[..., 3] *dist_factor + d[..., 6] *dist_factor
+		d[..., 6] += d[..., 4] *dist_factor + d[..., 5] *dist_factor
+
+		return d
+		
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
 
