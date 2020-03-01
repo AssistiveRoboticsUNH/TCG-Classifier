@@ -351,10 +351,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				total += labels.size(0)
 				correct += (predicted == labels).sum().item()
 
-				print("pred:", type(predicted.cpu().data.numpy()))
-				print(predicted.cpu().data.numpy())
+				#print("pred:", type(predicted.cpu().data.numpy()))
+				#print(predicted.cpu().data.numpy())
 
-				pred_list += predicted.cpu().data.numpy()
+				pred_list += predicted.cpu().data.numpy().tolist()
 				label_list += label_list
 
 				#for p, l in zip(predicted, labels):
