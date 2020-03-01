@@ -392,10 +392,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print(np.array(label_list).shape, np.array(pred_list).shape)
 
 		from sklearn.metrics import confusion_matrix
-		cm = confusion_matrix(label_list, pred_list, normalize=True)
+		cm = confusion_matrix(label_list, pred_list)
+		cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
 
 		plot_confusion_matrix(cm)
 		plt.savefig('cm.png')
+
 
 		# if model accuracy is good then replace the old model with new save data
 		#if(cur_accuracy > max_accuracy):
