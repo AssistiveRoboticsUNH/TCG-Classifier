@@ -264,8 +264,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 					_, predicted = torch.max(outputs.data, 1)
 					total += labels.size(0)
-					print("predicted:", predicted)
-					print("labels:", labels)
+					print("predicted:", predicted.shape)
+					print("labels:", labels.shape)
 
 
 					correct += (predicted == labels).sum().item()
