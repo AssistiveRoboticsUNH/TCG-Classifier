@@ -295,8 +295,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			def forward(self, x):
 				#return self.dense(x)
 				
-				x = F.leaky_relu(self.dense1(x))#.double()
-				x = self.dense2(x)
+				#x = F.leaky_relu(self.dense1(x))#.double()
+				#x = self.dense2(x)
 				
 				x = F.leaky_relu(self.dense1(x))
 				x = F.leaky_relu(self.dense2a(x))
