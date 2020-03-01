@@ -116,7 +116,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 3#20
+		num_classes = 20
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
@@ -127,7 +127,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs)
 		
 
-		batch_size = 1000
+		#batch_size = 1000
 
 		try:
 			csv_contents = read_csv(csv_filename)
