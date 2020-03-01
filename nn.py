@@ -71,6 +71,7 @@ class MyDataset(Dataset):
 		else:
 			self.scaler = scaler
 		'''
+		self.scaler= StandardScaler()
 
 
 	def __len__(self):
