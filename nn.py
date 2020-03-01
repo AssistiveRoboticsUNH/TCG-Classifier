@@ -193,7 +193,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
 
 		count_limit = train_limit_g#500
-		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
+		train_data = [ex for ex in train_data if ex['class_count'] > count_limit]
 
 
 		print("Training Dataset Size: {0}".format(len(train_data)))
@@ -282,25 +282,25 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			def __init__(self, input_size, num_classes):
 				super(Net, self).__init__()
 				n_hidden = n_hidden_g#32
-				n_hidden2 = 16
+				#n_hidden2 = 16
 
 				self.dense1 = nn.Linear(input_size, n_hidden)
 				self.dense2 = nn.Linear(n_hidden, num_classes)	
 
-				self.dense2a = nn.Linear(n_hidden, n_hidden2)	
-				self.dense3a = nn.Linear(n_hidden2, num_classes)	
+				#self.dense2a = nn.Linear(n_hidden, n_hidden2)	
+				#self.dense3a = nn.Linear(n_hidden2, num_classes)	
 
 				self.dense = nn.Linear(input_size, num_classes)				
 
 			def forward(self, x):
 				#return self.dense(x)
 				
-				#x = F.leaky_relu(self.dense1(x))#.double()
-				#x = self.dense2(x)
+				x = F.leaky_relu(self.dense1(x))#.double()
+				x = self.dense2(x)
 				
-				x = F.leaky_relu(self.dense1(x))
-				x = F.leaky_relu(self.dense2a(x))
-				x = self.dense3a(x)
+				#x = F.leaky_relu(self.dense1(x))
+				#x = F.leaky_relu(self.dense2a(x))
+				#x = self.dense3a(x)
 
 
 
