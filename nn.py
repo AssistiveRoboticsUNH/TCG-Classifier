@@ -136,7 +136,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	l2_norm_g = 0#0.25#0.5
 	l1_norm_g = 0.0005
 	n_hidden_g = 128
-	epoch_g = 10
+	epoch_g = 20
 
 	parse_data = False
 
