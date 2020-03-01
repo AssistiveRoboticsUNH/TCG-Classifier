@@ -314,44 +314,38 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				# print statistics
 				running_loss += loss.item()
+			
+
+
+
+
+
+
+
 			print('[%d, %5d] loss: %.3f' % (epoch + 1, len(trainloader), running_loss / 2000))
 			running_loss = 0.0
 
-			correct = 0
-			total = 0
+			batch = next(iter(testloader))
+			inputs, labels = batch['data'], batch['label']
+			labels = labels.reshape(-1)
 
-			
-			'''
-			with torch.no_grad():
-				for data in testloader:
-					batch = data
-					inputs, labels = batch['data'], batch['label']
-					labels = labels.reshape(-1)
+			inputs = inputs.to(device).float()
+			labels = labels.to(device)
 
-					inputs = inputs.to(device).float()
-					labels = labels.to(device)
+			outputs = net(inputs)
+			#outputs = np.squeeze(outputs)
+			outputs = outputs.reshape(-1, outputs.shape[-1])
 
-					outputs = net(inputs)
-					#outputs = np.squeeze(outputs)
-					outputs = outputs.reshape(-1, outputs.shape[-1])
+			_, predicted = torch.max(outputs.data, 1)
+			total += labels.size(0)
 
-					_, predicted = torch.max(outputs.data, 1)
-					total += labels.size(0)
-					#print("predicted:", predicted)
-					#print("labels:", labels.shape)
+			print("accuracy: ", (predicted == labels).sum().item())
+			#print("predicted:", predicted)
+			#print("labels:", labels.shape)
 
 
 
 
-					correct += (predicted == labels).sum().item()
-
-					#for p, l in zip(predicted, labels):
-					#	print(p, l)
-					#print(correct, total)
-
-			print('eval: %d %%' % (
-				100 * correct / total))
-			'''
 
 
 		print("train elapsed:", time.time()-t_s)
