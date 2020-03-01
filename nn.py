@@ -163,8 +163,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, len(train_data))
 
 		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=batch_size,
-										  #shuffle=True, 
-										  sampler=weighted_sampler, 
+										  shuffle=True, 
+										  #sampler=weighted_sampler, 
 										  num_workers=2)
 										  #shuffle=True, num_workers=2)
 
@@ -220,20 +220,20 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		class Net(nn.Module):
 			def __init__(self, input_size, num_classes):
 				super(Net, self).__init__()
-				n_hidden = 100
+				n_hidden = 10
 
-				#self.dense1 = nn.Linear(input_size, n_hidden)
-				#self.dense2 = nn.Linear(n_hidden, num_classes)	
+				self.dense1 = nn.Linear(input_size, n_hidden)
+				self.dense2 = nn.Linear(n_hidden, num_classes)	
 
-				self.dense = nn.Linear(input_size, num_classes)				
+				#self.dense = nn.Linear(input_size, num_classes)				
 
 			def forward(self, x):
-				return self.dense(x)
-				'''
+				#return self.dense(x)
+				
 				x = self.dense1(x)#.double()
 				x = F.relu(self.dense2(x))
 				return x#.double()
-				'''
+				
 
 		data_in = np.load(train_data[0]['sp_path'])
 		print(data_in.shape)
