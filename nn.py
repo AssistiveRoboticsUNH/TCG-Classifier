@@ -134,7 +134,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	num_classes_g = 5#174
 	alpha_g = 0.0001
 	l2_norm_g = 0#0.25#0.5
-	l1_norm_g = 0.0001
+	l1_norm_g = 0.0005
 	n_hidden_g = 128
 	epoch_g = 10
 
