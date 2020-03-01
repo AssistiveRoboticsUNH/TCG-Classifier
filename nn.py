@@ -297,7 +297,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		data_in = np.load(train_data[0]['sp_path'])
 		print(data_in.shape)
 
-		net = Net(data_in.shape[0], num_classes).to(device)
+		net = Net(train_batcher.dataset_shape[0], num_classes).to(device)
 
 
 
