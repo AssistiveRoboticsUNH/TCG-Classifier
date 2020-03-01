@@ -209,7 +209,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		else:
 			device = torch.device("cpu")
 			print("Running on the CPU")
-
+  
 
 		#model
 		import torch.nn as nn
@@ -290,6 +290,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			correct = 0
 			total = 0
+
+			
+
 			with torch.no_grad():
 				for data in testloader:
 					batch = data
@@ -305,7 +308,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 					_, predicted = torch.max(outputs.data, 1)
 					total += labels.size(0)
-					print("predicted:", predicted)
+					#print("predicted:", predicted)
 					#print("labels:", labels.shape)
 
 
@@ -328,6 +331,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		t_s = time.time()
 		correct = 0
 		total = 0
+
+		pred_list = []
+		label_list = []
+
 		with torch.no_grad():
 			for data in testloader:
 				batch = data
@@ -344,6 +351,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				total += labels.size(0)
 				correct += (predicted == labels).sum().item()
 
+				pred_list += predicted
+				label_list += label_list
+
 				#for p, l in zip(predicted, labels):
 				#	print(p, l)
 				#print(correct, total)
@@ -351,6 +361,30 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		print('Accuracy of the network on the 10000 test images: %d %%' % (
 			100 * correct / total))
+
+
+
+		import matplotlib.pyplot as plt
+
+		def plot_confusion_matrix(cm, title='Confusion matrix', cmap=plt.cm.Blues):
+		    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+		    plt.title(title)
+		    plt.colorbar()
+		    tick_marks = np.arange(len(iris.target_names))
+		    plt.xticks(tick_marks, iris.target_names, rotation=45)
+		    plt.yticks(tick_marks, iris.target_names)
+		    plt.tight_layout()
+		    plt.ylabel('True label')
+		    plt.xlabel('Predicted label')
+
+
+
+
+		from sklearn.metrics import confusion_matrix
+		cm = confusion_matrix(label_list, pred_list)
+
+		plot_confusion_matrix(cm)
+		plt.savefig('cm.png')
 
 		# if model accuracy is good then replace the old model with new save data
 		#if(cur_accuracy > max_accuracy):
