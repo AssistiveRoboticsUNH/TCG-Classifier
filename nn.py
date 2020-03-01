@@ -159,7 +159,7 @@ class MyDataset(Dataset):
 		d = d.astype(np.float64)
 		e = np.copy(d.reshape(128,128,7))
 
-		dist_factor = 0.25
+		dist_factor = 0.5#0.25
 
 		d[..., 1] += d[..., 2] *dist_factor
 		d[..., 2] += d[..., 1] *dist_factor
