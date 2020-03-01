@@ -252,7 +252,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			total = 0
 			with torch.no_grad():
 				for data in testloader:
-					inputs, labels = data
+					batch = data
+					inputs, labels = batch['data'], batch['label']
+					labels = labels.reshape(-1)
 
 					inputs = inputs.to(device).float()
 					labels = labels.to(device)
@@ -281,7 +283,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		total = 0
 		with torch.no_grad():
 			for data in testloader:
-				inputs, labels = data
+				batch = data
+				inputs, labels = batch['data'], batch['label']
+				labels = labels.reshape(-1)
 
 				inputs = inputs.to(device).float()
 				labels = labels.to(device)
