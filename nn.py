@@ -219,14 +219,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			count[ex['label']] += 1
 
 
-		prune_idx = []
-		for ex in csv_contents:
-			if (len(prune_idx) ==  0):
-				prune_idx = np.load(ex['sp_path'])
-			else:
-				prune_idx += np.load(ex['sp_path'])
-
-		print("prune_idx:", prune_idx[:10])
+		
 
 
 
@@ -238,6 +231,15 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
 
 
+		train_idx = []
+		for ex in train_data:
+			if (len(train_idx) ==  0):
+				train_idx = np.load(ex['sp_path'])
+			else:
+				train_idx += np.load(ex['sp_path'])
+
+
+
 		print("Training Dataset Size: {0}".format(len(train_data)))
 		train_batcher = MyDataset(train_data)
 
@@ -247,6 +249,17 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		test_data = [ex for ex in test_data if ex['label'] < num_classes]
 		print("Evaluation Dataset Size: {0}".format(len(test_data)))
 		test_batcher = MyDataset(test_data, scaler = train_batcher.get_scaler())
+
+		test_idx = []
+		for ex in test_data:
+			if (len(test_idx) ==  0):
+				test_idx = np.load(ex['sp_path'])
+			else:
+				test_idx += np.load(ex['sp_path'])
+		print("train_idx:", train_idx[:10])
+		print("test_idx:", test_idx[:10])
+
+
 
 
 
