@@ -52,10 +52,15 @@ class MyDataset(Dataset):
 
 		self.scaler= StandardScaler()
 		print("fit scaler")
-		for i ,file in enumerate(self.dataset):
-			if (i % 1000 == 0):
-				print(i)
-			data = np.load(file['sp_path']).reshape(1, -1)
+
+		num = 1000
+		for i in range(0, len(self.dataset), num):
+			print(i)
+			data = []
+			for j in range(num):
+				data.append(np.load(file['sp_path']))
+			data = np.array(data)
+
 			self.scaler.partial_fit(data)
 		print("scaler fit")
 
