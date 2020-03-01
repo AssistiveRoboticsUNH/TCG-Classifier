@@ -92,12 +92,13 @@ class MyDataset(Dataset):
 		file = self.dataset[idx]
 
 		d = np.load(file['sp_path']) 
+		'''
 		d = d.reshape(128,128,7)
 		d[..., 1] += d[..., 2] # meet and overlap
 		d[..., 3] += d[..., 6] # meet and overlap
 		d[..., 4] += d[..., 5] # meet and overlap
 		d = d[..., :5].reshape(-1)
-
+		'''
 
 
 
@@ -138,7 +139,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		if (not os.path.exists(save_dir)):
 			os.makedirs(save_dir)
 
-		parse_data = False
+		parse_data = True
 		if(parse_data):
 			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs=8)
 		
@@ -161,8 +162,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
 
-		count_limit = 200#500
-		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
+		#count_limit = 200#500
+		#train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
 
 
 		print("Training Dataset Size: {0}".format(len(train_data)))
@@ -250,7 +251,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		class Net(nn.Module):
 			def __init__(self, input_size, num_classes):
 				super(Net, self).__init__()
-				n_hidden = 1024#32
+				n_hidden = 128#32
 
 				self.dense1 = nn.Linear(input_size, n_hidden)
 				self.dense2 = nn.Linear(n_hidden, num_classes)	
@@ -486,7 +487,7 @@ if __name__ == '__main__':
 	if(FLAGS.model_type == 'tsm'):
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
-	layer = DEPTH_SIZE-1
+	layer = DEPTH_SIZE-2
 	main(FLAGS.model_type,
 		FLAGS.dataset_dir, 
 		FLAGS.csv_filename,
