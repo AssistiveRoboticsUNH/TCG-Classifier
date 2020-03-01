@@ -144,17 +144,29 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print("Evaluation Dataset Size: {0}".format(len(test_data)))
 		test_batcher = MyDataset(test_data, scaler = train_batcher.get_scaler())
 
-		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=10,
-										  shuffle=True, num_workers=2)
-
-		testloader = torch.utils.data.DataLoader(test_batcher, batch_size=10,
-										  shuffle=False, num_workers=2)
 
 
+		batch_size = 10
+
+		data_label = [ex['label'] for ex in train_data]
+		class_sample_count = [Counter(data_label)[x] for x in range(num_classes)]#[10, 5, 2, 1] 
+		weights = (1 / torch.Tensor(class_sample_count))
+		print("weights:", weights)
+		
+		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, data_in.shape[0])
+
+		trainloader = torch.utils.data.DataLoader(zip(data_in, data_label), batch_size=batch_size,
+										  sampler=weighted_sampler, num_workers=2)
+										  #shuffle=True, num_workers=2)
+
+		testloader = torch.utils.data.DataLoader(zip(eval_in, eval_label), batch_size=batch_size,
+										 shuffle=False, num_workers=2)
 
 
 
 
+
+		'''
 		#hashvect = CountVectorizer(token_pattern=r"\d+\w\d+")#HashingVectorizer(n_features=2**17, token_pattern=r"\d+\w\d+")
 		tfidf = TfidfTransformer(sublinear_tf=True)
 		scale = StandardScaler(with_mean=False)
@@ -164,6 +176,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			('tfidf', tfidf),
 			('scale', scale),
 		])
+		'''
 
 		'''
 		#enabled for TRN/I3D not for TSm
@@ -179,22 +192,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
 		
 
-		batch_size = 10
 
-		'''
-		class_sample_count = [Counter(data_label)[x] for x in range(num_classes)]#[10, 5, 2, 1] 
-		weights = (1 / torch.Tensor(class_sample_count))
-		print("weights:", weights)
 		
-		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, data_in.shape[0])
-
-		trainloader = torch.utils.data.DataLoader(zip(data_in, data_label), batch_size=batch_size,
-										  sampler=weighted_sampler, num_workers=2)
-										  #shuffle=True, num_workers=2)
-
-		testloader = torch.utils.data.DataLoader(zip(eval_in, eval_label), batch_size=batch_size,
-										 shuffle=False, num_workers=2)
-		'''
 
 		
 
