@@ -93,11 +93,11 @@ class MyDataset(Dataset):
 		data.append( np.load(file['sp_path']) )
 		label.append( file['label'] )
 
-		'''
-		if(self.pipe != None):
+		
+		if(self.scaler != None):
 			#data = self.pipe.transform(data)
 			data = self.scaler.transform(data)
-		'''
+		
 
 		sample = {'data': np.array(data), 'label': np.array(label)}
 		#print(type(np.array(data)), np.array(data).dtype)
