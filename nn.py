@@ -92,13 +92,13 @@ class MyDataset(Dataset):
 		file = self.dataset[idx]
 
 		d = np.load(file['sp_path']) 
-		'''
+		
 		d = d.reshape(128,128,7)
 		d[..., 1] += d[..., 2] # meet and overlap
 		d[..., 3] += d[..., 6] # meet and overlap
 		d[..., 4] += d[..., 5] # meet and overlap
 		d = d[..., :5].reshape(-1)
-		'''
+		
 
 
 
@@ -132,11 +132,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	batch_size_g = 1000
 	train_limit_g = 100000#400
 	num_classes_g = 5#174
-	alpha_g = 0.00005
+	alpha_g = 0.0001
 	l2_norm_g = 0#0.25#0.5
 	l1_norm_g = 0.0001
 	n_hidden_g = 128
-	epoch_g = 20
+	epoch_g = 10
 
 	parse_data = False
 
