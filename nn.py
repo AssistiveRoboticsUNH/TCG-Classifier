@@ -382,6 +382,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		    plt.xlabel('Predicted label')
 
 
+	   print(label_list, pred_list)
+
 		print(np.array(label_list).shape, np.array(pred_list).shape)
 
 		from sklearn.metrics import confusion_matrix
