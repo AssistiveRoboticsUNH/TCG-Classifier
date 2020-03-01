@@ -156,6 +156,7 @@ class MyDataset(Dataset):
 		5 - start
 		6 - equals
 		'''
+		'''
 		d = d.astype(np.float64)
 		e = np.copy(d.reshape(128,128,7))
 
@@ -163,7 +164,7 @@ class MyDataset(Dataset):
 
 		d[..., 1] += d[..., 2] *dist_factor
 		d[..., 2] += d[..., 1] *dist_factor
-		'''
+		
 		d[..., 3] += d[..., 4] *dist_factor + d[..., 5] *dist_factor
 		d[..., 4] += d[..., 3] *dist_factor + d[..., 6] *dist_factor
 		d[..., 5] += d[..., 3] *dist_factor + d[..., 6] *dist_factor
