@@ -60,7 +60,7 @@ class MyDataset(Dataset):
 			self.scaler= StandardScaler()
 
 			num = 1000
-			for i in range(0, len(self.dataset)/4, num):
+			for i in range(0, len(self.dataset), num):
 				print(i)
 				data = []
 				for j in range(num):
