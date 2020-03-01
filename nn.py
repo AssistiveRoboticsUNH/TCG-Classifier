@@ -149,7 +149,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
 
 		count_limit = 25
-		#train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
+		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
 
 
 		print("Training Dataset Size: {0}".format(len(train_data)))
