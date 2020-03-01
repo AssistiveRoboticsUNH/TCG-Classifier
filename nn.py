@@ -66,7 +66,11 @@ class MyDataset(Dataset):
 				for j in range(num):
 					if (i+j < len(self.dataset)):
 						file = self.dataset[i + j]
-						data.append(np.load(file['sp_path']))
+
+						d = np.load(file['sp_path'])
+						d = self.condense(d)
+
+						data.append(d)
 				data = np.array(data)
 
 				self.scaler.partial_fit(data)
@@ -93,11 +97,8 @@ class MyDataset(Dataset):
 
 		d = np.load(file['sp_path']) 
 		
-		d = d.reshape(128,128,7)
-		d[..., 1] += d[..., 2] # meet and overlap
-		d[..., 3] += d[..., 6] # meet and overlap
-		d[..., 4] += d[..., 5] # meet and overlap
-		d = d[..., :5].reshape(-1)
+
+		d = self.condense(d)
 		
 
 
@@ -124,6 +125,14 @@ class MyDataset(Dataset):
 
 	def get_scaler(self):
 		return self.scaler
+
+	def condense(self, d):
+		d = d.reshape(128,128,7)
+		d[..., 1] += d[..., 2] # meet and overlap
+		d[..., 3] += d[..., 6] # meet and overlap
+		d[..., 4] += d[..., 5] # meet and overlap
+		d = d[..., :5].reshape(-1)
+		return d
 
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
