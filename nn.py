@@ -300,7 +300,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				#print("outputs: ", outputs.shape)
 
 
-				l1_lambda = 0.1
+				l1_lambda = 0.001
 				l1_regularization = torch.tensor(0, dtype=torch.float32, device=device)
 				for param in net.parameters():
 					#print("l1_regularization:", l1_regularization, "param:", torch.norm(param, 1))
