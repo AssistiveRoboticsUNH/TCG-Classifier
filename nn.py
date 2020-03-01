@@ -366,7 +366,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			100 * correct / total))
 
 
-
+		import matplotlib
+		matplotlib.use('Agg')
 		import matplotlib.pyplot as plt
 
 		target_names = range(num_classes)
