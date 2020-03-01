@@ -137,7 +137,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		except:
 			print("ERROR: Cannot open CSV file: "+ csv_filename)
 
-		count = [0]*num_classes
+		count = [0]*174#num_classes
 
 		for ex in csv_contents:
 			ex['sp_path'] = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.npy'.format(ex['example_id'], layer))
@@ -350,11 +350,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				100 * correct / total))
 			'''
 
+
 		print("train elapsed:", time.time()-t_s)
+		'''
 		print("counts:")
 		for sample_cnt, prob, cnt in zip(class_sample_count, weights, counts ):
 			print(sample_cnt, prob, cnt)
-			
+		'''	
 
 		print("evaluating model...")
 		t_s = time.time()
