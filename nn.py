@@ -55,7 +55,7 @@ class MyDataset(Dataset):
 
 		print("fit scaler")
 
-		
+		'''
 		if (scaler == None):
 			self.scaler= StandardScaler(with_mean=False) #MinMaxScaler()
 
@@ -73,8 +73,8 @@ class MyDataset(Dataset):
 			print("scaler fit")
 		else:
 			self.scaler = scaler
-		
-		#self.scaler= StandardScaler()
+		'''
+		self.scaler= None#StandardScaler()
 
 
 	def __len__(self):
@@ -175,7 +175,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
 
-		count_limit = train_limit#500
+		count_limit = train_limit_g#500
 		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
 
 
