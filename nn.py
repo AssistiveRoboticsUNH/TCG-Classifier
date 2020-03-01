@@ -335,8 +335,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		print("train elapsed:", time.time()-t_s)
 		print("counts:")
-		for cnt, prob in zip(counts, weights):
-			print(cnt, prob)
+		for sample_cnt, prob, cnt in zip(class_sample_count, weights, counts ):
+			print(sample_cnt, prob, cnt)
 			
 
 		print("evaluating model...")
