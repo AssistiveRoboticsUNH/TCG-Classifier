@@ -63,7 +63,18 @@ class MyDataset(Dataset):
 			self.dataset_shape = d.shape
 
 		if (scaler == None):
-			self.scaler=  MinMaxScaler()#StandardScaler(with_mean=False)
+
+			tfidf = TfidfTransformer(sublinear_tf=True)
+			scale = MinMaxScaler()
+
+
+			pipe = Pipeline([
+				('tfidf', tfidf),
+				('scale', scale),
+			])
+
+
+			self.scaler= pipe #MinMaxScaler()#StandardScaler(with_mean=False)
 
 			num = 1000
 			for i in range(0, len(self.dataset), num):
@@ -134,14 +145,14 @@ class MyDataset(Dataset):
 
 	def condense(self, d):
 		return d
-
+		'''
 		d = d.reshape(128,128,7)
 		d[..., 1] += d[..., 2] # meet and overlap
 		d[..., 3] += d[..., 6] # meet and overlap
 		d[..., 4] += d[..., 5] # meet and overlap
 		d = d[..., :5].reshape(-1)
 		return d
-
+		'''
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
 
