@@ -57,7 +57,7 @@ class MyDataset(Dataset):
 
 		
 		if (scaler == None):
-			self.scaler=  RobustScaler()#StandardScaler(with_mean=False)
+			self.scaler=  MinMaxScaler()#StandardScaler(with_mean=False)
 
 			num = 1000
 			for i in range(0, len(self.dataset), num):
@@ -130,8 +130,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 	batch_size_g = 1000
-	train_limit_g = 400
-	num_classes_g = 5#174
+	train_limit_g = 1000000#400
+	num_classes_g = 174
 	alpha_g = 0.0001
 	l2_norm_g = 0.5
 	l1_norm_g = 0.001
