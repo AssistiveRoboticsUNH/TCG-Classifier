@@ -242,7 +242,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		import torch.optim as optim
 
-		criterion = nn.CrossEntropyLoss()
+		criterion = nn.L1Loss()#nn.CrossEntropyLoss()
 		optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
 
 
