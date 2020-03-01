@@ -376,6 +376,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		def plot_confusion_matrix(cm, title='Confusion matrix', cmap=plt.cm.Blues):
 			plt.imshow(cm, interpolation='nearest', cmap=cmap)
+			plt.figure(figsize=(20,10))
 			plt.title(title)
 			plt.colorbar()
 			tick_marks = np.arange(len(target_names))
