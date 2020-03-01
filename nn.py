@@ -50,6 +50,12 @@ class MyDataset(Dataset):
 		self.dataset = dataset
 		self.pipe = None
 
+		self.scaler= StandardScaler()
+		print("fit scaler")
+		for file in self.dataset:
+			self.scaler.partial_fit(file['sp_path'])
+		print("scaler fit")
+
 	def __len__(self):
 		return len(self.dataset)
 
@@ -68,7 +74,8 @@ class MyDataset(Dataset):
 
 
 		if(self.pipe != None):
-			data = self.pipe.transform(data)
+			#data = self.pipe.transform(data)
+			data = self.scaler.transform(data)
 
 
 		sample = {'data': np.array(data), 'label': np.array(label)}
