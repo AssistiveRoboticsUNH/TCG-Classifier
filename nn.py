@@ -391,7 +391,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print(np.array(label_list).shape, np.array(pred_list).shape)
 
 		from sklearn.metrics import confusion_matrix
-		cm = confusion_matrix(label_list, pred_list)
+		cm = confusion_matrix(label_list, pred_list, normalize=True)
 
 		plot_confusion_matrix(cm)
 		plt.savefig('cm.png')
