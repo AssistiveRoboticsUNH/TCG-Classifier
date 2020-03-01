@@ -356,12 +356,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				# forward + backward + optimize
 				outputs = net(inputs)
 
+				outputs = outputs.reshape(-1, outputs.shape[-1])
+				
 
 				_, train_predicted = torch.max(outputs.data, 1)
 				print("train_predicted:", train_predicted.shape)
 				print("train_labels:", train_labels.shape)
 
-				outputs = outputs.reshape(-1, outputs.shape[-1])
 				#outputs = np.squeeze(outputs)
 				#print("outputs: ", outputs.shape)
 
