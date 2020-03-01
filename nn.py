@@ -20,7 +20,7 @@ from itr_sklearn import ITR_Extractor
 from itr_process import process_data, retrieve_data
 
 from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer, HashingVectorizer, CountVectorizer
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.pipeline import Pipeline
 
 import random
