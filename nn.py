@@ -243,6 +243,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
+		counts = [0]*num_classes
 
 		import torch.optim as optim
 
@@ -260,8 +261,12 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				inputs, labels = batch['data'], batch['label']
 				labels = labels.reshape(-1)
 
+				for l in labels:
+					counts[l] += 1
+
 				inputs = inputs.to(device).float()
 				labels = labels.to(device)
+
 
 
 
@@ -329,6 +334,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			'''
 
 		print("train elapsed:", time.time()-t_s)
+		print("counts:", counts)
 			
 
 		print("evaluating model...")
