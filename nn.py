@@ -305,7 +305,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				for param in net.parameters():
 					#print("l1_regularization:", l1_regularization, "param:", torch.norm(param, 1))
 					#print("l1_regularization:", l1_regularization.dtype, "param:", torch.norm(param, 1).dtype)
-					l1_regularization += torch.norm(param, 2)#.type_as(output)
+					l1_regularization += torch.norm(param, 1)#.type_as(output)
 
 				loss = criterion(outputs, labels) + l1_regularization * l1_lambda
 				loss.backward()
