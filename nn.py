@@ -155,11 +155,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		
 		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, data_in.shape[0])
 
-		trainloader = torch.utils.data.DataLoader(zip(data_in, data_label), batch_size=batch_size,
+		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=batch_size,
 										  sampler=weighted_sampler, num_workers=2)
 										  #shuffle=True, num_workers=2)
 
-		testloader = torch.utils.data.DataLoader(zip(eval_in, eval_label), batch_size=batch_size,
+		testloader = torch.utils.data.DataLoader(test_batcher, batch_size=batch_size,
 										 shuffle=False, num_workers=2)
 
 
