@@ -157,7 +157,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		data_label = [ex['label'] for ex in train_data]
 		class_sample_count = [Counter(data_label)[x] for x in range(num_classes)]#[10, 5, 2, 1] 
 		weights = (1 / torch.Tensor(class_sample_count))
-		#print("weights:", weights)
+		print("weights:", weights)
 		
 
 		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, len(train_data))
@@ -220,7 +220,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		class Net(nn.Module):
 			def __init__(self, input_size, num_classes):
 				super(Net, self).__init__()
-				n_hidden = 10
+				n_hidden = 100
 
 				self.dense1 = nn.Linear(input_size, n_hidden)
 				self.dense2 = nn.Linear(n_hidden, num_classes)	
