@@ -16,8 +16,9 @@ from itr_sklearn import ITR_Extractor
 
 from itr_process import process_data, retrieve_data
 
+
 from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer, HashingVectorizer, CountVectorizer
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, RobustScaler
 from sklearn.pipeline import Pipeline
 
 import random
@@ -136,6 +137,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
+
+		count_limit = 200
+		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
+
 		train_batcher = BatchParser(train_data, batch_size=batch_size, shuffle=True)
 
 		test_data = [ex for ex in csv_contents if ex['dataset_id'] == 0]
@@ -172,7 +177,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		'''
 		#from thundersvm import SVC
 		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		clf = SGDClassifier()#verbose=1, tol=1e-4)#n_jobs=num_procs, 
+		clf = SGDClassifier(penalty='l2',)#verbose=1, tol=1e-4)#n_jobs=num_procs, 
 
 
 
