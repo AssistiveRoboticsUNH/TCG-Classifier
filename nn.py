@@ -53,7 +53,7 @@ class MyDataset(Dataset):
 		self.scaler= StandardScaler()
 		print("fit scaler")
 		for file in self.dataset:
-			data = np.load(file['sp_path'])
+			data = np.load(file['sp_path']).reshape(1, -1)
 			self.scaler.partial_fit(data)
 		print("scaler fit")
 
