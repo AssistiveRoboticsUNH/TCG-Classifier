@@ -132,9 +132,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		except:
 			print("ERROR: Cannot open CSV file: "+ csv_filename)
 
+		count = [0]*174#num_classes
+
 		for ex in csv_contents:
 			ex['sp_path'] = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.npy'.format(ex['example_id'], layer))
-
+			ex['class_count'] = count[ex['label']] 
+			count[ex['label']] += 1
+			
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 		train_data = [ex for ex in train_data if ex['label'] < num_classes]
 
