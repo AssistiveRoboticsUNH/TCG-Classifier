@@ -161,7 +161,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print("weights:", weights)
 		
 
-		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=weights, num_samples=batch_size)
+		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=weights, num_samples=len(train_data))
 
 		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=batch_size,
 										  #shuffle=True, 
