@@ -292,7 +292,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			total = 0
 
 			
-
+			'''
 			with torch.no_grad():
 				for data in testloader:
 					batch = data
@@ -322,7 +322,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			print('eval: %d %%' % (
 				100 * correct / total))
-
+			'''
 
 		print("train elapsed:", time.time()-t_s)
 			
