@@ -268,7 +268,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		#optimizer = optim.Adam(net.parameters(), lr=0.0001)
 
 		t_s = time.time()
-		for epoch in range(30):  # loop over the dataset multiple times
+		for epoch in range(10):  # loop over the dataset multiple times
 
 			running_loss = 0.0
 			for i, data in enumerate(trainloader, 0):
@@ -279,6 +279,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				for l in labels:
 					counts[l] += 1
+
+				print(inputs[0][:20])
+
 
 				inputs = inputs.to(device).float()
 				labels = labels.to(device)
@@ -328,6 +331,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			batch = next(iter(testloader))
 			inputs, labels = batch['data'], batch['label']
 			labels = labels.reshape(-1)
+
+			print(inputs[0][:20])
 
 			inputs = inputs.to(device).float()
 			labels = labels.to(device)
