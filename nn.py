@@ -151,14 +151,15 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		data_label = [ex['label'] for ex in train_data]
 		class_sample_count = [Counter(data_label)[x] for x in range(num_classes)]#[10, 5, 2, 1] 
 		weights = (1 / torch.Tensor(class_sample_count))
-		print("weights:", weights)
+		#print("weights:", weights)
 		
 
 		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, len(train_data))
 
 		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=batch_size,
-										  shuffle=True, 
-										  sampler=weighted_sampler, num_workers=2)
+										  #shuffle=True, 
+										  sampler=weighted_sampler, 
+										  num_workers=2)
 										  #shuffle=True, num_workers=2)
 
 		testloader = torch.utils.data.DataLoader(test_batcher, batch_size=batch_size,
