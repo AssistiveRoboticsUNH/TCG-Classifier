@@ -132,9 +132,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	batch_size_g = 1000
 	train_limit_g = 100000#400
 	num_classes_g = 5#174
-	alpha_g = 0.0001
+	alpha_g = 0.00005
 	l2_norm_g = 0#0.25#0.5
-	l1_norm_g = 0.0005
+	l1_norm_g = 0.0001
 	n_hidden_g = 128
 	epoch_g = 20
 
