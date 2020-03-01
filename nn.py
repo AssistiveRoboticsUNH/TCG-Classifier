@@ -219,9 +219,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			count[ex['label']] += 1
 
 
-		prune_idx = None
+		prune_idx = []
 		for ex in csv_contents:
-			if (prune_idx ==  None):
+			if (len(prune_idx) ==  0):
 				prune_idx = np.load(ex['sp_path'])
 			else:
 				prune_idx += np.load(ex['sp_path'])
