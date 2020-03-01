@@ -64,19 +64,11 @@ class MyDataset(Dataset):
 
 		if (scaler == None):
 
-			tfidf = TfidfTransformer(sublinear_tf=True)
-			scale = MinMaxScaler()
+			
 
 
-			pipe = Pipeline([
-				('tfidf', tfidf),
-				('scale', scale),
-			])
+			self.scaler= MinMaxScaler()#StandardScaler(with_mean=False)
 
-
-			self.scaler= pipe #MinMaxScaler()#StandardScaler(with_mean=False)
-
-			n = []
 
 			num = 1000
 			for i in range(0, len(self.dataset), num):
@@ -93,9 +85,8 @@ class MyDataset(Dataset):
 						n.append(d)
 				data = np.array(data)
 
-				#self.scaler.partial_fit(data)
+				self.scaler.partial_fit(data)
 
-			self.scaler.fit(np.array(n))
 
 
 			print("scaler fit")
