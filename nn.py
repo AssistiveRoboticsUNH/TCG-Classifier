@@ -139,7 +139,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		if (not os.path.exists(save_dir)):
 			os.makedirs(save_dir)
 
-		parse_data = True
+		parse_data = False
 		if(parse_data):
 			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs=8)
 		
@@ -278,8 +278,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		import torch.optim as optim
 
 		criterion = nn.CrossEntropyLoss()
-		optimizer = optim.SGD(net.parameters(), lr=0.0005, momentum=0.9)
-		#optimizer = optim.Adam(net.parameters(), lr=0.0001)
+		#optimizer = optim.SGD(net.parameters(), lr=0.0005, momentum=0.9)
+		optimizer = optim.Adam(net.parameters(), lr=0.0001)
 
 		t_s = time.time()
 		for epoch in range(10):  # loop over the dataset multiple times
@@ -487,7 +487,7 @@ if __name__ == '__main__':
 	if(FLAGS.model_type == 'tsm'):
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
-	layer = DEPTH_SIZE-3
+	layer = DEPTH_SIZE-2
 	main(FLAGS.model_type,
 		FLAGS.dataset_dir, 
 		FLAGS.csv_filename,
