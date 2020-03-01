@@ -63,6 +63,9 @@ class MyDataset(Dataset):
 			d = self.condense(d)
 			self.dataset_shape = d.shape
 
+			if(self.prune == None):
+				self.dataset_shape = d[self.prune].shape
+
 		if (scaler == None):
 
 			
@@ -241,7 +244,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			else:
 				train_idx += np.load(ex['sp_path'])
 
-		train_prune = np.where(train_idx == 0)
+		train_prune = np.where(train_idx != 0)
 
 
 
