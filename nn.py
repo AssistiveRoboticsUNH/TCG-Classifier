@@ -237,7 +237,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		class Net(nn.Module):
 			def __init__(self, input_size, num_classes):
 				super(Net, self).__init__()
-				n_hidden = 1024#32
+				n_hidden = 4096#32
 
 				self.dense1 = nn.Linear(input_size, n_hidden)
 				self.dense2 = nn.Linear(n_hidden, num_classes)	
@@ -264,7 +264,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		import torch.optim as optim
 
 		criterion = nn.CrossEntropyLoss()
-		optimizer = optim.SGD(net.parameters(), lr=0.005, momentum=0.95)
+		optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 
 		t_s = time.time()
