@@ -227,8 +227,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				labels = labels.to(device)
 
 
-				print("inp: ", inputs.shape)
-				print("labels: ", labels.shape)
+				#print("inp: ", inputs.shape)
+				#print("labels: ", labels.shape)
 
 				# zero the parameter gradients
 				optimizer.zero_grad()
@@ -236,7 +236,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				# forward + backward + optimize
 				outputs = net(inputs)
 				outputs = np.squeeze(outputs)
-				print("outputs: ", outputs.shape)
+				#print("outputs: ", outputs.shape)
 
 
 				loss = criterion(outputs, labels)
