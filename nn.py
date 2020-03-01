@@ -57,7 +57,7 @@ class MyDataset(Dataset):
 
 		
 		if (scaler == None):
-			self.scaler= StandardScaler()
+			self.scaler= StandardScaler(with_mean=False)
 
 			num = 1000
 			for i in range(0, len(self.dataset), num):
@@ -127,7 +127,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		parse_data = True
 		if(parse_data):
-			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs)
+			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs=8)
 		
 
 		#batch_size = 1000
@@ -473,7 +473,7 @@ if __name__ == '__main__':
 	if(FLAGS.model_type == 'tsm'):
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
-	layer = DEPTH_SIZE-2
+	layer = DEPTH_SIZE-1
 	main(FLAGS.model_type,
 		FLAGS.dataset_dir, 
 		FLAGS.csv_filename,
