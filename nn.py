@@ -286,7 +286,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				inputs = inputs.to(device).float()
 				labels = labels.to(device)
 
-
+				print(inputs[0].min(), inputs[0].max())
 
 
 
