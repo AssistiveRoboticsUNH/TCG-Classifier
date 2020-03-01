@@ -52,10 +52,16 @@ class MyDataset(Dataset):
 		"""
 		self.dataset = dataset
 		self.pipe = None
+		self.dataset_shape = None
 
 		print("fit scaler")
 
 		
+		if(self.dataset_shape):
+			d = np.load(self.dataset[0]['sp_path'])
+			d = self.condense(d)
+			self.dataset_shape = d.shape
+
 		if (scaler == None):
 			self.scaler=  MinMaxScaler()#StandardScaler(with_mean=False)
 
