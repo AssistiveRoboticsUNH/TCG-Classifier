@@ -55,7 +55,7 @@ class MyDataset(Dataset):
 
 		print("fit scaler")
 
-		'''
+		
 		if (scaler == None):
 			self.scaler= StandardScaler()
 
@@ -73,8 +73,8 @@ class MyDataset(Dataset):
 			print("scaler fit")
 		else:
 			self.scaler = scaler
-		'''
-		self.scaler= StandardScaler()
+		
+		#self.scaler= StandardScaler()
 
 
 	def __len__(self):
