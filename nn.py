@@ -119,7 +119,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		#num_classes = 20
+		num_classes = 20
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
@@ -156,6 +156,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		data_label = [ex['label'] for ex in train_data]
 		class_sample_count = [Counter(data_label)[x] for x in range(num_classes)]#[10, 5, 2, 1] 
+		print("class_sample_count:", class_sample_count)
 		weights = (1 / torch.Tensor(class_sample_count))
 		print("weights:", weights)
 		
@@ -163,8 +164,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights, len(train_data))
 
 		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=batch_size,
-										  shuffle=True, 
-										  #sampler=weighted_sampler, 
+										  #shuffle=True, 
+										  sampler=weighted_sampler, 
 										  num_workers=2)
 										  #shuffle=True, num_workers=2)
 
@@ -222,13 +223,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				super(Net, self).__init__()
 				n_hidden = 100
 
-				self.dense1 = nn.Linear(input_size, n_hidden)
-				self.dense2 = nn.Linear(n_hidden, num_classes)	
+				#self.dense1 = nn.Linear(input_size, n_hidden)
+				#self.dense2 = nn.Linear(n_hidden, num_classes)	
 
-				#self.dense = nn.Linear(input_size, num_classes)				
+				self.dense = nn.Linear(input_size, num_classes)				
 
 			def forward(self, x):
-				#return self.dense(x)
+				return self.dense(x)
 				
 				x = self.dense1(x)#.double()
 				x = F.relu(self.dense2(x))
