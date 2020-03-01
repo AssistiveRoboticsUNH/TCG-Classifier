@@ -221,7 +221,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				# get the inputs; data is a list of [inputs, labels]
 				batch = data
 				inputs, labels = batch['data'], batch['label']
-				labels = labels.reshape(-1)
+				#labels = labels.reshape(-1)
 
 				inputs = inputs.to(device).float()
 				labels = labels.to(device)
@@ -233,6 +233,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				# forward + backward + optimize
 				outputs = net(inputs)
+				print("outputs: ", outputs.shape)
+				
+				
 				loss = criterion(outputs, labels)
 				loss.backward()
 				optimizer.step()
@@ -252,6 +255,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					labels = labels.to(device)
 
 					outputs = net(inputs)
+					
 
 					_, predicted = torch.max(outputs.data, 1)
 					total += labels.size(0)
