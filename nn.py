@@ -52,6 +52,7 @@ class MyDataset(Dataset):
 
 		print("fit scaler")
 
+		'''
 		if (scaler == None):
 			self.scaler= StandardScaler()
 
@@ -68,7 +69,8 @@ class MyDataset(Dataset):
 				self.scaler.partial_fit(data)
 			print("scaler fit")
 		else:
-			self.scaler= scaler
+			self.scaler = scaler
+		'''
 
 
 	def __len__(self):
@@ -87,11 +89,11 @@ class MyDataset(Dataset):
 		data.append( np.load(file['sp_path']) )
 		label.append( file['label'] )
 
-
+		'''
 		if(self.pipe != None):
 			#data = self.pipe.transform(data)
 			data = self.scaler.transform(data)
-
+		'''
 
 		sample = {'data': np.array(data), 'label': np.array(label)}
 		#print(type(np.array(data)), np.array(data).dtype)
@@ -113,7 +115,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	for iteration in range(repeat):
 		print("Processing depth: {:d}, iter: {:d}/{:d}".format(layer, iteration, repeat))
 	
-		num_classes = 20
+		#num_classes = 20
 		
 		save_dir = os.path.join(dataset_dir, 'svm_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 		if (not os.path.exists(save_dir)):
@@ -276,7 +278,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					#print("l1_regularization:", l1_regularization.dtype, "param:", torch.norm(param, 1).dtype)
    					l1_regularization += torch.norm(param, 1)#.type_as(output)
 
-				loss = criterion(outputs, labels) + l1_regularization
+				loss = criterion(outputs, labels)# + l1_regularization
 				loss.backward()
 				optimizer.step()
 
