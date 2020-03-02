@@ -68,8 +68,8 @@ class MyDataset(Dataset):
 
 			if(self.prune == None):
 				self.dataset_shape = d[self.prune].shape
-				print("prune shape:", self.dataset_shape)
-				
+				print("prune shape:", self.dataset_shape, self.prune.shape)
+
 
 		if (scaler == None):
 			
