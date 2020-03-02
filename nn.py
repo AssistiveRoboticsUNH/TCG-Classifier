@@ -194,6 +194,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	epoch_g = 150
 
 	parse_data = False
+	model_name = "model3.ckpt"
 
 
 
@@ -349,16 +350,16 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				n_hidden = n_hidden_g#32
 				#n_hidden2 = 16
 
-				self.dense1 = nn.Linear(input_size, n_hidden)
-				self.dense2 = nn.Linear(n_hidden, num_classes)	
+				#self.dense1 = nn.Linear(input_size, n_hidden)
+				#self.dense2 = nn.Linear(n_hidden, num_classes)	
 
 				#self.dense2a = nn.Linear(n_hidden, n_hidden2)	
 				#self.dense3a = nn.Linear(n_hidden2, num_classes)	
 
-				#self.dense = nn.Linear(input_size, num_classes)				
+				self.dense = nn.Linear(input_size, num_classes)				
 
 			def forward(self, x):
-				#return self.dense(x)
+				return self.dense(x)
 				
 				x = F.leaky_relu(self.dense1(x))#.double()
 				x = self.dense2(x)
@@ -378,7 +379,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		#print(data_in.shape)
 
 		net = Net(train_batcher.dataset_shape[0], num_classes).to(device)
-		net.load_state_dict(torch.load("model2.ckpt"))
+		#net.load_state_dict(torch.load(model_name))
 
 
 		counts = [0]*num_classes
@@ -454,7 +455,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-			torch.save(net.state_dict(), "model2.ckpt")
+			torch.save(net.state_dict(), model_name)
 
 			print('[%d, %5d] loss: %.3f' % (epoch + 1, len(trainloader), running_loss / 2000))
 			running_loss = 0.0
