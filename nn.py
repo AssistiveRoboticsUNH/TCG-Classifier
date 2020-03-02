@@ -454,7 +454,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-
+			torch.save(model.state_dict(), "model")
 
 			print('[%d, %5d] loss: %.3f' % (epoch + 1, len(trainloader), running_loss / 2000))
 			running_loss = 0.0
