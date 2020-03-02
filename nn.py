@@ -378,7 +378,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		#print(data_in.shape)
 
 		net = Net(train_batcher.dataset_shape[0], num_classes).to(device)
-
+		net.load_state_dict(torch.load("model2.ckpt"))
 
 
 		counts = [0]*num_classes
