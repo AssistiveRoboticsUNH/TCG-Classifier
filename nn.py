@@ -246,7 +246,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			else:
 				train_idx += np.load(ex['sp_path'])
 
-		train_prune = np.where(train_idx > 1)
+		train_prune = np.where(train_idx > 3)
 
 
 
