@@ -187,11 +187,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	batch_size_g = 1000
 	train_limit_g = 100000#400
 	num_classes_g = 174
-	alpha_g = 0.0001
+	alpha_g = 0.001
 	l2_norm_g = 0.25#0.5
 	l1_norm_g = 0##0.0001
 	n_hidden_g = 64#128
-	epoch_g = 20
+	epoch_g = 50
 
 	parse_data = False
 
@@ -374,8 +374,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				
 
-		data_in = np.load(train_data[0]['sp_path'])
-		print(data_in.shape)
+		#data_in = np.load(train_data[0]['sp_path'])
+		#print(data_in.shape)
 
 		net = Net(train_batcher.dataset_shape[0], num_classes).to(device)
 
