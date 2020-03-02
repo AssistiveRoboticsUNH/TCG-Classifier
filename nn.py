@@ -56,6 +56,7 @@ class MyDataset(Dataset):
 		self.prune = prune
 
 		print("fit scaler")
+		#print(self.prune)
 
 		
 		if(self.dataset_shape == None):
@@ -63,8 +64,12 @@ class MyDataset(Dataset):
 			d = self.condense(d)
 			self.dataset_shape = d.shape
 
+
+
 			if(self.prune == None):
 				self.dataset_shape = d[self.prune].shape
+				print("prune shape:", self.dataset_shape)
+				
 
 		if (scaler == None):
 			
