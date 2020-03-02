@@ -67,7 +67,6 @@ class MyDataset(Dataset):
 				self.dataset_shape = d[self.prune].shape
 
 		if (scaler == None):
-
 			
 
 
