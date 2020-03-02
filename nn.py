@@ -474,7 +474,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			_, predicted = torch.max(outputs.data, 1)
 
-			print("train accuracy: ", (train_predicted == train_labels).sum().item() / float(len(labels)), "val accuracy: ", (predicted == labels).sum().item() / float(len(labels)))
+			print("train accuracy: ", (train_predicted == train_labels).sum().item() / float(len(train_labels)), "val accuracy: ", (predicted == labels).sum().item() / float(len(labels)))
 			#print("predicted:", predicted)
 			#print("labels:", labels.shape)
 
