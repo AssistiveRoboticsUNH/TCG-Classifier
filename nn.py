@@ -34,6 +34,8 @@ from torch.utils.data import Dataset, DataLoader
 def save_model(clf, name):
 	dump(clf, name+'.joblib') 
 
+
+
 def load_model(name):
 	return load(name+'.joblib') 
 
@@ -185,7 +187,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 	batch_size_g = 100#1000
-	train_limit_g = 100000#400
+	train_limit_g = 100#100000#400
 	num_classes_g = 174
 	alpha_g = 0.0001
 	l2_norm_g = 0.25#0.5
@@ -195,6 +197,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 	parse_data = False
 	model_name = "model3.ckpt"
+	scaler_name = "scaler"
+	gen_scaler = True
 
 
 
@@ -249,17 +253,27 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		train_prune = np.where(train_idx > 3)
 
+		scaler = None
+		if(not gen_scaler):
+			scaler = pickle.load(open(name+'.pk', "rb"))
 
 
 		print("Training Dataset Size: {0}".format(len(train_data)))
-		train_batcher = MyDataset(train_data, prune=train_prune)
+		train_batcher = MyDataset(train_data, prune=train_prune, scaler = scaler)
 
-
+		if(gen_scaler):
+			with open(scaler_name+'.pk', 'wb') as file_loc:
+				pickle.dump(train_batcher.get_scaler(), file_loc)
 
 		test_data = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		test_data = [ex for ex in test_data if ex['label'] < num_classes]
 		print("Evaluation Dataset Size: {0}".format(len(test_data)))
 		test_batcher = MyDataset(test_data, scaler = train_batcher.get_scaler(), prune=train_prune)
+
+		
+			
+
+
 
 		test_idx = []
 		for ex in test_data:
@@ -269,6 +283,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				test_idx += np.load(ex['sp_path'])
 		#print("train_idx:", train_idx[:10])
 		#print("test_idx:", test_idx[:10])
+
+
 
 
 
