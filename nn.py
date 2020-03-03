@@ -30,6 +30,10 @@ import torch
 
 from torch.utils.data import Dataset, DataLoader
 
+if (sys.version[0] == '2'):
+	from sets import Set
+	import cPickle as pickle
+	from sklearn.svm import SVC
 
 def save_model(clf, name):
 	dump(clf, name+'.joblib') 
