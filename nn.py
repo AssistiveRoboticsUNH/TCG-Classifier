@@ -191,7 +191,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 	batch_size_g = 100#1000
-	train_limit_g = 100#100000#400
+	train_limit_g = 200#100000#400
 	num_classes_g = 174
 	alpha_g = 0.0001
 	l2_norm_g = 0.25#0.5
@@ -202,7 +202,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	parse_data = False
 	model_name = "model3.ckpt"
 	scaler_name = "scaler"
-	gen_scaler = True
+	gen_scaler = False#True
 
 
 
