@@ -259,7 +259,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		scaler = None
 		if(not gen_scaler):
-			scaler = pickle.load(open(name+'.pk', "rb"))
+			scaler = pickle.load(open(scaler_name+'.pk', "rb"))
 
 
 		print("Training Dataset Size: {0}".format(len(train_data)))
