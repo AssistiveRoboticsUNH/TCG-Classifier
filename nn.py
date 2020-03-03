@@ -376,10 +376,14 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				#self.dense2a = nn.Linear(n_hidden, n_hidden2)	
 				#self.dense3a = nn.Linear(n_hidden2, num_classes)	
 
-				self.dense = nn.Linear(input_size, num_classes)				
+				self.dense = nn.Linear(input_size, num_classes)	
+
+				self.dropout = torch.nn.Dropout(p=0.5)			
 
 			def forward(self, x):
-				return self.dense(x)
+				x = self.dense(x)
+
+				return self.dropout(x)
 				
 				x = F.leaky_relu(self.dense1(x))#.double()
 				x = self.dense2(x)
@@ -413,6 +417,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		t_s = time.time()
 		for epoch in range(epoch_g):  # loop over the dataset multiple times
 
+			net.train()
 			running_loss = 0.0
 			for i, data in enumerate(trainloader, 0):
 				# get the inputs; data is a list of [inputs, labels]
@@ -489,6 +494,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			inputs = inputs.to(device).float()
 			labels = labels.to(device)
 
+			net.eval()
+
 			outputs = net(inputs)
 			#outputs = np.squeeze(outputs)
 			outputs = outputs.reshape(-1, outputs.shape[-1])
@@ -503,7 +510,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-
+		net.eval()
 		print("train elapsed:", time.time()-t_s)
 		'''
 		print("counts:")
