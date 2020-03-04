@@ -28,7 +28,7 @@ import random
 from joblib import dump, load
 import torch
 
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset#, DataLoader
 
 if (sys.version[0] == '2'):
 	from sets import Set
@@ -133,24 +133,24 @@ class MyDataset(Dataset):
 
 		sparse_edges = []
 		for itr in range(7):
-			sparse_edges.append(coo_matrix(d[..., itr]))
-		d = Data(edge_index=sparse_edges[0])
+			sparse_edges.append(scipy.sparse.coo_matrix(d[..., itr]))
+		d = Data(edge_index=sparse_edges[0], y=file['label'])
+		#return d
 
-
-		data.append( d )
-		label.append( file['label'] )
+		#data.append( d )
+		#label.append( file['label'] )
 
 
 
 		
-		if(self.scaler != None):
-			#data = self.pipe.transform(data)
-			data = self.scaler.transform(data)
-		if(self.prune != None):
-			data = data[..., self.prune]
+		#if(self.scaler != None):
+		#	#data = self.pipe.transform(data)
+		#	data = self.scaler.transform(data)
+		#if(self.prune != None):
+		#	data = data[..., self.prune]
 		
 
-		sample = {'data': np.array(data), 'label': np.array(label)}
+		sample = {'data': d, 'label': np.array(label)}
 		#print(type(np.array(data)), np.array(data).dtype)
 		#print(type(np.array(label)), np.array(label).dtype)
 
@@ -269,6 +269,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 		weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=sample_weights, num_samples=len(train_data))
 
+
+		from torch_geometric.data import DataLoader
 		trainloader = torch.utils.data.DataLoader(train_batcher, batch_size=batch_size,
 										  #shuffle=True, 
 										  sampler=weighted_sampler, 
@@ -305,13 +307,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				#self.dense1 = nn.Linear(input_size, n_hidden)
 				#self.dense2 = nn.Linear(n_hidden, num_classes)	
 
-				self.gcn1 = gcn.GCNConv(dataset.num_node_features, n_hidden)
-				self.conv2 = GCNConv(n_hidden, num_classes)
+				self.conv1 = gcn.GCNConv(128, n_hidden)
+				self.conv2 = gcn.GCNConv(n_hidden, num_classes)
 
 				#self.dense2a = nn.Linear(n_hidden, n_hidden2)	
 				#self.dense3a = nn.Linear(n_hidden2, num_classes)	
 
-				self.dense = nn.Linear(input_size, num_classes)	
+				#self.dense = nn.Linear(input_size, num_classes)	
 
 				self.dropout = torch.nn.Dropout(p=0.5)			
 
@@ -320,9 +322,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 				x = self.conv1(x, edge_index)
-		        x = F.relu(x)
-		        x = F.dropout(x, training=self.training)
-		        x = self.conv2(x, edge_index)
+				x = F.relu(x)
+				x = F.dropout(x, training=self.training)
+				x = self.conv2(x, edge_index)
 
 				#x = self.dense(x)
 
@@ -339,7 +341,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				return x#self.dropout1(x)
 
-		net = Net(train_batcher.dataset_shape[0], num_classes).to(device)
+		net = Net(trainloader, num_classes).to(device)
 		#net.load_state_dict(torch.load(model_name))
 
 
