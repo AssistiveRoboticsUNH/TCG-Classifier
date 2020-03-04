@@ -370,8 +370,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				n_hidden = n_hidden_g#32
 				#n_hidden2 = 16
 
-				#self.dense1 = nn.Linear(input_size, n_hidden)
-				#self.dense2 = nn.Linear(n_hidden, num_classes)	
+				self.dense1 = nn.Linear(input_size, n_hidden)
+				self.dense2 = nn.Linear(n_hidden, num_classes)	
 
 				#self.dense2a = nn.Linear(n_hidden, n_hidden2)	
 				#self.dense3a = nn.Linear(n_hidden2, num_classes)	
@@ -381,9 +381,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				self.dropout = torch.nn.Dropout(p=0.5)			
 
 			def forward(self, x):
-				x = self.dense(x)
+				#x = self.dense(x)
 
-				return self.dropout(x)
+				
 				
 				x = F.leaky_relu(self.dense1(x))#.double()
 				x = self.dense2(x)
@@ -394,7 +394,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-				return x#.double()
+				return self.dropout(x)
 
 
 				
