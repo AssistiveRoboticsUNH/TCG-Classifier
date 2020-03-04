@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
-from itr_process import process_data, retrieve_data
+#from itr_process import process_data, retrieve_data
 
 from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer, HashingVectorizer, CountVectorizer
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler ,RobustScaler
@@ -69,14 +69,14 @@ class MyDataset(Dataset):
 		
 		if(self.dataset_shape == None):
 			d = np.load(self.dataset[0]['sp_path'])
-			d = self.condense(d)
+
 			self.dataset_shape = d.shape
 
 			if(self.prune != None):
 				self.dataset_shape = d[self.prune].shape
 				print("prune shape:", self.dataset_shape)#, self.prune.shape)
-
-
+		
+		'''
 		if (scaler == None):
 			
 
@@ -93,7 +93,6 @@ class MyDataset(Dataset):
 						file = self.dataset[i + j]
 
 						d = np.load(file['sp_path'])
-						d = self.condense(d)
 
 						data.append(d)
 				data = np.array(data)
@@ -109,8 +108,8 @@ class MyDataset(Dataset):
 
 		else:
 			self.scaler = scaler
-		
-		#self.scaler= None#StandardScaler()
+		'''
+		self.scaler= None#StandardScaler()
 
 
 	def __len__(self):
@@ -130,19 +129,12 @@ class MyDataset(Dataset):
 		d = np.load(file['sp_path']) 
 
 		d = d.reshape(128, 128, 7)
-		for x in range(128):
-			for y in range(128):
-				elem = np.count_nonzero(d[x, y])
-				if(elem > 1):
-					print(x,y,elem)
 
 
-
-		
-
-		d = self.condense(d)
-		
-
+		sparse_edges = []
+		for itr in range(7):
+			sparse_edges.append(coo_matrix(d[..., itr]))
+		d = Data(edge_index=sparse_edges[0])
 
 
 		data.append( d )
@@ -169,34 +161,6 @@ class MyDataset(Dataset):
 
 	def get_scaler(self):
 		return self.scaler
-
-	def condense(self, d):
-		#return d
-
-		'''
-		0 - before
-		1 - meets
-		2 - overlap
-		3 - during
-		4 - finish
-		5 - start
-		6 - equals
-		'''
-		'''
-		d = d.astype(np.float64)
-		e = np.copy(d.reshape(128,128,7))
-
-		dist_factor = 0.5#0.25
-
-		d[..., 1] += d[..., 2] *dist_factor
-		d[..., 2] += d[..., 1] *dist_factor
-		
-		d[..., 3] += d[..., 4] *dist_factor + d[..., 5] *dist_factor
-		d[..., 4] += d[..., 3] *dist_factor + d[..., 6] *dist_factor
-		d[..., 5] += d[..., 3] *dist_factor + d[..., 6] *dist_factor
-		d[..., 6] += d[..., 4] *dist_factor + d[..., 5] *dist_factor
-		'''
-		return d
 		
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
@@ -210,6 +174,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	l1_norm_g = 0##0.0001
 	n_hidden_g = 64#128
 	epoch_g = 150
+	prunt_value = 0
 
 	parse_data = False
 	model_name = "model3.ckpt"
@@ -229,8 +194,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		if (not os.path.exists(save_dir)):
 			os.makedirs(save_dir)
 
-		if(parse_data):
-			process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs=8)
+		#if(parse_data):
+		#	process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs=8)
 		
 
 		#batch_size = 1000
@@ -248,9 +213,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			count[ex['label']] += 1
 
 
-		
-
-
+		##################
+		# DATASET IO
+		##################
 
 
 		train_data = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
@@ -267,45 +232,26 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			else:
 				train_idx += np.load(ex['sp_path'])
 
-		train_prune = np.where(train_idx > 3)
+		train_prune = np.where(train_idx > prunt_value)
 
 		scaler = None
-		if(not gen_scaler):
-			scaler = pickle.load(open(scaler_name+'.pk', "rb"))
-
 
 		print("Training Dataset Size: {0}".format(len(train_data)))
 		train_batcher = MyDataset(train_data, prune=train_prune, scaler = scaler)
 
-		if(gen_scaler):
-			with open(scaler_name+'.pk', 'wb') as file_loc:
-				pickle.dump(train_batcher.get_scaler(), file_loc)
+		
 
 		test_data = [ex for ex in csv_contents if ex['dataset_id'] == 0]
 		test_data = [ex for ex in test_data if ex['label'] < num_classes]
 		print("Evaluation Dataset Size: {0}".format(len(test_data)))
 		test_batcher = MyDataset(test_data, scaler = train_batcher.get_scaler(), prune=train_prune)
 
+
+		##################
+		# DATASET LOAD AND BALANCE
+		##################
+
 		
-			
-
-
-
-		test_idx = []
-		for ex in test_data:
-			if (len(test_idx) ==  0):
-				test_idx = np.load(ex['sp_path'])
-			else:
-				test_idx += np.load(ex['sp_path'])
-		#print("train_idx:", train_idx[:10])
-		#print("test_idx:", test_idx[:10])
-
-
-
-
-
-
-
 		batch_size = batch_size_g
 
 		data_label = [ex['label'] for ex in train_data]
@@ -313,6 +259,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print("class_sample_count:", class_sample_count)
 		weights = (1 / torch.Tensor(class_sample_count).double())
 		print("weights:", weights)
+
+
 
 		sample_weights = [0]*len(train_data)
 		for i, ex in enumerate(train_data):
@@ -331,39 +279,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 										 shuffle=False, num_workers=2)
 
 
+		##################
+		# DEFINE MODEL
+		##################
 
-
-
-		'''
-		#hashvect = CountVectorizer(token_pattern=r"\d+\w\d+")#HashingVectorizer(n_features=2**17, token_pattern=r"\d+\w\d+")
-		tfidf = TfidfTransformer(sublinear_tf=True)
-		scale = StandardScaler(with_mean=False)
-
-
-		pipe = Pipeline([
-			('tfidf', tfidf),
-			('scale', scale),
-		])
-		'''
-
-		'''
-		#enabled for TRN/I3D not for TSm
-		#apply processing
-		data_standard = train_batcher.get_sized_batch(batch_size*15)
-		pipe.fit(data_standard)
-
-
-		train_batcher.assign_pipe(pipe)
-		test_batcher.assign_pipe(pipe)
-		'''
-		#from thundersvm import SVC
-		#clf = SVC(max_iter=1000, tol=1e-4, probability=True, kernel='linear', decision_function_shape='ovr')
-		
-
-
-		
-
-		
 
 		if torch.cuda.is_available():
 			device = torch.device("cuda:0")  # you can continue going on here, like cuda:1 cuda:2....etc. 
@@ -376,14 +295,18 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		#model
 		import torch.nn as nn
 		import torch.nn.functional as F
+		import torch_geometric.nn as gcn 
 		class Net(nn.Module):
-			def __init__(self, input_size, num_classes):
+			def __init__(self, dataset, num_classes):
 				super(Net, self).__init__()
 				n_hidden = n_hidden_g#32
 				#n_hidden2 = 16
 
-				self.dense1 = nn.Linear(input_size, n_hidden)
-				self.dense2 = nn.Linear(n_hidden, num_classes)	
+				#self.dense1 = nn.Linear(input_size, n_hidden)
+				#self.dense2 = nn.Linear(n_hidden, num_classes)	
+
+				self.gcn1 = gcn.GCNConv(dataset.num_node_features, n_hidden)
+				self.conv2 = GCNConv(n_hidden, num_classes)
 
 				#self.dense2a = nn.Linear(n_hidden, n_hidden2)	
 				#self.dense3a = nn.Linear(n_hidden2, num_classes)	
@@ -392,13 +315,21 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				self.dropout = torch.nn.Dropout(p=0.5)			
 
-			def forward(self, x):
+			def forward(self, data):
+				x, edge_index = data.x, data.edge_index
+
+
+				x = self.conv1(x, edge_index)
+		        x = F.relu(x)
+		        x = F.dropout(x, training=self.training)
+		        x = self.conv2(x, edge_index)
+
 				#x = self.dense(x)
 
 				
 				
-				x = F.leaky_relu(self.dense1(x))#.double()
-				x = self.dense2(x)
+				#x = F.leaky_relu(self.dense1(x))#.double()
+				#x = self.dense2(x)
 				
 				#x = F.leaky_relu(self.dense1(x))
 				#x = F.leaky_relu(self.dense2a(x))
@@ -406,16 +337,16 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-				return self.dropout(x)
-
-
-				
-
-		#data_in = np.load(train_data[0]['sp_path'])
-		#print(data_in.shape)
+				return x#self.dropout1(x)
 
 		net = Net(train_batcher.dataset_shape[0], num_classes).to(device)
 		#net.load_state_dict(torch.load(model_name))
+
+
+
+		##################
+		# TRAIN 
+		##################
 
 
 		counts = [0]*num_classes

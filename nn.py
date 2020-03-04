@@ -197,7 +197,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	l2_norm_g = 0.25#0.5
 	l1_norm_g = 0##0.0001
 	n_hidden_g = 64#128
-	epoch_g = 150
+	epoch_g = 1000
+	prunt_value = 3
 
 	parse_data = False
 	model_name = "model3.ckpt"
@@ -255,7 +256,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			else:
 				train_idx += np.load(ex['sp_path'])
 
-		train_prune = np.where(train_idx > 3)
+		train_prune = np.where(train_idx > prunt_value)
 
 		scaler = None
 		if(not gen_scaler):
