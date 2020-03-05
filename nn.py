@@ -198,7 +198,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	l1_norm_g = 0##0.0001
 	n_hidden_g = 64#128
 	epoch_g = 1000
-	prunt_value = 3
+	prunt_value = 0#3
 
 	parse_data = False
 	model_name = "model3.ckpt"
