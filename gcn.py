@@ -377,7 +377,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				#print(inputs[0].min(), inputs[0].max())
 
-				inputs = inputs.to(device).float()
+				inputs = inputs.to(device)#.float()
 				labels = labels.to(device)
 
 				#print(inputs[0].min(), inputs[0].max())
@@ -438,7 +438,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			#print(inputs[0].min(), inputs[0].max())
 
-			inputs = inputs.to(device).float()
+			inputs = inputs.to(device)#.float()
 			labels = labels.to(device)
 
 			net.eval()
@@ -479,7 +479,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				inputs, labels = batch['data'], batch['label']
 				labels = labels.reshape(-1)
 
-				inputs = inputs.to(device).float()
+				inputs = inputs.to(device)#.float()
 				labels = labels.to(device)
 
 				outputs = net(inputs)
