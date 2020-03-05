@@ -368,7 +368,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				# get the inputs; data is a list of [inputs, labels]
 				inputs = data
 				labels = data.y
-				print(batch)
+				#print(batch)
 				#inputs, labels = batch['data'], batch['label']
 				#labels = labels.reshape(-1)
 
