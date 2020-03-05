@@ -367,8 +367,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			for i, data in enumerate(trainloader):
 				# get the inputs; data is a list of [inputs, labels]
 				batch = data
-				inputs, labels = batch['data'], batch['label']
-				labels = labels.reshape(-1)
+				print(batch)
+				#inputs, labels = batch['data'], batch['label']
+				#labels = labels.reshape(-1)
 
 				for l in labels:
 					counts[l] += 1
