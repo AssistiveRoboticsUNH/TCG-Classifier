@@ -319,7 +319,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			def forward(self, data):
 				x, edge_index = data.x, data.edge_index
-
+				print("data.x:", data.x)
+				print("data.edge_index:", data.edge_index)
 
 				x = self.conv1(x, edge_index)
 				x = F.relu(x)
