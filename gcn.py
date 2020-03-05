@@ -169,7 +169,7 @@ class MyDataset(Dataset):
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
 
 
-	batch_size_g = 2#100#1000
+	batch_size_g = 5#100#1000
 	train_limit_g = 200#100000#400
 	num_classes_g = 174
 	alpha_g = 0.001
