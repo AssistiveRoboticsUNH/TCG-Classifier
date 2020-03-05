@@ -382,7 +382,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				self.dropout = torch.nn.Dropout(p=0.5)			
 
 			def forward(self, x):
-				#x = self.dense(x)
+				x = self.dense(x)
 
 				
 				
