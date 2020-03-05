@@ -135,7 +135,7 @@ class MyDataset(Dataset):
 		for itr in range(7):
 			sparse_edges.append(scipy.sparse.coo_matrix(d[..., itr]))
 		d = Data(edge_index=sparse_edges[0], y=file['label'])
-		#return d
+		return d
 
 		#data.append( d )
 		#label.append( file['label'] )
