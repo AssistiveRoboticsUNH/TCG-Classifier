@@ -134,7 +134,8 @@ class MyDataset(Dataset):
 		sparse_edges = []
 		for itr in range(7):
 			sparse_edges.append(scipy.sparse.coo_matrix(d[..., itr]))
-		d = Data(edge_index=sparse_edges[0], y=file['label'])
+		x = torch.tensor(np.arange(128), dtype=torch.float)
+		d = Data(x=x, edge_index=sparse_edges[0], y=file['label'])
 		return d
 
 		#data.append( d )
