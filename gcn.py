@@ -169,7 +169,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	batch_size_g = 100#1000
 	train_limit_g = 200#100000#400
 	num_classes_g = 174
-	alpha_g = 0.000001
+	alpha_g = 0.001
 	l2_norm_g = 0.25#0.5
 	l1_norm_g = 0##0.0001
 	n_hidden_g = 64#128
@@ -364,7 +364,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			net.train()
 			running_loss = 0.0
-			for i, data in enumerate(trainloader, 0):
+			for i, data in enumerate(trainloader):
 				# get the inputs; data is a list of [inputs, labels]
 				batch = data
 				inputs, labels = batch['data'], batch['label']
