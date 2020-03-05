@@ -134,7 +134,9 @@ class MyDataset(Dataset):
 		sparse_edges = []
 		for itr in range(7):
 			sparse_edges.append(scipy.sparse.coo_matrix(d[..., itr]))
-		x = torch.tensor(np.arange(128), dtype=torch.float)
+		x = torch.tensor(np.arange(128).reshape(1, -1), dtype=torch.float)
+		#print("x:", x.shape)
+
 		d = Data(x=x, edge_index=sparse_edges[0], y=file['label'])
 		return d
 
@@ -167,7 +169,7 @@ class MyDataset(Dataset):
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
 
 
-	batch_size_g = 100#1000
+	batch_size_g = 2#100#1000
 	train_limit_g = 200#100000#400
 	num_classes_g = 174
 	alpha_g = 0.001
@@ -394,6 +396,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				optimizer.zero_grad()
 
 				# forward + backward + optimize
+				print("inp:", inputs)
 				outputs = net(inputs)
 
 				outputs = outputs.reshape(-1, outputs.shape[-1])
