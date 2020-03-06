@@ -67,7 +67,6 @@ class MyDataset(Dataset):
 		
 		if(self.dataset_shape == None):
 			d = np.load(self.dataset[0]['sp_path'])
-			d = self.condense(d)
 			self.dataset_shape = d.shape
 
 			if(self.prune != None):
@@ -87,7 +86,6 @@ class MyDataset(Dataset):
 						file = self.dataset[i + j]
 
 						d = np.load(file['sp_path'])
-						d = self.condense(d)
 
 						data.append(d)
 				data = np.array(data)
