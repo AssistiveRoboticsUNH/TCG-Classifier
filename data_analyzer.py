@@ -215,10 +215,14 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print("Evaluation Dataset Size: {0}".format(len(test_data)))
 		test_batcher = MyDataset(test_data, scaler = train_batcher.get_scaler(), prune=train_prune)
 
-		
+		max_v, min_v = 0,0
 
 		for batch in train_batcher:
-			print(batch["data"].min(), batch["data"].max())
+			max_v = max(max_v, batch["data"].max())
+			min_v = max(min_v, batch["data"].min())
+
+			#print(batch["data"].min(), batch["data"].max())
+		print("max_v:", max_v, "min_v:", min_v)
 			
 
 
