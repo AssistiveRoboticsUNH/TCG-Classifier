@@ -238,6 +238,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				return self
 
 			def __next__(self):
+				print("iter")
 				if(self.a <= len(self.csv_list)):
 					x = self.open_file(self.csv_list[self.a])
 					self.a += 1
