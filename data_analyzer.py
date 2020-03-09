@@ -250,7 +250,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 					raise StopIteration
 
 			def open_file(self, file):
-				return np.load(file['sp_path'])
+				data =  np.load(file['sp_path'])
+				#convert to [(id, count), (id, count)]
+
+				idx = np.nonzero(data)[0]
+				value = data[idx]
+
+				return zip(idx, value)
 
 
 
