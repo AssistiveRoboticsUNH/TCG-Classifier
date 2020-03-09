@@ -233,6 +233,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				self.csv_list = csv_list
 				self.a = 1
 
+				print("len DB: ", len(self.csv_list))
+
 			def __iter__(self):
 				self.a = 0
 				return self
