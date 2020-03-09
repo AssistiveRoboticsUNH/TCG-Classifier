@@ -188,7 +188,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		count_limit = train_limit_g#500
 		train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
 
-
+		'''
 		train_idx = []
 		for ex in train_data:
 			if (len(train_idx) ==  0):
@@ -223,6 +223,53 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			#print(batch["data"].min(), batch["data"].max())
 		print("max_v:", max_v, "min_v:", min_v)
+		'''
+
+
+
+
+		class CSVIteratable:
+			def __init__(self, csv_list):
+				self.csv_list = csv_list
+				self.a = 1
+
+			def __iter__(self):
+				self.a = 0
+				return self
+
+			def __next__(self):
+				if(self.a <= len(self.csv_list)):
+					x = self.open_file(self.csv_list[self.a])
+					self.a += 1
+					return x
+				else:
+					raise StopIteration
+
+			def open_file(self, file):
+				return np.load(file['sp_path'])
+
+
+
+
+		csv_itr = CSVIteratable()
+		csv_itr = iter(csv_itr)
+
+		from gensim.corpora import Dictionary, HashDictionary, MmCorpus, WikiCorpus
+		from gensim.models import TfidfModel
+
+
+		tfidf = TfidfModel(id2word=csv_itr)#, normalize=True)
+
+
+
+
+
+
+
+
+
+
+
 			
 
 

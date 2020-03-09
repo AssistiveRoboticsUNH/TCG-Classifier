@@ -187,6 +187,7 @@ class MyDataset(Dataset):
 		return d
 		
 
+
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer, num_classes, repeat=1, parse_data=True, num_procs=1):
 
 
@@ -380,7 +381,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 				self.dense = nn.Linear(input_size, num_classes)	
 
-				self.dropout = torch.nn.Dropout(p=0.5)			
+				self.dropout = torch.nn.Dropout(p=0.1)			
 
 			def forward(self, x):
 				#return self.dense(x)
