@@ -262,7 +262,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		from gensim.models import TfidfModel
 
 
-		tfidf = TfidfModel(id2word=csv_itr)#, normalize=True)
+		tfidf = TfidfModel(csv_itr)#, normalize=True)
 		print(tfidf)
 
 
