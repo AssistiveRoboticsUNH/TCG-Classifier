@@ -238,7 +238,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			def __iter__(self):
 				print("iter")
 				self.a = 0
-				return self
+				return self.a
 
 			def __next__(self):
 				print("next")
