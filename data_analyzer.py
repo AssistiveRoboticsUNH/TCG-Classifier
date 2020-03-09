@@ -251,7 +251,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-		csv_itr = CSVIteratable()
+		csv_itr = CSVIteratable(train_data)
 		csv_itr = iter(csv_itr)
 
 		from gensim.corpora import Dictionary, HashDictionary, MmCorpus, WikiCorpus
