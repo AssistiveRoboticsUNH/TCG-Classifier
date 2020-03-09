@@ -205,6 +205,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	scaler_name = "scaler"
 	gen_scaler = False#True
 
+	#look at wordbatch for TF-IDF
 
 
 	max_accuracy = 0
@@ -395,7 +396,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 
-				return self.dropout(x)
+				return x#self.dropout(x)
 
 
 				
