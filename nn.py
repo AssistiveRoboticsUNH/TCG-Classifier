@@ -381,7 +381,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
 		csv_filename, dataset_dir, model_type, dataset_type, dataset_id, layer, num_classes,
-		generate_itrs, generate_parser, params, params, batch_size)
+		generate_itrs, generate_parser, train_param_list, test_param_list, batch_size)
 
 	#TF-IDF
 	if(fit_tfidf):
