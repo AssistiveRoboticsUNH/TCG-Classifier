@@ -4,6 +4,7 @@ from collections import Counter
 import numpy as np
 import scipy
 
+from sklearn.metrics import confusion_matrix
 from sklearn.preprocessing import MinMaxScaler
 from gensim.sklearn_api import TfIdfTransformer
 
@@ -21,53 +22,20 @@ from itr_process import process_data, retrieve_data
 if (sys.version[0] == '2'):
 	import cPickle as pickle
 
-
+'''
 generate_parser=generate_parser, limit_examples=num_example_limit
 train_data = [ex for ex in train_data if ex['label'] < num_classes]
-
-
-count = [0]*num_classes
-for ex in csv_contents:
-	ex['sp_path'] = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.npy'.format(ex['example_id'], layer))
-	
-	ex['class_count'] = count[ex['label']]   # label each example based on if they are teh 1st, 2nd, Nth example of that label
-	count[ex['label']] += 1
-
-count_limit = 
-	train_data = [ex for ex in train_data if ex['class_count'] < count_limit]
-
-
-
-
-#pruning values
-train_idx = []
-for ex in train_data:
-	if (len(train_idx) ==  0):
-		train_idx = np.load(ex['sp_path'])
-	else:
-		train_idx += np.load(ex['sp_path'])
-train_prune = np.where(train_idx > prunt_value)
-
-
 
 scaler = None
 	if(not gen_scaler):
 		scaler = pickle.load(open(scaler_name+'.pk', "rb"))
-
-	if(train_tfidf):
-		tfidf = TfIdfTransformer()
-		tfidf.fit(iter(CSVIteratable(train_data)))
-		with open(tfidf_name+'.pk', 'wb') as file_loc:
-			pickle.dump(tfidf, file_loc)
-	else:
-		tfidf = pickle.load(open(tfidf_name+'.pk', "rb"))
 
 if(gen_scaler):
 		with open(scaler_name+'.pk', 'wb') as file_loc:
 			pickle.dump(train_batcher.get_scaler(), file_loc)
 
 parsers = []	
-
+'''
 
 def open_as_raw(filename):
 	return np.load(filename)
@@ -123,7 +91,7 @@ class ITRDataset:
 
 		self.parsers = parsers
 
-		self.dat # inputs hsape
+		self.shape = open_as_raw(self.csv_contents[0]['sp_path']).shape # inputs hsape
 
 	def __len__(self):
 		return len(self.csv_contents)
@@ -265,8 +233,6 @@ def define_model(input_size, num_classes):
 
 
 def viz_confusion_matrix(label_list, predictions:)
-	
-	import matplotlib.pyplot as plt
 
 	target_names = range(num_classes)
 
@@ -283,7 +249,6 @@ def viz_confusion_matrix(label_list, predictions:)
 
 	plt.figure(figsize=(20,10))
 
-	from sklearn.metrics import confusion_matrix
 	cm = confusion_matrix(label_list, predictions)
 	cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
@@ -291,11 +256,7 @@ def viz_confusion_matrix(label_list, predictions:)
 	plot_confusion_matrix(cm)
 	plt.savefig('cm.png')
 
-def train(net, trainloader, testloader):
-
-	num_epochs
-	alpha
-	model_name
+def train(net, trainloader, testloader, num_epochs=10, alpha=0.0001, model_name='model.ckpt'):
 
 	import torch.optim as optim
 	criterion = nn.CrossEntropyLoss()
@@ -303,6 +264,10 @@ def train(net, trainloader, testloader):
 
 	t_s = time.time()
 	for epoch in range(num_epochs):  # loop over the dataset multiple times
+
+		# -------------------
+		# Optimize for the training epoch
+		# -------------------
 
 		net.train()
 		running_loss = 0.0
@@ -338,7 +303,7 @@ def train(net, trainloader, testloader):
 			# print statistics
 			running_loss += loss.item()
 
-		# save model after each epoch		
+		# save model after each epoch	
 		torch.save(net.state_dict(), model_name)
 
 		# update running loss
@@ -346,6 +311,9 @@ def train(net, trainloader, testloader):
 		running_loss = 0.0
 
 
+		# -------------------
+		# Evaluate for the training epoch
+		# -------------------
 
 		# place net in evaluate mode 
 		net.eval()
@@ -411,6 +379,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	batch_size = 100
 	generate_itrs = False
 	generate_parser = True
+	num_epochs = 10
+	alpha = 0.0001
+	model_name = "model.ckpt"
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
 		csv_filename, dataset_dir, model_type, dataset_type, dataset_id, layer, num_classes
@@ -431,9 +402,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	'''
 
 	# define network
-	input_size  = train_dataset.dataset_shape[0]
-
-
+	input_size  = train_dataset.shape[0]
 	net, device = define_model(input_size, num_classes)
 	if(load_model):
 		net.load_state_dict(torch.load(load_model))
@@ -447,7 +416,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	test_dataset.device = device
 
 
-	train(net, trainloader)
+	train(net, trainloader, testloader, num_epochs, alpha, model_name)
 
 	evaluate(net, testloader)
 
