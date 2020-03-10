@@ -107,10 +107,7 @@ class ITRDataset:
 		for parser in self.parsers:
 			data = parser.transform(data)
 
-		data = np.array(data).to(device).float()
-		labels = np.array([file['label']]).to(device)
-
-		return {'data': data, 'label': labels}
+		return {'data': np.array(data), 'label': np.array([file['label']])}
 
 	
 
@@ -251,7 +248,7 @@ def viz_confusion_matrix(label_list, predictions):
 	plot_confusion_matrix(cm)
 	plt.savefig('cm.png')
 
-def train(net, trainloader, testloader, num_epochs=10, alpha=0.0001, model_name='model.ckpt'):
+def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, model_name='model.ckpt'):
 
 	import torch.optim as optim
 	criterion = nn.CrossEntropyLoss()
@@ -271,6 +268,9 @@ def train(net, trainloader, testloader, num_epochs=10, alpha=0.0001, model_name=
 			# get the inputs; data is a list of [inputs, labels]
 			batch = data
 			inputs, labels = batch['data'], batch['label'].reshape(-1)
+
+			inputs = inputs.to(device).float()
+			labels = labels.to(device)
 
 			# zero the parameter gradients
 			optimizer.zero_grad()
@@ -317,6 +317,9 @@ def train(net, trainloader, testloader, num_epochs=10, alpha=0.0001, model_name=
 		batch = next(iter(testloader))
 		inputs, labels = batch['data'], batch['label'].reshape(-1)
 
+		inputs = inputs.to(device).float()
+		labels = labels.to(device)
+
 		outputs = net(inputs).reshape(-1, outputs.shape[-1])
 		_, predicted = torch.max(outputs.data, 1)
 
@@ -325,7 +328,7 @@ def train(net, trainloader, testloader, num_epochs=10, alpha=0.0001, model_name=
 	print("train elapsed:", time.time()-t_s)
 
 
-def evaluate(net, testloader):
+def evaluate(net, testloader, device):
 
 	net.eval()
 
@@ -341,6 +344,9 @@ def evaluate(net, testloader):
 		for data in testloader:
 			batch = data
 			inputs, labels = batch['data'], batch['label'].reshape(-1)
+
+			inputs = inputs.to(device).float()
+			labels = labels.to(device)
 
 			outputs = net(inputs).reshape(-1, outputs.shape[-1])
 			outputs = outputs
@@ -414,9 +420,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	test_dataset.device = device
 
 
-	train(net, trainloader, testloader, num_epochs, alpha, model_name)
+	train(net, trainloader, testloader, device, num_epochs, alpha, model_name)
 
-	evaluate(net, testloader)
+	evaluate(net, testloader, device)
 
 
 if __name__ == '__main__':
