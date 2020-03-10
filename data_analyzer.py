@@ -284,12 +284,12 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		csv_itr.dict = True
 		csv_iter = iter(csv_itr)
 
-		print(type(csv_itr.next()))
+		#print(type(csv_itr.next()))
 
 
-		#data = tfidf.transform(csv_iter)
+		data = tfidf.transform(csv_iter)
 		print(tfidf)
-		#print(data.shape)
+		print(data.shape)
 
 
 
