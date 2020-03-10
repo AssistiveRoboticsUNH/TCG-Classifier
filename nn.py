@@ -384,7 +384,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	model_name = "model.ckpt"
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
-		csv_filename, dataset_dir, model_type, dataset_type, dataset_id, layer, num_classes
+		csv_filename, dataset_dir, model_type, dataset_type, dataset_id, layer, num_classes,
 		generate_itrs, generate_parser, params, batch_size)
 
 	#TF-IDF
