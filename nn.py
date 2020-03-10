@@ -101,13 +101,15 @@ class ITRDataset:
 		if torch.is_tensor(idx):
 			idx = idx.tolist()
 
-		data = open_as_sparse(self.csv_contents[idx]['sp_path']) 
+		ex = self.csv_contents[idx]
+
+		data = open_as_sparse(ex['sp_path']) 
 
 		# apply any preprocessing defined by the parsers
 		for parser in self.parsers:
 			data = parser.transform(data)
 
-		return {'data': np.array(data), 'label': np.array([file['label']])}
+		return {'data': np.array(data), 'label': np.array([ex['label']])}
 
 	
 
