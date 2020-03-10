@@ -377,6 +377,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	num_epochs = 10
 	alpha = 0.0001
 	model_name = "model.ckpt"
+	tfidf_name = "tfidf"
 
 	fit_tfidf = True
 
