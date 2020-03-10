@@ -282,7 +282,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		tfidf.fit(csv_iter)#, normalize=True)
 
 		#csv_itr.dict = True
-		csv_iter = iter(csv_itr)
+		#csv_iter = iter(csv_itr)
 
 		#x = csv_itr.next()
 		#print(type(x))
@@ -292,7 +292,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		#	print(i)
 
 		
-		data = tfidf.transform(csv_iter)
+		data = tfidf.transform(csv_itr)
 		#print(tfidf)
 		print(data.shape)
 		
