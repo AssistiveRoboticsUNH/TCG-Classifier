@@ -271,17 +271,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		csv_iter = iter(csv_itr)
 
 
-		for i in csv_iter:
-			print(type(i))
+		
 
-
-		csv_itr.dict = True
-
-		for i in csv_iter:
-			print(type(i))
-
-
-		'''
 		from gensim.corpora import Dictionary, HashDictionary, MmCorpus, WikiCorpus
 		#from gensim.models import TfidfModel
 		from gensim.sklearn_api import TfIdfTransformer
@@ -290,7 +281,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		tfidf = TfIdfTransformer()
 		tfidf.fit(csv_iter)#, normalize=True)
 
-		csv_itr.alt = True
+		csv_itr.dict = True
 
 
 
@@ -300,7 +291,6 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print(tfidf)
 		print(data.shape)
 
-		'''
 
 
 
