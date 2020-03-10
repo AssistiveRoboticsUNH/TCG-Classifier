@@ -275,7 +275,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			print(type(i))
 
 
-		csv_itr.alt = True
+		csv_itr.dict = True
 		csv_iter = iter(csv_itr)
 
 		for i in csv_iter:
