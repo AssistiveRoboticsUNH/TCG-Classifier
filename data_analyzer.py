@@ -131,8 +131,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 	batch_size_g = 100#1000
-	train_limit_g = 200#100000#400
-	num_classes_g = 5#174
+	train_limit_g = 100#200#100000#400
+	num_classes_g = 3#174
 	alpha_g = 0.000001
 	l2_norm_g = 0.25#0.5
 	l1_norm_g = 0##0.0001
@@ -241,7 +241,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 			#def __next__(self):
 			def next(self):
-				if(self.a <= len(self.csv_list)):
+				if(self.a < len(self.csv_list)):
 					if(self.a % 100 == 0):
 						print("{0}/{1}".format(self.a, len(self.csv_list)))
 					x = self.open_file(self.csv_list[self.a])
