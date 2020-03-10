@@ -232,7 +232,7 @@ def define_model(input_size, num_classes):
 	return net, device
 
 
-def viz_confusion_matrix(label_list, predictions:)
+def viz_confusion_matrix(label_list, predictions):
 
 	target_names = range(num_classes)
 
