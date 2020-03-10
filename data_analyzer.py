@@ -294,7 +294,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		
 		data = tfidf.transform(csv_iter)
 		#print(tfidf)
-		#print(data.shape)
+		print(data.shape)
 		
 		
 
