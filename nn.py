@@ -193,7 +193,7 @@ def gen_tfidf(dataset, save_name):
 
 	return tfidf
 
-def load_tfidf(save_name)
+def load_tfidf(save_name):
 	return pickle.load(open(save_name+'.pk', "rb"))
 
 
