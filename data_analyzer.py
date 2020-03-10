@@ -242,6 +242,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 			#def __next__(self):
 			def next(self):
 				if(self.a <= len(self.csv_list)):
+					if(self.a % 100 == 0):
+						print("{0}/{1}".format(self.a, len(self.csv_list)))
 					x = self.open_file(self.csv_list[self.a])
 					self.a += 1
 					return x
