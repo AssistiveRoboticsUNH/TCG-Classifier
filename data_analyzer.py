@@ -265,7 +265,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				return zip(idx, value)
 
 
-
+		'''
 		train_data = train_data[:5]
 		csv_itr = CSVIteratable(train_data)
 		csv_iter = iter(csv_itr)
@@ -293,7 +293,14 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		print(tfidf)
 		print(data.shape)
 		
+		'''
 
+		from gensim.test.utils import common_corpus, common_dictionary
+		from gensim.sklearn_api import TfIdfTransformer
+		
+		# Transform the word counts inversely to their global frequency using the sklearn interface.
+		model = TfIdfTransformer(dictionary=common_dictionary)
+		tfidf_corpus = model.fit_transform(common_corpus)
 
 
 
