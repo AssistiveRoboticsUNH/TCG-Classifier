@@ -59,8 +59,8 @@ class DataIterable:
 		return self
 
 	def next(self):
-		if(self.a < len(self.csv_list)):
-			x = self.parse_function(self.csv_list[self.a])
+		if(self.a < len(self.data)):
+			x = self.parse_function(self.data[self.a])
 			self.a += 1
 			return x
 		else:
