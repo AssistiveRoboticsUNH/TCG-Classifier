@@ -288,11 +288,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		#print(type(x))
 		#print(x)
 
-		for i in csv_iter:
-			print(i)
+		#for i in csv_iter:
+		#	print(i)
 
 		
-		#data = tfidf.transform(csv_iter)
+		data = tfidf.transform(csv_iter)
 		#print(tfidf)
 		#print(data.shape)
 		
