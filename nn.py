@@ -87,7 +87,7 @@ class ITRDataset:
 		for ex in self.csv_contents:
 			ex['class_count'] = count[ex['label']]   # label each example based on if they are teh 1st, 2nd, Nth example of that label
 			count[ex['label']] += 1
-		self.csv_contents = [ex for ex in self.csv_contents if ex['class_count'] < self.params.count_limit]
+		self.csv_contents = [ex for ex in self.csv_contents if ex['class_count'] < self.params.examples_per_class]
 
 		self.parsers = parsers
 
