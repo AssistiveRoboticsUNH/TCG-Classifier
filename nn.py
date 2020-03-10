@@ -118,11 +118,6 @@ class ITRDataset:
 def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_id, layer, num_classes,
 		generate_itrs, generate_parser, params, batch_size):
 
-	generate_itrs
-	num_example_limit
-	generate_parser
-	batch_size = batch_size_g
-
 	# -----------------
 	# CSV Parsing and ITR Extraction
 	# -----------------
