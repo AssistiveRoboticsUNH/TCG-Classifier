@@ -67,9 +67,9 @@ class DataIterable:
 			raise StopIteration
 
 class Params:
-	def __init__(self, num_classes, examples_per_class):
-		self.num_classes = num_classes
-		self.examples_per_class = examples_per_class
+	def __init__(self, num_classes = -1, examples_per_class = -1):
+		self.num_classes = num_classes if num_classes > 0 else sys.maxint
+		self.examples_per_class = examples_per_class if examples_per_class > 0 else sys.maxint
 
 class ITRDataset:
 	def __init__(self, csv_contents, param_list=None, parsers=[], device=torch.device("cpu")):
@@ -370,7 +370,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		num_classes,
 		parse_data, num_procs):
 
-	params = Params(num_classes=3, examples_per_class=50)
+	train_param_list = Params(num_classes=3, examples_per_class=50)
+	test_param_list = Params(num_classes=3)
 	batch_size = 100
 	generate_itrs = False
 	generate_parser = True
