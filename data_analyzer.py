@@ -295,15 +295,16 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		
 		'''
 
+
 		from gensim.test.utils import common_corpus, common_dictionary
 		from gensim.sklearn_api import TfIdfTransformer
 		
 		# Transform the word counts inversely to their global frequency using the sklearn interface.
-		model = TfIdfTransformer(dictionary=common_dictionary)
+		model = TfIdfTransformer()#dictionary=common_dictionary)
 		tfidf_corpus = model.fit_transform(common_corpus)
 
 
-		
+
 		for i in common_corpus:
 			print(i)
 
