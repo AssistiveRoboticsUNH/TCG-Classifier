@@ -233,6 +233,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 				self.csv_list = csv_list
 				self.a = 1
 
+				self.dict = False
+
 				print("len DB: ", len(self.csv_list))
 
 			def __iter__(self):
@@ -246,6 +248,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 						print("{0}/{1}".format(self.a, len(self.csv_list)))
 					x = self.open_file(self.csv_list[self.a])
 					self.a += 1
+
+					if(self.dict):
+						return dict(x)
 					return x
 				else:
 					raise StopIteration
@@ -263,7 +268,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 		csv_itr = CSVIteratable(train_data)
-		csv_itr = iter(csv_itr)
+		csv_iter = iter(csv_itr)
 
 		from gensim.corpora import Dictionary, HashDictionary, MmCorpus, WikiCorpus
 		#from gensim.models import TfidfModel
@@ -271,8 +276,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 
 		tfidf = TfIdfTransformer()
-		tfidf.fit(csv_itr)#, normalize=True)
-		data = tfidf.transform(csv_itr)
+		tfidf.fit(csv_iter)#, normalize=True)
+
+		csv_itr.alt = True
+
+		data = tfidf.transform(csv_iter)
 		print(tfidf)
 		print(data.shape)
 
