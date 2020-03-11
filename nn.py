@@ -120,8 +120,8 @@ class ITRDataset:
 
 		unzipped_data = np.array(zip(*(data[0])))
 		print ("unzipped:", np.array(unzipped_data).shape)
-		print(unzipped_data[0][:10], max(unzipped_data[0]), np.array(unzipped_data[0]).shape)
-		print(unzipped_data[1][:10], max(unzipped_data[1]), np.array(unzipped_data[1]).shape)
+		print(unzipped_data[0][:10], max(unzipped_data[0]), np.array(unzipped_data[0]).dtype)
+		print(unzipped_data[1][:10], max(unzipped_data[1]), np.array(unzipped_data[1]).dtype)
 
 		data = np.zeros(128*128*7)
 		print("data:", data.shape)
