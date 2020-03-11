@@ -301,7 +301,7 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 			outputs = outputs.reshape(-1, outputs.shape[-1])
 			_, train_predicted = torch.max(outputs.data, 1)
 
-
+			'''
 			# claculate regularization
 			l1_lambda = l1_norm_g
 			l2_lambda = l2_norm_g
@@ -311,7 +311,8 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 				l2_regularization += torch.norm(param, 2)
 				l1_regularization += torch.norm(param, 1)
 			
-			#loss = criterion(outputs, labels) + l1_regularization * l1_lambda + l2_regularization * l2_lambda#+ l1_regularization * l1_lambda
+			loss = criterion(outputs, labels) + l1_regularization * l1_lambda + l2_regularization * l2_lambda#+ l1_regularization * l1_lambda
+			'''
 			loss = criterion(outputs, labels) 
 			
 			loss.backward()
