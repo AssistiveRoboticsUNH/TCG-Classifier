@@ -98,7 +98,8 @@ class ITRDataset:
 
 		self.parsers = parsers
 
-		self.shape = open_as_raw(self.csv_contents[0]).shape # inputs hsape
+		self.shape = open_as_raw(self.csv_contents[0]).shape # inputs shape
+		print ("len(self.csv_contents):", len(self.csv_contents))
 
 	def __len__(self):
 		print ("len(self.csv_contents):", len(self.csv_contents))
