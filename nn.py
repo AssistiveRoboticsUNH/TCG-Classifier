@@ -119,12 +119,12 @@ class ITRDataset:
 			data = parser.transform(data)
 
 		unzipped_data = np.array(zip(*(data[0])))
-		print ("unzipped:", np.array(unzipped_data).shape)
-		print(unzipped_data[0][:10], max(unzipped_data[0]), np.array(unzipped_data[0]).dtype)
-		print(unzipped_data[1][:10], max(unzipped_data[1]), np.array(unzipped_data[1]).dtype)
+		#print ("unzipped:", np.array(unzipped_data).shape)
+		#print(unzipped_data[0][:10], max(unzipped_data[0]), np.array(unzipped_data[0]).dtype)
+		#print(unzipped_data[1][:10], max(unzipped_data[1]), np.array(unzipped_data[1]).dtype)
 
 		data = np.zeros(128*128*7)
-		print("data:", data.shape)
+		#print("data:", data.shape)
 		data[unzipped_data[0].astype(np.int32)] = unzipped_data[1]
 
 		return {'data': np.array(data), 'label': np.array([ex['label']])}
