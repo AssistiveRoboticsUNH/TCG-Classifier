@@ -121,7 +121,8 @@ class ITRDataset:
 		for parser in self.parsers:
 			data = parser.transform(data)
 
-		unzipped_data = zip(*data)
+		unzipped_data = list(zip(*data))
+		print (unzipped_data)
 
 		data = np.zeros(128*128*7)
 		data[unzipped_data[0]] = unzipped_data[1]
