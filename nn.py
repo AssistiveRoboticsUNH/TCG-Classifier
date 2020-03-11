@@ -169,7 +169,7 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 	sample_data = train_dataset.csv_contents[:]
 
 	label_counts = [ex['label'] for ex in sample_data]
-	class_sample_count = [Counter(label_counts)[x] for x in range(num_classes)]
+	class_sample_count = [Counter(label_counts)[x] for x in range(train_param_list.num_classes)]
 	weights = (1 / torch.Tensor(class_sample_count).double())
 
 	sample_weights = [0]*len(sample_data)
