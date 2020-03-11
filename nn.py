@@ -289,9 +289,12 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 			# get the inputs; data is a list of [inputs, labels]
 			batch = data
 			inputs, labels = batch['data'], batch['label'].reshape(-1)
+			train_labels = labels
 
 			inputs = inputs.to(device).float()
 			labels = labels.to(device)
+
+
 
 			# zero the parameter gradients
 			optimizer.zero_grad()
