@@ -404,14 +404,14 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		num_classes,
 		parse_data, num_procs):
 
-	num_classes = 3
-	examples_per_class = 50
+	num_classes = 174#3
+	examples_per_class = 100#50
 
 	train_param_list = Params(num_classes=num_classes, examples_per_class=examples_per_class)
 	test_param_list = Params(num_classes=num_classes)
 	batch_size = 100
 	generate_itrs = False
-	num_epochs = 10
+	num_epochs = 100
 	alpha = 0.0001
 	load_model = False
 	model_name = "model.ckpt"
