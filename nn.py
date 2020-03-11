@@ -283,8 +283,11 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 
 		net.train()
 		running_loss = 0.0
+
+		t_s = time.time()
 		for i, data in enumerate(trainloader, start=0):
-			print(i)
+			print(i, time.time()-t_s)
+			t_s = time.time()
 
 			# get the inputs; data is a list of [inputs, labels]
 			batch = data
