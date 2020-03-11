@@ -166,7 +166,7 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 	# -----------------
 
 	# balance drawing of training samples, determine what class weights currently are
-	label_counts = [ex['label'] for ex in train_data]
+	label_counts = [ex['label'] for ex in train_dataset.csv_contents]
 	class_sample_count = [Counter(label_counts)[x] for x in range(num_classes)]
 	weights = (1 / torch.Tensor(class_sample_count).double())
 
@@ -175,7 +175,7 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 		sample_weights[i] = weights[ex['label']]
 
 	# build weighted sampler
-	weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=sample_weights, num_samples=len(train_data))
+	weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=sample_weights, num_samples=len(train_dataset.csv_contents))
 
 	trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size,
 									  sampler=weighted_sampler, num_workers=2) # do not set shuffle to true when using a sampler
@@ -389,8 +389,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		num_classes,
 		parse_data, num_procs):
 
-	train_param_list = Params(num_classes=3, examples_per_class=50)
-	test_param_list = Params(num_classes=3)
+	num_classes = 3
+	examples_per_class = 50
+
+	train_param_list = Params(num_classes=num_classes, examples_per_class=examples_per_class)
+	test_param_list = Params(num_classes=num_classes)
 	batch_size = 100
 	generate_itrs = False
 	num_epochs = 10
