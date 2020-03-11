@@ -185,10 +185,10 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 	weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=sample_weights, num_samples=len(sample_data))
 
 	trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size,
-									  sampler=weighted_sampler, num_workers=2) # do not set shuffle to true when using a sampler
+									  sampler=weighted_sampler, num_workers=4) # do not set shuffle to true when using a sampler
 
 	testloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size,
-									 shuffle=False, num_workers=2)
+									 shuffle=False, num_workers=4)
 
 	return train_dataset, trainloader, test_dataset, testloader
 
