@@ -127,7 +127,7 @@ class ITRDataset:
 		data[unzipped_data[0].astype(np.int32)] = unzipped_data[1]
 		reform_t = time.time()-t_s
 
-		print("read: {0}, parse: {1}, reform: {2}".format(read_t, parse_t, reform_t))
+		#print("read: {0}, parse: {1}, reform: {2}".format(read_t, parse_t, reform_t))
 
 		return {'data': np.array(data), 'label': np.array([ex['label']])}
 
