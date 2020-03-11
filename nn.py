@@ -67,7 +67,6 @@ class DataIterable:
 			x = self.parse_function(self.data[self.a])
 			self.a += 1
 
-			print("x:", x)
 			return x
 		else:
 			raise StopIteration
