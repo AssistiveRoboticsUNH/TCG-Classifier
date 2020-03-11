@@ -390,6 +390,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	generate_itrs = False
 	num_epochs = 10
 	alpha = 0.0001
+	load_model = False
 	model_name = "model.ckpt"
 	tfidf_name = "tfidf"
 
