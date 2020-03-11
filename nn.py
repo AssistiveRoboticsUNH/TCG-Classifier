@@ -37,11 +37,11 @@ if(gen_scaler):
 parsers = []	
 '''
 
-def open_as_raw(filename):
-	return np.load(filename)
+def open_as_raw(ex):
+	return np.load(ex['sp_path'])
 	
-def open_as_sparse(filename):
-	data = open_as_raw(filename)
+def open_as_sparse(ex):
+	data = open_as_raw(ex)
 
 	idx = np.nonzero(data)[0]
 	value = data[idx]
@@ -97,7 +97,7 @@ class ITRDataset:
 
 		self.parsers = parsers
 
-		self.shape = open_as_raw(self.csv_contents[0]['sp_path']).shape # inputs hsape
+		self.shape = open_as_raw(self.csv_contents[0]).shape # inputs hsape
 
 	def __len__(self):
 		return len(self.csv_contents)
@@ -109,7 +109,7 @@ class ITRDataset:
 
 		ex = self.csv_contents[idx]
 
-		data = open_as_sparse(ex['sp_path']) 
+		data = open_as_sparse(ex) 
 
 		# apply any preprocessing defined by the parsers
 		for parser in self.parsers:
