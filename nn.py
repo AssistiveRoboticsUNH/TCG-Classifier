@@ -166,16 +166,18 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 	# -----------------
 
 	# balance drawing of training samples, determine what class weights currently are
-	label_counts = [ex['label'] for ex in train_dataset.csv_contents]
+	sample_data = train_dataset.csv_contents[:]
+
+	label_counts = [ex['label'] for ex in sample_data]
 	class_sample_count = [Counter(label_counts)[x] for x in range(num_classes)]
 	weights = (1 / torch.Tensor(class_sample_count).double())
 
-	sample_weights = [0]*len(train_data)
-	for i, ex in enumerate(train_data):
+	sample_weights = [0]*len(sample_data)
+	for i, ex in enumerate(sample_data):
 		sample_weights[i] = weights[ex['label']]
 
 	# build weighted sampler
-	weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=sample_weights, num_samples=len(train_dataset.csv_contents))
+	weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=sample_weights, num_samples=len(sample_data))
 
 	trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size,
 									  sampler=weighted_sampler, num_workers=2) # do not set shuffle to true when using a sampler
