@@ -214,7 +214,7 @@ def define_model(input_size, num_classes):
 	class Net(nn.Module):
 		def __init__(self, input_size, num_classes):
 			super(Net, self).__init__()
-			n_hidden = n_hidden_g
+			n_hidden = 512
 
 			self.dense1 = nn.Linear(input_size, n_hidden)
 			self.dense2 = nn.Linear(n_hidden, num_classes)	
