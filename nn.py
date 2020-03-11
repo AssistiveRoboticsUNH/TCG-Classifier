@@ -125,7 +125,7 @@ class ITRDataset:
 
 		data = np.zeros(128*128*7)
 		print("data:", data.shape)
-		data[unzipped_data[0]] = unzipped_data[1]
+		data[unzipped_data[0].astype(np.int32)] = unzipped_data[1]
 
 		return {'data': np.array(data), 'label': np.array([ex['label']])}
 
