@@ -108,7 +108,10 @@ class ITRDataset:
 		if torch.is_tensor(idx):
 			idx = idx.tolist()
 
-		ex = self.csv_contents[idx]
+		try:
+			ex = self.csv_contents[idx]
+		except:
+			print(idx, len(self.csv_contents))
 
 		data = open_as_sparse(ex) 
 
