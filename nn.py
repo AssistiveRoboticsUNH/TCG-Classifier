@@ -60,8 +60,14 @@ class DataIterable:
 
 	def next(self):
 		if(self.a < len(self.data)):
+
+			if(self.a % 100 == 0):
+				print("a:", self.a)
+
 			x = self.parse_function(self.data[self.a])
 			self.a += 1
+
+			print("x:", x)
 			return x
 		else:
 			raise StopIteration
