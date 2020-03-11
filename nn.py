@@ -110,10 +110,7 @@ class ITRDataset:
 		if torch.is_tensor(idx):
 			idx = idx.tolist()
 
-		try:
-			ex = self.csv_contents[idx]
-		except:
-			print(idx, len(self.csv_contents))
+		ex = self.csv_contents[idx]
 
 		data = open_as_sparse(ex) 
 
@@ -121,7 +118,7 @@ class ITRDataset:
 		for parser in self.parsers:
 			data = parser.transform(data)
 
-		unzipped_data = list(zip(*data))
+		unzipped_data = zip(*data)
 		print (unzipped_data)
 
 		data = np.zeros(128*128*7)
@@ -181,9 +178,6 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 	sample_weights = [0]*len(sample_data)
 	for i, ex in enumerate(sample_data):
 		sample_weights[i] = weights[ex['label']]
-
-	print("sample_weights:")
-	print(sample_weights)
 
 	# build weighted sampler
 	weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=sample_weights, num_samples=len(sample_data))
