@@ -284,6 +284,7 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 		net.train()
 		running_loss = 0.0
 		for i, data in enumerate(trainloader, start=0):
+			print(i)
 
 			# get the inputs; data is a list of [inputs, labels]
 			batch = data
@@ -417,7 +418,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	model_name = "model.ckpt"
 	tfidf_name = "tfidf"
 
-	fit_tfidf = True
+	fit_tfidf = False#True
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
 		csv_filename, dataset_dir, model_type, dataset_type, dataset_id, layer, num_classes,
