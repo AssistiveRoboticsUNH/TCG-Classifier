@@ -118,7 +118,7 @@ class ITRDataset:
 		for parser in self.parsers:
 			data = parser.transform(data)
 
-		unzipped_data = list(zip(*(data[0])))
+		unzipped_data = np.array(zip(*(data[0])))
 		print ("unzipped:", np.array(unzipped_data).shape)
 		print(unzipped_data[0][:10], max(unzipped_data[0]), np.array(unzipped_data[0]).shape)
 		print(unzipped_data[1][:10], max(unzipped_data[1]), np.array(unzipped_data[1]).shape)
