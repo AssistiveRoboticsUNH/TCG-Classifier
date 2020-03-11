@@ -79,9 +79,8 @@ class Params:
 		self.examples_per_class = examples_per_class if examples_per_class > 0 else sys.maxint
 
 class ITRDataset:
-	def __init__(self, csv_contents, param_list=None, parsers=[], device=torch.device("cpu")):
+	def __init__(self, csv_contents, param_list=None, parsers=[]):
 		self.csv_contents = csv_contents
-		self.device = device
 
 		# Modify the dataset according to the rules laid forth by the param_list
 		self.params = param_list
@@ -289,10 +288,11 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 			# get the inputs; data is a list of [inputs, labels]
 			batch = data
 			inputs, labels = batch['data'], batch['label'].reshape(-1)
-			train_labels = labels
 
 			inputs = inputs.to(device).float()
 			labels = labels.to(device)
+
+			train_labels = labels
 
 
 
@@ -446,11 +446,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	# add parsers to model
 	parsers = [tfidf]
 	train_dataset.parsers = parsers
-	train_dataset.device = device
-
 	test_dataset.parsers = parsers
-	test_dataset.device = device
-
 
 	train(net, trainloader, testloader, device, num_epochs, alpha, model_name)
 
