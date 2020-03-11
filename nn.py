@@ -119,7 +119,7 @@ class ITRDataset:
 			data = parser.transform(data)
 
 		unzipped_data = list(zip(*(data[0])))
-		print (unzipped_data.shape)
+		print (np.array(unzipped_data).shape)
 
 		data = np.zeros(128*128*7)
 		data[unzipped_data[0]] = unzipped_data[1]
