@@ -101,6 +101,7 @@ class ITRDataset:
 		self.shape = open_as_raw(self.csv_contents[0]).shape # inputs hsape
 
 	def __len__(self):
+		print ("len(self.csv_contents):", len(self.csv_contents))
 		return len(self.csv_contents)
 
 	def __getitem__(self, idx):
