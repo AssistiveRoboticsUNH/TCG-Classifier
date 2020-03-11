@@ -111,20 +111,23 @@ class ITRDataset:
 
 		ex = self.csv_contents[idx]
 
+		t_s = time.time()
 		data = open_as_sparse(ex) 
+		read_t = time.time()-t_s
 
 		# apply any preprocessing defined by the parsers
+		t_s = time.time()
 		for parser in self.parsers:
 			data = parser.transform(data)
+		parse_t = time.time()-t_s
 
-		unzipped_data = np.array(zip(*(data[0])))
-		#print ("unzipped:", np.array(unzipped_data).shape)
-		#print(unzipped_data[0][:10], max(unzipped_data[0]), np.array(unzipped_data[0]).dtype)
-		#print(unzipped_data[1][:10], max(unzipped_data[1]), np.array(unzipped_data[1]).dtype)
-
+		t_s = time.time()
+		unzipped_data = np.array(zip(*(data[0])))		
 		data = np.zeros(128*128*7)
-		#print("data:", data.shape)
 		data[unzipped_data[0].astype(np.int32)] = unzipped_data[1]
+		reform_t = time.time()-t_s
+
+		print("read: {0}, parse: {1}, reform: {2}".format(read_t, parse_t, reform_t))
 
 		return {'data': np.array(data), 'label': np.array([ex['label']])}
 
