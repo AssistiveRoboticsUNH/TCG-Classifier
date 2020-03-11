@@ -176,6 +176,9 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 	for i, ex in enumerate(sample_data):
 		sample_weights[i] = weights[ex['label']]
 
+	print("sample_weights:")
+	print(sample_weights)
+
 	# build weighted sampler
 	weighted_sampler = torch.utils.data.sampler.WeightedRandomSampler(weights=sample_weights, num_samples=len(sample_data))
 
@@ -278,7 +281,7 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 
 		net.train()
 		running_loss = 0.0
-		for i, data in enumerate(trainloader, 0):
+		for i, data in enumerate(trainloader, start=0):
 
 			# get the inputs; data is a list of [inputs, labels]
 			batch = data
@@ -356,7 +359,7 @@ def evaluate(net, testloader, device):
 	label_list = []
 
 	with torch.no_grad():
-		for data in testloader:
+		for i, data in enumerate(testloader, start=0):
 			batch = data
 			inputs, labels = batch['data'], batch['label'].reshape(-1)
 
