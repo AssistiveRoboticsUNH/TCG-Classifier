@@ -297,7 +297,8 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 			optimizer.zero_grad()
 
 			# forward + backward + optimize
-			outputs = net(inputs).reshape(-1, outputs.shape[-1])
+			outputs = net(inputs)
+			outputs = outputs.reshape(-1, outputs.shape[-1])
 			_, train_predicted = torch.max(outputs.data, 1)
 
 
@@ -341,7 +342,8 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 		inputs = inputs.to(device).float()
 		labels = labels.to(device)
 
-		outputs = net(inputs).reshape(-1, outputs.shape[-1])
+		outputs = net(inputs)
+		outputs = outputs.reshape(-1, outputs.shape[-1])
 		_, predicted = torch.max(outputs.data, 1)
 
 		print("train accuracy: ", (train_predicted == train_labels).sum().item() / float(len(train_labels)), "val accuracy: ", (predicted == labels).sum().item() / float(len(labels)))
@@ -369,7 +371,8 @@ def evaluate(net, testloader, device):
 			inputs = inputs.to(device).float()
 			labels = labels.to(device)
 
-			outputs = net(inputs).reshape(-1, outputs.shape[-1])
+			outputs = net(inputs)
+			outputs = outputs.reshape(-1, outputs.shape[-1])
 			outputs = outputs
 
 			_, predicted = torch.max(outputs.data, 1)
