@@ -64,7 +64,7 @@ class DataIterable:
 		if(self.a < len(self.data)):
 
 			if(self.a % 100 == 0):
-				print("a:", self.a)
+				print("a: {0}/{1}".format(self.a, len(self.data)))
 
 			x = self.parse_function(self.data[self.a])
 			self.a += 1
