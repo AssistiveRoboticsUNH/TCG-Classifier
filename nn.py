@@ -10,6 +10,8 @@ from gensim.sklearn_api import TfIdfTransformer
 
 import torch
 from torch.utils.data import Dataset, DataLoader
+import torch.nn as nn
+import torch.nn.functional as F
 
 import matplotlib
 matplotlib.use('Agg')
@@ -209,8 +211,6 @@ def define_model(input_size, num_classes):
 		print("Running on the CPU")
 
 	#model
-	import torch.nn as nn
-	import torch.nn.functional as F
 	class Net(nn.Module):
 		def __init__(self, input_size, num_classes):
 			super(Net, self).__init__()
