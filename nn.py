@@ -424,7 +424,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	model_name = "model.ckpt"
 	tfidf_name = "tfidf"
 
-	fit_tfidf = True#False#True
+	fit_tfidf = False#True#False#True
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
 		csv_filename, dataset_dir, model_type, dataset_type, dataset_id, layer, num_classes,
