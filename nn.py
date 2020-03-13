@@ -289,7 +289,8 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 
 		t_s = time.time()
 		for i, data in enumerate(trainloader, start=0):
-			#print(i, time.time()-t_s)
+			if (i % 10 == 0):
+				print(i, time.time()-t_s)
 			t_s = time.time()
 
 			# get the inputs; data is a list of [inputs, labels]
@@ -424,7 +425,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	model_name = "model.ckpt"
 	tfidf_name = "tfidf"
 
-	fit_tfidf = True#False#True#False#True
+	fit_tfidf = False#True#False#True#False#True
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
 		csv_filename, dataset_dir, model_type, dataset_type, dataset_id, layer, num_classes,
