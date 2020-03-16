@@ -244,12 +244,12 @@ def data_to_sparse_matrix(dataloader, single=False):
 
 	if(single):
 		batch = next(iter(dataloader))
-		data, labels = [batch['data']], [batch['label'].reshape(-1)]
+		data, labels = [batch['data'].numpy()], [batch['label'].numpy().reshape(-1)]
 	else:
 		data, labels = [],[]
 		for i, batch in enumerate(dataloader, start=0):
 			# get the inputs; data is a list of [inputs, labels]
-			inp_data, inp_label = batch['data'], batch['label'].reshape(-1)
+			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 
 			data.append(inp_data)
 			labels.append(inp_label)
