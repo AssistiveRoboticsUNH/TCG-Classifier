@@ -257,8 +257,8 @@ def data_to_sparse_matrix(dataloader, single=False):
 	print("data:", np.array(data).shape)
 	print("labels:", np.array(labels).shape)
 
-	data = scipy.sparse.coo_matrix(np.array(data))
-	labels = np.array(labels)
+	data = scipy.sparse.coo_matrix(np.array(data)[0])
+	labels = np.array(labels)[0]
 
 	return data, labels
 
