@@ -203,12 +203,12 @@ def define_model(input_size, num_classes):
 
 	from sklearn.ensemble import AdaBoostClassifier
 	
-	from sklearn.svm import SVC
-	#from sklearn.linear_model import SGDClassifier
+	#from sklearn.svm import SVC
+	from sklearn.linear_model import SGDClassifier
 
 	clf = AdaBoostClassifier(
-			SVC(probability=True, kernel='linear'),
-			#SGDClassifier(loss='hinge'),
+			#SVC(probability=True, kernel='linear'),
+			SGDClassifier(loss='hinge'),
 		#n_estimators=50,       
 		#learning_rate=1.0, 
 		algorithm='SAMME'
