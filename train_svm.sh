@@ -1,5 +1,5 @@
-python itr_sklearn_repeat.py \
-	trn \
+python svm.py \
+	tsm \
 	~/datasets/Something-Something \
 	~/datasets/Something-Something/ss.csv \
 	frames \
