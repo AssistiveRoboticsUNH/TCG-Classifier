@@ -287,7 +287,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		num_classes,
 		parse_data, num_procs):
 
-	num_classes = 30#174#3
+	num_classes = 20#174#3
 	examples_per_class = 20#100000#100#50
 
 	train_param_list = Params(num_classes=num_classes, examples_per_class=examples_per_class)
