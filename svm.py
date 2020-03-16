@@ -255,6 +255,7 @@ def data_to_sparse_matrix(dataloader, single=False):
 			labels.append(inp_label)
 
 	print("data:", np.array(data).shape)
+	print("data_size:", np.array(data).nbytes)
 	print("labels:", np.array(labels).shape)
 
 	data = scipy.sparse.coo_matrix(np.array(data)[0])
@@ -288,7 +289,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		parse_data, num_procs):
 
 	num_classes = 50#174#3
-	examples_per_class = 20#100000#100#50
+	examples_per_class = 50#100000#100#50
 
 	train_param_list = Params(num_classes=num_classes, examples_per_class=examples_per_class)
 	test_param_list = Params(num_classes=num_classes)
