@@ -213,7 +213,7 @@ def define_model(input_size, num_classes):
 		#learning_rate=1.0, 
 		algorithm='SAMME'
 	)
-	return clf
+	return clf, None
 
 
 def viz_confusion_matrix(label_list, predictions):
