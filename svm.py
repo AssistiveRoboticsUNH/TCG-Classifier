@@ -208,8 +208,8 @@ def define_model(input_size, num_classes):
 
 	clf = AdaBoostClassifier(
 			SGDClassifier(loss='hinge'),
-		n_estimators=50,       
-		learning_rate=1.0, 
+		#n_estimators=50,       
+		#learning_rate=1.0, 
 		algorithm='SAMME'
 	)
 	return clf
