@@ -240,47 +240,43 @@ def viz_confusion_matrix(label_list, predictions):
 	plot_confusion_matrix(cm)
 	plt.savefig('cm.png')
 
+def data_to_sparse_matrix(dataloader, single=False):
+
+	if(single):
+		batch = next(iter(dataloader))
+		data, labels = [batch['data']], [batch['label'].reshape(-1)]
+	else:
+		data, labels = [],[]
+		for i, batch in enumerate(dataloader, start=0):
+			# get the inputs; data is a list of [inputs, labels]
+			inp_data, inp_label = batch['data'], batch['label'].reshape(-1)
+
+			data.append(inp_data)
+			labels.append(inp_label)
+	data = scipy.sparse.coo_matrix(np.array(data))
+	labels = np.array(labels)
+
+	return data, labels
+
 def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, model_name='model.ckpt'):
 
 
-	train_data, train_labels = [],[]
-	for i, batch in enumerate(trainloader, start=0):
-		# get the inputs; data is a list of [inputs, labels]
-		inputs, labels = batch['data'], batch['label'].reshape(-1)
-
-		train_data.append(inputs)
-		train_labels.append(labels)
-
+	train_data, train_labels = data_to_sparse_matrix(trainloader, single=False)
 
 	t_s = time.time()
 	net.fit(train_data, train_labels)
 	print("train elapsed:", time.time()-t_s)
-
 	print("train accuracy:", net.score(train_data, train_labels))
 
-
 	# Test Quick
-	batch = next(iter(testloader))
-	test_data, test_labels = [batch['data']], [batch['label'].reshape(-1)]
-
+	test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
 	print("eval accuracy:", net.score(test_data, test_labels))
 
 
 def evaluate(net, testloader, device):
 
-	test_data, test_labels = [],[]
-	for i, batch in enumerate(testloader, start=0):
-		# get the inputs; data is a list of [inputs, labels]
-		inputs, labels = batch['data'], batch['label'].reshape(-1)
-
-		test_data.append(inputs)
-		test_labels.append(labels)
-
+	test_data, test_labels = data_to_sparse_matrix(testloader, single=False)
 	print("Full Evaluate accuracy:", net.score(test_data, test_labels))
-
-
-
-
 
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
