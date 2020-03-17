@@ -269,7 +269,7 @@ def data_to_sparse_matrix(dataloader, single=False):
 def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, model_name='model.ckpt'):
 
 	for e in range(num_epochs):
-		for i, batch in enumerate(dataloader, start=0):
+		for i, batch in enumerate(trainloader, start=0):
 			# get the inputs; data is a list of [inputs, labels]
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 
