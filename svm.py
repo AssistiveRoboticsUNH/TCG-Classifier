@@ -271,7 +271,7 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
 			# get the inputs; data is a list of [inputs, labels]
-			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy()#.reshape(-1)
+			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 
 			inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
 			inp_label = np.array(inp_label)
@@ -283,7 +283,7 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 			net.partial_fit(inp_data, inp_label)
 			print("train elapsed:", time.time()-t_s)
 	
-	print("train accuracy:", net.score(train_data, train_labels))
+	print("train accuracy:", net.score(inp_data, inp_label))
 
 	test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
 	print("eval accuracy:", net.score(test_data, test_labels))
