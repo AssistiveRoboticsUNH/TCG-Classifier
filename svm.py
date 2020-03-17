@@ -277,6 +277,9 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 			inp_label = np.array(inp_label)[0]
 
 			t_s = time.time()
+
+			print("inp_data:", inp_data.shape, "inp_label:", inp_label)
+
 			net.partial_fit(inp_data, inp_label)
 			print("train elapsed:", time.time()-t_s)
 	
