@@ -283,10 +283,10 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 			net.partial_fit(inp_data, inp_label, classes=np.arange(num_classes))
 		print("train elapsed:", time.time()-t_s)
 	
-	print("train accuracy:", net.score(inp_data, inp_label))
+		print("train accuracy:", net.score(inp_data, inp_label))
 
-	test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
-	print("eval accuracy:", net.score(test_data, test_labels))
+		test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
+		print("eval accuracy:", net.score(test_data, test_labels))
 
 
 
