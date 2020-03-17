@@ -201,11 +201,13 @@ def load_tfidf(save_name):
 
 def define_model(input_size, num_classes):
 
-	from sklearn.ensemble import AdaBoostClassifier
 	
 	#from sklearn.svm import SVC
 	from sklearn.linear_model import SGDClassifier
+	clf = SGDClassifier(loss='hinge')
 
+	'''
+	from sklearn.ensemble import AdaBoostClassifier
 	clf = AdaBoostClassifier(
 			#SVC(probability=True, kernel='linear'),
 			SGDClassifier(loss='hinge'),
@@ -213,6 +215,7 @@ def define_model(input_size, num_classes):
 		#learning_rate=1.0, 
 		algorithm='SAMME'
 	)
+	'''
 	return clf, None
 
 
@@ -265,7 +268,33 @@ def data_to_sparse_matrix(dataloader, single=False):
 
 def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, model_name='model.ckpt'):
 
+	for e in range(num_epochs):
+		for i, batch in enumerate(dataloader, start=0):
+			# get the inputs; data is a list of [inputs, labels]
+			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 
+			inp_data = scipy.sparse.coo_matrix(np.array(inp_data)[0])
+			inp_label = np.array(inp_label)[0]
+
+			t_s = time.time()
+			net.partial_fit(inp_data, inp_label)
+			print("train elapsed:", time.time()-t_s)
+	
+	print("train accuracy:", net.score(train_data, train_labels))
+
+	test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
+	print("eval accuracy:", net.score(test_data, test_labels))
+
+
+
+
+
+
+
+
+
+
+	'''
 	train_data, train_labels = data_to_sparse_matrix(trainloader, single=False)
 
 	t_s = time.time()
@@ -276,7 +305,7 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 	# Test Quick
 	test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
 	print("eval accuracy:", net.score(test_data, test_labels))
-
+	'''
 
 def evaluate(net, testloader, device):
 
