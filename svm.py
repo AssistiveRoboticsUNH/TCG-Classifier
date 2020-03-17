@@ -271,7 +271,7 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
 			if (i % 100 == 0):
-				print("i")
+				print("i:", i)
 
 			# get the inputs; data is a list of [inputs, labels]
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
