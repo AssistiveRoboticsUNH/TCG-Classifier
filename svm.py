@@ -271,10 +271,10 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
 			# get the inputs; data is a list of [inputs, labels]
-			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
+			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy()#.reshape(-1)
 
 			inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
-			inp_label = np.array(inp_label)[0]
+			inp_label = np.array(inp_label)
 
 			t_s = time.time()
 
