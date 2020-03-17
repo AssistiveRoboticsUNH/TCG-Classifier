@@ -266,7 +266,7 @@ def data_to_sparse_matrix(dataloader, single=False):
 
 	return data, labels
 
-def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, model_name='model.ckpt'):
+def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alpha=0.0001, model_name='model.ckpt'):
 
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
@@ -280,7 +280,7 @@ def train(net, trainloader, testloader, device, num_epochs=10, alpha=0.0001, mod
 
 			print("inp_data:", inp_data.shape, "inp_label:", inp_label.shape)
 
-			net.partial_fit(inp_data, inp_label)
+			net.partial_fit(inp_data, inp_label, classes=np.arange(num_classes))
 			print("train elapsed:", time.time()-t_s)
 	
 	print("train accuracy:", net.score(inp_data, inp_label))
@@ -363,7 +363,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	test_dataset.parsers = parsers
 
 	device = None
-	train(net, trainloader, testloader, device, num_epochs, alpha, model_name)
+	train(net, trainloader, testloader, device, num_classes, num_epochs, alpha, model_name)
 	evaluate(net, testloader, device)
 
 
