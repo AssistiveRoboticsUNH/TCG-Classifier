@@ -328,7 +328,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 	train_param_list = Params(num_classes=num_classes, examples_per_class=examples_per_class)
 	test_param_list = Params(num_classes=num_classes)
-	batch_size = 100
+	batch_size = 1000
 	generate_itrs = False
 	num_epochs = 100
 	alpha = 0.0001
