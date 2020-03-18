@@ -204,7 +204,7 @@ def define_model(input_size, num_classes):
 	
 	#from sklearn.svm import SVC
 	from sklearn.linear_model import SGDClassifier
-	clf = SGDClassifier(loss='hinge')
+	clf = SGDClassifier(loss='hinge', verbose=1)
 
 	'''
 	from sklearn.ensemble import AdaBoostClassifier
