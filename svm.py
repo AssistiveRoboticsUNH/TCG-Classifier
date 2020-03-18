@@ -199,12 +199,12 @@ def load_tfidf(save_name):
 	return pickle.load(open(save_name+'.pk', "rb"))
 
 
-def define_model(input_size, num_classes):
+def define_model(input_size, num_classes, alpha=0.001):
 
 	
 	#from sklearn.svm import SVC
 	from sklearn.linear_model import SGDClassifier
-	clf = SGDClassifier(loss='hinge', verbose=1)
+	clf = SGDClassifier(loss='hinge', alpha=alpha, verbose=1)
 
 	'''
 	from sklearn.ensemble import AdaBoostClassifier
@@ -358,7 +358,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 	# define network
 	input_size  = train_dataset.shape[0]
-	net, _ = define_model(input_size, num_classes)
+	net, _ = define_model(input_size, num_classes, alpha=alpha)
 
 	# add parsers to model
 	parsers = [tfidf]
