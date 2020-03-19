@@ -108,6 +108,7 @@ class ITRDataset:
 		unzipped_data = np.array(zip(*(data[0])))		
 		data = np.zeros(128*128*7)
 		data[unzipped_data[0].astype(np.int32)] = unzipped_data[1]
+		data = data.reshape(1, -1)
 
 		for parser in self.dense_parsers:
 			data = parser.transform(data)
