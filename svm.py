@@ -64,7 +64,7 @@ class Params:
 		self.examples_per_class = examples_per_class if examples_per_class > 0 else sys.maxint
 
 class ITRDataset:
-	def __init__(self, csv_contents, param_list=None, parsers=[]):
+	def __init__(self, csv_contents, param_list=None):
 		self.csv_contents = csv_contents
 
 		# Modify the dataset according to the rules laid forth by the param_list
@@ -80,7 +80,8 @@ class ITRDataset:
 			count[ex['label']] += 1
 		self.csv_contents = [ex for ex in self.csv_contents if ex['class_count'] < self.params.examples_per_class]
 
-		self.parsers = parsers
+		self.dense_parsers = []
+		self.sparse_parsers = []
 
 		self.shape = open_as_raw(self.csv_contents[0]).shape # inputs shape
 		print ("len(self.csv_contents):", len(self.csv_contents))
