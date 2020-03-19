@@ -204,6 +204,7 @@ def gen_scaler(dataset, save_name):
 
 	for i in range(len(dataset.csv_contents)):
 		ex = dataset[i]
+		print("ex:", type(ex))
 		scaler.partial_fit(ex["data"])
 
 	# save tfidf
