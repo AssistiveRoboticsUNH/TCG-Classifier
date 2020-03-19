@@ -259,7 +259,6 @@ def data_to_sparse_matrix(dataloader, single=False):
 
 	print("data:", np.array(data).shape)
 	print("data_size:", np.array(data).nbytes)
-	print("min max:", np.array(data).min(), np.array(data).max())
 	print("labels:", np.array(labels).shape)
 
 	data = scipy.sparse.coo_matrix(np.array(data)[0])
@@ -276,6 +275,8 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 
 			# get the inputs; data is a list of [inputs, labels]
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
+			print("min max:", inp_data.min(), inp_data.max())
+
 
 			inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
 			inp_label = np.array(inp_label)
@@ -324,7 +325,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		num_classes,
 		parse_data, num_procs):
 
-	num_classes = 174#3
+	num_classes = 10#174#3
 	examples_per_class = 100#100000#100#50
 
 	train_param_list = Params(num_classes=num_classes, examples_per_class=examples_per_class)
