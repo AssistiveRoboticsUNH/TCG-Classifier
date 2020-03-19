@@ -204,7 +204,7 @@ def gen_scaler(dataset, save_name):
 
 	for i in range(len(dataset.csv_contents)):
 		ex = dataset[i]
-		print("ex:", type(ex), ex["data"].shape)
+		#print("ex:", type(ex), ex["data"].shape)
 
 		scaler.partial_fit(ex["data"].reshape(1, -1))
 
@@ -212,7 +212,7 @@ def gen_scaler(dataset, save_name):
 	with open(save_name+'.pk', 'wb') as file_loc:
 		pickle.dump(scaler, file_loc)
 
-	return tfidf
+	return scaler
 
 def load_scaler(save_name):
 	return pickle.load(open(save_name+'.pk', "rb"))
