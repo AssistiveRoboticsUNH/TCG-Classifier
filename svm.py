@@ -113,6 +113,8 @@ class ITRDataset:
 		for parser in self.dense_parsers:
 			data = parser.transform(data)
 
+		data = data.reshape(-1)
+
 		return {'data': np.array(data), 'label': np.array([ex['label']])}
 
 	
