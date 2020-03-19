@@ -101,18 +101,15 @@ class ITRDataset:
 		read_t = time.time()-t_s
 
 		# apply any preprocessing defined by the parsers
-		t_s = time.time()
-		for parser in self.parsers:
+		for parser in self.sparse_parsers:
 			data = parser.transform(data)
-		parse_t = time.time()-t_s
 
-		t_s = time.time()
 		unzipped_data = np.array(zip(*(data[0])))		
 		data = np.zeros(128*128*7)
 		data[unzipped_data[0].astype(np.int32)] = unzipped_data[1]
-		reform_t = time.time()-t_s
 
-		#print("read: {0}, parse: {1}, reform: {2}".format(read_t, parse_t, reform_t))
+		for parser in self.dense_parsers:
+			data = parser.transform(data)
 
 		return {'data': np.array(data), 'label': np.array([ex['label']])}
 
@@ -371,8 +368,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	else:
 		tfidf = load_tfidf(tfidf_name)
 
-	parsers = [tfidf]
-	train_dataset.parsers = parsers
+	train_dataset.sparse_parsers = [tfidf]
+	test_dataset.sparse_parsers = [tfidf]
 
 	#Scaler
 	if(fit_scaler):
@@ -385,9 +382,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	net, _ = define_model(input_size, num_classes, alpha=alpha)
 
 	# add parsers to model
-	parsers = [tfidf, scaler]
-	train_dataset.parsers = parsers
-	test_dataset.parsers = parsers
+	train_dataset.dense_parsers = [scaler]
+	test_dataset.dense_parsers = [scaler]
 
 	device = None
 	train(net, trainloader, testloader, device, num_classes, num_epochs, alpha, model_name)
