@@ -206,7 +206,7 @@ def gen_scaler(dataset, save_name):
 		ex = dataset[i]
 		print("ex:", type(ex), ex["data"].shape)
 
-		scaler.partial_fit(ex["data"])
+		scaler.partial_fit(ex["data"].reshape(1, -1))
 
 	# save tfidf
 	with open(save_name+'.pk', 'wb') as file_loc:
