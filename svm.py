@@ -198,6 +198,23 @@ def gen_tfidf(dataset, save_name):
 def load_tfidf(save_name):
 	return pickle.load(open(save_name+'.pk', "rb"))
 
+def gen_scaler(dataset, save_name):
+	# fit TF-IDF
+	scaler = MinMaxScaler()
+
+	for i in range(len(dataset.csv_contents)):
+		ex = dataset[i]
+		scaler.partial_fit(ex["data"])
+
+	# save tfidf
+	with open(save_name+'.pk', 'wb') as file_loc:
+		pickle.dump(scaler, file_loc)
+
+	return tfidf
+
+def load_scaler(save_name):
+	return pickle.load(open(save_name+'.pk', "rb"))
+
 
 def define_model(input_size, num_classes, alpha=0.001):
 
@@ -337,7 +354,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	load_model = False
 	model_name = "svm.ckpt"
 	tfidf_name = "tfidf"
+	scaler_name = "scaler"
 
+	fit_scaler = True
 	fit_tfidf = False#True#False#True#False#True
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
@@ -350,20 +369,21 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	else:
 		tfidf = load_tfidf(tfidf_name)
 
-	'''
+	parsers = [tfidf]
+	train_dataset.parsers = parsers
+
 	#Scaler
 	if(fit_scaler):
-		gen_scaler(dataset)
+		scaler = gen_scaler(train_dataset, scaler_name)
 	else:
-		load_scaler()
-	'''
+		scaler = load_scaler(scaler_name)
 
 	# define network
 	input_size  = train_dataset.shape[0]
 	net, _ = define_model(input_size, num_classes, alpha=alpha)
 
 	# add parsers to model
-	parsers = [tfidf]
+	parsers = [tfidf, scaler]
 	train_dataset.parsers = parsers
 	test_dataset.parsers = parsers
 
