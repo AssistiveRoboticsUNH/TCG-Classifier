@@ -259,6 +259,7 @@ def data_to_sparse_matrix(dataloader, single=False):
 
 	print("data:", np.array(data).shape)
 	print("data_size:", np.array(data).nbytes)
+	print("min max:", np.array(data).min(), np.array(data).max())
 	print("labels:", np.array(labels).shape)
 
 	data = scipy.sparse.coo_matrix(np.array(data)[0])
