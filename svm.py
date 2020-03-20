@@ -346,7 +346,7 @@ def evaluate(net, testloader, device):
 		test_data = scipy.sparse.coo_matrix(np.array(inp_data))
 		test_labels = np.array(inp_label)
 
-		pred = net.predict(test_data, test_labels)
+		pred = net.predict(test_data)
 
 		pred_label.append(pred)
 		actual_label.append(test_labels)
