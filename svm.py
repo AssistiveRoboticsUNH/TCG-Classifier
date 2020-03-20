@@ -351,8 +351,8 @@ def evaluate(net, testloader, device):
 		pred_label.append(pred)
 		actual_label.append(test_labels)
 
-	actual_label = np.array(actual_label).reshape(-1)
-	pred_label = np.array(pred_label).reshape(-1)
+	actual_label = np.concatenate(actual_label).reshape(-1)
+	pred_label = np.concatenate(pred_label).reshape(-1)
 
 	print("actual:", actual_label.shape, "pred:", pred_label.shape)
 	print("actual:", actual_label, "pred:", pred_label)
