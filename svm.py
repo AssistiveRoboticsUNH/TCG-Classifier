@@ -351,7 +351,7 @@ def evaluate(net, testloader, device):
 		pred_label.append(pred)
 		actual_label.append(test_labels)
 
-	return accuracy_score(y_true = actual_label, y_pred = pred_label)
+	return accuracy_score(y_true = np.array(actual_label), y_pred = np.array(pred_label))
 
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
