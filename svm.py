@@ -286,7 +286,7 @@ def data_to_sparse_matrix(dataloader, single=False):
 
 	return data, labels
 
-def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alpha=0.0001, model_name='model.ckpt', scaler):
+def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alpha=0.0001, model_name='model.ckpt', scaler=None):
 
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
@@ -394,7 +394,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	test_dataset.dense_parsers = [scaler]
 
 	device = None
-	train(net, trainloader, testloader, device, num_classes, num_epochs, alpha, model_name)
+	train(net, trainloader, testloader, device, num_classes, num_epochs, alpha, model_name, scaler)
 	evaluate(net, testloader, device)
 
 
