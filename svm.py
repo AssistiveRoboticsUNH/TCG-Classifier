@@ -296,6 +296,8 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 			# get the inputs; data is a list of [inputs, labels]
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 			print("scaler.feature_range:", scaler.feature_range)
+			print("scaler.data_max_:", scaler.data_max_)
+			
 			print("min max:", inp_data.min(), inp_data.max())
 			inp_data = scaler.transform(inp_data)
 			print("min max:", inp_data.min(), inp_data.max())
