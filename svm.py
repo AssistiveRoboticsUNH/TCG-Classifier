@@ -363,7 +363,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	tfidf_name = "tfidf"
 	scaler_name = "scaler"
 
-	fit_scaler = False#True
+	fit_scaler = True#False#True
 	fit_tfidf = False#True#False#True#False#True
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
