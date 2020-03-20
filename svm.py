@@ -286,7 +286,7 @@ def data_to_sparse_matrix(dataloader, single=False):
 
 	return data, labels
 
-def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alpha=0.0001, model_name='model.ckpt'):
+def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alpha=0.0001, model_name='model.ckpt', scaler):
 
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
@@ -295,6 +295,9 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 
 			# get the inputs; data is a list of [inputs, labels]
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
+
+			print("min max:", inp_data.min(), inp_data.max())
+			inp_data = scaler.transform(inp_data)
 			print("min max:", inp_data.min(), inp_data.max())
 
 
