@@ -308,7 +308,7 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 
 		#test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
 		#print("eval accuracy:", net.score(test_data, test_labels))
-		print("test accuracy:", evaluate(net, trainloader, device))
+		print("test accuracy:", evaluate(net, testloader, device))
 		
 		print('------------------')
 
