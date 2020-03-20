@@ -84,10 +84,8 @@ class ITRDataset:
 		self.sparse_parsers = []
 
 		self.shape = open_as_raw(self.csv_contents[0]).shape # inputs shape
-		print ("len(self.csv_contents):", len(self.csv_contents))
 
 	def __len__(self):
-		print ("len(self.csv_contents):", len(self.csv_contents))
 		return len(self.csv_contents)
 
 	def __getitem__(self, idx):
@@ -224,7 +222,7 @@ def define_model(input_size, num_classes, alpha=0.001):
 	
 	#from sklearn.svm import SVC
 	from sklearn.linear_model import SGDClassifier
-	clf = SGDClassifier(loss='hinge', alpha=alpha)#, verbose=1)
+	clf = SGDClassifier(loss='hinge', alpha=alpha, tol=0.0001)#, verbose=1)
 
 	'''
 	from sklearn.ensemble import AdaBoostClassifier
