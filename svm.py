@@ -110,8 +110,8 @@ class ITRDataset:
 		data[unzipped_data[0].astype(np.int32)] = unzipped_data[1]
 		data = data.reshape(1, -1)
 
-		for parser in self.dense_parsers:
-			data = parser.transform(data)
+		#for parser in self.dense_parsers:
+		#	data = parser.transform(data)
 
 		data = data.reshape(-1)
 
@@ -312,6 +312,7 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 
 		test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
 		print("eval accuracy:", net.score(test_data, test_labels))
+		print('------------------')
 
 
 
@@ -359,7 +360,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	tfidf_name = "tfidf"
 	scaler_name = "scaler"
 
-	fit_scaler = True
+	fit_scaler = False#True
 	fit_tfidf = False#True#False#True#False#True
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
