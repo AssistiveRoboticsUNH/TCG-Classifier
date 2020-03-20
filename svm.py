@@ -4,7 +4,7 @@ from collections import Counter
 import numpy as np
 import scipy
 
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.preprocessing import MinMaxScaler
 from gensim.sklearn_api import TfIdfTransformer
 
@@ -351,7 +351,7 @@ def evaluate(net, testloader, device):
 		pred_label.append(pred)
 		actual_label.append(test_labels)
 
-	return sklearn.metrics.accuracy_score(y_true = actual_label, y_pred = pred_label)
+	return accuracy_score(y_true = actual_label, y_pred = pred_label)
 
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
