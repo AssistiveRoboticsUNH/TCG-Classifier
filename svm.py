@@ -303,13 +303,13 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 		
 
 
-		print("train accuracy:")
-		evaluate(net, trainloader)
+		print("train accuracy:", evaluate(net, trainloader, device))
+		
 
 		#test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
 		#print("eval accuracy:", net.score(test_data, test_labels))
-		print("test accuracy:")
-		evaluate(net, trainloader)
+		print("test accuracy:", evaluate(net, trainloader, device))
+		
 		print('------------------')
 
 
@@ -336,8 +336,22 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 
 def evaluate(net, testloader, device):
 
-	test_data, test_labels = data_to_sparse_matrix(testloader, single=False)
-	print("Full Evaluate accuracy:", net.score(test_data, test_labels))
+	pred_label, actual_label = [],[] 
+
+	for i, batch in enumerate(testloader, start=0):
+		
+		# get the inputs; data is a list of [inputs, labels]
+		inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
+		
+		test_data = scipy.sparse.coo_matrix(np.array(inp_data))
+		test_labels = np.array(inp_label)
+
+		pred = net.predict(test_data, test_labels)
+
+		pred_label.append(pred)
+		actual_label.append(test_labels)
+
+	return sklearn.metrics.accuracy_score(y_true = actual_label, y_pred = pred_label)
 
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
@@ -390,7 +404,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 
 	device = None
 	train(net, trainloader, testloader, device, num_classes, num_epochs, alpha, model_name, scaler)
-	evaluate(net, testloader, device)
+	print("Final Eval accuracy:", evaluate(net, testloader, device))
 
 
 if __name__ == '__main__':
