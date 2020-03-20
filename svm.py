@@ -300,7 +300,7 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 			#print("inp_data:", inp_data.shape, "inp_label:", inp_label.shape)
 
 			net.partial_fit(inp_data, inp_label, classes=np.arange(num_classes))
-		print("train elapsed:", time.time()-t_s)
+		#print("train elapsed:", time.time()-t_s)
 	
 		print("train accuracy:", net.score(inp_data, inp_label))
 
