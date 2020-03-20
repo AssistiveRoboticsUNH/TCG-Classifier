@@ -354,8 +354,8 @@ def evaluate(net, testloader, device):
 	actual_label = np.concatenate(actual_label).reshape(-1)
 	pred_label = np.concatenate(pred_label).reshape(-1)
 
-	print("actual:", actual_label.shape, "pred:", pred_label.shape)
-	print("actual:", actual_label, "pred:", pred_label)
+	#print("actual:", actual_label.shape, "pred:", pred_label.shape)
+	#print("actual:", actual_label, "pred:", pred_label)
 
 	return accuracy_score(y_true = actual_label, y_pred = pred_label )
 
