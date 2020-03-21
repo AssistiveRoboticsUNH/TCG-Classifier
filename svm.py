@@ -285,7 +285,7 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
 			#print("i:", i)
-			if (i % 10 == 0):
+			if (i % 50 == 0):
 				print("i:", i)
 
 			# get the inputs; data is a list of [inputs, labels]
@@ -339,7 +339,7 @@ def evaluate(net, testloader, device):
 	pred_label, actual_label = [],[] 
 
 	for i, batch in enumerate(testloader, start=0):
-		if(i % 10 == 0):
+		if(i % 50 == 0):
 			print("j:", i)
 		
 		# get the inputs; data is a list of [inputs, labels]
@@ -367,7 +367,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 		parse_data, num_procs):
 
 	num_classes = 174#10#174#3
-	examples_per_class = 50#100#100000#100#50
+	examples_per_class = 100000#100#50
 
 	train_param_list = Params(num_classes=num_classes, examples_per_class=examples_per_class)
 	test_param_list = Params(num_classes=num_classes)
