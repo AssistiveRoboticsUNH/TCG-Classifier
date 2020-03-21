@@ -339,6 +339,8 @@ def evaluate(net, testloader, device):
 	pred_label, actual_label = [],[] 
 
 	for i, batch in enumerate(testloader, start=0):
+		if(i % 10 == 0):
+			print("j:", j)
 		
 		# get the inputs; data is a list of [inputs, labels]
 		inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
