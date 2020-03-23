@@ -303,7 +303,7 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 		
 
 
-		print("train accuracy:", evaluate(net, trainloader, device))
+		print("train accuracy:", evaluate(net, trainloader, device), max_iter=200)
 		
 
 		#test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
@@ -334,13 +334,16 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 	print("eval accuracy:", net.score(test_data, test_labels))
 	'''
 
-def evaluate(net, testloader, device):
+def evaluate(net, testloader, device, max_iter=-1):
 
 	pred_label, actual_label = [],[] 
 
 	for i, batch in enumerate(testloader, start=0):
 		if(i % 50 == 0):
 			print("j:", i)
+
+		if(max_iter > 0 and i > max_iter):
+			break
 		
 		# get the inputs; data is a list of [inputs, labels]
 		inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
