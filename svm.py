@@ -333,7 +333,52 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 	test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
 	print("eval accuracy:", net.score(test_data, test_labels))
 	'''
+'''
 
+def fast_evaluate(net, testloader, start, end):
+
+	pred_label, actual_label = [],[] 
+
+	iter_tl = iter(testloader)
+	for i in range(start, end):
+		batch = iter_tl[i]
+
+		if(i % 50 == 0):
+			print("j:", i)
+
+		if(max_iter > 0 and i > max_iter):
+			break
+		
+		# get the inputs; data is a list of [inputs, labels]
+		inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
+		
+		test_data = scipy.sparse.coo_matrix(np.array(inp_data))
+		test_labels = np.array(inp_label)
+
+		pred = net.predict(test_data)
+
+		pred_label.append(pred)
+		actual_label.append(test_labels)
+
+	actual_label = np.concatenate(actual_label).reshape(-1)
+	pred_label = np.concatenate(pred_label).reshape(-1)
+
+	return (pred_label, actual_label)
+def evaluate(net, testloader, device, max_iter=-1):
+
+	from multiprocessing import Pool
+
+	bundle = []
+	for 
+
+
+	p = Pool(4)
+    print(p.map(fast_evaluate, bundle))
+
+	return accuracy_score(y_true = actual_label, y_pred = pred_label )
+
+
+'''
 def evaluate(net, testloader, device, max_iter=-1):
 
 	pred_label, actual_label = [],[] 
