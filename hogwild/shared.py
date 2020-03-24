@@ -26,6 +26,8 @@ class SharedWeights:
 
         mod = ModuleType(temp_module_name)
         mod.__dict__['w'] =  self.w
+
+        print("mod.__name__:", mod.__name__)
         sys.modules[mod.__name__] = mod    
         self.mod = mod    
         return self
