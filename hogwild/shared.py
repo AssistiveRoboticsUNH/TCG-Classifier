@@ -18,16 +18,16 @@ class SharedWeights:
         w = w.reshape((len(w),1)) 
         self.w = w
 
-        print("init Shared Weights")
+        #print("init Shared Weights")
 
     def __enter__(self, *args):
         # Make temporary module to store shared weights
-        print("enter Shared Weights")
+        #print("enter Shared Weights")
 
         mod = ModuleType(temp_module_name)
         mod.__dict__['w'] =  self.w
 
-        print("mod.__name__:", mod.__name__)
+        #print("mod.__name__:", mod.__name__)
         sys.modules[mod.__name__] = mod    
         self.mod = mod    
         return self
@@ -41,9 +41,9 @@ class SharedWeights:
 def mse_gradient_step(X, y, learning_rate):
     """ Gradient for mean squared error loss function. """
     print("temp_module_name:", temp_module_name)
-    print("sys.modules:")
-    for k in sorted(sys.modules.keys()):
-        print(k)
+    print("sys.modules:", if temp_module_name in sys.modules)
+    #for k in sorted(sys.modules.keys()):
+    #    print(k)
 
     w = sys.modules[temp_module_name].__dict__['w']
 
