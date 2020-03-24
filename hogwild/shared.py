@@ -35,6 +35,7 @@ class SharedWeights:
     def __exit__(self, *args):
         # Clean up temporary module
         print("exit Shared Weights")
+        
         #del sys.modules[self.mod.__name__]         
 
 
