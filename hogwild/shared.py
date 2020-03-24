@@ -6,6 +6,7 @@ import numpy as np
 
 temp_module_name = '__hogwildsgd__temp__'
 
+
 class SharedWeights:
     """ Class to create a temporary module with the gradient function inside
         to allow multiprocessing to work for async weight updates.
@@ -22,7 +23,7 @@ class SharedWeights:
 
     def __enter__(self, *args):
         # Make temporary module to store shared weights
-        #print("enter Shared Weights")
+        print("enter Shared Weights")
 
         mod = ModuleType(temp_module_name)
         mod.__dict__['w'] =  self.w
@@ -35,8 +36,7 @@ class SharedWeights:
     def __exit__(self, *args):
         # Clean up temporary module
         print("exit Shared Weights")
-        
-        #del sys.modules[self.mod.__name__]         
+        del sys.modules[self.mod.__name__]         
 
 
 def mse_gradient_step(X, y, learning_rate):

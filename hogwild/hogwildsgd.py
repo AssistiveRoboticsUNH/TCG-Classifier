@@ -72,12 +72,14 @@ class HogWildRegressor(SGDRegressor):
 
         # Create module to properly share variables between processes
         with self.shared_weights(size_w=X.shape[1]) as sw:
+            print("in here")
             for epoch in range(self.n_epochs):
                 if self.verbose:
                     print('Epoch: %s' % epoch)
 
                 Parallel(n_jobs= self.n_jobs, verbose=self.verbose)\
                             (delayed(self.train_epoch)(e) for e in self.generator(X,y))
+            print("out here")
 
         self.coef_ = sw.w.reshape((10,1)).T
         self.fitted = True
