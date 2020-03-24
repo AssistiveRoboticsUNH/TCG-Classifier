@@ -57,7 +57,7 @@ class HogWildRegressor(SGDRegressor):
         self.n_jobs = n_jobs
         self.n_epochs = n_epochs
         self.chunk_size = chunk_size
-        self.shared_weights = SharedWeights
+        self.shared_weights = SharedWeights()
 
         if not generator:
             self.generator = DataGenerator(shuffle= self.shuffle,
