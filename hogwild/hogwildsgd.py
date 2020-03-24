@@ -76,10 +76,8 @@ class HogWildRegressor(SGDRegressor):
                 if self.verbose:
                     print('Epoch: %s' % epoch)
 
-
-
-                #Parallel(n_jobs= self.n_jobs, verbose=self.verbose)\
-                #            (delayed(self.train_epoch)(e) for e in self.generator(X,y))
+                Parallel(n_jobs= self.n_jobs, verbose=self.verbose)\
+                            (delayed(self.train_epoch)(e) for e in self.generator(X,y))
 
         self.coef_ = sw.w.reshape((10,1)).T
         self.fitted = True
@@ -89,6 +87,7 @@ class HogWildRegressor(SGDRegressor):
         return self
 
     def train_epoch(self, inputs):
+        print("begin epoch")
         X,y = inputs
         self._train_epoch(X,y)
 
