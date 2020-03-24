@@ -43,8 +43,8 @@ def mse_gradient_step(X, y, learning_rate, shared_w):
     """ Gradient for mean squared error loss function. """
     print("temp_module_name:", temp_module_name)
     print("sys.modules:",  temp_module_name in sys.modules)
-    #for k in sorted(sys.modules.keys()):
-    #    print(k)
+    for k in sorted(shared_w.__dict__.keys()):
+        print(k)
 
     #w = sys.modules[temp_module_name].__dict__['w']
     w = shared_w.__dict__['w']
