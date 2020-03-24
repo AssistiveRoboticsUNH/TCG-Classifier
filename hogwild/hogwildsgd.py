@@ -58,6 +58,7 @@ class HogWildRegressor(SGDRegressor):
         self.n_epochs = n_epochs
         self.chunk_size = chunk_size
         self.shared_weights = SharedWeights
+        self.sw = None
 
         if not generator:
             self.generator = DataGenerator(shuffle= self.shuffle,
@@ -71,16 +72,17 @@ class HogWildRegressor(SGDRegressor):
         size_w = X.shape[1]
 
         # Create module to properly share variables between processes
-        with self.shared_weights(size_w=X.shape[1]) as sw:
-            print("in here:", sw)
-            print("in here2:", sw.w)
-            for epoch in range(self.n_epochs):
-                if self.verbose:
-                    print('Epoch: %s' % epoch)
-                print("begin parallel")
-                Parallel(n_jobs= self.n_jobs, verbose=self.verbose)\
-                            (delayed(self.train_epoch)(e) for e in self.generator(X,y))
-            print("out here")
+        self.sw = self.shared_weights(size_w=X.shape[1])
+        #with self.shared_weights(size_w=X.shape[1]) as sw:
+        print("in here:", self.sw)
+        print("in here2:", self.sw.w)
+        for epoch in range(self.n_epochs):
+            if self.verbose:
+                print('Epoch: %s' % epoch)
+            print("begin parallel")
+            Parallel(n_jobs= self.n_jobs, verbose=self.verbose)\
+                        (delayed(self.train_epoch)(e) for e in self.generator(X,y))
+        print("out here")
 
         self.coef_ = sw.w.reshape((10,1)).T
         self.fitted = True
