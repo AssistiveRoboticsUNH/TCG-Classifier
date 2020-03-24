@@ -11,7 +11,7 @@ class DataGenerator:
         self.chunk_size = chunk_size
         self.verbose = verbose
 
-    def __call__(self, X, y, shared_w):
+    def __call__(self, X, y):
         if self.shuffle:
             indices = np.random.choice(len(X), replace=False, size=len(X))
             X = X[indices]
