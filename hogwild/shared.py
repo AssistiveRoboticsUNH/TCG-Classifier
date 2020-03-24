@@ -18,8 +18,12 @@ class SharedWeights:
         w = w.reshape((len(w),1)) 
         self.w = w
 
+        print("init Shared Weights")
+
     def __enter__(self, *args):
         # Make temporary module to store shared weights
+        print("enter Shared Weights")
+
         mod = ModuleType(temp_module_name)
         mod.__dict__['w'] =  self.w
         sys.modules[mod.__name__] = mod    
@@ -28,6 +32,7 @@ class SharedWeights:
     
     def __exit__(self, *args):
         # Clean up temporary module
+        print("exit Shared Weights")
         del sys.modules[self.mod.__name__]         
 
 
