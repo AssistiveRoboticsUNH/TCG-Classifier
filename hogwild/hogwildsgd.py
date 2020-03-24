@@ -98,8 +98,7 @@ class HogWildRegressor(SGDRegressor):
         for k in range(int(X.shape[0]/float(batch_size))):
             Xx = X[k*batch_size : (k+1)*batch_size,:]
             yy = y[k*batch_size : (k+1)*batch_size]
-            self.gradient(Xx,yy,self.learning_rate)
-
+            self.gradient(Xx,yy,self.learning_rate, self.shared_weights)
 
     def get_SGDRegressor(self):
         sr = SGDRegressor(fit_intercept = False)
@@ -107,7 +106,4 @@ class HogWildRegressor(SGDRegressor):
         sr.intercept_ = 0.
         self.t_ = 0
         return sr
-
-
-
 
