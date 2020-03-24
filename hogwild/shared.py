@@ -34,7 +34,10 @@ class SharedWeights:
 def mse_gradient_step(X, y, learning_rate):
     """ Gradient for mean squared error loss function. """
     print("temp_module_name:", temp_module_name)
-    print("sys.modules:", sys.modules.keys())
+    print("sys.modules:")
+    for k in sys.modules.keys():
+        print(k)
+
     w = sys.modules[temp_module_name].__dict__['w']
 
     # Calculate gradient
