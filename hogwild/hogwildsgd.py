@@ -89,7 +89,7 @@ class HogWildRegressor(SGDRegressor):
         return self
 
     def train_epoch(self, inputs):
-        print("begin epoch")
+        print("begin epoch:", self.shared_weights)
         X,y = inputs
         self._train_epoch(X,y)
 
