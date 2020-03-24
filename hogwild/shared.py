@@ -35,7 +35,7 @@ class SharedWeights:
     def __exit__(self, *args):
         # Clean up temporary module
         print("exit Shared Weights")
-        del sys.modules[self.mod.__name__]         
+        #del sys.modules[self.mod.__name__]         
 
 
 def mse_gradient_step(X, y, learning_rate):
