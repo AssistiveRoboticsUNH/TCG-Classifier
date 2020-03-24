@@ -76,7 +76,7 @@ class HogWildRegressor(SGDRegressor):
             for epoch in range(self.n_epochs):
                 if self.verbose:
                     print('Epoch: %s' % epoch)
-
+                print("begin parallel")
                 Parallel(n_jobs= self.n_jobs, verbose=self.verbose)\
                             (delayed(self.train_epoch)(e) for e in self.generator(X,y))
             print("out here")
