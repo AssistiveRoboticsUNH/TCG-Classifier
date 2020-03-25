@@ -63,6 +63,7 @@ def hinge_gradient_step(X, y, learning_rate, shared_w, thresh = 1.0):
     w = shared_w.w
 
     z = np.dot(X,w) * y
+    print("z:", z)
     if z <= thresh:
         grad = -np.dot(np.transpose(X), y)#-y
 
