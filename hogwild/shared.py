@@ -17,9 +17,9 @@ class SharedWeights:
                 lock=False)
         self.a = coef_shared
 
-        w = np.frombuffer(coef_shared)
-        w = w.reshape((len(w),1)) 
-        self.w = w
+        #w = np.frombuffer(coef_shared)
+        #w = w.reshape((len(w),1)) 
+        self.w = None#w
 
         #print("init Shared Weights")
 
