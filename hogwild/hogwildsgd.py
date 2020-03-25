@@ -76,7 +76,7 @@ class HogWildRegressor(SGDRegressor):
         #with self.shared_weights(size_w=X.shape[1]) as sw:
         print("in here:", self.sw)
         print("in here2:", self.sw.w)
-        for epoch in range(1):#self.n_epochs):
+        for epoch in range(self.n_epochs):
             if self.verbose:
                 print('Epoch: %s' % epoch)
             print("begin parallel")
@@ -92,7 +92,7 @@ class HogWildRegressor(SGDRegressor):
         return self
 
     def train_epoch(self, inputs):
-        print("begin epoch:", hex(id(self.sw)))
+        #print("begin epoch:", hex(id(self.sw)))
         X,y = inputs
         self._train_epoch(X,y)
 
