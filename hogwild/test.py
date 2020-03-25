@@ -33,7 +33,7 @@ class TestHogwild(unittest.TestCase):
     def test_work(self):
         X = scipy.sparse.random(20000,10, density=.2).toarray() # Guarantees sparse grad updates
         #real_w = np.random.uniform(0,1,size=(10,1))
-        y = np.random.randint([-1,1],size=(20000))#np.dot(X,real_w)
+        y = np.random.choice([-1,1],size=(20000))#np.dot(X,real_w)
         print("y:", y)
 
 
