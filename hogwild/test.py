@@ -49,6 +49,9 @@ class TestHogwild(unittest.TestCase):
         y_hat = hw.predict(X)
         y = y.reshape((len(y),))
         score = np.mean(abs(y-y_hat))
+
+        print("score:", score)
+
         self.assertTrue(score < .005) 
 
 
