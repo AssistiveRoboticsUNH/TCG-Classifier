@@ -109,4 +109,3 @@ class HogWildRegressor(SGDRegressor):
         sr.intercept_ = 0.
         self.t_ = 0
         return sr
-

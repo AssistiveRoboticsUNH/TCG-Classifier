@@ -1,16 +1,13 @@
-# implementation taken from https://github.com/srome/sklearn-hogwild/blob/master/hogwildsgd.py
-
-
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 import sklearn
-from sklearn.linear_model import SGDRegressor, SGDClassifier
+from sklearn.linear_model import SGDClassifier
 from sklearn.externals.joblib import Parallel, delayed
 
-from shared import SharedWeights, mse_gradient_step
+from shared import SharedWeights, hinge_gradient_step
 from generators import DataGenerator
 
-class HogWildRegressor(SGDClassifier):
+class HogWildClassifier(SGDClassifier):
     """
     Class to implement a variant of Hogwild! from
     "Hogwild!: A Lock-Free Approach to Parallelizing Stochastic Gradient Descent".
@@ -21,7 +18,7 @@ class HogWildRegressor(SGDClassifier):
     Parameters: 
         batch_size : Number of examples to compute the gradient
         chunk_size : Minibatch size sent to each workers
-        learning_rate : Learning rate used in SGDClassifier
+        learning_rate : Learning rate used in SGDRegressor
         n_epochs : Number of times to loop over the data
         n_jobs : Number of parallel workers
         generator : None will default to the DataGenerator class
@@ -31,13 +28,14 @@ class HogWildRegressor(SGDClassifier):
         verbose
         shuffle
 
+
     Recommendations:
     - batch_size = 1 / chunk_size = 1 is the same as the original paper. 
     - batch_size = 1 / chunk_size ~ small (i.e. 32) seems to enhance performance.
     """
 
     losses = {
-        'squared_loss' : mse_gradient_step
+        'hinge' : hinge_gradient_step
     }
 
     def __init__(self, 
@@ -60,6 +58,7 @@ class HogWildRegressor(SGDClassifier):
         self.n_epochs = n_epochs
         self.chunk_size = chunk_size
         self.shared_weights = SharedWeights
+        self.sw = None
 
         if not generator:
             self.generator = DataGenerator(shuffle= self.shuffle,
@@ -73,14 +72,15 @@ class HogWildRegressor(SGDClassifier):
         size_w = X.shape[1]
 
         # Create module to properly share variables between processes
-        with self.shared_weights(size_w=X.shape[1]) as sw:
-            for epoch in range(self.n_epochs):
-                if self.verbose:
-                    print('Epoch: %s' % epoch)
-                Parallel(n_jobs= self.n_jobs, verbose=self.verbose)\
-                            (delayed(self.train_epoch)(e) for e in self.generator(X,y))
+        self.sw = self.shared_weights(size_w=X.shape[1])
 
-        self.coef_ = sw.w.reshape((10,1)).T
+        for epoch in range(self.n_epochs):
+            if self.verbose:
+                print('Epoch: %s' % epoch)
+            Parallel(n_jobs= self.n_jobs, verbose=self.verbose, require='sharedmem')\
+                        (delayed(self.train_epoch)(e) for e in self.generator(X,y))
+
+        self.coef_ = self.sw.w.reshape((10,1)).T
         self.fitted = True
         self.intercept_ = 0.
         self.t_ = 0.
@@ -88,6 +88,7 @@ class HogWildRegressor(SGDClassifier):
         return self
 
     def train_epoch(self, inputs):
+        #print("begin epoch:", hex(id(self.sw)))
         X,y = inputs
         self._train_epoch(X,y)
 
@@ -96,15 +97,12 @@ class HogWildRegressor(SGDClassifier):
         for k in range(int(X.shape[0]/float(batch_size))):
             Xx = X[k*batch_size : (k+1)*batch_size,:]
             yy = y[k*batch_size : (k+1)*batch_size]
-            self.gradient(Xx,yy,self.learning_rate)
+            self.gradient(Xx,yy,self.learning_rate, self.sw)
 
-
-    def get_SGDClassifier(self):
-        sr = SGDClassifier(fit_intercept = False)
+    def get_SGDRegressor(self):
+        sr = SGDRegressor(fit_intercept = False)
         sr.coef_ = self.coef_
         sr.intercept_ = 0.
         self.t_ = 0
         return sr
-
-
 
