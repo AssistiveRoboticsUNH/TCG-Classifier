@@ -15,6 +15,8 @@ class SharedWeights:
         coef_shared = Array(c_double, 
                 (np.random.normal(size=(size_w,1)) * 1./np.sqrt(size_w)).flat,
                 lock=False)
+        self.a = coef_shared
+
         w = np.frombuffer(coef_shared)
         w = w.reshape((len(w),1)) 
         self.w = w

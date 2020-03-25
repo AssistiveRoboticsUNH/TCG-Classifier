@@ -75,7 +75,7 @@ class HogWildRegressor(SGDRegressor):
         self.sw = self.shared_weights(size_w=X.shape[1])
         #with self.shared_weights(size_w=X.shape[1]) as sw:
         print("in here:", self.sw)
-        print("in here2:", self.sw.w)
+        print("in here2:", self.sw.a)
         for epoch in range(self.n_epochs):
             if self.verbose:
                 print('Epoch: %s' % epoch)
@@ -101,7 +101,7 @@ class HogWildRegressor(SGDRegressor):
         for k in range(int(X.shape[0]/float(batch_size))):
             Xx = X[k*batch_size : (k+1)*batch_size,:]
             yy = y[k*batch_size : (k+1)*batch_size]
-            self.gradient(Xx,yy,self.learning_rate, self.shared_weights)
+            self.gradient(Xx,yy,self.learning_rate, self.sw)
 
     def get_SGDRegressor(self):
         sr = SGDRegressor(fit_intercept = False)
