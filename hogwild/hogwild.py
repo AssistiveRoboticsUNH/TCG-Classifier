@@ -46,7 +46,7 @@ class HogWildClassifier(SGDClassifier):
                  learning_rate = .001,
                  generator=None,
                  **kwargs):
-        super(HogWildRegressor, self).__init__(**kwargs)
+        super(HogWildClassifier, self).__init__(**kwargs)
 
         if self.loss not in self.losses:
             raise Exception("Loss '%s' not supported")
@@ -88,7 +88,6 @@ class HogWildClassifier(SGDClassifier):
         return self
 
     def train_epoch(self, inputs):
-        #print("begin epoch:", hex(id(self.sw)))
         X,y = inputs
         self._train_epoch(X,y)
 
@@ -99,8 +98,8 @@ class HogWildClassifier(SGDClassifier):
             yy = y[k*batch_size : (k+1)*batch_size]
             self.gradient(Xx,yy,self.learning_rate, self.sw)
 
-    def get_SGDRegressor(self):
-        sr = SGDRegressor(fit_intercept = False)
+    def get_SGDClassifier(self):
+        sr = SGDClassifier(fit_intercept = False)
         sr.coef_ = self.coef_
         sr.intercept_ = 0.
         self.t_ = 0
