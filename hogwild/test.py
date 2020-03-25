@@ -48,6 +48,8 @@ class TestHogwild(unittest.TestCase):
 
 
         y_hat = hw.predict(X)
+        print("y_hat:", y_hat)
+
         y = y.reshape((len(y),))
         score = np.mean(abs(y-y_hat))
 
