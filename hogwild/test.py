@@ -35,6 +35,8 @@ class TestHogwild(unittest.TestCase):
         real_w = np.random.uniform(0,1,size=(10,1))
         y = np.dot(X,real_w)
 
+        print(real_w)
+
 
         hw = HogWildClassifier(n_jobs = 4, 
                               n_epochs = 5,
