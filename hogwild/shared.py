@@ -56,7 +56,7 @@ def mse_gradient_step(X, y, learning_rate, shared_w):
     for index in np.where(abs(grad) > .01)[0]:
          w[index] -= learning_rate*grad[index,0]
 
-def hinge_gradient_step(X, y, learning_rate, thresh = 1.0):
+def hinge_gradient_step(X, y, learning_rate, shared_w, thresh = 1.0):
     """ Gradient for mean squared error loss function. """
 
     #w = sys.modules[temp_module_name].__dict__['w']
