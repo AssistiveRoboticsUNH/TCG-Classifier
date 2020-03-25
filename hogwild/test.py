@@ -37,7 +37,7 @@ class TestHogwild(unittest.TestCase):
 
 
         hw = HogWildClassifier(n_jobs = 4, 
-                              n_epochs = 5,
+                              n_epochs = 15,
                               batch_size = 1, 
                               chunk_size = 32,
                               learning_rate = .001,
