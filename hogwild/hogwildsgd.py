@@ -75,7 +75,7 @@ class HogWildRegressor(SGDRegressor):
         self.sw = self.shared_weights(size_w=X.shape[1])
         #with self.shared_weights(size_w=X.shape[1]) as sw:
         print("in here:", self.sw)
-        print("in here2:", self.sw.a)
+        print("in here2:", self.sw.w)
         for epoch in range(self.n_epochs):
             if self.verbose:
                 print('Epoch: %s' % epoch)
