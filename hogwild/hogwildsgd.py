@@ -84,7 +84,7 @@ class HogWildRegressor(SGDRegressor):
                         (delayed(self.train_epoch)(e) for e in self.generator(X,y))
         print("out here")
 
-        self.coef_ = sw.w.reshape((10,1)).T
+        self.coef_ = self.sw.w.reshape((10,1)).T
         self.fitted = True
         self.intercept_ = 0.
         self.t_ = 0.
