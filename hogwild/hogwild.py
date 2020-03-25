@@ -80,6 +80,7 @@ class HogWildClassifier(SGDClassifier):
             Parallel(n_jobs= self.n_jobs, verbose=self.verbose, require='sharedmem')\
                         (delayed(self.train_epoch)(e) for e in self.generator(X,y))
 
+        self.classes_ = np.unique(y)
         self.coef_ = self.sw.w.reshape((10,1)).T
         self.fitted = True
         self.intercept_ = 0.
