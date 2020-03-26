@@ -55,6 +55,7 @@ class TestHogwild(unittest.TestCase):
 
 
         y_hat = hw.predict(X)
+        print("y:", y)
         print("y_hat:", y_hat)
 
         from sklearn.metrics import accuracy_score

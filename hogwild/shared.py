@@ -77,6 +77,7 @@ def hinge_gradient_step(X, y, learning_rate, shared_w, thresh = 1.0):
         for index in np.where(abs(grad) > .01)[0]:
             w[index] -= learning_rate*grad[index,0]
         print("post grad:", w)
+        print("np.dot(X,w):", np.dot(X,w))
 
     print('--------')
 
