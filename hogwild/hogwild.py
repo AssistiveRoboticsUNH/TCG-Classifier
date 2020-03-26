@@ -94,15 +94,15 @@ class HogWildClassifier(SGDClassifier):
         return self
 
     def train_epoch(self, inputs):
-        print("train_epoch")
+        #print("train_epoch")
         X,y = inputs
         self._train_epoch(X,y)
 
     def _train_epoch(self, X, y):
         batch_size = self.batch_size
-        print("_train_epoch")
+        #print("_train_epoch")
         for k in range(int(X.shape[0]/float(batch_size))):
-            print("k", k)
+            #print("k", k)
             Xx = X[k*batch_size : (k+1)*batch_size,:]
             yy = y[k*batch_size : (k+1)*batch_size]
             self.gradient(Xx,yy,self.learning_rate, self.sw)
