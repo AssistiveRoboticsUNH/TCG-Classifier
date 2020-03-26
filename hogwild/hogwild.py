@@ -79,12 +79,12 @@ class HogWildClassifier(SGDClassifier):
             if self.verbose:
                 print('Epoch: %s' % epoch)
             
-            print(self.generator(X,y))
-            for e in self.generator(X,y):
-                self.train_epoch(e)
+            #print(self.generator(X,y))
+            #for e in self.generator(X,y):
+            #    self.train_epoch(e)
 
-            #Parallel(n_jobs= self.n_jobs, verbose=self.verbose, require='sharedmem')\
-            #            (delayed(self.train_epoch)(e) for e in self.generator(X,y))
+            Parallel(n_jobs= self.n_jobs, verbose=self.verbose, require='sharedmem')\
+                        (delayed(self.train_epoch)(e) for e in self.generator(X,y))
 
         self.classes_ = np.unique(y)
         self.coef_ = self.sw.w.reshape((size_w,1)).T
