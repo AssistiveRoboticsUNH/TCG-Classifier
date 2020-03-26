@@ -62,26 +62,22 @@ def hinge_gradient_step(X, y, learning_rate, shared_w, thresh = 1.0):
     #w = sys.modules[temp_module_name].__dict__['w']
     w = shared_w.w
 
-    print("X:", X)
-    print("np.dot(X,w):", np.dot(X,w))
-    print("y:", y)
+    #print("np.dot(X,w):", np.dot(X,w))
+    #print("y:", y)
 
     z = np.dot(X,w) * y
     #z = np.dot(y,X*w) 
     #print("z:", z)
     if z < thresh:
-        print("update")
         grad = -y*X#-np.dot(np.transpose(X), y)#-y
-        print("grad:", grad)
-        print("pre grad:", w)
 
-        print("indexes:", np.where(abs(grad) > .01))
+        #print("indexes:", np.where(abs(grad) > .01))
         for index in np.where(abs(grad) > .01)[1]:
-            print("index:", index)
+            #  print("index:", index)
 
             w[index] -= learning_rate*grad[0, index]
-        print("post grad:", w)
-        print("np.dot(X,w):", np.dot(X,w))
+        #print("post grad:", w)
+        #print("np.dot(X,w):", np.dot(X,w))
 
-    print('--------')
+    #print('--------')
 

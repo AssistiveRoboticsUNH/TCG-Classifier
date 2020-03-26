@@ -33,10 +33,10 @@ class TestHogwild(unittest.TestCase):
 class TestHogwild(unittest.TestCase):
 
     def test_work(self):
-        #X, y = make_classification(n_samples=20000, n_features=5, n_classes=2)
-        #y[ y == 0] = -1
-        X = np.array([[-1,-1], [1,-1], [-1,1], [1,1]])
-        y = np.array([1,1,-1,-1])
+        X, y = make_classification(n_samples=20000, n_features=5, n_classes=2)
+        y[ y == 0] = -1
+        #X = np.array([[-1,-1], [1,-1], [-1,1], [1,1]])
+        #y = np.array([1,1,-1,-1])
 
 
         print("X:", X)
@@ -47,8 +47,8 @@ class TestHogwild(unittest.TestCase):
         hw = HogWildClassifier(n_jobs = 4, 
                               n_epochs = 5,
                               batch_size = 1, 
-                              chunk_size = 1,#32,
-                              learning_rate = .1,#.001,
+                              chunk_size = 32,
+                              learning_rate = .001,
                               generator=None,
                               verbose=2)
         hw = hw.fit(X,y)
