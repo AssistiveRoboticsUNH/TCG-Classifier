@@ -72,7 +72,8 @@ class HogWildClassifier(SGDClassifier):
         size_w = X.shape[1]
 
         # Create module to properly share variables between processes
-        self.sw = self.shared_weights(size_w=X.shape[1])
+        self.sw = self.shared_weights(size_w=size_w)
+
 
         for epoch in range(self.n_epochs):
             if self.verbose:
@@ -86,7 +87,7 @@ class HogWildClassifier(SGDClassifier):
             #            (delayed(self.train_epoch)(e) for e in self.generator(X,y))
 
         self.classes_ = np.unique(y)
-        self.coef_ = self.sw.w.reshape((2,1)).T
+        self.coef_ = self.sw.w.reshape((size_w,1)).T
         self.fitted = True
         self.intercept_ = 0.
         self.t_ = 0.
