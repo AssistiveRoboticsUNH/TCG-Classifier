@@ -64,7 +64,7 @@ class TestHogwild(unittest.TestCase):
 
         print("score:", score)
 
-        self.assertTrue(score < .005) 
+        self.assertTrue(score > 0.95) 
 
 
 if __name__ == '__main__':
