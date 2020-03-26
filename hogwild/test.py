@@ -3,7 +3,7 @@ from hogwildsgd import HogWildRegressor
 from hogwild import HogWildClassifier
 import scipy.sparse
 import numpy as np
-import sklearn
+from sklearn.datasets import make_classification
 
 
 '''
@@ -33,7 +33,7 @@ class TestHogwild(unittest.TestCase):
 class TestHogwild(unittest.TestCase):
 
     def test_work(self):
-        X, y = sklearn.datasets.make_classification(n_samples=20000, n_features=10, n_classes=2)
+        X, y = make_classification(n_samples=20000, n_features=10, n_classes=2)
         print("y:", y)
 
 
