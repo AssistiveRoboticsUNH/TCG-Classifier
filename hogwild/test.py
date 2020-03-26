@@ -31,9 +31,7 @@ class TestHogwild(unittest.TestCase):
 class TestHogwild(unittest.TestCase):
 
     def test_work(self):
-        X = scipy.sparse.random(20000,10, density=.2).toarray() # Guarantees sparse grad updates
-        #real_w = np.random.uniform(0,1,size=(10,1))
-        y = np.random.choice([-1,1],size=(20000))#np.dot(X,real_w)
+        X, y = sklearn.datasets.make_classification(n_samples=20000, n_features=10, n_classes=2)
         print("y:", y)
 
 

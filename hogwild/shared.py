@@ -62,7 +62,7 @@ def hinge_gradient_step(X, y, learning_rate, shared_w, thresh = 1.0):
     #w = sys.modules[temp_module_name].__dict__['w']
     w = shared_w.w
 
-    print(w.shape)
+    #print(w.shape)
 
     z = np.dot(X,w) * y
     #z = np.dot(y,X*w) 
