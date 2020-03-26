@@ -78,6 +78,7 @@ class HogWildClassifier(SGDClassifier):
             if self.verbose:
                 print('Epoch: %s' % epoch)
             
+            print(self.generator(X,y))
             for e in self.generator(X,y):
                 self.train_epoch(e)
 
