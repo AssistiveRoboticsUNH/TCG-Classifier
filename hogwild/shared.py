@@ -75,8 +75,8 @@ def hinge_gradient_step(X, y, learning_rate, shared_w, thresh = 1.0):
         print("grad:", grad)
         print("pre grad:", w)
 
-        print("indexes:", np.where(abs(grad) > .01))
-        for index in np.where(abs(grad) > .01)[0]:
+        print("indexes:", np.where(abs(grad) > .01)[1])
+        for index in np.where(abs(grad) > .01)[1]:
             print("index:", index)
 
             w[index] -= learning_rate*grad[index,0]
