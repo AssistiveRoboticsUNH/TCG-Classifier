@@ -74,7 +74,7 @@ class HogWildClassifier(SGDClassifier):
         # Create module to properly share variables between processes
         self.sw = self.shared_weights(size_w=X.shape[1])
 
-        for epoch in range(1):#self.n_epochs):
+        for epoch in range(2):#self.n_epochs):
             if self.verbose:
                 print('Epoch: %s' % epoch)
             Parallel(n_jobs= self.n_jobs, verbose=self.verbose, require='sharedmem')\
