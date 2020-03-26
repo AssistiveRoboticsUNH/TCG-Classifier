@@ -3,7 +3,6 @@ from types import ModuleType
 from multiprocessing.sharedctypes import Array
 from ctypes import c_double
 import numpy as np
-import sklearn
 
 temp_module_name = '__hogwildsgd__temp__'
 

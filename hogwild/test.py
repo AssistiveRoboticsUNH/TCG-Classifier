@@ -3,6 +3,8 @@ from hogwildsgd import HogWildRegressor
 from hogwild import HogWildClassifier
 import scipy.sparse
 import numpy as np
+import sklearn
+
 
 '''
 class TestHogwild(unittest.TestCase):
