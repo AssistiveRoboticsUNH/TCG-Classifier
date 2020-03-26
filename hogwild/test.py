@@ -50,8 +50,9 @@ class TestHogwild(unittest.TestCase):
         y_hat = hw.predict(X)
         print("y_hat:", y_hat)
 
+        from sklearn.metrics import accuracy_score
         y = y.reshape((len(y),))
-        score = np.mean(abs(y-y_hat))
+        score = accuracy_score(y_true =y, y_pred=y_hat)#np.mean(abs(y-y_hat))
 
         print("score:", score)
 
