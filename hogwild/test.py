@@ -48,7 +48,7 @@ class TestHogwild(unittest.TestCase):
                               n_epochs = 5,
                               batch_size = 1, 
                               chunk_size = 1,#32,
-                              learning_rate = .001,
+                              learning_rate = .1,#.001,
                               generator=None,
                               verbose=2)
         hw = hw.fit(X,y)
