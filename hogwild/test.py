@@ -33,10 +33,11 @@ class TestHogwild(unittest.TestCase):
 class TestHogwild(unittest.TestCase):
 
     def test_work(self):
-        X, y = make_classification(n_samples=20000, n_features=10, n_classes=2)
+        X, y = make_classification(n_samples=20000, n_features=1, n_classes=2)
         y[ y== 0] = -1
+        print("X:", X)
         print("y:", y)
-        
+
 
 
         hw = HogWildClassifier(n_jobs = 4, 
