@@ -296,7 +296,7 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 			inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
 			inp_label = np.array(inp_label)
 
-			t_s = time.time()
+			#t_s = time.time()
 
 			#print("inp_data:", inp_data.shape, "inp_label:", inp_label.shape)
 
