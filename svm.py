@@ -282,11 +282,13 @@ def data_to_sparse_matrix(dataloader, single=False):
 
 def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alpha=0.0001, model_name='model.ckpt', scaler=None):
 
+	t_s = time.time()
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
 			#print("i:", i)
 			if (i % 50 == 0):
-				print("i:", i)
+				print("i:", i, time.time()-t_s)
+				t_s = time.time()
 
 			# get the inputs; data is a list of [inputs, labels]
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
