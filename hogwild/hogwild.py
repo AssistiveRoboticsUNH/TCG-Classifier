@@ -70,9 +70,10 @@ class HogWildClassifier(SGDClassifier):
         np.random.seed(self.random_state)
         y = y.reshape((len(y),1)) # proper shape for numpy descent
         size_w = X.shape[1]
+        self.classes_ = np.unique(y)
 
         # Create module to properly share variables between processes
-        self.sw = self.shared_weights(size_w=size_w)
+        self.sw = self.shared_weights(size_w=size_w, num_classes=self.classes)
 
 
         for epoch in range(self.n_epochs):
@@ -86,7 +87,6 @@ class HogWildClassifier(SGDClassifier):
             Parallel(n_jobs= self.n_jobs, verbose=self.verbose, require='sharedmem')\
                         (delayed(self.train_epoch)(e) for e in self.generator(X,y))
 
-        self.classes_ = np.unique(y)
         self.coef_ = self.sw.w.reshape((size_w,1)).T
         self.fitted = True
         self.intercept_ = 0.

@@ -4,6 +4,8 @@ from multiprocessing.sharedctypes import Array
 from ctypes import c_double
 import numpy as np
 
+import scipy
+
 temp_module_name = '__hogwildsgd__temp__'
 
 
@@ -11,6 +13,24 @@ class SharedWeights:
     """ Class to create a temporary module with the gradient function inside
         to allow multiprocessing to work for async weight updates.
     """
+    
+    def __init__(self, size_w, num_classes):
+
+        print("size_w:", size_w)
+        print("num_classes:", num_classes)
+
+        comb = scipy.special.comb(num_classes, 2)
+        self.num_classes = num_classes
+
+        coef_shared = Array(c_double, 
+                (np.random.normal(size=(comb, size_w)) * 1./np.sqrt(size_w)).flat,
+                lock=False)
+
+        w = np.frombuffer(coef_shared)
+        w = w.reshape((comb, len(w))) 
+        self.w = w
+
+    '''
     def __init__(self, size_w):
 
         print("size_w:", size_w)
@@ -26,7 +46,7 @@ class SharedWeights:
         self.w = w
 
         #print("init Shared Weights")
-
+    '''
     def __enter__(self, *args):
         # Make temporary module to store shared weights
         print("enter Shared Weights")
