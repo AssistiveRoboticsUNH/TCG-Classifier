@@ -12,6 +12,11 @@ class SharedWeights:
         to allow multiprocessing to work for async weight updates.
     """
     def __init__(self, size_w):
+
+        print("size_w:", size_w)
+
+
+
         coef_shared = Array(c_double, 
                 (np.random.normal(size=(size_w,1)) * 1./np.sqrt(size_w)).flat,
                 lock=False)
