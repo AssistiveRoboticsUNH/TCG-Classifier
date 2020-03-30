@@ -96,7 +96,7 @@ def pre_process_itr(csv_contents, num_procs=1, empty_locs=[]):
 
 	t_s = time.time()
 	pool = Pool(num_procs)
-	for i, c in enumerate(pool.imap_unordered( tfidf_and_scale, csv_contents, chunksize=1 )):
+	for i, c in enumerate(pool.imap_unordered( tfidf_and_scale, csv_contents, chunksize=10 )):
 		if(i % 1000 == 0):
 			print("elapsed time {0}: {1}".format(i,  time.time()-t_s))
 	pool.close()
