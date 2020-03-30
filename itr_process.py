@@ -25,6 +25,7 @@ from sklearn.pipeline import Pipeline
 if (sys.version[0] == '2'):
 	import cPickle as pickle
 
+
 #### EVENT TO ITR #####
 
 def extract_wrapper(ex):
@@ -57,10 +58,9 @@ def tfidf_and_scale(ex):
 	sp_path directory. '''
 
 	print("len(ex):", len(ex), ex.keys())
-	print("save_name:", save_name)
 
-	tfidf = pickle.load(open(save_name+'.pk', "rb"))
-	scaler = pickle.load(open(save_name+'.pk', "rb"))
+	tfidf = pickle.load(open("tfidf"+'.pk', "rb"))
+	scaler = pickle.load(open("scaler"+'.pk', "rb"))
 
 	# open ex as sparse format
 	data = np.load(ex['sp_path'])
@@ -153,6 +153,8 @@ def main(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename,
 
 	dataset = [ex for ex in csv_contents if ex['label'] < num_classes]
 	print("dataset_length:", len(dataset))
+
+
 	
 
 	# CONVERT BINARY EVENTS TO ITRS

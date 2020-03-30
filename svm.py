@@ -24,6 +24,8 @@ from itr_process import process_data, retrieve_data
 if (sys.version[0] == '2'):
 	import cPickle as pickle
 
+
+
 def open_as_raw(ex):
 	return np.load(ex['sp_path'])
 	
