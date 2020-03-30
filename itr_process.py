@@ -53,42 +53,43 @@ def convert_event_to_itr(csv_contents, num_procs=1, empty_locs=[]):
 
 #### PRE-PROCESS ITR #####
 
-def tfidf_and_scale(ex):
+def tfidf_and_scale(ex_list):
 	''' extract the ITRs from a single event binary file. The output is saved to the
 	sp_path directory. '''
-
-	print("len(ex):", len(ex), ex["example_id"])
 
 	tfidf = pickle.load(open("tfidf"+'.pk', "rb"))
 	scaler = pickle.load(open("scaler"+'.pk', "rb"))
 
 	# open ex as sparse format
-	data = np.load(ex['sp_path'])
+	for ex in ex_list:
+		print("len(ex):", len(ex), ex["example_id"])
 
-	idx = np.nonzero(data)[0]
-	value = data[idx]
+		data = np.load(ex['sp_path'])
 
-	data = zip(idx, value)
+		idx = np.nonzero(data)[0]
+		value = data[idx]
 
-	# Apply pre-processing to sparse data
-	data = tfidf.transform(data)
+		data = zip(idx, value)
 
-	# format data as dense
-	unzipped_data = np.array(zip(*(data[0])))		
-	data = np.zeros(128*128*7)
-	data[unzipped_data[0].astype(np.int32)] = unzipped_data[1]
-	data = data.reshape(1, -1)
+		# Apply pre-processing to sparse data
+		data = tfidf.transform(data)
 
-	# Apply pre-processing to dense data
-	data = scaler.transform(data)
+		# format data as dense
+		unzipped_data = np.array(zip(*(data[0])))		
+		data = np.zeros(128*128*7)
+		data[unzipped_data[0].astype(np.int32)] = unzipped_data[1]
+		data = data.reshape(1, -1)
 
-	data = data.reshape(-1)
+		# Apply pre-processing to dense data
+		data = scaler.transform(data)
 
-	#save data as a sparse matrix for efficiency? 
-	data = scipy.sparse.coo_matrix(np.array(data))
-	scipy.sparse.save_npz(ex['pp_path'], data)
+		data = data.reshape(-1)
 
-	return ex['pp_path']
+		#save data as a sparse matrix for efficiency? 
+		data = scipy.sparse.coo_matrix(np.array(data))
+		scipy.sparse.save_npz(ex['pp_path'], data)
+
+	#return ex['pp_path']
 
 def pre_process_itr(csv_contents, num_procs=1, empty_locs=[]):
 	''' convert a binary event file to a list of ITRs. This fnuction is done
