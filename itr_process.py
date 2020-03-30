@@ -196,8 +196,18 @@ if __name__ == '__main__':
 	if(FLAGS.model_type == 'tsm'):
 		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
+	layer = DEPTH_SIZE-1
 
-	for layer in range(1,DEPTH_SIZE):
+	main(FLAGS.dataset_dir, 
+			FLAGS.model_type, 
+			FLAGS.dataset_type, 
+			FLAGS.dataset_id, 
+			layer, 
+			FLAGS.csv_filename, 
+			FLAGS.num_classes,
+			FLAGS.num_procs)
+	'''
+	for layer in range(DEPTH_SIZE):
 		main(FLAGS.dataset_dir, 
 			FLAGS.model_type, 
 			FLAGS.dataset_type, 
@@ -206,5 +216,5 @@ if __name__ == '__main__':
 			FLAGS.csv_filename, 
 			FLAGS.num_classes,
 			FLAGS.num_procs)
-
+	'''
 	
