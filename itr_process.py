@@ -18,7 +18,7 @@ import itr_parser
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import MinMaxScaler
 
-from multiprocessing import Pool
+from multiprocessing import Pool, Process
 
 from sklearn.pipeline import Pipeline
 
@@ -95,12 +95,28 @@ def pre_process_itr(csv_contents, num_procs=1, empty_locs=[]):
 	vie multiple concurrent process calls to "extract_wrapper" '''
 
 	t_s = time.time()
+
+	chunk_size = len(csv_contents)/float(num_procs)
+	chunk_size = ceil(chunk_size)
+
+	procs = []
+	for i in range(num_procs):
+		chunk = csv_contents[i*chunk_size:i*chunk_size+chunk_size]
+		p = Process(tfidf_and_scale, args=(chunk,))
+		p.start()
+
+	for i in range(num_procs):
+		p.join()
+	
+
+	'''
 	pool = Pool(num_procs)
 	for i, c in enumerate(pool.imap_unordered( tfidf_and_scale, csv_contents, chunksize=10 )):
 		if(i % 1000 == 0):
 			print("elapsed time {0}: {1}".format(i,  time.time()-t_s))
 	pool.close()
 	pool.join()
+	'''
 
 #### FILE I/O ####
 
