@@ -104,7 +104,7 @@ def pre_process_itr(csv_contents, num_procs=1, empty_locs=[]):
 	procs = []
 	for i in range(num_procs):
 		chunk = csv_contents[i*chunk_size:i*chunk_size+chunk_size]
-		p = Process(tfidf_and_scale, args=(chunk,))
+		p = Process(target=tfidf_and_scale, args=(chunk,))
 		p.start()
 
 	for i in range(num_procs):
