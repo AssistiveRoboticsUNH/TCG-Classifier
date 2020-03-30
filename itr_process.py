@@ -97,7 +97,9 @@ def pre_process_itr(csv_contents, num_procs=1, empty_locs=[]):
 	t_s = time.time()
 
 	chunk_size = len(csv_contents)/float(num_procs)
-	chunk_size = math.ceil(chunk_size)
+	chunk_size = int(math.ceil(chunk_size))
+
+	print("chunk_size:", chunk_size)
 
 	procs = []
 	for i in range(num_procs):
