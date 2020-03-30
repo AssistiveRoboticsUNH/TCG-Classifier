@@ -56,13 +56,16 @@ def convert_event_to_itr(csv_contents, num_procs=1, empty_locs=[]):
 def tfidf_and_scale(ex_list):
 	''' extract the ITRs from a single event binary file. The output is saved to the
 	sp_path directory. '''
+	print("len(ex):", len(ex))
+
 
 	tfidf = pickle.load(open("tfidf"+'.pk', "rb"))
 	scaler = pickle.load(open("scaler"+'.pk', "rb"))
 
 	# open ex as sparse format
 	for ex in ex_list:
-		print("len(ex):", len(ex), ex["example_id"])
+		print(ex["example_id"])
+
 
 		data = np.load(ex['sp_path'])
 
