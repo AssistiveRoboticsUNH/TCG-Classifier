@@ -56,7 +56,7 @@ def tfidf_and_scale(ex):
 	''' extract the ITRs from a single event binary file. The output is saved to the
 	sp_path directory. '''
 
-	print("len(ex):", len(ex))
+	print("len(ex):", len(ex), ex[0])
 	print("save_name:", save_name)
 
 	tfidf = pickle.load(open(save_name+'.pk', "rb"))
