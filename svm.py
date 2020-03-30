@@ -293,7 +293,8 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 				print("file IO:", avg_file_io / 50)
 				print("train:", avg_train / 50)
 
-
+				avg_file_io = 0
+				avg_train = 0
 
 				print("i:", i, time.time()-t_s)
 				t_s = time.time()
