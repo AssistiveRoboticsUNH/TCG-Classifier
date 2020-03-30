@@ -63,9 +63,10 @@ def tfidf_and_scale(ex_list):
 	scaler = pickle.load(open("scaler"+'.pk', "rb"))
 
 	# open ex as sparse format
-	for ex in ex_list:
-		print(ex["example_id"])
-
+	for i, ex in enumerate(ex_list):
+		#print(ex["example_id"])
+		if(i % 1000 == 0):
+			print("elapsed time {0}: {1}".format(i,  len(ex_list)))
 
 		data = np.load(ex['sp_path'])
 
@@ -103,7 +104,7 @@ def pre_process_itr(csv_contents, num_procs=1, empty_locs=[]):
 	chunk_size = len(csv_contents)/float(num_procs)
 	chunk_size = int(math.ceil(chunk_size))
 
-	print("chunk_size:", chunk_size)
+	#print("chunk_size:", chunk_size)
 
 	procs = []
 	for i in range(num_procs):
@@ -177,7 +178,7 @@ def main(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename,
 	print("dataset_length:", len(dataset))
 
 
-	dataset = dataset[:41]
+	#dataset = dataset[:41]
 
 	# CONVERT BINARY EVENTS TO ITRS
 	#convert_event_to_itr(dataset, num_procs=num_procs)
