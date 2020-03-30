@@ -57,7 +57,7 @@ def tfidf_and_scale(ex):
 	''' extract the ITRs from a single event binary file. The output is saved to the
 	sp_path directory. '''
 
-	print("len(ex):", len(ex), ex.keys())
+	print("len(ex):", len(ex), ex["example_id"])
 
 	tfidf = pickle.load(open("tfidf"+'.pk', "rb"))
 	scaler = pickle.load(open("scaler"+'.pk', "rb"))
@@ -96,7 +96,7 @@ def pre_process_itr(csv_contents, num_procs=1, empty_locs=[]):
 
 	t_s = time.time()
 	pool = Pool(num_procs)
-	for i, c in enumerate(pool.imap_unordered( tfidf_and_scale, csv_contents, chunksize=10 )):
+	for i, c in enumerate(pool.imap_unordered( tfidf_and_scale, csv_contents, chunksize=1 )):
 		if(i % 1000 == 0):
 			print("elapsed time {0}: {1}".format(i,  time.time()-t_s))
 	pool.close()
