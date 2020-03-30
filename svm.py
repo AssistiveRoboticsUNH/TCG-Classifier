@@ -222,7 +222,7 @@ def define_model(input_size, num_classes, alpha=0.001):
 	
 	#from sklearn.svm import SVC
 	from sklearn.linear_model import SGDClassifier
-	clf = SGDClassifier(loss='hinge', alpha=alpha, n_jobs=-1)#4)#, verbose=1)
+	clf = SGDClassifier(loss='hinge', alpha=alpha, n_jobs=4)#4)#, verbose=1)
 
 	'''
 	from sklearn.ensemble import AdaBoostClassifier
@@ -290,17 +290,20 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 				print("i:", i, time.time()-t_s)
 				t_s = time.time()
 
+			t_i = time.time()
 			# get the inputs; data is a list of [inputs, labels]
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 			
 			inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
 			inp_label = np.array(inp_label)
+			print("file IO:", time.time()-t_i)
 
-			#t_s = time.time()
+			t_i = time.time()
 
 			#print("inp_data:", inp_data.shape, "inp_label:", inp_label.shape)
 
 			net.partial_fit(inp_data, inp_label, classes=np.arange(num_classes))
+			print("train:", time.time()-t_i)
 		#print("train elapsed:", time.time()-t_s)
 		
 
