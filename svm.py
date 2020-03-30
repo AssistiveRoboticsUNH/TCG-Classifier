@@ -282,11 +282,19 @@ def data_to_sparse_matrix(dataloader, single=False):
 
 def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alpha=0.0001, model_name='model.ckpt', scaler=None):
 
+	avg_file_io = 0
+	avg_train = 0
+
 	t_s = time.time()
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
 			#print("i:", i)
 			if (i % 50 == 0):
+				print("file IO:", avg_file_io / 50)
+				print("train:", avg_train / 50)
+
+
+
 				print("i:", i, time.time()-t_s)
 				t_s = time.time()
 
@@ -296,14 +304,16 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 			
 			inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
 			inp_label = np.array(inp_label)
-			print("file IO:", time.time()-t_i)
+
+			avg_file_io += time.time()-t_i
 
 			t_i = time.time()
 
 			#print("inp_data:", inp_data.shape, "inp_label:", inp_label.shape)
 
 			net.partial_fit(inp_data, inp_label, classes=np.arange(num_classes))
-			print("train:", time.time()-t_i)
+
+			avg_train += time.time()-t_i
 		#print("train elapsed:", time.time()-t_s)
 		
 
