@@ -138,8 +138,8 @@ def main(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename,
 	
 	if(not os.path.exists(sp_dir_name)):
 		os.makedirs(sp_dir_name)
-	if(not os.path.exists(tfidf_dir_name)):
-		os.makedirs(tfidf_dir_name)
+	if(not os.path.exists(pp_dir_name)):
+		os.makedirs(pp_dir_name)
 
 	print("Organizing csv_contents")
 	for ex in csv_contents:
