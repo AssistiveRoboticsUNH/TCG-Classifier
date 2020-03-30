@@ -22,25 +22,24 @@ from multiprocessing import Pool
 
 from sklearn.pipeline import Pipeline
 
+#### EVENT TO ITR #####
+
 def extract_wrapper(ex):
+	''' extract the ITRs from a single event binary file. The output is saved to the
+	sp_path directory. '''
 
 	out = itr_parser.extract_itr_seq_into_counts(ex['b_path'])
-
-	#print(out.shape)
 	out = out.reshape(-1).astype(np.uint8)
 
-	#out = scipy.sparse.csr_matrix(out)
 	np.save(ex['sp_path'], out)
 
 	return ex['sp_path']
 
-	
-
-def parse_files(csv_contents, num_procs=1, empty_locs=[]):
-	#file_list= file_list[:10]
+def convert_event_to_itr(csv_contents, num_procs=1, empty_locs=[]):
+	''' convert a binary event file to a list of ITRs. This fnuction is done
+	vie multiple concurrent process calls to "extract_wrapper" '''
 
 	t_s = time.time()
-
 	pool = Pool(num_procs)
 	for i, c in enumerate(pool.imap_unordered( extract_wrapper, csv_contents, chunksize=10 )):
 		if(i % 1000 == 0):
@@ -48,30 +47,58 @@ def parse_files(csv_contents, num_procs=1, empty_locs=[]):
 	pool.close()
 	pool.join()
 
+#### PRE-PROCESS ITR #####
 
+def tfidf_and_scale(ex):
+	''' extract the ITRs from a single event binary file. The output is saved to the
+	sp_path directory. '''
 
+	print(len(ex))
 
-	'''
+	tfidf = pickle.load(open(save_name+'.pk', "rb"))
+	scaler = pickle.load(open(save_name+'.pk', "rb"))
 
-	mylist = []
-	for g in corpus:
-		mylist.append(g)
-	corpus = mylist
+	# open ex as sparse format
+	data = np.load(ex['sp_path'])
 
-	corpus = np.array(corpus)
-	corpus = corpus.reshape(corpus.shape[0], -1)
+	idx = np.nonzero(data)[0]
+	value = data[idx]
 
-	if(len(empty_locs) == 0):
-		empty_locs = np.where(corpus.any(axis=0))[0]
+	data = zip(idx, value)
 
-	corpus = corpus[:, empty_locs]
-	corpus = scipy.sparse.csr_matrix(corpus)
+	# Apply pre-processing to sparse data
+	data = tfidf.transform(data)
 
-	print("parsing data: {0}s".format(time.time() - t_s))
+	# format data as dense
+	unzipped_data = np.array(zip(*(data[0])))		
+	data = np.zeros(128*128*7)
+	data[unzipped_data[0].astype(np.int32)] = unzipped_data[1]
+	data = data.reshape(1, -1)
 
-	return  corpus, empty_locs
+	# Apply pre-processing to dense data
+	data = scaler.transform(data)
 
-	'''
+	data = data.reshape(-1)
+
+	#save data as a sparse matrix for efficiency? 
+	data = scipy.sparse.coo_matrix(np.array(data))
+	scipy.sparse.save_npz(ex['pp_path'], data)
+
+	return ex['pp_path']
+
+def pre_process_itr(csv_contents, num_procs=1, empty_locs=[]):
+	''' convert a binary event file to a list of ITRs. This fnuction is done
+	vie multiple concurrent process calls to "extract_wrapper" '''
+
+	t_s = time.time()
+	pool = Pool(num_procs)
+	for i, c in enumerate(pool.imap_unordered( extract_wrapper, csv_contents, chunksize=10 )):
+		if(i % 1000 == 0):
+			print("elapsed time {0}: {1}".format(i,  time.time()-t_s))
+	pool.close()
+	pool.join()
+
+#### FILE I/O ####
 
 def get_filenames(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	file_path = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
@@ -96,9 +123,8 @@ def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	return data_in, data_label, eval_in, eval_label
 
 
-def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs):
+def main(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs):
 	print("Generating new files!")
-	#tcg = ITR_Extractor(num_classes, num_procs)		
 		
 	#open files
 	try:
@@ -108,67 +134,30 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 
 	b_dir_name  = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
 	sp_dir_name = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
+	pp_dir_name = os.path.join(dataset_dir, 'pp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id))
+	
 	if(not os.path.exists(sp_dir_name)):
 		os.makedirs(sp_dir_name)
+	if(not os.path.exists(tfidf_dir_name)):
+		os.makedirs(tfidf_dir_name)
 
 	print("Organizing csv_contents")
 	for ex in csv_contents:
 		ex['b_path'] = os.path.join(b_dir_name, '{0}_{1}.b'.format(ex['example_id'], layer))
 		ex['sp_path'] = os.path.join(sp_dir_name, '{0}_{1}.npy'.format(ex['example_id'], layer))
+		ex['pp_path'] = os.path.join(pp_dir_name, '{0}_{1}.npy'.format(ex['example_id'], layer))
 
 	dataset = [ex for ex in csv_contents if ex['label'] < num_classes]
 	print("dataset_length:", len(dataset))
-	'''
-	hashvect = CountVectorizer(token_pattern=r"\d+\w\d+")#HashingVectorizer(n_features=2**17, token_pattern=r"\d+\w\d+")
-	tfidf = TfidfTransformer(sublinear_tf=True)
-	scale = StandardScaler(with_mean=False)
-
-
-	pipe = Pipeline([
-		('tfidf', tfidf),
-		('scale', scale),
-	])
-	'''
-
-	# TRAIN
-	parse_files(dataset, num_procs=num_procs)
 	
 
+	# CONVERT BINARY EVENTS TO ITRS
+	#convert_event_to_itr(dataset, num_procs=num_procs)
 
+	# PRE-PROCESS ITRS
+	pre_process_itrs(dataset, num_procs=num_procs)
+	
 
-
-	'''
-	print("fit train data...")
-	t_s = time.time()
-	data_in = pipe.fit_transform(data_in)
-	print("fit data: {0}".format(time.time() - t_s))
-
-	data_label = [ex['label'] for ex in train_data]
-
-	print("data_in shape:", data_in.shape)
-	scipy.sparse.save_npz(train_filename, data_in)
-	np.save(train_label_filename, data_label)
-	print('')
-
-	# EVALUATE
-	in_files = [ex[path] for ex in test_data]
-
-	print("adding test data...{0}".format(len(test_data)))
-	data_in, _ = parse_files(in_files, num_procs=num_procs, empty_locs=empty_locs)
-
-	print("fit eval data...")
-	t_s = time.time()
-	eval_in = pipe.transform(data_in)
-	print("fit data: {0}".format(time.time() - t_s))
-
-
-	eval_label = [ex['label'] for ex in test_data]
-
-	print("eval_in shape:", eval_in.shape)
-	scipy.sparse.save_npz(test_filename, eval_in)
-	np.save(test_label_filename, eval_label)
-	print('--------')
-	'''
 
 
 
@@ -203,7 +192,7 @@ if __name__ == '__main__':
 
 
 	for layer in range(1,DEPTH_SIZE):
-		process_data(FLAGS.dataset_dir, 
+		main(FLAGS.dataset_dir, 
 			FLAGS.model_type, 
 			FLAGS.dataset_type, 
 			FLAGS.dataset_id, 
