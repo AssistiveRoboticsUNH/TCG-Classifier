@@ -15,12 +15,15 @@ import matplotlib.pyplot as plt
 from itr_sklearn import ITR_Extractor
 
 import itr_parser
-from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer, HashingVectorizer, CountVectorizer
-from sklearn.preprocessing import StandardScaler
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.preprocessing import MinMaxScaler
 
 from multiprocessing import Pool
 
 from sklearn.pipeline import Pipeline
+
+if (sys.version[0] == '2'):
+	import cPickle as pickle
 
 #### EVENT TO ITR #####
 
@@ -53,7 +56,8 @@ def tfidf_and_scale(ex):
 	''' extract the ITRs from a single event binary file. The output is saved to the
 	sp_path directory. '''
 
-	print(len(ex))
+	print("len(ex):", len(ex))
+	print("save_name:", save_name)
 
 	tfidf = pickle.load(open(save_name+'.pk', "rb"))
 	scaler = pickle.load(open(save_name+'.pk', "rb"))
