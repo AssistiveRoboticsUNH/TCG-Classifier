@@ -155,7 +155,7 @@ def main(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename,
 	#convert_event_to_itr(dataset, num_procs=num_procs)
 
 	# PRE-PROCESS ITRS
-	pre_process_itrs(dataset, num_procs=num_procs)
+	pre_process_itr(dataset, num_procs=num_procs)
 	
 
 
