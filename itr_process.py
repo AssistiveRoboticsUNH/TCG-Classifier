@@ -174,8 +174,9 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 		ex['sp_path'] = os.path.join(sp_dir_name, '{0}_{1}.npy'.format(ex['example_id'], layer))
 		ex['pp_path'] = os.path.join(pp_dir_name, '{0}_{1}.npy'.format(ex['example_id'], layer))
 
-	dataset = [ex for ex in csv_contents if ex['label'] < num_classes]
 	print("dataset_length:", len(dataset))
+	dataset = [ex for ex in csv_contents if ex['label'] < num_classes]
+	print("dataset_length2:", len(dataset))
 
 
 	#dataset = dataset[:41]
@@ -184,7 +185,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 	#convert_event_to_itr(dataset, num_procs=num_procs)
 
 	# PRE-PROCESS ITRS
-	pre_process_itr(dataset, num_procs=num_procs)
+	#pre_process_itr(dataset, num_procs=num_procs)
 	
 
 
