@@ -93,8 +93,8 @@ class ITRDataset:
 			idx = idx.tolist()
 
 		ex = self.csv_contents[idx]
-		data = scipy.sparse.load_npz(ex['pp_path']).todense()
-		print("data shape:", data.shape)
+		data = scipy.sparse.load_npz(ex['pp_path']).toarray()
+		print("data shape:", data.shape, type(data))
 		data = data.reshape(-1)
 		print("data shape2:", data.shape)
 
