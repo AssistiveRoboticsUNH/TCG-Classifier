@@ -120,6 +120,8 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 	# add current path to csv context
 	for ex in csv_contents:
 		ex['sp_path'] = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.npy'.format(ex['example_id'], layer))
+		ex['pp_path'] = os.path.join(dataset_dir, 'pp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.npy'.format(ex['example_id'], layer))
+
 
 	# -----------------
 	# Dataset Definition
