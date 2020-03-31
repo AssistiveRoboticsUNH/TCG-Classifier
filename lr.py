@@ -426,7 +426,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	num_epochs = 100
 	alpha = 0.0001
 	load_model = False
-	model_name = "svm.ckpt"
+	model_name = "lr.ckpt"
 	tfidf_name = "tfidf"
 	scaler_name = "scaler"
 
