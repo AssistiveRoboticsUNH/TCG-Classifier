@@ -175,7 +175,8 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_f
 		ex['pp_path'] = os.path.join(pp_dir_name, '{0}_{1}.npy'.format(ex['example_id'], layer))
 
 	dataset = [ex for ex in csv_contents if ex['label'] < num_classes]
-	print("dataset_length:", len(dataset), len([x for x in os.listdir(sp_dir_name) if "_3." in x]))
+	#print("dataset_length:", len(dataset), len([x for x in os.listdir(sp_dir_name) if "_3." in x]))
+	print("dataset_length:", len(dataset), len(os.listdir(pp_dir_name)))
 
 
 	#dataset = dataset[:41]
