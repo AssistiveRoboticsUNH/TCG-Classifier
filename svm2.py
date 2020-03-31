@@ -288,14 +288,14 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 			# get the inputs; data is a list of [inputs, labels]
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 			
-			#inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
+			inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
 			inp_label = np.array(inp_label)
 
 			avg_file_io += time.time()-t_i
 
 			t_i = time.time()
 
-			#print("inp_data:", inp_data.shape, "inp_label:", inp_label.shape)
+			print("inp_data:", inp_data.shape, "inp_label:", inp_label.shape)
 
 			net.partial_fit(inp_data, inp_label, classes=np.arange(num_classes))
 
@@ -394,7 +394,7 @@ def evaluate(net, testloader, device, max_iter=-1):
 		# get the inputs; data is a list of [inputs, labels]
 		inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 		
-		test_data = inp_data#scipy.sparse.coo_matrix(np.array(inp_data))
+		test_data = scipy.sparse.coo_matrix(np.array(inp_data))
 		test_labels = np.array(inp_label)
 
 		pred = net.predict(test_data)
