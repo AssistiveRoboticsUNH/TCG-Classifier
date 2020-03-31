@@ -150,7 +150,7 @@ def retrieve_data(dataset_dir, model_type, dataset_type, dataset_id, layer):
 	return data_in, data_label, eval_in, eval_label
 
 
-def main(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs):
+def process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs):
 	print("Generating new files!")
 		
 	#open files
@@ -221,7 +221,7 @@ if __name__ == '__main__':
 
 	layer = DEPTH_SIZE-1
 
-	main(FLAGS.dataset_dir, 
+	process_data(FLAGS.dataset_dir, 
 			FLAGS.model_type, 
 			FLAGS.dataset_type, 
 			FLAGS.dataset_id, 
