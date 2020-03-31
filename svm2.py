@@ -288,6 +288,7 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 			# get the inputs; data is a list of [inputs, labels]
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 			
+			print("inp_data:", inp_data.shape, "inp_label:", inp_label.shape)
 			inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
 			inp_label = np.array(inp_label)
 
