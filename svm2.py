@@ -93,7 +93,7 @@ class ITRDataset:
 			idx = idx.tolist()
 
 		ex = self.csv_contents[idx]
-		data = scipy.sparse.load_npz(ex['pp_path']) 
+		data = scipy.sparse.load_npz(ex['pp_path']).todense()
 
 		return {'data': np.array(data), 'label': np.array([ex['label']])}
 
