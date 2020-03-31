@@ -276,8 +276,8 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 		for i, batch in enumerate(trainloader, start=0):
 			#print("i:", i)
 			if (i % 50 == 0):
-				print("file IO:", avg_file_io / 50)
-				print("train:", avg_train / 50)
+				#print("file IO:", avg_file_io / 50)
+				#print("train:", avg_train / 50)
 
 				avg_file_io = 0
 				avg_train = 0
