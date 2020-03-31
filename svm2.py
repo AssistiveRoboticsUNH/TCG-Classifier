@@ -93,7 +93,7 @@ class ITRDataset:
 			idx = idx.tolist()
 
 		ex = self.csv_contents[idx]
-		data = scipy.sparse.load_npz(ex['pp_path']).todense()
+		data = scipy.sparse.load_npz(ex['pp_path']).todense().reshape(-1)
 		print("data shape:", data.shape)
 
 		return {'data': np.array(data), 'label': np.array([ex['label']])}
@@ -289,7 +289,7 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 			
 			print("inp_data:", inp_data.shape, "inp_label:", inp_label.shape)
-			
+
 			inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
 			inp_label = np.array(inp_label)
 
