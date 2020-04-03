@@ -208,7 +208,7 @@ def define_model(input_size, num_classes, alpha=0.001):
 	
 	#from sklearn.svm import SVC
 	from sklearn.linear_model import SGDClassifier
-	clf = SGDClassifier(loss='log', alpha=alpha, n_jobs=4)#4)#, verbose=1)
+	clf = SGDClassifier(loss='log', alpha=alpha, n_jobs=4, penalty="elasticnet")#4)#, verbose=1)
 
 	'''
 	from sklearn.ensemble import AdaBoostClassifier
