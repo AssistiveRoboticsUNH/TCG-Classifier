@@ -102,7 +102,8 @@ class ITRDataset:
 	
 
 
-def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_id, layer, num_classes,
+def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_id, #layer, 
+	num_classes,
 		generate_itrs, train_param_list, test_param_list, batch_size):
 
 	# -----------------
@@ -111,7 +112,8 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 
 	# extract ITR counts and dave them to file for quick, iterative learning
 	if(generate_itrs):
-		process_data(dataset_dir, model_type, dataset_type, dataset_id, layer, csv_filename, num_classes, num_procs=8)
+		process_data(dataset_dir, model_type, dataset_type, dataset_id, #layer, 
+			csv_filename, num_classes, num_procs=8)
 	
 	# open the csv file
 	try:
@@ -121,8 +123,11 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 
 	# add current path to csv context
 	for ex in csv_contents:
-		ex['sp_path'] = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.npy'.format(ex['example_id'], layer))
-		ex['pp_path'] = os.path.join(dataset_dir, 'pp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.npy.npz'.format(ex['example_id'], layer))
+		ex['sp_path'] = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}.npy'.format(ex['example_id']))
+		ex['pp_path'] = os.path.join(dataset_dir, 'pp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}.npz'.format(ex['example_id']))
+
+		#ex['sp_path'] = os.path.join(dataset_dir, 'sp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.npy'.format(ex['example_id'], layer))
+		#ex['pp_path'] = os.path.join(dataset_dir, 'pp_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), '{0}_{1}.npy.npz'.format(ex['example_id'], layer))
 
 
 	# -----------------
@@ -412,12 +417,13 @@ def evaluate(net, testloader, device, max_iter=-1):
 	return accuracy_score(y_true = actual_label, y_pred = pred_label )
 
 
-def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
+def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, 
+	#layer,
 		num_classes,
 		parse_data, num_procs):
 
-	num_classes = 10#174#10#174#3
-	examples_per_class = 100000#100#50
+	num_classes = 3#174#10#174#3
+	examples_per_class = 20#100000#100#50
 
 	train_param_list = Params(num_classes=num_classes, examples_per_class=examples_per_class)
 	test_param_list = Params(num_classes=num_classes)
@@ -434,7 +440,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, layer,
 	fit_tfidf = False#True#False#True#False#True
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
-		csv_filename, dataset_dir, model_type, dataset_type, dataset_id, layer, num_classes,
+		csv_filename, dataset_dir, model_type, dataset_type, dataset_id, #layer, 
+		num_classes,
 		generate_itrs, train_param_list, test_param_list, batch_size)
 
 	#TF-IDF
@@ -489,8 +496,9 @@ if __name__ == '__main__':
 	if(FLAGS.model_type == 'trn'):
 		from trn_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 	if(FLAGS.model_type == 'tsm'):
-		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
+		from tsm_wrapper3 import DEPTH_SIZE, CNN_FEATURE_COUNT
 
+	'''		
 	layer = DEPTH_SIZE-1
 	main(FLAGS.model_type,
 		FLAGS.dataset_dir, 
@@ -498,6 +506,17 @@ if __name__ == '__main__':
 		FLAGS.dataset_type,
 		FLAGS.dataset_id,
 		layer,
+		FLAGS.num_classes,
+		FLAGS.parse_data,
+		FLAGS.num_procs
+		)
+		'''
+	main(FLAGS.model_type,
+		FLAGS.dataset_dir, 
+		FLAGS.csv_filename,
+		FLAGS.dataset_type,
+		FLAGS.dataset_id,
+		#layer,
 		FLAGS.num_classes,
 		FLAGS.parse_data,
 		FLAGS.num_procs

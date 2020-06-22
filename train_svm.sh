@@ -1,4 +1,4 @@
-python svm.py \
+python3 svm2.py \
 	tsm \
 	~/datasets/Something-Something \
 	~/datasets/Something-Something/ss.csv \
