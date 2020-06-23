@@ -17,10 +17,10 @@ using namespace std;
 namespace p = boost::python;
 
 //use on compute machines
-//namespace np = boost::python::numpy;
+namespace np = boost::python::numpy;
 
 //use on ubuntu machines
-namespace np = boost::numpy;
+//namespace np = boost::numpy;
 
 class Event{
 public:
