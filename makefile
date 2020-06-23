@@ -2,7 +2,7 @@
 
 # location of the Python header files
 PYTHON_VERSION = 3.6
-PYTHON_INCLUDE = /usr/include/python$(PYTHON_VERSION)
+PYTHON_INCLUDE = /usr/include/python$(PYTHON_VERSION)m
 
 # location of the Boost Python include files and library
 BOOST_INC = /usr/include
