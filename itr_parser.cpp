@@ -1,6 +1,6 @@
 
 #include <boost/python.hpp>
-//#include <boost/numpy.hpp>
+#include <boost/python/numpy.hpp>
 
 //make sure to run this command:
 
