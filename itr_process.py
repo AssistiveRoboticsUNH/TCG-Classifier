@@ -48,7 +48,7 @@ def convert_event_to_itr(csv_contents, num_procs=1, empty_locs=[]):
 
 	print("convert_event_to_itr: ", len(csv_contents))
 	for i, c in enumerate(pool.imap_unordered( extract_wrapper, csv_contents, chunksize=10 )):
-		if(i % 1000 == 0):
+		if(i % 10 == 0):
 			print("elapsed time {0}: {1}".format(i,  time.time()-t_s))
 	pool.close()
 	pool.join()
