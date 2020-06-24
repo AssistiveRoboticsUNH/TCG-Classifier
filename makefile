@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := all
 
 # location of the Python header files
-PYTHON_VERSION = 3.6m
+PYTHON_VERSION = 3.6
 PYTHON_INCLUDE = /usr/include/python$(PYTHON_VERSION)m
 
 # location of the Boost Python include files and library
