@@ -6,7 +6,7 @@ PYTHON_INCLUDE = /usr/include/python$(PYTHON_VERSION)m
 
 # location of the Boost Python include files and library
 BOOST_INC = /usr/include
-BOOST_LIB = /usr/lib
+BOOST_LIB = /usr/lib64
 BOOST_INC2 = /usr/local/include/
 BOOST_LIB2 = /usr/local/lib64
 
