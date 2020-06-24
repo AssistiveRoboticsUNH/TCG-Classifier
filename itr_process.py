@@ -225,9 +225,9 @@ if __name__ == '__main__':
 	if(FLAGS.model_type == 'trn'):
 		from trn_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 	if(FLAGS.model_type == 'tsm'):
-		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
+		from tsm_wrapper3 import DEPTH_SIZE, CNN_FEATURE_COUNT
 
-	layer = DEPTH_SIZE-1
+	layer = 0#DEPTH_SIZE-1
 
 	process_data(FLAGS.dataset_dir, 
 			FLAGS.model_type, 
