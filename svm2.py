@@ -62,8 +62,8 @@ class DataIterable:
 
 class Params:
 	def __init__(self, num_classes = -1, examples_per_class = -1):
-		self.num_classes = num_classes if num_classes > 0 else sys.maxint
-		self.examples_per_class = examples_per_class if examples_per_class > 0 else sys.maxint
+		self.num_classes = num_classes if num_classes > 0 else sys.maxsize
+		self.examples_per_class = examples_per_class if examples_per_class > 0 else sys.maxsize
 
 class ITRDataset:
 	def __init__(self, csv_contents, param_list=None):
