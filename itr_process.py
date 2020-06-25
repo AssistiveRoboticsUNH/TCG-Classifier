@@ -32,9 +32,9 @@ def extract_wrapper(ex):
 	''' extract the ITRs from a single event binary file. The output is saved to the
 	sp_path directory. '''
 
-	print("begin extract")
+	#print("begin extract")
 	out = itr_parser.extract_itr_seq_into_counts(ex['b_path'])
-	print("end extract")
+	#print("end extract")
 	out = out.reshape(-1).astype(np.uint8)
 
 	np.save(ex['sp_path'], out)
