@@ -37,7 +37,7 @@ def open_as_sparse(ex):
 	idx = np.nonzero(data)[0]
 	value = data[idx]
 
-	return zip(idx, value)
+	return list(zip(idx, value))
 
 class DataIterable:
 	def __init__(self, data, parse_function):
@@ -180,7 +180,7 @@ def gen_tfidf(dataset, save_name):
 	iterable = iter(DataIterable(dataset.csv_contents, open_as_sparse))
 
 	tfidf = TfIdfTransformer()
-	tfidf.fit(list(iterable))
+	tfidf.fit(iterable)
 
 	# save tfidf
 	with open(save_name+'.pk', 'wb') as file_loc:
