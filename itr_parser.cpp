@@ -170,11 +170,11 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 	}
 	return itr_list;
 }
-/*
+
 int main(){
 	read_sparse_matrix("test.b");
 }
-*/
+/*
 
 
 BOOST_PYTHON_MODULE(itr_parser)
@@ -184,3 +184,4 @@ BOOST_PYTHON_MODULE(itr_parser)
     //def("extract_itr_seq", extract_itr_seq);
     def("extract_itr_seq_into_counts", extract_itr_seq_into_counts);
 }
+*/
