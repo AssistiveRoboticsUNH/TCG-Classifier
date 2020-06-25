@@ -436,8 +436,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	alpha = 0.0001
 	load_model = False
 	model_name = "svm.ckpt"
-	tfidf_name = "tfidf"
-	scaler_name = "scaler"
+	tfidf_name = "tfidf_128"
+	scaler_name = "scaler_128"
 
 	fit_scaler = True#False#True#False#True
 	fit_tfidf = True#False#True#False#True#False#True
