@@ -141,7 +141,7 @@ remove the work I need to do with Boost Python.
 */
 
 
-np::ndarray extract_itr_seq_into_counts(string txt_file){
+int extract_itr_seq_into_counts(string txt_file){
 
 	// get events from file
 	int num_features;
@@ -166,7 +166,8 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 			j += 1;
 		}
 	}
-	return itr_list;
+	return 0;
+	//return itr_list;
 }
 
 /*
