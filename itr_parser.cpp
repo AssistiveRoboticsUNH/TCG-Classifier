@@ -8,6 +8,18 @@
 // add libarary: export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
 
 
+// https://github.com/numpy/numpy/blob/v1.14.5/numpy/core/code_generators/generate_numpy_api.py#L130
+#if PY_VERSION_HEX >= 0x03000000
+#define NUMPY_IMPORT_ARRAY_RETVAL NULL
+#else
+#define NUMPY_IMPORT_ARRAY_RETVAL
+#endif
+
+#define import_array() {if (_import_array() < 0) {PyErr_Print(); PyErr_SetString(PyExc_ImportError, "numpy.core.multiarray failed to import"); return NUMPY_IMPORT_ARRAY_RETVAL; } }
+
+
+
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -134,6 +146,13 @@ string extract_itr_seq(string txt_file, int& num_features){
 	return itr_list;
 }
 */
+
+
+/*
+I need to read and parse the file without using numpy. That way I can completely 
+remove the work I need to do with Boost Python. 
+*/
+
 
 np::ndarray extract_itr_seq_into_counts(string txt_file){
 
