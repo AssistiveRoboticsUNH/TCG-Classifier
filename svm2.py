@@ -23,6 +23,8 @@ from csv_utils import read_csv
 
 if (sys.version[0] == '2'):
 	import cPickle as pickle
+else:
+	import pickle
 
 
 
