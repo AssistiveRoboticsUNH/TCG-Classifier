@@ -471,11 +471,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	# define network
 	input_size  = train_dataset.shape[0]
 	net, _ = define_model(input_size, num_classes, alpha=alpha)
-
+	'''
 	# add parsers to model
 	train_dataset.dense_parsers = [scaler]
 	test_dataset.dense_parsers = [scaler]
-
+	'''
 	device = None
 	train(net, trainloader, testloader, device, num_classes, num_epochs, alpha, model_name, scaler)
 	print("Final Eval accuracy:", evaluate(net, testloader, device))
