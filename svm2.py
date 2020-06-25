@@ -477,7 +477,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	test_dataset.dense_parsers = [scaler]
 	'''
 	device = None
-	train(net, trainloader, testloader, device, num_classes, num_epochs, alpha, model_name, scaler)
+	train(net, trainloader, testloader, device, num_classes, num_epochs, alpha, model_name)#, scaler)
 	print("Final Eval accuracy:", evaluate(net, testloader, device))
 
 
