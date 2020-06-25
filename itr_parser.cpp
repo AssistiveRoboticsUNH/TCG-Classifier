@@ -78,6 +78,8 @@ bool compareEvents(Event e1, Event e2)
     return e1.start == e2.start and e1.end < e2.end;
 } 
 
+
+
 vector<Event> read_sparse_matrix(string filename, int& num_features){
 
 	vector<Event> event_list;
@@ -141,7 +143,7 @@ remove the work I need to do with Boost Python.
 */
 
 
-int extract_itr_seq_into_counts(string txt_file){
+np::ndarray extract_itr_seq_into_counts(string txt_file){
 
 	// get events from file
 	int num_features;
@@ -166,10 +168,8 @@ int extract_itr_seq_into_counts(string txt_file){
 			j += 1;
 		}
 	}
-	return 0;
-	//return itr_list;
+	return itr_list;
 }
-
 /*
 int main(){
 	read_sparse_matrix("test.b");
@@ -179,7 +179,6 @@ int main(){
 
 BOOST_PYTHON_MODULE(itr_parser)
 {
-	//Py_Initialize();
     //using namespace boost::python;
     np::initialize();
     //def("extract_itr_seq", extract_itr_seq);
