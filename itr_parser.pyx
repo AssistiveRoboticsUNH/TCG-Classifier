@@ -1,4 +1,3 @@
-
 class Event:
 
 	#cdef int name, start, end
