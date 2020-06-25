@@ -461,10 +461,12 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	test_dataset.sparse_parsers = [tfidf]
 
 	#Scaler
+	'''
 	if(fit_scaler):
 		scaler = gen_scaler(train_dataset, scaler_name)
 	else:
 		scaler = load_scaler(scaler_name)
+	'''
 
 	# define network
 	input_size  = train_dataset.shape[0]
