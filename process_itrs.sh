@@ -1,4 +1,4 @@
-python3 itr_process.py \
+python itr_process.py \
 	tsm \
 	~/datasets/Something-Something \
 	~/datasets/Something-Something/ss.csv \
