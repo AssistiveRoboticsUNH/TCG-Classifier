@@ -177,10 +177,13 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 
 def gen_tfidf(dataset, save_name):
 	# fit TF-IDF
+	print("Fitting TFIDF")
 	iterable = iter(DataIterable(dataset.csv_contents, open_as_sparse))
 
 	tfidf = TfIdfTransformer()
 	tfidf.fit(iterable)
+
+	print("Fit TFIDF Done")
 
 	# save tfidf
 	with open(save_name+'.pk', 'wb') as file_loc:
