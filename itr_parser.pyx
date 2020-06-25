@@ -49,7 +49,7 @@ class Event:
 		#equals
 		return 6;#'e';
 	
-
+"""
 def bool compareEvents(Event e1, Event e2):
 
     if(e1.start < e2.start):
@@ -143,4 +143,4 @@ def extract_itr_seq_into_counts(str txt_file):
 		
 	
 	return itr_list;
-
+"""
