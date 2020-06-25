@@ -201,7 +201,6 @@ def gen_scaler(dataset, save_name):
 	iterable = iter(DataIterable(dataset.csv_contents, open_as_sparse))
 
 	scaler = MinMaxScaler()
-	scaler.fit(iterable)
 
 	for i, ex in enumerate(iterable):
 	#for i in range(len(dataset.csv_contents)):
