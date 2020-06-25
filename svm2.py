@@ -197,8 +197,10 @@ def load_tfidf(save_name):
 def gen_scaler(dataset, save_name):
 	# fit TF-IDF
 	
-	print(dataset.csv_contents)
+	
 	iterable = iter(DataIterable(dataset.csv_contents, open_as_sparse))
+	print(iterable.next())
+
 
 	scaler = MinMaxScaler()
 
