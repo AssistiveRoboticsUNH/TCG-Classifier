@@ -37,6 +37,7 @@ def extract_wrapper(ex):
 	#print("begin extract")
 	out = itr_parser.extract_itr_seq_into_counts(ex['b_path'])
 	#print("end extract")
+	print("out:", out.shape)
 	out = out.reshape(-1).astype(np.uint8)
 	print("out:", out.shape)
 
