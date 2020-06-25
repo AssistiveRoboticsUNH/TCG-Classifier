@@ -203,13 +203,13 @@ def gen_scaler(dataset, save_name):
 	scaler = MinMaxScaler()
 	scaler.fit(iterable)
 
-	'''
-	for i in range(len(dataset.csv_contents)):
+	for i, ex in enumerate(iterable):
+	#for i in range(len(dataset.csv_contents)):
 		ex = dataset[i]
-		#print("ex:", type(ex), ex["data"].shape)
+		print("ex:", type(ex))#, ex["data"].shape)
 
 		scaler.partial_fit(ex["data"].reshape(1, -1))
-	'''
+	
 	# save tfidf
 	with open(save_name+'.pk', 'wb') as file_loc:
 		pickle.dump(scaler, file_loc)
