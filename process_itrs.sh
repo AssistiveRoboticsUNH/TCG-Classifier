@@ -5,4 +5,4 @@ python itr_process.py \
 	frames \
 	1 \
 	174 \
-	--num_procs 4
+	--num_procs 1
