@@ -37,6 +37,8 @@ def open_as_sparse(ex):
 	idx = np.nonzero(data)[0]
 	value = data[idx]
 
+	print("run here")
+
 	return list(zip(idx, value))
 
 class DataIterable:
