@@ -198,7 +198,7 @@ def gen_scaler(dataset, save_name):
 	# fit TF-IDF
 	scaler = MinMaxScaler()
 
-	for i, ex in iter(DataIterable(dataset.csv_contents, open_as_sparse)):
+	for i, ex in enumerate(iter(DataIterable(dataset.csv_contents, open_as_sparse))):
 	#for i in range(len(dataset.csv_contents)):
 		ex = dataset.csv_contents[i]
 		print("ex:", type(ex), ex.keys())#, ex["data"].shape)
