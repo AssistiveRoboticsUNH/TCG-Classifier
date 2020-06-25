@@ -204,7 +204,8 @@ def gen_scaler(dataset, save_name):
 
 	for i, ex in enumerate(iterable):
 	#for i in range(len(dataset.csv_contents)):
-		print("ex:", type(ex))#, ex["data"].shape)
+		print("ex:", type(ex), len(ex))#, ex["data"].shape)
+		print(ex[0])
 
 		scaler.partial_fit(ex["data"].reshape(1, -1))
 	
