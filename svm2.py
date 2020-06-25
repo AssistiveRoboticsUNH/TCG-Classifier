@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 
 sys.path.append("../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
-from itr_process import process_data, retrieve_data
+#from itr_process import process_data, retrieve_data
 
 if (sys.version[0] == '2'):
 	import cPickle as pickle
@@ -111,10 +111,11 @@ def organize_data(csv_filename, dataset_dir, model_type, dataset_type, dataset_i
 	# -----------------
 
 	# extract ITR counts and dave them to file for quick, iterative learning
+	'''
 	if(generate_itrs):
 		process_data(dataset_dir, model_type, dataset_type, dataset_id, #layer, 
 			csv_filename, num_classes, num_procs=8)
-	
+	'''
 	# open the csv file
 	try:
 		csv_contents = read_csv(csv_filename)
