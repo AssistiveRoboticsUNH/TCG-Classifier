@@ -37,8 +37,6 @@ def open_as_sparse(ex):
 	idx = np.nonzero(data)[0]
 	value = data[idx]
 
-	print("run here")
-
 	return list(zip(idx, value))
 
 class DataIterable:
@@ -200,7 +198,7 @@ def gen_scaler(dataset, save_name):
 	# fit TF-IDF
 	
 
-	iterable = zip(iter(DataIterable(dataset.csv_contents, open_as_sparse)))
+	iterable = iter(DataIterable(dataset.csv_contents, open_as_sparse))
 
 	scaler = MinMaxScaler()
 
