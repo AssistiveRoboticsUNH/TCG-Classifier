@@ -141,11 +141,6 @@ remove the work I need to do with Boost Python.
 */
 
 
-int extract_itr_seq_into_counts(string txt_file){
-	vector<Event> events = read_sparse_matrix(txt_file, num_features);
-	return 0;
-}
-/*
 np::ndarray extract_itr_seq_into_counts(string txt_file){
 
 	// get events from file
@@ -173,7 +168,6 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 	}
 	return itr_list;
 }
-*/
 
 /*
 int main(){
@@ -184,9 +178,9 @@ int main(){
 
 BOOST_PYTHON_MODULE(itr_parser)
 {
-	Py_Initialize();
+	//Py_Initialize();
     //using namespace boost::python;
-    //np::initialize();
+    np::initialize();
     //def("extract_itr_seq", extract_itr_seq);
     def("extract_itr_seq_into_counts", extract_itr_seq_into_counts);
 }
