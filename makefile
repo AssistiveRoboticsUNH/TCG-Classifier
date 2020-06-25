@@ -12,7 +12,7 @@ BOOST_LIB2 = /usr/local/lib64
 
 TARGET = itr_parser
 
-CFLAGS = --std=c++11 -lboost_python -lboost_numpy -I$(BOOST_INC2) -L$(BOOST_LIB2)
+CFLAGS = --std=c++11 -lboost_python3 -lboost_numpy -I$(BOOST_INC2) -L$(BOOST_LIB2)
 
 $(TARGET).so: $(TARGET).o
 	g++ -shared -Wl,--export-dynamic $(TARGET).o -L$(BOOST_LIB) -L$(BOOST_LIB2) -l:libboost_python-py$(subst .,,$(PYTHON_VERSION)).so -L/usr/lib/python$(PYTHON_VERSION)/config -lpython$(PYTHON_VERSION)m -o $(TARGET).so $(CFLAGS) 
