@@ -180,7 +180,7 @@ def gen_tfidf(dataset, save_name):
 	iterable = iter(DataIterable(dataset.csv_contents, open_as_sparse))
 
 	tfidf = TfIdfTransformer()
-	tfidf.fit(iterable)
+	tfidf.fit(list(iterable))
 
 	# save tfidf
 	with open(save_name+'.pk', 'wb') as file_loc:
