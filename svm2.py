@@ -49,7 +49,7 @@ class DataIterable:
 		self.a = 0
 		return self
 
-	def next(self):
+	def __next__(self):#use next(self) for Python2
 		if(self.a < len(self.data)):
 
 			if(self.a % 100 == 0):
