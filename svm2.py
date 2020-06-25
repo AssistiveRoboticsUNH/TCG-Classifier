@@ -95,7 +95,7 @@ class ITRDataset:
 			idx = idx.tolist()
 
 		ex = self.csv_contents[idx]
-		data = scipy.sparse.load_npz(ex['pp_path']).toarray()
+		data = scipy.sparse.load_npz(ex['sp_path']).toarray()
 		data = data.reshape(-1)
 
 
