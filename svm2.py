@@ -202,7 +202,7 @@ def gen_scaler(dataset, save_name):
 
 	scaler = MinMaxScaler()
 
-	for i, ex in enumerate(iterable):
+	for ex in iterable:
 	#for i in range(len(dataset.csv_contents)):
 		print("ex:", type(ex), len(ex))#, ex["data"].shape)
 		print(ex[0])
