@@ -209,6 +209,8 @@ def gen_scaler(dataset, save_name):
 
 		scaler.partial_fit(ex["data"].reshape(1, -1))
 	
+	print("Fit Scaler Done")
+
 	# save tfidf
 	with open(save_name+'.pk', 'wb') as file_loc:
 		pickle.dump(scaler, file_loc)
