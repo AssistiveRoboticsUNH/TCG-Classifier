@@ -196,15 +196,20 @@ def load_tfidf(save_name):
 
 def gen_scaler(dataset, save_name):
 	# fit TF-IDF
-	scaler = MinMaxScaler()
+	
 
-	for i, ex in enumerate(iter(DataIterable(dataset.csv_contents, open_as_sparse))):
-	#for i in range(len(dataset.csv_contents)):
-		ex = dataset.csv_contents[i]
-		print("ex:", type(ex), ex.keys())#, ex["data"].shape)
+	iterable = iter(DataIterable(dataset.csv_contents, open_as_sparse))
+
+	scaler = MinMaxScaler()
+	scaler.fit(iterable)
+
+	'''
+	for i in range(len(dataset.csv_contents)):
+		ex = dataset[i]
+		#print("ex:", type(ex), ex["data"].shape)
 
 		scaler.partial_fit(ex["data"].reshape(1, -1))
-
+	'''
 	# save tfidf
 	with open(save_name+'.pk', 'wb') as file_loc:
 		pickle.dump(scaler, file_loc)
@@ -443,7 +448,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	tfidf_name = "tfidf_128"
 	scaler_name = "scaler_128"
 
-	fit_scaler = False#False#True#False#True
+	fit_scaler = True#False#True#False#True
 	fit_tfidf = True#False#True#False#True#False#True
 
 	train_dataset, trainloader, test_dataset, testloader = organize_data(
@@ -461,23 +466,21 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	test_dataset.sparse_parsers = [tfidf]
 
 	#Scaler
-	'''
 	if(fit_scaler):
 		scaler = gen_scaler(train_dataset, scaler_name)
 	else:
 		scaler = load_scaler(scaler_name)
-	'''
 
 	# define network
 	input_size  = train_dataset.shape[0]
 	net, _ = define_model(input_size, num_classes, alpha=alpha)
-	'''
+
 	# add parsers to model
 	train_dataset.dense_parsers = [scaler]
 	test_dataset.dense_parsers = [scaler]
-	'''
+
 	device = None
-	train(net, trainloader, testloader, device, num_classes, num_epochs, alpha, model_name)#, scaler)
+	train(net, trainloader, testloader, device, num_classes, num_epochs, alpha, model_name, scaler)
 	print("Final Eval accuracy:", evaluate(net, testloader, device))
 
 
