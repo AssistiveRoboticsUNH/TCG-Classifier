@@ -24,6 +24,8 @@ from sklearn.pipeline import Pipeline
 
 if (sys.version[0] == '2'):
 	import cPickle as pickle
+else:
+	import pickle
 
 
 #### EVENT TO ITR #####
