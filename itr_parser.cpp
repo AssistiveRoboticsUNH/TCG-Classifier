@@ -179,6 +179,7 @@ int main(){
 
 BOOST_PYTHON_MODULE(itr_parser)
 {
+	Py_Initialize();
     //using namespace boost::python;
     np::initialize();
     //def("extract_itr_seq", extract_itr_seq);
