@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 from itr_sklearn import ITR_Extractor
 
-import itr_parser
+#import itr_parser
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import MinMaxScaler
 
@@ -33,7 +33,7 @@ def extract_wrapper(ex):
 	sp_path directory. '''
 
 	print("begin extract")
-	out = itr_parser.extract_itr_seq_into_counts(ex['b_path'])
+	#out = itr_parser.extract_itr_seq_into_counts(ex['b_path'])
 	print("end extract")
 	out = out.reshape(-1).astype(np.uint8)
 

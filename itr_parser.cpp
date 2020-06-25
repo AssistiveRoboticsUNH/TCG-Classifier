@@ -182,5 +182,5 @@ BOOST_PYTHON_MODULE(itr_parser)
     //using namespace boost::python;
     np::initialize();
     //def("extract_itr_seq", extract_itr_seq);
-    //def("extract_itr_seq_into_counts", extract_itr_seq_into_counts);
+    def("extract_itr_seq_into_counts", extract_itr_seq_into_counts);
 }
