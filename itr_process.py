@@ -194,7 +194,7 @@ def process_data(dataset_dir, model_type, dataset_type, dataset_id, #layer,
 	print("dataset_length:", len(dataset), len(os.listdir(pp_dir_name)))
 
 
-	dataset = dataset[:41]
+	#dataset = dataset[:41]
 
 	# CONVERT BINARY EVENTS TO ITRS
 	convert_event_to_itr(dataset, num_procs=num_procs)
