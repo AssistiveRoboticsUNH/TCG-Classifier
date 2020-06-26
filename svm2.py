@@ -208,7 +208,7 @@ def gen_scaler(dataset, save_name):
 		print(ex[0])
 		print(ex[1])
 
-		scaler.partial_fit(ex["data"].reshape(1, -1))
+		scaler.partial_fit(ex.reshape(1, -1))
 	
 	print("Fit Scaler Done")
 
