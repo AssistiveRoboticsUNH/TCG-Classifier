@@ -1,7 +1,7 @@
-/*
+
 #include <boost/python.hpp>
 #include <boost/python/numpy.hpp>
-*/
+
 //make sure to run this command:
 
 //install: https://stackoverflow.com/questions/51037886/trouble-with-linking-boostpythonnumpy
@@ -16,7 +16,7 @@
 
 
 using namespace std;
-/*
+
 namespace p = boost::python;
 
 //use on compute machines
@@ -24,7 +24,7 @@ namespace np = boost::python::numpy;
 
 //use on ubuntu machines
 //namespace np = boost::numpy;
-*/
+
 
 class Event{
 public:
@@ -150,7 +150,7 @@ I need to read and parse the file without using numpy. That way I can completely
 remove the work I need to do with Boost Python. 
 */
 
-/*
+
 np::ndarray extract_itr_seq_into_counts(string txt_file){
 
 	// get events from file
@@ -180,8 +180,8 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 	}
 	return itr_list;
 }
-*/
 
+/*
 int main(){
 	int num_features;
 	string filename = "/home/mbc2004/datasets/Something-Something/b_tsm_frames_1/0/203184.b";
@@ -206,7 +206,7 @@ int main(){
 	}
 	//return itr_list;
 }
-/*
+*/
 
 
 BOOST_PYTHON_MODULE(itr_parser)
@@ -216,4 +216,4 @@ BOOST_PYTHON_MODULE(itr_parser)
     //def("extract_itr_seq", extract_itr_seq);
     def("extract_itr_seq_into_counts", extract_itr_seq_into_counts);
 }
-*/
+
