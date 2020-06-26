@@ -184,7 +184,7 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 
 int main(){
 	int num_features;
-	string filename = "/home/mbc2004/datasets/Something-Something/b_tsm_frames_1/203184.b";
+	string filename = "/home/mbc2004/datasets/Something-Something/b_tsm_frames_1/0/203184.b";
 	vector<Event> events = read_sparse_matrix(filename, num_features);
 	cout << "num_features:" << num_features << endl;
 
