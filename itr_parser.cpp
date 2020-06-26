@@ -150,6 +150,8 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 	vector<Event> events = read_sparse_matrix(txt_file, num_features);
 	sort(events.begin(), events.end(), compareEvents);
 
+	cout << "num_features:" << num_features << endl;
+
 	// get a list of all of the ITRs in the txt_file
 	p::tuple shape = p::make_tuple(num_features, num_features, 7);
 	np::dtype dt = np::dtype::get_builtin<int>();
@@ -171,10 +173,31 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 	return itr_list;
 }
 
-int main(){
-	read_sparse_matrix("test.b");
-}
 /*
+int main(){
+	int num_features;
+	vector<Event> events = read_sparse_matrix("test.b", num_features);
+	cout << "num_features:" << num_features << endl;
+
+	sort(events.begin(), events.end(), compareEvents);
+
+	// get a list of all of the ITRs in the txt_file
+	string itr_list = "";
+	for (int i = 0; i < events.size(); i++){
+		int j = i+1;
+		while (j < events.size() and events[i].name != events[j].name){
+			char itr_name = events[i].get_itr(events[j]);
+
+			int e1 = events[i].name;
+			int e2 = events[j].name;
+
+			itr_list += to_string(e1)+itr_name+to_string(e2)+" ";
+			j += 1;
+		}
+	}
+	//return itr_list;
+}
+*/
 
 
 BOOST_PYTHON_MODULE(itr_parser)
@@ -184,4 +207,4 @@ BOOST_PYTHON_MODULE(itr_parser)
     //def("extract_itr_seq", extract_itr_seq);
     def("extract_itr_seq_into_counts", extract_itr_seq_into_counts);
 }
-*/
+
