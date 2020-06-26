@@ -308,6 +308,7 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 
 			avg_train += time.time()-t_i
 		
+		print("epoch: {:4d}/{:4d}".format(e, num_epochs))
 		print("train accuracy:", evaluate(net, trainloader, device, max_iter=200))
 		print("test accuracy:", evaluate(net, testloader, device))
 		
