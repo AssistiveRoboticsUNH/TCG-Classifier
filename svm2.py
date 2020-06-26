@@ -98,7 +98,9 @@ class ITRDataset:
 		# need to generate the TFIDF and Scaler
 		# then call it_process with preprocess enabled
 		# finally I can run this through properly
-		data = scipy.sparse.load_npz(ex['pp_path']).toarray()
+
+		#data = scipy.sparse.load_npz(ex['pp_path']).toarray()
+		data = np.load(ex['sp_path'])
 		data = data.reshape(-1)
 
 
