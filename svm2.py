@@ -213,7 +213,8 @@ def gen_scaler(dataset, save_name):
 			# the issue is located in the DataIterable
 
 			ex = np.asarray(ex)
-			print(exreshape(1, -1).shape)
+			print(ex.reshape(1, -1).shape)
+			print(ex.reshape(1, -1))
 
 			scaler.partial_fit(ex.reshape(1, -1))
 	
