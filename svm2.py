@@ -205,8 +205,9 @@ def gen_scaler(dataset, save_name):
 	for ex in iterable:
 	#for i in range(len(dataset.csv_contents)):
 		print("ex:", type(ex), len(ex))#, ex["data"].shape)
-		print(ex[0])
-		print(ex[1])
+		ex = np.asarray(ex)
+		print(ex)
+		print(ex.shape)
 
 		scaler.partial_fit(ex.reshape(1, -1))
 	
