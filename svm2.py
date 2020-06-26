@@ -292,22 +292,11 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 	t_s = time.time()
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
-			#print("i:", i)
-			if (i % 50 == 0):
-				#print("file IO:", avg_file_io / 50)
-				#print("train:", avg_train / 50)
-
-				avg_file_io = 0
-				avg_train = 0
-
-				print("i:", i, time.time()-t_s)
-				t_s = time.time()
-
+			
 			t_i = time.time()
 			# get the inputs; data is a list of [inputs, labels]
 			inp_data, inp_label = batch['data'].numpy(), batch['label'].numpy().reshape(-1)
 			
-
 			inp_data = scipy.sparse.coo_matrix(np.array(inp_data))
 			inp_label = np.array(inp_label)
 
@@ -315,19 +304,11 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 
 			t_i = time.time()
 
-
 			net.partial_fit(inp_data, inp_label, classes=np.arange(num_classes))
 
 			avg_train += time.time()-t_i
-		#print("train elapsed:", time.time()-t_s)
 		
-
-
 		print("train accuracy:", evaluate(net, trainloader, device, max_iter=200))
-		
-
-		#test_data, test_labels = data_to_sparse_matrix(testloader, single=True)
-		#print("eval accuracy:", net.score(test_data, test_labels))
 		print("test accuracy:", evaluate(net, testloader, device))
 		
 		print('------------------')
@@ -404,9 +385,7 @@ def evaluate(net, testloader, device, max_iter=-1):
 	pred_label, actual_label = [],[] 
 
 	for i, batch in enumerate(testloader, start=0):
-		if(i % 50 == 0):
-			print("j:", i)
-
+		
 		if(max_iter > 0 and i > max_iter):
 			break
 		
