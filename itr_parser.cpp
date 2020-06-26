@@ -81,7 +81,7 @@ bool compareEvents(Event e1, Event e2)
 
 
 vector<Event> read_sparse_matrix(string filename, int& num_features){
-
+	cout << "read file:" << filename << endl;
 	vector<Event> event_list;
 	
 	//open file
@@ -93,7 +93,7 @@ vector<Event> read_sparse_matrix(string filename, int& num_features){
 	    file.read ((char*)&num_f, sizeof(num_f));
 	num_features = num_f;
 
-	cout << "num_features1:" << num_features << endl;
+	cout << "num_features:" << num_features << endl;
 
 	//parse the rest of teh file
 	int current_feature = -1;
@@ -152,7 +152,7 @@ np::ndarray extract_itr_seq_into_counts(string txt_file){
 	vector<Event> events = read_sparse_matrix(txt_file, num_features);
 	sort(events.begin(), events.end(), compareEvents);
 
-	cout << "num_features2:" << num_features << endl;
+	cout << "num_features:" << num_features << endl;
 
 	// get a list of all of the ITRs in the txt_file
 	p::tuple shape = p::make_tuple(num_features, num_features, 7);
