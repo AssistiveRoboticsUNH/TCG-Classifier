@@ -95,6 +95,9 @@ vector<Event> read_sparse_matrix(string filename, int& num_features){
 
 	cout << "num_features:" << num_features << endl;
 
+	if(num_features > 1000):
+		exit(-1);
+
 	//parse the rest of teh file
 	int current_feature = -1;
 	int p1, p2;
