@@ -95,7 +95,10 @@ class ITRDataset:
 			idx = idx.tolist()
 
 		ex = self.csv_contents[idx]
-		data = scipy.sparse.load_npz(ex['sp_path']).toarray()
+		# need to generate the TFIDF and Scaler
+		# then call it_process with preprocess enabled
+		# finally I can run this through properly
+		data = scipy.sparse.load_npz(ex['pp_path']).toarray()
 		data = data.reshape(-1)
 
 
@@ -206,9 +209,11 @@ def gen_scaler(dataset, save_name):
 	#for i in range(len(dataset.csv_contents)):
 		print("ex:", type(ex), len(ex))#, ex["data"].shape)
 		if (len(ex) > 0):
+			# if this still returns a value of 0 for all inputs afer generating files then
+			# the issue is located in the DataIterable
+
 			ex = np.asarray(ex)
-			print(ex)
-			print(ex.shape)
+			print(exreshape(1, -1).shape)
 
 			scaler.partial_fit(ex.reshape(1, -1))
 	
