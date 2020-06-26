@@ -200,24 +200,14 @@ def load_tfidf(save_name):
 def gen_scaler(dataset, save_name):
 	# fit TF-IDF
 	
-	
-	iterable = iter(DataIterable(dataset.csv_contents, open_as_sparse))
-
 	scaler = MinMaxScaler()
+	for i in range(len(dataset.csv_contents)):
+		ex = dataset[i]
+		print("ex:", type(ex))
 
-	for ex in iterable:
-	#for i in range(len(dataset.csv_contents)):
-		print("ex:", type(ex), len(ex))#, ex["data"].shape)
-		if (len(ex) > 0):
-			# if this still returns a value of 0 for all inputs afer generating files then
-			# the issue is located in the DataIterable
+		scaler.partial_fit(ex["data"].reshape(1, -1))
 
-			ex = np.asarray(ex)
-			print(ex.reshape(1, -1).shape)
-			print(ex.reshape(1, -1))
 
-			scaler.partial_fit(ex.reshape(1, -1))
-	
 	print("Fit Scaler Done")
 
 	# save tfidf
