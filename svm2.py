@@ -292,6 +292,9 @@ def train(net, trainloader, testloader, device, num_classes, num_epochs=10, alph
 	t_s = time.time()
 	for e in range(num_epochs):
 		for i, batch in enumerate(trainloader, start=0):
+
+			if(i % 1000 == 0):
+				print("{:4d}".format(i))
 			
 			t_i = time.time()
 			# get the inputs; data is a list of [inputs, labels]
